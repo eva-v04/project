@@ -2,9 +2,137 @@
 <html>
 	<head>
 		<title>"Web App"</title>
+		<style>
+		body {
+    	background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+		font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+		display: flex;
+    	flex-direction: column;
+    	align-items: center;
+    	justify-content: center;
+    	min-height: 100vh;
+    	margin: 0;
+    	padding: 40px 20px;
+    	color: #2d3436;
+	}
+
+	/* Κεντρικός Τίτλος*/
+	h1 {
+    	color: #4834d4;
+    	font-size: 2.5rem;
+    	font-weight: 800;
+    	margin-bottom: 10px;
+    	letter-spacing: -1px;
+	}
+
+	/* Υπότιτλος */
+	body > p {
+    	color: #636e72;
+    	font-size: 1.1rem;
+    	margin-bottom: 40px;
+	}
+
+	.benefit-card {
+    	background: white;
+    	border-radius: 24px;
+    	padding: 30px;
+    	width: 280px;
+    	text-align: center;
+    /*διπλή σκιά για βάθος */
+    	box-shadow: 0 10px 25px rgba(0,0,0,0.05), 0 4px 10px rgba(0,0,0,0.03);
+    	transition: transform 0.3s ease, box-shadow 0.3s ease;
+    	border: 1px solid rgba(255,255,255,0.8);
+	}
+
+	.benefit-card:hover {
+    	transform: translateY(-10px); /* Εφέ ανύψωσης */
+    	box-shadow: 0 20px 35px rgba(72, 52, 212, 0.1);
+	}
+
+	.card-number {
+    	background: linear-gradient(135deg, #686de0, #4834d4);
+    	color: white;
+    	width: 40px;
+    	height: 40px;
+    	display: flex;
+    	align-items: center;
+    	justify-content: center;
+    	border-radius: 12px;
+    	margin-bottom: 20px;
+    	font-weight: bold;
+    	font-size: 1.2rem;
+    	box-shadow: 0 4px 12px rgba(72, 52, 212, 0.3);
+	}
+
+	.benefit-card p {
+    	font-size: 1rem;
+    	color: #2d3436;
+    	line-height: 1.6;
+    	margin: 0;
+	}
+	
+	a {
+    	background: #4834d4;
+    	color: white;
+    	padding: 16px 32px;
+    	text-decoration: none;
+    	border-radius: 16px;
+    	font-weight: 600;
+    	font-size: 1rem;
+    	transition: all 0.3s ease;
+    	box-shadow: 0 8px 15px rgba(72, 52, 212, 0.2);
+	}
+
+	a:hover {
+    	background: #3c2bb3;
+    	transform: scale(1.05);
+    	box-shadow: 0 12px 20px rgba(72, 52, 212, 0.3);
+	}
+
+	.benefits-container {
+    	display: flex; /* Ενεργοποιεί τη διάταξη δίπλα-δίπλα */
+	    gap: 25px; /* Απόσταση ανάμεσα στα κουτιά */
+    	justify-content: center; /* Κεντράρισμα */
+    	margin-top: 30px;
+    	flex-wrap: wrap; /* Αν δεν χωράνε, πάνε στην από κάτω γραμμή */
+	}
+
+	.benefit-card {
+    	border-radius: 20px; /* Στρογγυλεμένες γωνίες */
+    	padding: 20px;
+    	width: 250px; /* Σταθερό πλάτος για ομοιομορφία */
+    	text-align: center;
+    	box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Ελαφριά σκιά */
+    	display: flex;
+    	flex-direction: column;
+    	align-items: center;
+	}
+
+	.benefit-card p {
+   		font-size: 0.9em;
+    	color: #4a4a4a;
+    	line-height: 1.5;
+	}
+
+	</style>
 	</head>
 	<body>
 		<h1>Hello! This is the homepage!</h1>
-		<p>Give me the name of the package you want to analyze</p>
+		<p>These are some of the many benefits of call graphs!</p>
+		<div class="benefits-container">
+			<div class="benefit-card">
+				<div class="card-number">1.</div>
+				<p>They can help you understand the structure of your codebase.</p>
+			</div>
+    	<div class="benefit-card">
+        	<div class="card-number">2.</div>
+        		<p>They can help you identify potential performance bottlenecks.</p>
+    		</div>
+    	<div class="benefit-card">
+        	<div class="card-number">3.</div>
+        		<p>They can help you find and fix bugs in your code.</p>
+    		</div>
+		</div>
+		<a href="/callgraph">click here to make a call graph for a package</a>
 	</body>
 </html>
