@@ -81,6 +81,7 @@
     	font-size: 1rem;
     	transition: all 0.3s ease;
     	box-shadow: 0 8px 15px rgba(72, 52, 212, 0.2);
+		max-height: 100px;
 	}
 
 	a:hover {
@@ -94,6 +95,7 @@
 	    gap: 25px; /* Απόσταση ανάμεσα στα κουτιά */
     	justify-content: center; /* Κεντράρισμα */
     	margin-top: 30px;
+		margin-bottom: 50px;
     	flex-wrap: wrap; /* Αν δεν χωράνε, πάνε στην από κάτω γραμμή */
 	}
 
@@ -124,15 +126,23 @@
 				<div class="card-number">1.</div>
 				<p>They can help you understand the structure of your codebase.</p>
 			</div>
-    	<div class="benefit-card">
-        	<div class="card-number">2.</div>
-        		<p>They can help you identify potential performance bottlenecks.</p>
+
+			<div class="benefit-card">
+				<div class="card-number">2.</div>
+        		<p>They can help you understand which parts of your code are not used.</p>
     		</div>
-    	<div class="benefit-card">
-        	<div class="card-number">3.</div>
-        		<p>They can help you find and fix bugs in your code.</p>
+
+			<div class="benefit-card">
+				<div class="card-number">3.</div>
+        		<p>They can help you Identify security risks by tracing data flow from high-level languages to potentially vulnerable native libraries (SCA).</p>
     		</div>
+			
+			<div class="benefit-card">
+				<div class="card-number">4.</div>
+        		<p>They can help you analyze the dependencies between different parts of your code (Analyze the 'bridges' between different programming languages).</p>
+    		</div>
+
 		</div>
-		<a href="/callgraph">click here to make a call graph for a package</a>
+		<a href="/callgraph">Click here to make a call graph</a>
 	</body>
 </html>
