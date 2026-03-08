@@ -2,8 +2,14 @@
 #import nmp
 
 echo "Give me the npm package name"
-read package_name
+package_name=$1 #αντί για Read, παίρνουμε το όνομα από το πρώτο όρισμα
 echo "Downloading $package_name"
+
+# Έλεγχος αν δόθηκε όνομα
+if [ -z "$package_name" ]; then
+	echo "No package name provided"
+	exit 1
+fi
 
 #προσωρινός φάκελος για την ανάλυση
 folder_name="analysis_$package_name" 
