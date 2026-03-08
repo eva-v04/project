@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from webapp.forms import AnalysisForm
 
@@ -16,5 +16,15 @@ def callgraph(request):
         if form.is_valid():
             package = form.cleaned_data['package_name']
             subprocess.run(["./npmname.sh",package])
+
+            return redirect('results', package_name = package)
             
     return render(request, 'callgraph.html', {'form': form})
+
+def results(request, package_name):
+    #url αρχείου που δημιούργησε το jelly
+    graph_url = f"/static/analysis_{package_name}/{package_name}.html"
+    return render(request, 'results.html', {
+        'package_name' : package_name,
+        'graph_url': graph_url
+        })

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		    <title>Jelly Analysis Result: {{ package_name }}</title>
+	</head>
+	<body>
+		<h1>Αποτελέσματα Ανάλυσης για το πακέτο: {{ package_name }}</h1>
+		<a href="{% url 'callgraph' %}">← Νέα Ανάλυση</a>
+		<hr>
+		<iframe src="{{ graph_url }}" width="100%" height="800px" style="border:none;"></iframe>
+	</body>
+</html>
