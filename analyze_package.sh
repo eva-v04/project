@@ -16,8 +16,8 @@ folder_name="static/analysis_$package_name" #Ο φάκελος πρέπει να
 mkdir -p "$folder_name" 
 cd "$folder_name" #Cd για να κατέβει σε αυτόν τον φάκελο το πακέτο
 
-npm init -y > /dev/null
-npm install $package_name --prefix . #κατεβάζω πακέτο
+rm -f "$package_name.json" "$package_name.html" #σβήνω παλιές αναλύσεις του πακέτου αν υπάρχουν
+
+npm install $package_name --prefix .   #κατεβάζω πακέτο
 
 jelly -j "$package_name.json" -m "$package_name.html" ./node_modules/$package_name
-#τελεία γιατί είμαι ήδη στον φάκελο
