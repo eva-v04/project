@@ -18,6 +18,7 @@ cd "$folder_name" #Cd για να κατέβει σε αυτόν τον φάκε
 
 rm -f "$package_name.json" "$package_name.html" #σβήνω παλιές αναλύσεις του πακέτου αν υπάρχουν
 
-npm install $package_name --prefix .   #κατεβάζω πακέτο
+npm install --prefix . $package_name  #κατεβάζω πακέτο
+#prefix .  για να κατέβει το πακέτο στον φάκελο που είμαι
 
 jelly -j "$package_name.json" -m "$package_name.html" ./node_modules/$package_name
