@@ -15,7 +15,7 @@ def callgraph(request):
         form = AnalysisForm(request.POST)
         if form.is_valid():
             package = form.cleaned_data['package_name']
-            subprocess.run(["./npmname.sh",package])
+            subprocess.run(["./analyze_package.sh",package])
 
             return redirect('results', package_name = package)
             
