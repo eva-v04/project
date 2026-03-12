@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <title>Gasket Bridge Analysis</title>
+    <style>
+        .container-centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            max-width: 550px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            margin-top: 8px;
+            border: 2px solid #eee;
+            border-radius: 14px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #00d2ff; /* Cyan accent για το Gasket */
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1);
+        }
+
+        .badge-gasket {
+            background: #e1faff;
+            color: #0097b2;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/callgraph">Jelly Analysis</a>
+            <a href="/gasket">Gasket Bridges</a>
+        </div>
+    </nav>
+
+    <div class="container-centered">
+        <div class="glass-card">
+            <h1 style="margin-top: 15px;">Gasket Analysis</h1>
+            <p>Identify and map the interfaces between JavaScript and Native C++ modules.</p>
+            
+            <form action="/gasket/" method="post" class="form-group" id="gasketForm">
+                {% csrf_token %}
+                <label for="package_name" style="font-weight: 700; color: var(--primary);">NPM Package to Analyze</label>
+                <input type="text" name="package_name" placeholder="e.g. sqlite3" required>
+                
+                <p style="font-size: 0.85rem; color: #636e72; margin-top: 15px;">
+                    This process will download the package and scan for <strong>Native Bindings</strong>.
+                </p>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn-main" style="width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg, #4834d4, #00d2ff);">
+                        Analyze Native Bridges
+                    </button>
+                </div>
+            </form>
+            
+            <div id="loading" style="display: none; margin-top: 20px;">
+                <p>⚙️ Analyzing Bridges... This may take a moment.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('gasketForm').onsubmit = function() {
+            document.getElementById('loading').style.display = 'block';
+            this.style.opacity = '0.5';
+        };
+    </script>
+</body>
+</html>

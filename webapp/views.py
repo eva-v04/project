@@ -28,3 +28,6 @@ def results(request, package_name):
         'package_name' : package_name,
         'graph_url': graph_url
         })
+
+def gasket(request):
+    return render(request, 'gasket.html')

@@ -1,104 +1,71 @@
-<Doctype html>
-<html>
-    <head>
-        <title>"Call Graph"</title>
-        <style>
-    /* Φόντο και Κεντράρισμα */
-    body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        min-height: 100vh;
-        margin: 0;
-        padding: 20px;
-    }
+{% load static %}
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <title>Generate Call Graph</title>
+    <style>
+        /*  στυλ μόνο για τη φόρμα */
+        .form-group {
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            margin-top: 8px;
+            border: 2px solid #eee;
+            border-radius: 14px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fdfdfd;
+        }
 
-    /* Η "Κάρτα" της Φόρμας */
-    .form-card {
-        background: white;
-        padding: 40px;
-        border-radius: 24px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        text-align: center;
-        max-width: 500px;
-        width: 100%;
-    }
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(72, 52, 212, 0.1);
+            outline: none;
+        }
 
-    h1 {
-        color: #4834d4;
-        font-size: 2.2rem;
-        font-weight: 800;
-        margin-top: 0;
-        letter-spacing: -1px;
-    }
+        .helper-text {
+            font-size: 0.85rem;
+            color: #636e72;
+            margin-top: 15px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/callgraph">Jelly Analysis</a>
+            <a href="/gasket">Gasket Bridges</a>
+        </div>
+    </nav>
 
-    p {
-        color: #636e72;
-        margin-bottom: 30px;
-        line-height: 1.5;
-    }
-
-    label {
-        color: #4834d4;
-        font-size: 1rem;
-        font-weight: 700;
-        display: block;
-        margin-bottom: 10px;
-        text-align: left;
-    }
-
-    /* Στυλ για το Input του Django (το {{ form.package_name }}) */
-    input[type="text"] {
-        width: 100%;
-        padding: 12px 15px;
-        margin-bottom: 20px;
-        border: 2px solid #e0e0e0;
-        border-radius: 12px;
-        font-size: 1rem;
-        box-sizing: border-box; /* Για να μην βγαίνει έξω από το πλαίσιο */
-        transition: border-color 0.3s ease;
-    }
-
-    input[type="text"]:focus {
-        border-color: #4834d4;
-        outline: none;
-    }
-
-    /* Μοντέρνο Κουμπί */
-    button[type="submit"] {
-        background: linear-gradient(135deg, #686de0, #4834d4);
-        color: white;
-        width: 100%;
-        padding: 15px;
-        border: none;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(72, 52, 212, 0.2);
-    }
-
-    button[type="submit"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(72, 52, 212, 0.3);
-        filter: brightness(1.1);
-    }
-</style>
-    </head>
-    <body>
-        <div class="form-card">
-            <h1>Call Graph</h1>
-            <p>Enter an NPM package name to generate a call graph and analyze its internal structure</p>
-            <form action="/callgraph/" method="post" enctype="multipart/form-data">
+    <div class="container-centered">
+        <div class="glass-card">
+            <h1>Jelly Engine</h1>
+            <p>Generate Call Graphs for any NPM package.</p>
+            
+            <form action="/callgraph/" method="post" class="form-group">
                 {% csrf_token %}
-                <label for="package_name">Package Name:</label><br>
-                {{ form.package_name }}<br><br>
-                <button type="submit">Generate Call Graph</button>
+                <label for="package_name" style="font-weight: 700; color: var(--primary);">NPM Package Name</label>
+                {{ form.package_name }}
+                
+                <span class="helper-text">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>b</code></span>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn-main" style="width: 100%; border: none; cursor: pointer;">
+                        Generate Analysis
+                    </button>
+                </div>
             </form>
         </div>
-    </body>
+    </div>
+</body>
 </html>
