@@ -24,4 +24,5 @@ urlpatterns = [
     path('callgraph/', views.callgraph, name='callgraph'),
     path('results/<str:package_name>/', views.results, name='results'),
     path('gasket/', views.gasket, name='gasket'),
+    path('results_gasket/<str:package_name>/', views.gasket_results, name='gasket_results'),
 ]
