@@ -51,13 +51,35 @@ def gasket(request):
 def gasket_results(request, package_name):
     file_path = os.path.join(settings.BASE_DIR, 'static', f'gasket_analysis_{package_name}', f'bridges_{package_name}.json')    
     try:
-        with open(file_path, 'r') as f:
-            fulldata = json.load(f)
-            data = fulldata.get('bridges', [])
+        with open(file_path, 'r') as f: #ανοίγει αρχείο
+            fulldata = json.load(f) #διαβάζει το json και το αποθηκεύει σε μεταβλητή
+            bridges = fulldata.get('bridges', []) #παίρνει τη λίστα των bridges από το json, αν δεν υπάρχει επιστρέφει κενή λίστα
+            objects_examined = fulldata.get('objects_examined', 0) 
+            callable_objects = fulldata.get('callable_objects', 0) 
+            foreign_callable_objects = fulldata.get('foreign_callable_objects', 0) 
+            duration_sec = fulldata.get('duration_sec', 0) 
+            count = fulldata.get('count', 0)
+            modules = fulldata.get('modules', []) 
+            jump_libs = fulldata.get('jump_libs', []) 
     except FileNotFoundError:
-        data = None
+        bridges = None
+        objects_examined = 0
+        callable_objects = 0
+        foreign_callable_objects = 0
+        duration_sec = 0
+        count = 0
+        modules = []
+        jump_libs = []
+
 
     return render(request, 'results_gasket.html', {
         'package_name': package_name,
-        'bridges': data
+        'bridges': bridges,
+        'objects_examined': objects_examined,
+        'callable_objects': callable_objects,
+        'foreign_callable_objects': foreign_callable_objects,
+        'duration_sec': duration_sec,
+        'count': count,
+        'modules': modules,
+        'jump_libs': jump_libs
     })

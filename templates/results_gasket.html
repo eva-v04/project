@@ -15,7 +15,48 @@
         </div>
     </nav>
 
-    <h1>Native Bridges for: {{ package_name }}</h1>
+    <h1>Analysis for: {{ package_name }}</h1>
+
+    <div class="container-centered">
+        
+        {% if objects_examined %}
+            <p><strong>Objects Examined:</strong> {{ objects_examined }}</p>
+        {% endif %}
+            
+        {% if callable_objects %}
+            <p><strong>Callable Objects:</strong> {{ callable_objects }}</p>
+        {% endif %}
+            
+        {% if foreign_callable_objects %}
+            <p><strong>Foreign Callable Objects:</strong> {{ foreign_callable_objects }}</p>
+        {% endif %}
+            
+        {% if duration_sec %}
+            <p><strong>Analysis Duration:</strong> {{ duration_sec }} seconds</p>
+        {% endif %}
+            
+        {% if count %}
+            <p><strong>Total Bridges Found:</strong> {{ count }}</p>
+        {% endif %}
+
+        {% if modules %}
+            <p><strong>Modules Analyzed:</strong></p>
+            <ul style="list-style-type: none; padding-left: 0; font-family: monospace; font-size: 0.85rem; color: #636e72;">
+                {% for module in modules %}
+                    <li style="margin-bottom: 5px; padding-left: 10px; border-left: 3px solid var(--primary);">{{ module }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if jump_libs %}
+            <p style="margin-top: 20px;"><strong>Jump Libraries Detected:</strong></p>
+            <ul style="list-style-type: none; padding-left: 0; font-family: monospace; font-size: 0.85rem; color: #d63031;">
+                {% for lib in jump_libs %}
+                    <li style="margin-bottom: 5px; padding-left: 10px; border-left: 3px solid #d63031;">{{ lib }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
 
     <div class="container-centered">
         {% if bridges %}
