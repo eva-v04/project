@@ -3,7 +3,9 @@
 #docker pull grgalex/gasket:0.1.0
 #docker run -ti --cap-add=SYS_PTRACE grgalex/gasket:0.1.0
 
+echo "npm package name"
 package_name=$1
+echo "Downloading $package_name"
 
 if [ -z "$package_name" ]; then
 	echo "No package name provided" #! εκτυπώνεται στο terminal

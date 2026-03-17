@@ -1,7 +1,7 @@
 #!/bin/bash
 #import nmp
 
-echo "Give me the npm package name"
+echo "npm package name"
 package_name=$1 #αντί για Read, παίρνουμε το όνομα από το πρώτο όρισμα
 echo "Downloading $package_name"
 
