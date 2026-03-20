@@ -1,11 +1,17 @@
 from django.db import models
-from django import forms as modelForms
-#from django import datefields
 
-class analysis(models.Model):
-    package_name = models.CharField(max_length=100)
-#    date = models.DateField()
 
-class package(models.Model):
-    package_name = models.OneToOneField(analysis, on_delete=models.CASCADE)
-    bridges = models.IntegerField(default=0)
+class Package(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+
+class User(models.Model):
+    username = models.CharField(max_length=100)
+    email = models.EmailField()
+    password = models.CharField(max_length=100)
+
+
+class Analyses(models.Model):
+    package = models.ForeignKey(Package, on_delete=models.CASCADE, related_name='all_analyses')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_analyses')
+    date = models.DateTimeField(auto_now_add=True)

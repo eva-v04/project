@@ -2,8 +2,118 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <style>
+        *{
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        form {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #b0b0b0;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Στυλ για τα Inputs */
+        input[type="text"], 
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background-color: #2c2c2c;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Εφέ όταν κάνεις κλικ στο input */
+        input:focus {
+            border-color: #00bcd4;
+            box-shadow: 0 0 8px rgba(0, 188, 212, 0.2);
+            background-color: #333;
+        }
+
+        /* Το κουμπί Sign Up */
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #00bcd4;
+            color: #121212; /* Μαύρο κείμενο πάνω στο κυανό για αντίθεση */
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #00e5ff;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #b0b0b0;
+        }
+
+        .signup-link a {
+            color: #00bcd4;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+    }
+        </style>
         <title>Login</title>
-        <link rel="stylesheet" href="{% static 'base.css' %}">
+        <!-- <link rel="stylesheet" href="{% static 'base.css' %}"> -->
     </head>
     <body>
         <h1>Login</h1>
@@ -17,3 +127,8 @@
 
             <button type="submit">Login</button>
         </form>
+        <div class="signup-link">
+            Don't have an account? <a href="/signup/">Sign up here</a>
+        </div>
+    </body>
+</html>

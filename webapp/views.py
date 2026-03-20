@@ -9,8 +9,10 @@ import json
 import os
 from django.conf import settings
 
+
 def homepage(request):
     return render(request, 'homepage.html')
+
 
 def callgraph(request):
     form = AnalysisForm()
@@ -25,6 +27,7 @@ def callgraph(request):
             
     return render(request, 'callgraph.html', {'form': form})
 
+
 def results(request, package_name):
     #url αρχείου που δημιούργησε το jelly
     graph_url = f"/static/analysis_{package_name}/{package_name}.html"
@@ -32,6 +35,7 @@ def results(request, package_name):
         'package_name' : package_name,
         'graph_url': graph_url
         })
+
 
 def gasket(request):
     form = AnalysisForm() # Χρησιμοποιούμε την ίδια φόρμα για το package name
@@ -47,6 +51,7 @@ def gasket(request):
             return redirect('gasket_results', package_name=package)
             
     return render(request, 'gasket.html', {'form': form})
+
 
 def gasket_results(request, package_name):
     file_path = os.path.join(settings.BASE_DIR, 'static', f'gasket_analysis_{package_name}', f'bridges_{package_name}.json')    
@@ -71,7 +76,6 @@ def gasket_results(request, package_name):
         modules = []
         jump_libs = []
 
-
     return render(request, 'results_gasket.html', {
         'package_name': package_name,
         'bridges': bridges,
@@ -84,11 +88,14 @@ def gasket_results(request, package_name):
         'jump_libs': jump_libs
     })
 
+
 def signup(request):
     return render(request, 'signup.html')
 
+
 def login(request):
     return render(request, 'login.html')
+
 
 def workspace(request):
     return render(request, 'workspace.html')

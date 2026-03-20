@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -12,12 +13,14 @@
             --bg-dark: #121212;
             --card-bg: #1e1e1e;
             --accent-cyan: #00bcd4;
+            --text-main: #ffffff;
             --text-gray: #b0b0b0;
         }
 
         body {
             background-color: var(--bg-dark);
-            color: white;
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -49,6 +52,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             height: 100%;
+            color: var(--text-main); /* Για να αλλάζουν τα γράμματα μέσα στην κάρτα */
         }
 
         .analysis-card:hover {
@@ -84,6 +88,36 @@
 
         .status-complete { color: #4caf50; }
         .status-running { color: #ff9800; }
+        .analysis-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .analysis-card-link:hover {
+            color: inherit;
+        }
+        body.light-mode {
+            --bg-dark: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-main: #212121;
+            --text-gray: #555555;
+        }
+
+        body.light-mode h2, 
+        body.light-mode h5, 
+        body.light-mode h6,
+        body.light-mode .text-secondary,
+        body.light-mode .navbar-brand {
+            color: var(--text-main) !important;
+        }
+        body.light-mode .table-hover tbody tr:hover {
+            color: var(--text-main);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .navbar {
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+        }
     </style>
 </head>
 <body>
@@ -94,6 +128,9 @@
                 <i class="fa-solid fa-square-n text-info me-2"></i>Project
             </span>
             <div class="d-flex align-items-center">
+                <button id="theme-toggle" class="btn btn-link text-info me-3">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
                 <span class="me-3">Eva <i class="fa-regular fa-circle-user"></i></span>
                 <i class="fa-solid fa-bell position-relative">
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">2</span>
@@ -106,35 +143,27 @@
         <h2>WELCOME, EVA!</h2>
         <p class="text-secondary">Ready to analyze a new package?</p>
 
-        <div class="search-section mb-5">
-            <div class="input-group">
-                <span class="input-group-text bg-transparent border-end-0 text-secondary border-secondary">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
-                <input type="text" class="form-control search-input border-start-0 border-secondary" placeholder="Enter npm Package Name: [ sqlite3 ]">
-                <button class="btn btn-launch ms-3 rounded">Launch</button>
-            </div>
-        </div>
-
         <h5 class="mb-4">SELECT ANALYSIS TYPE:</h5>
         
         <div class="row g-4 mb-5">
             <div class="col-md-4">
+                <a href="{% url 'gasket' %}" class="analysis-card-link">
                 <div class="analysis-card">
                     <i class="fa-solid fa-eye card-icon"></i>
                     <h6>BRIDGES ANALYSIS (GASKET)</h6>
                     <p class="small text-secondary">Map all native bridges in memory.</p>
                     <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
                 </div>
-            </div>
+            </a></div>
             <div class="col-md-4">
+                <a href="{% url 'callgraph' %}" class="analysis-card-link">
                 <div class="analysis-card">
                     <i class="fa-solid fa-circle-nodes card-icon"></i>
                     <h6>CALL GRAPH (JELLY)</h6>
                     <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
                     <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
                 </div>
-            </div>
+            </a></div>
         </div>
 
         <h5 class="mb-4">RECENT ANALYSES:</h5>
@@ -177,5 +206,22 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const btn = document.getElementById('theme-toggle');
+        const icon = btn.querySelector('i');
+
+        // Ελέγχουμε αν υπάρχει το κουμπί πριν προσθέσουμε τον event listener
+        if (btn) {
+            btn.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                
+                if (document.body.classList.contains('light-mode')) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            });
+        }
+    </script>
 </body>
 </html>

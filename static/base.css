@@ -1,94 +1,92 @@
-:root {
-    --primary: #4834d4;
-    --secondary: #686de0;
-    --accent: #00d2ff;
-    --bg: #f8fbff;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --text: #2d3436;
-}
 
-body {
-    background: radial-gradient(circle at top right, #ffffff 0%, #e8ecf1 100%);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    margin: 0;
-    padding: 0;
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        :root {
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --accent-cyan: #00bcd4;
+            --text-gray: #b0b0b0;
+        }
 
-/* Navbar */
-.navbar {
-    width: 100%;
-    background: white;
-    padding: 15px 0;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    display: flex;
-    justify-content: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-.nav-links a {
-    color: var(--text);
-    text-decoration: none;
-    margin: 0 20px;
-    font-weight: 600;
-    transition: color 0.3s;
-}
+        .navbar {
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+        }
 
-.nav-links a:hover {
-    color: var(--primary);
-}
+        .search-section {
+            background-color: #181818;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
 
-/* Typography */
-h1 {
-    font-size: 2.8rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-top: 50px;
-    text-align: center;
-}
+        .search-input {
+            background-color: transparent;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+        }
 
-/* Buttons */
-.btn-main {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white !important;
-    padding: 16px 40px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: bold;
-    box-shadow: 0 10px 20px rgba(72, 52, 212, 0.2);
-    transition: all 0.3s;
-    margin-top: 20px;
-}
+        .analysis-card {
+            background-color: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
 
-.btn-main:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 30px rgba(72, 52, 212, 0.3);
-}
+        .analysis-card:hover {
+            background-color: #252525;
+        }
 
-.container-centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 100%;
-    margin-top: 50px;
-}
+        .analysis-card.selected {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+        }
 
-/* Κοινό στυλ για κάρτες φόρμας */
-.glass-card {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    border-radius: 24px;
-    padding: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-    max-width: 550px;
-    width: 90%;
-    text-align: center;
-}
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--text-gray);
+        }
+
+        .selected .card-icon {
+            color: var(--accent-cyan);
+        }
+
+        .btn-launch {
+            background-color: var(--accent-cyan);
+            border: none;
+            font-weight: bold;
+            padding: 8px 25px;
+        }
+
+        .table-dark {
+            --bs-table-bg: transparent;
+            border-color: #333;
+        }
+
+        .status-complete { color: #4caf50; }
+        .status-running { color: #ff9800; }
+        .analysis-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .analysis-card-link:hover {
+            color: inherit;
+        }
+        body.light-mode {
+            --bg-dark: #f5f5f5;
+            --card-bg: #ffffff;
+            --text-main: #212121;
+            --text-gray: #666666;
+        }
