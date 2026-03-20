@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workspace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-bg: #1e1e1e;
+            --accent-cyan: #00bcd4;
+            --text-gray: #b0b0b0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .navbar {
+            border-bottom: 1px solid #333;
+            padding: 1rem 2rem;
+        }
+
+        .search-section {
+            background-color: #181818;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .search-input {
+            background-color: transparent;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 4px;
+        }
+
+        .analysis-card {
+            background-color: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+        }
+
+        .analysis-card:hover {
+            background-color: #252525;
+        }
+
+        .analysis-card.selected {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.4);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--text-gray);
+        }
+
+        .selected .card-icon {
+            color: var(--accent-cyan);
+        }
+
+        .btn-launch {
+            background-color: var(--accent-cyan);
+            border: none;
+            font-weight: bold;
+            padding: 8px 25px;
+        }
+
+        .table-dark {
+            --bs-table-bg: transparent;
+            border-color: #333;
+        }
+
+        .status-complete { color: #4caf50; }
+        .status-running { color: #ff9800; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">
+                <i class="fa-solid fa-square-n text-info me-2"></i>Project
+            </span>
+            <div class="d-flex align-items-center">
+                <span class="me-3">Eva <i class="fa-regular fa-circle-user"></i></span>
+                <i class="fa-solid fa-bell position-relative">
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">2</span>
+                </i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>WELCOME, EVA!</h2>
+        <p class="text-secondary">Ready to analyze a new package?</p>
+
+        <div class="search-section mb-5">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent border-end-0 text-secondary border-secondary">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input type="text" class="form-control search-input border-start-0 border-secondary" placeholder="Enter npm Package Name: [ sqlite3 ]">
+                <button class="btn btn-launch ms-3 rounded">Launch</button>
+            </div>
+        </div>
+
+        <h5 class="mb-4">SELECT ANALYSIS TYPE:</h5>
+        
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="analysis-card">
+                    <i class="fa-solid fa-eye card-icon"></i>
+                    <h6>BRIDGES ANALYSIS (GASKET)</h6>
+                    <p class="small text-secondary">Map all native bridges in memory.</p>
+                    <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="analysis-card">
+                    <i class="fa-solid fa-circle-nodes card-icon"></i>
+                    <h6>CALL GRAPH (JELLY)</h6>
+                    <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
+                    <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mb-4">RECENT ANALYSES:</h5>
+        <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle">
+                <thead class="text-secondary">
+                    <tr>
+                        <th>Package</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>sqlite3</td>
+                        <td>Hybrid</td>
+                        <td><span class="status-complete">✅ Complete</span></td>
+                        <td>19 Mar 14:30</td>
+                        <td><a href="#" class="text-info text-decoration-none">[View Report]</a></td>
+                    </tr>
+                    <tr>
+                        <td>bcrypt</td>
+                        <td>Gasket</td>
+                        <td><span class="status-complete">✅ Complete</span></td>
+                        <td>19 Mar 12:15</td>
+                        <td><a href="#" class="text-info text-decoration-none">[View Report]</a></td>
+                    </tr>
+                    <tr>
+                        <td>sharp</td>
+                        <td>Jelly</td>
+                        <td><span class="status-running">⏳ Running(65%)</span></td>
+                        <td>19 Mar 15:01</td>
+                        <td><a href="#" class="text-info text-decoration-none">[Cancel]</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

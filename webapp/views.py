@@ -83,3 +83,12 @@ def gasket_results(request, package_name):
         'modules': modules,
         'jump_libs': jump_libs
     })
+
+def signup(request):
+    return render(request, 'signup.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def workspace(request):
+    return render(request, 'workspace.html')
