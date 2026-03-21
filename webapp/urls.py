@@ -21,10 +21,11 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.workspace, name='workspace'),
+    path('homepage/', views.homepage, name='homepage'),
     path('callgraph/', views.callgraph, name='callgraph'),
     path('results/<str:package_name>/', views.results, name='results'),
     path('gasket/', views.gasket, name='gasket'),
     path('results_gasket/<str:package_name>/', views.gasket_results, name='gasket_results'),
     path('signup/', views.signup, name='signup'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_view, name='login'),
 ]

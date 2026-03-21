@@ -90,3 +90,35 @@
             --text-main: #212121;
             --text-gray: #666666;
         }
+        .centered-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .glass-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .form-input {
+            background-color: #2c2c2c;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-cyan);
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.2);
+        }

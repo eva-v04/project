@@ -1,13 +1,17 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from webapp.forms import AnalysisForm
+from webapp.forms import AnalysisForm, LoginForm, SignupForm
 
 import subprocess
 
 import json
 import os
 from django.conf import settings
+
+from .models import User, Package, Analyses
+from .forms import AnalysisForm, LoginForm, SignupForm
+from django.contrib.auth import authenticate, login
 
 
 def homepage(request):
@@ -90,12 +94,44 @@ def gasket_results(request, package_name):
 
 
 def signup(request):
-    return render(request, 'signup.html')
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            # Δημιουργία νέου χρήστη με τα δεδομένα από τη φόρμα
+            new_user = User.objects.create(
+                username=form.cleaned_data['username'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password']
+            )
+            #αποθηκεύουμε id στο session 
+            request.session['user_id'] = new_user.id
+            return redirect('workspace')
+    else:
+        form = SignupForm()  # Επαναφορά της φόρμας σε περίπτωση μη έγκυρων δεδομένων
+    return render(request, 'signup.html', {'form': form})
 
-
-def login(request):
-    return render(request, 'login.html')
+def login_view(request):
+    error_message = None  # Αρχικοποίηση του μηνύματος λάθους
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']           
+        try:
+            user = User.objects.get(username=username, password=password)
+            request.session['user_id'] = user.id
+            return redirect('workspace')
+        except User.DoesNotExist:
+            error_message = "Invalid username or password."
+    else:
+        form = LoginForm()
+    return render(request, 'login.html', {'form': form, 'error_message': error_message})
 
 
 def workspace(request):
-    return render(request, 'workspace.html')
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login') # Αν δεν είναι συνδεδεμένος, διώξε τον
+        
+    current_user = User.objects.get(id=user_id)
+    return render(request, 'workspace.html', {'user': current_user})
