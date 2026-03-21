@@ -131,8 +131,8 @@
                 <button id="theme-toggle" class="btn btn-link text-info me-3">
                     <i class="fa-solid fa-moon"></i>
                 </button>
-                <span class="me-3">Eva <i class="fa-regular fa-circle-user"></i></span>
-                <i class="fa-solid fa-bell position-relative">
+                <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
+                    {{ user.username }} <i class="fa-regular fa-circle-user"></i></a>                <i class="fa-solid fa-bell position-relative">
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">2</span>
                 </i>
             </div>

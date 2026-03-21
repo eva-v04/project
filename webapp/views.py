@@ -135,3 +135,17 @@ def workspace(request):
         
     current_user = User.objects.get(id=user_id)
     return render(request, 'workspace.html', {'user': current_user})
+
+
+def myacc(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login') # Αν δεν είναι συνδεδεμένος παει στο login
+        
+    current_user = User.objects.get(id=user_id)
+    return render(request, 'myaccount.html', {'user': current_user})
+
+def logout_view(request):
+    if 'user_id' in request.session:
+        del request.session['user_id']
+    return redirect('homepage')

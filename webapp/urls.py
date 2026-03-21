@@ -28,4 +28,6 @@ urlpatterns = [
     path('results_gasket/<str:package_name>/', views.gasket_results, name='gasket_results'),
     path('signup/', views.signup, name='signup'),
     path('login/', views.login_view, name='login'),
+    path('myacc/', views.myacc, name='myacc'),
+    path('logout/', views.logout_view, name='logout'),
 ]
