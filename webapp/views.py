@@ -149,3 +149,12 @@ def logout_view(request):
     if 'user_id' in request.session:
         del request.session['user_id']
     return redirect('homepage')
+
+def analyses(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login') # Αν δεν είναι συνδεδεμένος παει στο login
+        
+    current_user = User.objects.get(id=user_id)
+    user_analyses = current_user.user_analyses.all()  # Παίρνουμε όλες τις αναλύσεις του χρήστη
+    return render(request, 'analyses.html', {'analyses': user_analyses})

@@ -5,57 +5,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <title>Homepage</title>
-    <style>
-        .benefits-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 40px;
-            max-width: 1200px;
-            width: 100%;
-        }
-
-        .benefit-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 40px 30px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .benefit-card:hover {
-            transform: translateY(-15px);
-            background: white;
-            box-shadow: 0 25px 50px rgba(72, 52, 212, 0.1);
-            border-color: var(--primary);
-        }
-
-        .card-number {
-            background: var(--primary);
-            color: white;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
-
-        .benefit-card p {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            color: #444;
-        }
-    </style>
 </head>
 <body>
    <!-- <nav class="navbar">
@@ -95,5 +44,28 @@
     <a href="/signup" class="btn-main" style="margin-left: 20px;">Signup</a>
     
     <div style="margin-bottom: 50px;"></div>
+    <script>
+    const btn = document.getElementById('theme-toggle');
+    const icon = btn.querySelector('i');
+    const body = document.body;
+
+    // Έλεγχος αν υπάρχει αποθηκευμένη προτίμηση
+    if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+        icon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    btn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'light');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>
 </body>
 </html>

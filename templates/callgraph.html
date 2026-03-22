@@ -7,43 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <title>Generate Call Graph</title>
-    <style>
-        /*  στυλ μόνο για τη φόρμα */
-        .form-group {
-            margin-top: 30px;
-            text-align: left;
-        }
-        
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            margin-top: 8px;
-            border: 2px solid #eee;
-            border-radius: 14px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #fdfdfd;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--primary);
-            background: white;
-            box-shadow: 0 0 0 4px rgba(72, 52, 212, 0.1);
-            outline: none;
-        }
-
-        .helper-text {
-            font-size: 0.85rem;
-            color: #636e72;
-            margin-top: 15px;
-            display: block;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-links">
-            <a href="/">Home</a>
+            <a href="/workspace">Home</a>
             <a href="/callgraph">Jelly Analysis</a>
             <a href="/gasket">Gasket Bridges</a>
         </div>
@@ -69,5 +37,28 @@
             </form>
         </div>
     </div>
+    <script>
+    const btn = document.getElementById('theme-toggle');
+    const icon = btn.querySelector('i');
+    const body = document.body;
+
+    // Έλεγχος αν υπάρχει αποθηκευμένη προτίμηση
+    if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+        icon.classList.replace('fa-moon', 'fa-sun');
+    }
+
+    btn.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.setItem('theme', 'light');
+        } else {
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+</script>
 </body>
 </html>

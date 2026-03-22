@@ -5,65 +5,11 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <title>Gasket Bridge Analysis</title>
-    <style>
-        .container-centered {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100%;
-            margin-top: 50px;
-        }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
-            max-width: 550px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .form-group {
-            margin-top: 30px;
-            text-align: left;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 15px;
-            margin-top: 8px;
-            border: 2px solid #eee;
-            border-radius: 14px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            border-color: #00d2ff; /* Cyan accent για το Gasket */
-            outline: none;
-            box-shadow: 0 0 0 4px rgba(0, 210, 255, 0.1);
-        }
-
-        .badge-gasket {
-            background: #e1faff;
-            color: #0097b2;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="nav-links">
-            <a href="/">Home</a>
+            <a href="/workspace">Home</a>
             <a href="/callgraph">Jelly Analysis</a>
             <a href="/gasket">Gasket Bridges</a>
         </div>
