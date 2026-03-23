@@ -9,12 +9,41 @@
     <title>Generate Call Graph</title>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="/workspace">Home</a>
-            <a href="/callgraph">Jelly Analysis</a>
-            <a href="/gasket">Gasket Bridges</a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <h2>Project</h2>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workspace' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analyses">My History</a>
+                </li>
+            </ul>
+            
+            <div class="d-flex align-items-center">
+                <button id="theme-toggle" class="btn btn-link text-info me-3">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                
+                <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main);">
+                    {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            </div>
         </div>
+    </div>
     </nav>
 
     <div class="container-centered">

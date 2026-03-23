@@ -63,6 +63,11 @@ def gasket_results(request, package_name):
         with open(file_path, 'r') as f: #ανοίγει αρχείο
             fulldata = json.load(f) #διαβάζει το json και το αποθηκεύει σε μεταβλητή
             bridges = fulldata.get('bridges', []) #παίρνει τη λίστα των bridges από το json, αν δεν υπάρχει επιστρέφει κενή λίστα
+            #library είναι το πλήρες path του αρχείου, display_lib είναι μόνο το όνομα του αρχείου για εμφάνιση στο template
+            for bridge in bridges:
+                lib = bridge.get('library', 'Unknown') 
+                # Κρατάμε μόνο το όνομα του αρχείου (π.χ. node_sqlite3.node)
+                bridge['display_lib'] = lib.split('/')[-1]
             objects_examined = fulldata.get('objects_examined', 0) 
             callable_objects = fulldata.get('callable_objects', 0) 
             foreign_callable_objects = fulldata.get('foreign_callable_objects', 0) 

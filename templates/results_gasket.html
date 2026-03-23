@@ -7,12 +7,41 @@
     <title>Gasket Results: {{ package_name }}</title>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/callgraph">Jelly Analysis</a>
-            <a href="/gasket">Gasket Bridges</a>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <h2>Project</h2>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workspace' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analyses">My History</a>
+                </li>
+            </ul>
+            
+            <div class="d-flex align-items-center">
+                <button id="theme-toggle" class="btn btn-link text-info me-3">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                
+                <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main);">
+                    {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+            </div>
         </div>
+    </div>
     </nav>
 
     <h1>Analysis for: {{ package_name }}</h1>
@@ -64,18 +93,24 @@
                 <table style="width: 100%; border-collapse: collapse; text-align: left;">
                     <thead>
                         <tr style="border-bottom: 2px solid var(--primary); color: var(--primary);">
-                            <th style="padding: 10px;">JavaScript Function</th>
-                            <th style="padding: 10px;">Native Entry Point</th>
+                            <th>JS Interface</th>
+                            <th>Native Entry Point</th>
+                            <th>Library / Module</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for bridge in bridges %}
-                        <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 12px; font-family: monospace; font-size: 0.85rem;">
-                                {{ bridge.jsname }}
-                            </td>
-                            <td style="padding: 12px; color: #d63031; font-family: monospace; font-size: 0.85rem;">
-                                {{ bridge.cfunc }}
+                        <tr>
+                            <td class="font-monospace small">{{ bridge.jsname }}</td>
+                
+                            <td class="font-monospace small text-danger">{{ bridge.cfunc }}</td>
+                
+                            <td class="font-monospace small text-secondary">
+                                {% if bridge.display_lib %}
+                                    {{ bridge.display_lib}}
+                                {% else %}
+                                    N/A
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
