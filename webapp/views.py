@@ -13,6 +13,8 @@ from .models import User, Package, Analyses
 from .forms import AnalysisForm, LoginForm, SignupForm
 from django.contrib.auth import authenticate, login
 
+from .tasks import run_gasket_analysis
+from django.tasks import task
 
 def homepage(request):
     return render(request, 'homepage.html')
@@ -45,14 +47,33 @@ def gasket(request):
     form = AnalysisForm() # Χρησιμοποιούμε την ίδια φόρμα για το package name
 
     if request.method == 'POST':
-        form = AnalysisForm(request.POST)
+        form = AnalysisForm(request.POST) 
+        
         if form.is_valid():
             package = form.cleaned_data['package_name']
-            # Εκτέλεση του Docker script για το Gasket
-            subprocess.run(["./analyze_gasket.sh", package])
             
-            # Ανακατεύθυνση στη σελίδα των αποτελεσμάτων του Gasket
-            return redirect('gasket_results', package_name=package)
+            user_id = request.session.get('user_id')
+            if user_id:
+                user = User.objects.get(id=user_id)
+            else:
+                user = None  # Αν δεν υπάρχει συνδεδεμένος χρήστης, θέτουμε το user σε None
+                error_message = "You must be logged in to run the Gasket analysis."
+                return render(request, 'gasket.html', {'form': form, 'error_message': error_message})
+
+            # Εκτέλεση του Docker script για το Gasket
+            #subprocess.run(["./analyze_gasket.sh", package])
+            
+            task_result = run_gasket_analysis.enqueue(package)
+            
+            new_analysis = Analyses.objects.create(
+                package_name = package,
+                user=user,
+                analysis_type='gasket',
+                status='running',
+                task_id=task_result.id
+                )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
+
+            return redirect('workspace')
             
     return render(request, 'gasket.html', {'form': form})
 
@@ -156,10 +177,26 @@ def logout_view(request):
     return redirect('homepage')
 
 def analyses(request):
+    # Παίρνουμε το ID του χρήστη από το session
     user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login') # Αν δεν είναι συνδεδεμένος παει στο login
-        
-    current_user = User.objects.get(id=user_id)
-    user_analyses = current_user.user_analyses.all()  # Παίρνουμε όλες τις αναλύσεις του χρήστη
-    return render(request, 'analyses.html', {'analyses': user_analyses})
+    
+    if user_id:
+        # Φιλτράρουμε τις αναλύσεις ώστε να ανήκουν ΜΟΝΟ στον χρήστη
+        # Το .order_by('-created_at') τις βάζει από την πιο πρόσφατη στην πιο παλιά
+        analyses = Analyses.objects.filter(user_id=user_id).order_by('-date')
+    else:
+        analyses = []
+
+    return render(request, 'analyses.html', {'analyses': analyses})
+
+def analysis_detail(request, analysis_id):
+    # Παίρνουμε τη συγκεκριμένη ανάλυση από τη βάση
+    analysis = Analyses.objects.get(id=analysis_id)
+    
+    # Αν είναι Gasket, πήγαινε στα αποτελέσματα του Gasket
+    if analysis.analysis_type == 'gasket':
+        return redirect('gasket_results', package_name=analysis.package_name)
+
+    if analysis.analysis_type == 'jelly':
+        return redirect('results', package_name=analysis.package_name)    
+    return redirect('analyses')

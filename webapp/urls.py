@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.workspace, name='workspace'),
+    path('/', views.workspace, name='workspace'),
     path('/', views.homepage, name='homepage'),
     path('callgraph/', views.callgraph, name='callgraph'),
     path('results/<str:package_name>/', views.results, name='results'),
@@ -32,4 +32,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('workspace/', views.workspace, name='workspace'),
     path('analyses/', views.analyses, name='analyses'),
+    path('analysis/<int:analysis_id>/', views.analysis_detail, name='analysis_detail'),
 ]

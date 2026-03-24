@@ -55,31 +55,8 @@
             </a></div>
         </div>
 
-        <h5 class="mb-4">RECENT ANALYSES:</h5>
-        <a href="/analyses" class="text-info text-decoration-none mb-3 d-block">View All</a>
-        {% if recent_analyses %}
-            <div class="list-group">
-                {% for analysis in recent_analyses %}
-                    <a href="{% url 'analysis_detail' analysis.id %}" class="list-group-item list-group-item-action mb-2">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">{{ analysis.package_name }}</h6>
-                            <small>{{ analysis.created_at|date:"M d, Y H:i" }}</small>
-                        </div>
-                        <p class="mb-1">Status: {{ analysis.status }}</p>
-                        <small>Type: {{ analysis.analysis_type }}</small>
-                    </a>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-secondary">No recent analyses available.</p>
-        {% endif %}
-
-        <h6 class="mt-5 mb-3">Compare Analyses</h6>
-        <div class="d-flex gap-3">
-            <a href="/compare/1/2" class="btn btn-outline-info">Compare Last 2</a>
-            <a href="/compare/1/3" class="btn btn-outline-info">Compare Last 3</a>
-            <a href="/compare/2/3" class="btn btn-outline-info">Compare Last 2 & 3</a>
-        </div>
+        <h5 class="mt-5 mb-3">Click here to see your analyses</h5>
+        <a href="/analyses" class="btn btn-info">MY HISTORY</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
