@@ -2,7 +2,7 @@
   "objects_examined": 3087,
   "callable_objects": 2683,
   "foreign_callable_objects": 28,
-  "duration_sec": 10.835,
+  "duration_sec": 9.199,
   "count": 28,
   "modules": [
     "/home/gasket/node_modules/re2/build/Release/re2.node",

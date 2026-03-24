@@ -1,23 +1,24 @@
 from django.tasks import task
+from .models import Analyses, User, Notification
 import subprocess
 
 @task
-def run_gasket_analysis(package_name, package_version=None):
+def run_gasket_analysis(package_name, package_version=None, task_id=None):
+    
     # Εκτέλεση του script
     if package_version:
         subprocess.run(["./analyze_gasket.sh", package_name, package_version])
     else:
         subprocess.run(["./analyze_gasket.sh", package_name])
     
-    # Ενημέρωση της βάσης δεδομένων
-    from .models import Analyses
-    analysis = Analyses.objects.filter(
-        package_name=package_name, 
-        status='running').last()
-        #προσθέτω version
-    if analysis:
-        analysis.status = 'completed' #Γιατι δεν αλλάζει το status;;;;
+    #ψάχνουμε την ανάλυση που αντιστοιχεί στο task_id
+    try:
+        analysis = Analyses.objects.filter(task_id=task_id).first()
+        analysis.status = 'completed'
         analysis.save()
+        return f"Analysis for {package_name} completed."
+    except Analyses.DoesNotExist:
+        return "Analysis record not found."
     
     #user = User.objects.get(id=user_id)
     #Notification.objects.create(
@@ -26,7 +27,6 @@ def run_gasket_analysis(package_name, package_version=None):
        # link=f"/gasket_results/{package_name}/"
     #)
 
-    return "Analysis Complete"
 
 @task
 def run_jelly_analysis(package_name, package_version=None):
@@ -37,15 +37,13 @@ def run_jelly_analysis(package_name, package_version=None):
         subprocess.run(["./analyze_jelly.sh", package_name])
     
     # Ενημέρωση της βάσης δεδομένων
-    from .models import Analyses
-    analysis = Analyses.objects.filter(
-        package_name=package_name, 
-        status='running', 
-        analysis_type='jelly').last()
-        #προσθέτω version
-    if analysis:
+    try:
+        analysis = Analyses.objects.filter(task_id=task_id).first()
         analysis.status = 'completed'
         analysis.save()
+        return f"Analysis for {package_name} completed."
+    except Analyses.DoesNotExist:
+        return "Analysis record not found."
         
     #user = User.objects.get(id=user_id)
     #Notification.objects.create(

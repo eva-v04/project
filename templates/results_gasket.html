@@ -44,9 +44,10 @@
     </div>
     </nav>
 
-    <h1>Analysis for: {{ package_name }}</h1>
+    <h1>Gasket Analysis for: {{ package_name }}</h1>
 
     <div class="container-centered">
+        <p><strong>Package Version:</strong> {{ package_version }}</p>
         
         {% if objects_examined %}
             <p><strong>Objects Examined:</strong> {{ objects_examined }}</p>

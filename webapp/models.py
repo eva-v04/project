@@ -3,6 +3,7 @@ from django.db import models
 
 class Package(models.Model):
     package_name = models.CharField(max_length=100, unique=True)
+    package_version = models.CharField(max_length=50, default='latest')
 
 
 class User(models.Model):
@@ -13,6 +14,7 @@ class User(models.Model):
 
 class Analyses(models.Model):
     package_name = models.CharField(max_length=100)
+    package_version = models.CharField(max_length=50, default='latest')  # Προσθήκη πεδίου για την έκδοση
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_analyses')
     date = models.DateTimeField(auto_now_add=True)
     analysis_type = models.CharField(max_length=20, choices=[('callgraph', 'Call Graph'), ('gasket', 'Gasket')], default='callgraph')

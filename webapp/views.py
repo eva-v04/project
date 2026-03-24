@@ -45,14 +45,15 @@ def callgraph(request):
 
             new_analysis = Analyses.objects.create(
                 package_name=package,
-                #προσθέτω version
+                package_version=package_version,
                 user=user,
                 analysis_type='jelly',
                 status='running',
                 task_id=task_result.id
             )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
 
-            return redirect('workspace')
+            #return redirect('results', package_name=package, package_version=package_version)
+            return redirect('results', package_name=package)
             
     return render(request, 'callgraph.html', {'form': form})
 
@@ -67,14 +68,14 @@ def results(request, package_name):
 
 
 def gasket(request):
-    form = AnalysisForm() # Χρησιμοποιούμε την ίδια φόρμα για το package name
+    form = AnalysisForm()
 
     if request.method == 'POST':
         form = AnalysisForm(request.POST) 
         
         if form.is_valid():
             package = form.cleaned_data['package_name']
-            package_version = request.POST.get('package_version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
+            package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
 
             user_id = request.session.get('user_id')
             if user_id:
@@ -86,25 +87,30 @@ def gasket(request):
 
             # Εκτέλεση του Docker script για το Gasket
             #subprocess.run(["./analyze_gasket.sh", package])
-            
-            task_result = run_gasket_analysis.enqueue(package, package_version) 
-            
+
             new_analysis = Analyses.objects.create(
-                package_name = package,
-                #προσθέτω version
+                package_name=package,
+                package_version=package_version,
                 user=user,
                 analysis_type='gasket',
                 status='running',
-                task_id=task_result.id
-                )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
+                task_id=''  # Θα ενημερωθεί μετά την εκκίνηση του task
+            )
+            task_result = run_gasket_analysis.enqueue(package, package_version)  # Εδώ δεν έχουμε ακόμα το task_id, θα το περάσουμε μετά
+            
+            new_analysis.task_id = task_result.id
+            new_analysis.save()
 
-            return redirect('workspace')
+            task_result = run_gasket_analysis.enqueue(package, package_version, task_id=task_result.id)
+
+            #return redirect('results_gasket', package_name=package, package_version=package_version)
+            return redirect('gasket_results', package_name=package, package_version=package_version)
             
     return render(request, 'gasket.html', {'form': form})
 
 
-def gasket_results(request, package_name):
-    file_path = os.path.join(settings.BASE_DIR, 'static', f'gasket_analysis_{package_name}', f'bridges_{package_name}.json')    
+def gasket_results(request, package_name, package_version):
+    file_path = os.path.join(settings.BASE_DIR, 'static', f'gasket_analysis_{package_name}', f'bridges_{package_name}_{package_version}.json')    
     try:
         with open(file_path, 'r') as f: #ανοίγει αρχείο
             fulldata = json.load(f) #διαβάζει το json και το αποθηκεύει σε μεταβλητή
@@ -133,6 +139,7 @@ def gasket_results(request, package_name):
 
     return render(request, 'results_gasket.html', {
         'package_name': package_name,
+        'package_version': package_version,
         'bridges': bridges,
         'objects_examined': objects_examined,
         'callable_objects': callable_objects,
@@ -220,7 +227,7 @@ def analysis_detail(request, analysis_id):
     
     # Αν είναι Gasket, πήγαινε στα αποτελέσματα του Gasket
     if analysis.analysis_type == 'gasket':
-        return redirect('gasket_results', package_name=analysis.package_name)
+        return redirect('gasket_results', package_name=analysis.package_name, package_version=analysis.package_version)
 
     if analysis.analysis_type == 'jelly':
         return redirect('results', package_name=analysis.package_name)    

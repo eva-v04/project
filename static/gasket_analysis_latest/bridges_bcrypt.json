@@ -1,0 +1,32 @@
+{
+  "objects_examined": 4206,
+  "callable_objects": 3865,
+  "foreign_callable_objects": 7,
+  "duration_sec": 6.081,
+  "count": 0,
+  "modules": [
+    "/home/gasket/node_modules/bcrypt/prebuilds/darwin-arm64/bcrypt.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/darwin-x64/bcrypt.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/linux-arm/bcrypt.glibc.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/linux-arm/bcrypt.musl.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/linux-arm64/bcrypt.glibc.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/linux-arm64/bcrypt.musl.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/linux-x64/bcrypt.glibc.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/linux-x64/bcrypt.musl.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/win32-arm64/bcrypt.node",
+    "/home/gasket/node_modules/bcrypt/prebuilds/win32-x64/bcrypt.node",
+    "/home/gasket/node_modules/bcrypt/bcrypt.js",
+    "/home/gasket/node_modules/bcrypt/examples/async_compare.js",
+    "/home/gasket/node_modules/bcrypt/examples/forever_gen_salt.js",
+    "/home/gasket/node_modules/bcrypt/promises.js",
+    "/home/gasket/node_modules/bcrypt/test/async.test.js",
+    "/home/gasket/node_modules/bcrypt/test/implementation.test.js",
+    "/home/gasket/node_modules/bcrypt/test/promise.test.js",
+    "/home/gasket/node_modules/bcrypt/test/repetitions.test.js",
+    "/home/gasket/node_modules/bcrypt/test/sync.test.js"
+  ],
+  "jump_libs": [],
+  "bridges": [],
+  "ambiguous": [],
+  "unresolved": []
+}
