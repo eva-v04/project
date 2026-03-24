@@ -13,7 +13,7 @@ from .models import User, Package, Analyses
 from .forms import AnalysisForm, LoginForm, SignupForm
 from django.contrib.auth import authenticate, login
 
-from .tasks import run_gasket_analysis
+from .tasks import run_gasket_analysis, run_jelly_analysis
 from django.tasks import task
 
 def homepage(request):
@@ -27,9 +27,26 @@ def callgraph(request):
         form = AnalysisForm(request.POST)
         if form.is_valid():
             package = form.cleaned_data['package_name']
-            subprocess.run(["./analyze_jelly.sh",package])
+            #subprocess.run(["./analyze_jelly.sh",package])
 
-            return redirect('results', package_name = package)
+            user_id = request.session.get('user_id')
+            user = User.objects.get(id=user_id) if user_id else None
+
+            if user is None:
+                error_message = "You must be logged in to run the analysis."
+                return render(request, 'callgraph.html', {'form': form, 'error_message': error_message})
+
+            task_result = run_jelly_analysis.enqueue(package)
+
+            new_analysis = Analyses.objects.create(
+                package_name=package,
+                user=user,
+                analysis_type='jelly',
+                status='running',
+                task_id=task_result.id
+            )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
+
+            return redirect('workspace')
             
     return render(request, 'callgraph.html', {'form': form})
 

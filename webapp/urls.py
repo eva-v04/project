@@ -20,8 +20,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/', views.workspace, name='workspace'),
-    path('/', views.homepage, name='homepage'),
+    path(' /', views.homepage, name='homepage'),
     path('callgraph/', views.callgraph, name='callgraph'),
     path('results/<str:package_name>/', views.results, name='results'),
     path('gasket/', views.gasket, name='gasket'),
