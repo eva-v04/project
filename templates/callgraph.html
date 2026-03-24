@@ -55,9 +55,47 @@
                 {% csrf_token %}
                 <label for="package_name" style="font-weight: 700; color: var(--primary);">NPM Package Name</label>
                 {{ form.package_name }}
+                <span class="helper-text">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code><br></span>
+
+                <label for="version" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Επιλογή Έκδοσης</label>
+                <select name="version" id="version_select" class="form-control" style="margin-top: 5px; width: 100%; padding: 8px; border-radius: 8px;">
+                <option value="">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
+                </select>
+
+                <script>
+                const packageInput = document.querySelector('input[name="package_name"]');
+                const versionSelect = document.getElementById('version_select');
+                let timeout = null;
                 
-                <span class="helper-text">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>b</code></span>
-                
+                packageInput.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    const packageName = this.value.trim();
+                    
+                    if (packageName.length > 2) { // Ξεκινάει μετά από 3 χαρακτήρες
+                        timeout = setTimeout(() => {
+                            versionSelect.innerHTML = '<option value="">Φόρτωση εκδόσεων...</option>';
+                            
+                            fetch(`/ajax/get-versions/?package_name=${packageName}`)
+                            .then(response => response.json())
+                            .then(data => {
+                            versionSelect.innerHTML = '';
+                            
+                            if (data.versions && data.versions.length > 0) {
+                                data.versions.forEach(ver => {
+                                    let option = new Option(ver, ver);
+                                    versionSelect.add(option);
+                                });
+                            } else {
+                                versionSelect.innerHTML = '<option value="latest">Μόνο η τελευταία (latest)</option>';
+                            }
+                        })
+                        .catch(err => {
+                            versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
+                        });
+                }, 500); // Περιμένει μισό δευτερόλεπτο αφού σταματήσεις να γράφεις
+            }
+        });
+    </script>                
                 <div style="margin-top: 30px;">
                     <button type="submit" class="btn-main" style="width: 100%; border: none; cursor: pointer;">
                         Generate Analysis

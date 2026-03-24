@@ -5,6 +5,7 @@
 
 echo "npm package name"
 package_name=$1
+package_version=$2 #2η παράμετρος για version
 echo "Downloading $package_name"
 
 if [ -z "$package_name" ]; then
@@ -12,7 +13,12 @@ if [ -z "$package_name" ]; then
 	exit 1
 fi
 
-folder_name="$(pwd)/static/gasket_analysis_$package_name" #pwd Για να έχω full path
+if [ -z "$package_version" ]; then
+	echo "No package version provided, using latest"
+	package_version="latest"
+fi
+
+folder_name="$(pwd)/static/gasket_analysis_$package_name_$package_version" #pwd Για να έχω full path
 mkdir -p "$folder_name"
 chmod 777 "$folder_name" #για να έχω δικαιώματα εγγραφής
 
@@ -23,6 +29,6 @@ docker run --rm --cap-add=SYS_PTRACE \
 	    -v "$folder_name:/results" \
 	        grgalex/gasket:0.1.0 \
 		    /bin/bash -c "    #για να τρέξουν οι εντολές μέσα στο Container
-		    npm install $package_name && \
+		    npm install $package_name@$package_version && \
 		    gasket -r ./node_modules/$package_name -o /results/bridges_$package_name.json
 	    "

@@ -32,4 +32,5 @@ urlpatterns = [
     path('workspace/', views.workspace, name='workspace'),
     path('analyses/', views.analyses, name='analyses'),
     path('analysis/<int:analysis_id>/', views.analysis_detail, name='analysis_detail'),
+    path('ajax/get-versions/', views.get_package_versions, name='get_package_versions'),
 ]

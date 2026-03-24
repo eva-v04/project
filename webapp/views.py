@@ -16,6 +16,9 @@ from django.contrib.auth import authenticate, login
 from .tasks import run_gasket_analysis, run_jelly_analysis
 from django.tasks import task
 
+import json
+from django.http import JsonResponse
+
 def homepage(request):
     return render(request, 'homepage.html')
 
@@ -27,6 +30,8 @@ def callgraph(request):
         form = AnalysisForm(request.POST)
         if form.is_valid():
             package = form.cleaned_data['package_name']
+            package_version = request.POST.get('package_version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
+
             #subprocess.run(["./analyze_jelly.sh",package])
 
             user_id = request.session.get('user_id')
@@ -36,10 +41,11 @@ def callgraph(request):
                 error_message = "You must be logged in to run the analysis."
                 return render(request, 'callgraph.html', {'form': form, 'error_message': error_message})
 
-            task_result = run_jelly_analysis.enqueue(package)
+            task_result = run_jelly_analysis.enqueue(package, package_version)
 
             new_analysis = Analyses.objects.create(
                 package_name=package,
+                #προσθέτω version
                 user=user,
                 analysis_type='jelly',
                 status='running',
@@ -68,7 +74,8 @@ def gasket(request):
         
         if form.is_valid():
             package = form.cleaned_data['package_name']
-            
+            package_version = request.POST.get('package_version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
+
             user_id = request.session.get('user_id')
             if user_id:
                 user = User.objects.get(id=user_id)
@@ -80,10 +87,11 @@ def gasket(request):
             # Εκτέλεση του Docker script για το Gasket
             #subprocess.run(["./analyze_gasket.sh", package])
             
-            task_result = run_gasket_analysis.enqueue(package)
+            task_result = run_gasket_analysis.enqueue(package, package_version) 
             
             new_analysis = Analyses.objects.create(
                 package_name = package,
+                #προσθέτω version
                 user=user,
                 analysis_type='gasket',
                 status='running',
@@ -217,3 +225,29 @@ def analysis_detail(request, analysis_id):
     if analysis.analysis_type == 'jelly':
         return redirect('results', package_name=analysis.package_name)    
     return redirect('analyses')
+
+def get_package_versions(request):
+    package_name = request.GET.get('package_name')
+    if not package_name:
+        return JsonResponse({'versions': []})
+
+    try:
+        # Εκτελούμε την εντολή npm show για να πάρουμε τις εκδόσεις σε JSON format
+        result = subprocess.check_output(
+            ["npm", "show", package_name, "versions", "--json"],
+            stderr=subprocess.STDOUT,
+            text=True
+        )
+        versions = json.loads(result)
+
+        # Αν το npm επιστρέψει μόνο μία έκδοση (string), τη μετατρέπουμε σε λίστα
+        if isinstance(versions, str):
+            versions = [versions]
+
+        # Επιστρέφουμε τις εκδόσεις αντίστροφα (οι πιο πρόσφατες πρώτες)
+        return JsonResponse({'versions': versions[::-1]})
+    
+    except Exception as e:
+        # Αν υπάρξει σφάλμα (π.χ. δεν υπάρχει το πακέτο), επιστρέφουμε κενή λίστα
+        print(f"Error fetching versions: {e}")
+        return JsonResponse({'versions': []})

@@ -1,0 +1,188 @@
+{
+  "objects_examined": 3087,
+  "callable_objects": 2683,
+  "foreign_callable_objects": 28,
+  "duration_sec": 10.835,
+  "count": 28,
+  "modules": [
+    "/home/gasket/node_modules/re2/build/Release/re2.node",
+    "/home/gasket/node_modules/re2/re2.js",
+    "/home/gasket/node_modules/re2/scripts/verify-build.js",
+    "/home/gasket/node_modules/re2/vendor/re2/app/rollup.config.js"
+  ],
+  "jump_libs": [
+    "/home/gasket/node_modules/re2/build/Release/re2.node"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2",
+      "cfunc": "WrappedRE2::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.Set",
+      "cfunc": "WrappedRE2Set::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.getUtf8Length",
+      "cfunc": "GetUtf8Length(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.getUtf16Length",
+      "cfunc": "GetUtf16Length(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.toString",
+      "cfunc": "WrappedRE2::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.exec",
+      "cfunc": "WrappedRE2::Exec(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.test",
+      "cfunc": "WrappedRE2::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.match",
+      "cfunc": "WrappedRE2::Match(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.replace",
+      "cfunc": "WrappedRE2::Replace(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.search",
+      "cfunc": "WrappedRE2::Search(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.prototype.split",
+      "cfunc": "WrappedRE2::Split(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.Set.prototype.test",
+      "cfunc": "WrappedRE2Set::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.Set.prototype.match",
+      "cfunc": "WrappedRE2Set::Match(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/build/Release/re2.Set.prototype.toString",
+      "cfunc": "WrappedRE2Set::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2",
+      "cfunc": "WrappedRE2::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.Set",
+      "cfunc": "WrappedRE2Set::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.getUtf8Length",
+      "cfunc": "GetUtf8Length(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.getUtf16Length",
+      "cfunc": "GetUtf16Length(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.toString",
+      "cfunc": "WrappedRE2::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.exec",
+      "cfunc": "WrappedRE2::Exec(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.test",
+      "cfunc": "WrappedRE2::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.match",
+      "cfunc": "WrappedRE2::Match(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.replace",
+      "cfunc": "WrappedRE2::Replace(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.search",
+      "cfunc": "WrappedRE2::Search(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.prototype.split",
+      "cfunc": "WrappedRE2::Split(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.Set.prototype.test",
+      "cfunc": "WrappedRE2Set::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.Set.prototype.match",
+      "cfunc": "WrappedRE2Set::Match(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "re2/re2.Set.prototype.toString",
+      "cfunc": "WrappedRE2Set::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/re2/build/Release/re2.node"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}
