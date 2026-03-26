@@ -30,7 +30,7 @@ def callgraph(request):
         form = AnalysisForm(request.POST)
         if form.is_valid():
             package = form.cleaned_data['package_name']
-            package_version = request.POST.get('package_version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
+            package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
 
             #subprocess.run(["./analyze_jelly.sh",package])
 
@@ -41,17 +41,18 @@ def callgraph(request):
                 error_message = "You must be logged in to run the analysis."
                 return render(request, 'callgraph.html', {'form': form, 'error_message': error_message})
 
-            task_result = run_jelly_analysis.enqueue(package, package_version)
-
             new_analysis = Analyses.objects.create(
                 package_name=package,
                 package_version=package_version,
                 user=user,
                 analysis_type='jelly',
                 status='running',
-                task_id=task_result.id
+                task_id=''
             )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
 
+            task_result = run_jelly_analysis.enqueue(package, package_version, task_id=new_analysis.id)
+            new_analysis.task_id = task_result.id
+            new_analysis.save()
             #return redirect('results', package_name=package, package_version=package_version)
             return redirect('results', package_name=package)
             
@@ -60,11 +61,18 @@ def callgraph(request):
 
 def results(request, package_name):
     #url αρχείου που δημιούργησε το jelly
-    graph_url = f"/static/analysis_{package_name}/{package_name}.html"
-    return render(request, 'results.html', {
-        'package_name' : package_name,
+    analysis = Analyses.objects.filter(
+        package_name=package_name, 
+        analysis_type='jelly').last()
+        
+    version = analysis.package_version if analysis else "latest"
+    graph_url = f"/static/analysis_{package_name}_{version}/{package_name}.html"
+    
+    context = {
+        'package_name': package_name,
         'graph_url': graph_url
-        })
+    }
+    return render(request, 'results.html', context)
 
 
 def gasket(request):
@@ -85,9 +93,6 @@ def gasket(request):
                 error_message = "You must be logged in to run the Gasket analysis."
                 return render(request, 'gasket.html', {'form': form, 'error_message': error_message})
 
-            # Εκτέλεση του Docker script για το Gasket
-            #subprocess.run(["./analyze_gasket.sh", package])
-
             new_analysis = Analyses.objects.create(
                 package_name=package,
                 package_version=package_version,
@@ -96,12 +101,12 @@ def gasket(request):
                 status='running',
                 task_id=''  # Θα ενημερωθεί μετά την εκκίνηση του task
             )
-            task_result = run_gasket_analysis.enqueue(package, package_version)  # Εδώ δεν έχουμε ακόμα το task_id, θα το περάσουμε μετά
-            
+            task_result = run_gasket_analysis.enqueue(package, package_version, task_id='') 
             new_analysis.task_id = task_result.id
             new_analysis.save()
 
-            task_result = run_gasket_analysis.enqueue(package, package_version, task_id=task_result.id)
+            # Επανεκτέλεση ή ενημέρωση για να ξέρει το task ποιο ID να ψάξει
+            run_gasket_analysis.enqueue(package, package_version, task_id=task_result.id)
 
             #return redirect('results_gasket', package_name=package, package_version=package_version)
             return redirect('gasket_results', package_name=package, package_version=package_version)
@@ -110,7 +115,12 @@ def gasket(request):
 
 
 def gasket_results(request, package_name, package_version):
-    file_path = os.path.join(settings.BASE_DIR, 'static', f'gasket_analysis_{package_name}', f'bridges_{package_name}_{package_version}.json')    
+
+    file_path = os.path.join(
+        settings.BASE_DIR, 
+        'static', 
+        f'gasket_analysis_{package_name}_{package_version}', 
+        f'bridges_{package_name}.json')
     try:
         with open(file_path, 'r') as f: #ανοίγει αρχείο
             fulldata = json.load(f) #διαβάζει το json και το αποθηκεύει σε μεταβλητή

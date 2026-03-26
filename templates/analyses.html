@@ -56,8 +56,8 @@
                     {% for analysis in analyses %}
                         <a href="{% url 'analysis_detail' analysis.id %}" class="list-group-item list-group-item-action mb-2">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{ analysis.package_name }}</h5>
-                                <small>{{ analysis.created_at|date:"M d, Y H:i" }}</small>
+                                <h5 class="mb-1">{{ analysis.package_name }} <small class="text-secondary">({{ analysis.package_version }})</small></h5>
+                                <small>{{ analysis.date|date:"M d, Y H:i" }}</small>
                             </div>
                             <p class="mb-1">Status: {{ analysis.status }}</p>
                             <small>Type: {{ analysis.analysis_type }}</small>

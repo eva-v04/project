@@ -18,7 +18,7 @@ if [ -z "$package_version" ]; then
 	package_version="latest"
 fi
 
-folder_name="$(pwd)/static/gasket_analysis_$package_name_$package_version" #pwd Για να έχω full path
+folder_name="$(pwd)/static/gasket_analysis_${package_name}_${package_version}" #pwd Για να έχω full path
 mkdir -p "$folder_name"
 chmod 777 "$folder_name" #για να έχω δικαιώματα εγγραφής
 

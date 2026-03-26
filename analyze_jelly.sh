@@ -17,8 +17,8 @@ if [ -z "$package_version" ]; then
 	package_version="latest"
 fi
 
-#προσωρινός φάκελος για την ανάλυση
-folder_name="static/analysis_$package_name_$package_version" #Ο φάκελος πρέπει να είναι στον φάκελο static Του προγράμματος 
+BASE_STATIC="$(pwd)/static"
+folder_name="$BASE_STATIC/analysis_${package_name}_${package_version}" #Ο φάκελος πρέπει να είναι στον φάκελο static Του προγράμματος 
 mkdir -p "$folder_name" 
 cd "$folder_name" #Cd για να κατέβει σε αυτόν τον φάκελο το πακέτο
 
@@ -27,4 +27,4 @@ rm -f "$package_name.json" "$package_name.html" #σβήνω παλιές ανα�
 npm install --prefix . $package_name@$package_version  #κατεβάζω πακέτο
 #prefix .  για να κατέβει το πακέτο στον φάκελο που είμαι
 
-jelly -j "$package_name.json" -m "$package_name.html" ./node_modules/$package_name
+jelly -j "${package_name}.json" -m "${package_name}.html" ./node_modules/${package_name}	

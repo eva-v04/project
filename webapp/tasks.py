@@ -29,7 +29,7 @@ def run_gasket_analysis(package_name, package_version=None, task_id=None):
 
 
 @task
-def run_jelly_analysis(package_name, package_version=None):
+def run_jelly_analysis(package_name, package_version=None, task_id=None):
     # Εκτέλεση του script για Jelly
     if package_version:
         subprocess.run(["./analyze_jelly.sh", package_name, package_version])
