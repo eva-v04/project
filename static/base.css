@@ -1,88 +1,179 @@
+/* --- Root Variables & Themes --- */
 :root {
-    --bg-dark: #121212;
-    --card-bg: #1e1e1e;
-    --accent-cyan: #00bcd4;
-    --text-main: #ffffff;
-    --text-gray: #b0b0b0;
-    --border-color: #333;
+    --bg-main: #0f172a;           /* Σκοτεινό μπλε-μαύρο */
+    --bg-card: rgba(30, 41, 59, 0.7); /* Glass effect background */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --primary: #38bdf8;           /* Cyan/Light Blue */
+    --accent: #818cf8;            /* Indigo */
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-/* Light Mode Setup */
 body.light-mode {
-    --bg-dark: #f5f5f5;
-    --card-bg: #ffffff;
-    --text-main: #212121;
-    --text-gray: #555555;
-    --border-color: #ddd;
+    --bg-main: #f1f5f9;
+    --bg-card: rgba(255, 255, 255, 0.8);
+    --text-main: #0f172a; /* Πολύ σκούρο μπλε/μαύρο */
+    --text-muted: #475569; /* Σκούρο γκρι */
+    --primary: #0284c7;
+    --glass-border: rgba(0, 0, 0, 0.1);
 }
 
+/* --- Global Styles --- */
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--bg-main);
     color: var(--text-main);
-    transition: background-color 0.3s, color 0.3s;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
     min-height: 100vh;
 }
 
-/* Εξασφάλιση ότι τα γράμματα αλλάζουν χρώμα παντού */
-body.light-mode h1, body.light-mode h2, body.light-mode h3, 
-body.light-mode h5, body.light-mode h6, body.light-mode p,
-body.light-mode label, body.light-mode .navbar-brand {
-    color: var(--text-main) !important;
-}
-
-/* Navbar */
+/* --- Navbar Styling --- */
+/* 1. Γενικό στυλ Navbar (Κοινό και για τα δύο themes) */
 .navbar {
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-card) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
     padding: 1rem 2rem;
 }
 
-/* Glass Card - Χρησιμοποιείται σε Login, Signup, Account, Callgraph */
-.glass-card {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    width: 100%;
-}
-
-.centered-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    padding: 20px;
-}
-
-/* Buttons */
-.btn-main, .btn-launch {
-    background-color: var(--accent-cyan);
-    color: #121212 !important;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    padding: 12px 25px;
+/* 2. Χρώματα για το DARK MODE (Όταν ΔΕΝ υπάρχει η κλάση .light-mode) */
+.navbar .nav-link, 
+.navbar h2, 
+.navbar a {
+    color: #f8fafc !important; /* Λευκό/Off-white */
     transition: all 0.3s ease;
 }
 
-.btn-main:hover, .btn-launch:hover {
-    filter: brightness(1.1);
+/* 3. Χρώματα για το LIGHT MODE (Μόνο όταν το body έχει .light-mode) */
+body.light-mode .navbar .nav-link, 
+body.light-mode .navbar h2, 
+body.light-mode .navbar a {
+    color: #0f172a !important; /* Μαύρο/Σκούρο μπλε */
+}
+
+/* 4. Hover εφέ (Κοινό) */
+.navbar .nav-link:hover {
+    color: var(--primary) !important;
+}
+/* --- Glassmorphism Card --- */
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* --- Containers --- */
+.container-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 15px;
+}
+
+.centered-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* --- Buttons --- */
+.btn-main {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-main:hover {
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+    color: white;
 }
 
-/* Form Inputs */
-input[type="text"], input[type="password"], input[type="email"], textarea {
-    background-color: var(--bg-dark);
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
+/* --- Analysis Cards (Workspace) --- */
+.analysis-card-link {
+    text-decoration: none !important;
+}
+
+.analysis-card {
+    background: var(--bg-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.analysis-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary);
+    background: rgba(56, 189, 248, 0.05);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+/* --- Forms --- */
+.form-control, .form-group input, .form-group select {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-main) !important;
     border-radius: 8px;
-    padding: 12px;
-    width: 100%;
-    margin-bottom: 20px;
+    padding: 10px 15px;
 }
 
-input:focus {
-    border-color: var(--accent-cyan);
-    outline: none;
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    border-color: var(--primary) !important;
 }
+
+/* --- List Group (History) --- */
+.list-group-item {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-main) !important;
+    margin-bottom: 10px;
+    border-radius: 10px !important;
+}
+
+.list-group-item:hover {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* --- Helper text --- */
+.helper-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Εξασφαλίζουμε ότι τα inputs έχουν σωστό ύψος και χρώμα */
+input[type="text"], .form-control {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-main) !important;
+    padding: 12px !important; /* Περισσότερος χώρος μέσα στο κουτί */
+    margin-bottom: 15px;
+}
+
+/* Αφαιρούμε τις κουκκίδες από το navbar που φαίνονται στην εικόνα */
+.navbar-nav {
+    list-style: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: row;
+}
+

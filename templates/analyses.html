@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <h2>Project</h2>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -80,23 +80,24 @@
     const icon = btn.querySelector('i');
     const body = document.body;
 
-    // Έλεγχος αν υπάρχει αποθηκευμένη προτίμηση
+    // Έλεγχος αποθηκευμένης προτίμησης
     if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light-mode');
-        icon.classList.replace('fa-moon', 'fa-sun');
+        if(icon) icon.classList.replace('fa-moon', 'fa-sun');
     }
 
-    btn.addEventListener('click', () => {
-        body.classList.toggle('light-mode');
-        
-        if (body.classList.contains('light-mode')) {
-            icon.classList.replace('fa-moon', 'fa-sun');
-            localStorage.setItem('theme', 'light');
-        } else {
-            icon.classList.replace('fa-sun', 'fa-moon');
-            localStorage.setItem('theme', 'dark');
-        }
-    });
+    if (btn) {
+        btn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    }
 </script>
 </body>
 </html>
