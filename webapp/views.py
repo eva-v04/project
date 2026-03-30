@@ -32,14 +32,8 @@ def callgraph(request):
             package = form.cleaned_data['package_name']
             package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
 
-            #subprocess.run(["./analyze_jelly.sh",package])
-
             user_id = request.session.get('user_id')
             user = User.objects.get(id=user_id) if user_id else None
-
-            if user is None:
-                error_message = "You must be logged in to run the analysis."
-                return render(request, 'callgraph.html', {'form': form, 'error_message': error_message})
 
             new_analysis = Analyses.objects.create(
                 package_name=package,
@@ -47,16 +41,23 @@ def callgraph(request):
                 user=user,
                 analysis_type='jelly',
                 status='running',
-                task_id=''
+                #task_id=''
             )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
 
+            if not user:
+                guest_history = request.session.get('guest_analyses', [])
+                guest_history.append(new_analysis.id)
+                request.session['guest_analyses'] = guest_history
+                request.session.modified = True
+            
             task_result = run_jelly_analysis.enqueue(package, package_version, task_id=new_analysis.id)
             new_analysis.task_id = task_result.id
             new_analysis.save()
-            #return redirect('results', package_name=package, package_version=package_version)
             return redirect('results', package_name=package)
             
-    return render(request, 'callgraph.html', {'form': form})
+    user_id = request.session.get('user_id')
+    current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
+    return render(request, 'callgraph.html', {'form': form, 'user': current_user})
 
 
 def results(request, package_name):
@@ -86,12 +87,7 @@ def gasket(request):
             package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
 
             user_id = request.session.get('user_id')
-            if user_id:
-                user = User.objects.get(id=user_id)
-            else:
-                user = None  # Αν δεν υπάρχει συνδεδεμένος χρήστης, θέτουμε το user σε None
-                error_message = "You must be logged in to run the Gasket analysis."
-                return render(request, 'gasket.html', {'form': form, 'error_message': error_message})
+            user = User.objects.get(id=user_id) if user_id else None
 
             new_analysis = Analyses.objects.create(
                 package_name=package,
@@ -99,9 +95,19 @@ def gasket(request):
                 user=user,
                 analysis_type='gasket',
                 status='running',
-                task_id=''  # Θα ενημερωθεί μετά την εκκίνηση του task
+                #task_id=''  # Θα ενημερωθεί μετά την εκκίνηση του task
             )
-            task_result = run_gasket_analysis.enqueue(package, package_version, task_id='') 
+
+            # ΑΝ ΔΕΝ ΕΙΝΑΙ ΣΥΝΔΕΔΕΜΕΝΟΣ: Κρατάμε το ID της ανάλυσης στο session
+            if not user:
+                # Παίρνουμε την υπάρχουσα λίστα ή δημιουργούμε νέα
+                guest_history = request.session.get('guest_analyses', [])
+                guest_history.append(new_analysis.id)
+                request.session['guest_analyses'] = guest_history
+                # Ενημερώνουμε τη Django ότι το session άλλαξε
+                request.session.modified = True
+            
+            task_result = run_gasket_analysis.enqueue(package, package_version, task_id=new_analysis.id)
             new_analysis.task_id = task_result.id
             new_analysis.save()
 
@@ -111,7 +117,13 @@ def gasket(request):
             #return redirect('results_gasket', package_name=package, package_version=package_version)
             return redirect('gasket_results', package_name=package, package_version=package_version)
             
-    return render(request, 'gasket.html', {'form': form})
+    user_id = request.session.get('user_id')
+    current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
+    
+    return render(request, 'gasket.html', {
+        'form': form,
+        'user': current_user # Τώρα το navbar θα βλέπει "Guest"
+    })
 
 
 def gasket_results(request, package_name, package_version):
@@ -198,38 +210,47 @@ def login_view(request):
 
 def workspace(request):
     user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login') # Αν δεν είναι συνδεδεμένος, διώξε τον
-        
-    current_user = User.objects.get(id=user_id)
+    if user_id:
+        # Αν είναι συνδεδεμένος, παίρνουμε τα στοιχεία του
+        current_user = User.objects.get(id=user_id)
+    else:
+        current_user = {'username': 'Guest'}
+
     return render(request, 'workspace.html', {'user': current_user})
 
 
 def myacc(request):
     user_id = request.session.get('user_id')
     if not user_id:
-        return redirect('login') # Αν δεν είναι συνδεδεμένος παει στο login
-        
+        return render(request, 'myaccount.html', {'user': None})        
     current_user = User.objects.get(id=user_id)
     return render(request, 'myaccount.html', {'user': current_user})
+
 
 def logout_view(request):
     if 'user_id' in request.session:
         del request.session['user_id']
     return redirect('homepage')
 
+
 def analyses(request):
+    analyses = []
     # Παίρνουμε το ID του χρήστη από το session
     user_id = request.session.get('user_id')
     
     if user_id:
         # Φιλτράρουμε τις αναλύσεις ώστε να ανήκουν ΜΟΝΟ στον χρήστη
         # Το .order_by('-created_at') τις βάζει από την πιο πρόσφατη στην πιο παλιά
+        current_user = User.objects.get(id=user_id)
         analyses = Analyses.objects.filter(user_id=user_id).order_by('-date')
     else:
-        analyses = []
+        # Αν είναι guest, δείξε μόνο αυτές που έκανε σε αυτό το session
+        current_user = {'username': 'Guest'}
+        guest_ids = request.session.get('guest_analyses', [])
+        analyses = Analyses.objects.filter(id__in=guest_ids).order_by('-date')
 
-    return render(request, 'analyses.html', {'analyses': analyses})
+    return render(request, 'analyses.html', {'analyses': analyses, 'user': current_user})
+
 
 def analysis_detail(request, analysis_id):
     # Παίρνουμε τη συγκεκριμένη ανάλυση από τη βάση

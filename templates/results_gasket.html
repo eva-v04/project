@@ -37,9 +37,13 @@
                     <i class="fa-solid fa-moon"></i>
                 </button>
                 
+                {% if request.session.user_id %}
                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main);">
                     {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                 </a>
+                {% else %}
+                <span class="me-3 text-info">Guest <i class="fa-solid fa-user-secret"></i></span>
+                {% endif %}
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
         </div>
