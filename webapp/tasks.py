@@ -10,22 +10,23 @@ def run_gasket_analysis(package_name, package_version=None, task_id=None):
         subprocess.run(["./analyze_gasket.sh", package_name, package_version])
     else:
         subprocess.run(["./analyze_gasket.sh", package_name])
-    
-    #ψάχνουμε την ανάλυση που αντιστοιχεί στο task_id
-    try:
-        analysis = Analyses.objects.filter(task_id=task_id).first()
+        
+    analysis = Analyses.objects.filter(task_id=task_id).first()
+
+    if analysis:
         analysis.status = 'completed'
         analysis.save()
+
+        # Δημιουργία ειδοποίησης για τον χρήστη
+        if analysis.user:
+            Notification.objects.create(
+                user=analysis.user,
+                message=f"Your analysis for {package_name} is complete!",
+                link=f"/analysis/{analysis.id}/"  # Υποθέτοντας ότι αυτή είναι η URL για τα αποτελέσματα
+            )
         return f"Analysis for {package_name} completed."
-    except Analyses.DoesNotExist:
+    else:
         return "Analysis record not found."
-    
-    #user = User.objects.get(id=user_id)
-    #Notification.objects.create(
-     #   user=user,
-      #  message=f"Analysis for {package_name} completed!",
-       # link=f"/gasket_results/{package_name}/"
-    #)
 
 
 @task
@@ -36,19 +37,19 @@ def run_jelly_analysis(package_name, package_version=None, task_id=None):
     else:
         subprocess.run(["./analyze_jelly.sh", package_name])
     
-    # Ενημέρωση της βάσης δεδομένων
-    try:
-        analysis = Analyses.objects.filter(task_id=task_id).first()
+    analysis = Analyses.objects.filter(task_id=task_id).first()
+
+    if analysis:
         analysis.status = 'completed'
         analysis.save()
+
+        # Δημιουργία ειδοποίησης για τον χρήστη
+        if analysis.user:
+            Notification.objects.create(
+                user=analysis.user,
+                message=f"Your analysis for {package_name} is complete!",
+                link=f"/analysis/{analysis.id}/"  # Υποθέτοντας ότι αυτή είναι η URL για τα αποτελέσματα
+            )
         return f"Analysis for {package_name} completed."
-    except Analyses.DoesNotExist:
+    else:
         return "Analysis record not found."
-        
-    #user = User.objects.get(id=user_id)
-    #Notification.objects.create(
-     #   user=user,
-      #  message=f"Analysis for {package_name} completed!",
-       # link=f"/jelly_results/{package_name}/"
-    #)
-    return "Jelly Analysis Complete"

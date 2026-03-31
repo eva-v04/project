@@ -3,48 +3,48 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
-    <title>Generate Call Graph</title>
+    <title>Jelly Analysis - Call Graph</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
-        <h2>Project</h2>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="container-fluid">
+            <h2 class="text-white m-0">Project</h2>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'workspace' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/analyses">My History</a>
-                </li>
-            </ul>
-            
-            <div class="d-flex align-items-center">
-                <button id="theme-toggle" class="btn btn-link text-info me-3">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'workspace' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'callgraph' %}">Jelly Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/analyses">My History</a></li>
+                </ul>
                 
-                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
-                    {{ user.username }} <i class="fa-regular fa-circle-user"></i></a>                <i class="fa-solid fa-bell position-relative">
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">2</span>
-                </i>
-                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+                <div class="d-flex align-items-center">
+                    <button id="theme-toggle" class="btn btn-link text-info me-3">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    
+                    {% if request.session.user_id %}
+                        <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
+                            {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+                        </a>
+                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">2</span>
+                        </i>
+                    {% else %}
+                        <span class="me-3 text-info">Guest <i class="fa-solid fa-user-secret"></i></span>
+                    {% endif %}
+                    
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+                </div>
             </div>
         </div>
-    </div>
     </nav>
 
     <div class="container-centered">
@@ -52,84 +52,125 @@
             <h1>Jelly Engine</h1>
             <p>Generate Call Graphs for any NPM package.</p>
             
-            <form action="/callgraph/" method="post" class="form-group">
+            <form id="jellyForm" method="post" class="form-group">
                 {% csrf_token %}
-                <label for="package_name" style="font-weight: 700; color: var(--primary);">NPM Package Name</label><br>
+                
+                <label for="id_package_name" style="font-weight: 700; color: var(--primary);">NPM Package Name</label><br>
                 {{ form.package_name }}
-                <br><span class="helper-text">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code><br></span>
+                <br><span class="helper-text">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code></span>
 
-                <label for="version" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Επιλογή Έκδοσης</label>
-                <select name="version" id="version_select" class="form-control" style="margin-top: 5px; width: 100%; padding: 8px; border-radius: 8px;">
-                <option value="">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
+                <label for="version_select" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Επιλογή Έκδοσης</label>
+                <select name="version" id="version_select" class="form-control" style="margin-top: 5px;">
+                    <option value="">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
                 </select>
 
-                <script>
-                const packageInput = document.querySelector('input[name="package_name"]');
-                const versionSelect = document.getElementById('version_select');
-                let timeout = null;
+                <div id="loading" style="display: none; margin-top: 20px; text-align: center;">
+                    <p class="text-info">⚙️ Generating Call Graph... This may take a few minutes.</p>
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
                 
-                packageInput.addEventListener('input', function() {
-                    clearTimeout(timeout);
-                    const packageName = this.value.trim();
-                    
-                    if (packageName.length > 2) { // Ξεκινάει μετά από 3 χαρακτήρες
-                        timeout = setTimeout(() => {
-                            versionSelect.innerHTML = '<option value="">Φόρτωση εκδόσεων...</option>';
-                            
-                            fetch(`/ajax/get-versions/?package_name=${packageName}`)
-                            .then(response => response.json())
-                            .then(data => {
-                            versionSelect.innerHTML = '';
-                            
-                            if (data.versions && data.versions.length > 0) {
-                                data.versions.forEach(ver => {
-                                    let option = new Option(ver, ver);
-                                    versionSelect.add(option);
-                                });
-                            } else {
-                                versionSelect.innerHTML = '<option value="latest">Μόνο η τελευταία (latest)</option>';
-                            }
-                        })
-                        .catch(err => {
-                            versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
-                        });
-                }, 500); // Περιμένει μισό δευτερόλεπτο αφού σταματήσεις να γράφεις
-            }
-        });
-    </script>                
                 <div style="margin-top: 30px;">
-                    <button type="submit" class="btn-main" style="width: 100%; border: none; cursor: pointer;">
+                    <button type="submit" id="submitBtn" class="btn-main w-100" style="border: none; cursor: pointer;">
                         Generate Analysis
                     </button>
                 </div>
             </form>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    const btn = document.getElementById('theme-toggle');
-    const icon = btn.querySelector('i');
-    const body = document.body;
+        // 1. Version Fetching Logic
+        const packageInput = document.querySelector('input[name="package_name"]');
+        const versionSelect = document.getElementById('version_select');
+        let timeout = null;
+        
+        packageInput.addEventListener('input', function() {
+            clearTimeout(timeout);
+            const packageName = this.value.trim();
+            if (packageName.length > 2) {
+                timeout = setTimeout(() => {
+                    versionSelect.innerHTML = '<option value="">Φόρτωση εκδόσεων...</option>';
+                    fetch(`/ajax/get-versions/?package_name=${packageName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        versionSelect.innerHTML = '';
+                        if (data.versions && data.versions.length > 0) {
+                            data.versions.forEach(ver => {
+                                versionSelect.add(new Option(ver, ver));
+                            });
+                        } else {
+                            versionSelect.innerHTML = '<option value="latest">Μόνο η τελευταία (latest)</option>';
+                        }
+                    })
+                    .catch(() => {
+                        versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
+                    });
+                }, 500);
+            }
+        });
 
-    // Έλεγχος αποθηκευμένης προτίμησης
-    if (localStorage.getItem('theme') === 'light') {
-        body.classList.add('light-mode');
-        if(icon) icon.classList.replace('fa-moon', 'fa-sun');
-    }
+        // 2. AJAX Submission Logic
+        document.getElementById('jellyForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const loadingDiv = document.getElementById('loading');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            loadingDiv.style.display = 'block';
+            this.style.opacity = '0.5';
+            submitBtn.disabled = true;
 
-    if (btn) {
-        btn.addEventListener('click', () => {
+            fetch('/start-jelly-ajax/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ξεκίνησε! Μεταφέρεστε στο ιστορικό...</p>";
+                    setTimeout(() => { window.location.href = '/analyses'; }, 2000);
+                } else {
+                    alert('Σφάλμα: ' + (data.message || 'Αποτυχία εκκίνησης'));
+                    submitBtn.disabled = false;
+                    this.style.opacity = '1';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Σφάλμα σύνδεσης με τον διακομιστή.');
+                submitBtn.disabled = false;
+                this.style.opacity = '1';
+            });
+        };
+
+        // 3. Theme Toggle Logic
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeBtn.querySelector('i');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
             if (body.classList.contains('light-mode')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
                 localStorage.setItem('theme', 'light');
             } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
                 localStorage.setItem('theme', 'dark');
             }
         });
-    }
-</script>
+    </script>
 </body>
 </html>

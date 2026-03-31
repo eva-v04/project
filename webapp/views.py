@@ -26,39 +26,72 @@ def homepage(request):
 def callgraph(request):
     form = AnalysisForm()
 
-    if request.method == 'POST':
-        form = AnalysisForm(request.POST)
-        if form.is_valid():
-            package = form.cleaned_data['package_name']
-            package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
+  #  if request.method == 'POST':
+    form = AnalysisForm(request.POST)
+   #     if form.is_valid():
+    #        package = form.cleaned_data['package_name']
+     #       package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
 
-            user_id = request.session.get('user_id')
-            user = User.objects.get(id=user_id) if user_id else None
+    user_id = request.session.get('user_id')
+      #      user = User.objects.get(id=user_id) if user_id else None
 
-            new_analysis = Analyses.objects.create(
-                package_name=package,
-                package_version=package_version,
-                user=user,
-                analysis_type='jelly',
-                status='running',
+       #     new_analysis = Analyses.objects.create(
+        #        package_name=package,
+         #       package_version=package_version,
+          ##      analysis_type='jelly',
+            #    status='running',
                 #task_id=''
-            )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
+          #  )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
 
-            if not user:
-                guest_history = request.session.get('guest_analyses', [])
-                guest_history.append(new_analysis.id)
-                request.session['guest_analyses'] = guest_history
-                request.session.modified = True
-            
-            task_result = run_jelly_analysis.enqueue(package, package_version, task_id=new_analysis.id)
-            new_analysis.task_id = task_result.id
-            new_analysis.save()
-            return redirect('results', package_name=package)
+     #       if not user:
+      #          guest_history = request.session.get('guest_analyses', [])
+       #         guest_history.append(new_analysis.id)
+       #         request.session['guest_analyses'] = guest_history
+       #         request.session.modified = True
+       #     
+       #     task_result = run_jelly_analysis.enqueue(package, package_version, task_id=new_analysis.id)
+       #     new_analysis.task_id = task_result.id
+       #     new_analysis.save()
+       #     return redirect('results', package_name=package)
             
     user_id = request.session.get('user_id')
     current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
     return render(request, 'callgraph.html', {'form': form, 'user': current_user})
 
+def start_jelly_ajax(request):
+    if request.method == 'POST':
+        package = request.POST.get('package_name')
+        version = request.POST.get('version', 'latest')
+        
+        user_id = request.session.get('user_id')
+        user = User.objects.get(id=user_id) if user_id else None
+
+        # Δημιουργία ανάλυσης
+        new_analysis = Analyses.objects.create(
+            package_name=package,
+            package_version=version,
+            user=user,
+            analysis_type='jelly',
+            status='running'
+        )
+
+        # Session logic για guests
+        if not user:
+            guest_history = request.session.get('guest_analyses', [])
+            guest_history.append(new_analysis.id)
+            request.session['guest_analyses'] = guest_history
+            request.session.modified = True
+
+        # Εκκίνηση Task
+        task_result = run_jelly_analysis.enqueue(package, version, task_id=new_analysis.id)
+        new_analysis.task_id = task_result.id
+        new_analysis.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'analysis_id': new_analysis.id
+        })
+    return JsonResponse({'status': 'error'}, status=400)
 
 def results(request, package_name):
     #url αρχείου που δημιούργησε το jelly
@@ -82,40 +115,40 @@ def gasket(request):
     if request.method == 'POST':
         form = AnalysisForm(request.POST) 
         
-        if form.is_valid():
-            package = form.cleaned_data['package_name']
-            package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
+        #if form.is_valid():
+         #   package = form.cleaned_data['package_name']
+          #  package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
 
-            user_id = request.session.get('user_id')
-            user = User.objects.get(id=user_id) if user_id else None
+        user_id = request.session.get('user_id')
+           # user = User.objects.get(id=user_id) if user_id else None
 
-            new_analysis = Analyses.objects.create(
-                package_name=package,
-                package_version=package_version,
-                user=user,
-                analysis_type='gasket',
-                status='running',
+            #new_analysis = Analyses.objects.create(
+             #   package_name=package,
+            #    package_version=package_version,
+             #   user=user,
+             #   analysis_type='gasket',
+             #   status='running',
                 #task_id=''  # Θα ενημερωθεί μετά την εκκίνηση του task
-            )
+            #)
 
             # ΑΝ ΔΕΝ ΕΙΝΑΙ ΣΥΝΔΕΔΕΜΕΝΟΣ: Κρατάμε το ID της ανάλυσης στο session
-            if not user:
-                # Παίρνουμε την υπάρχουσα λίστα ή δημιουργούμε νέα
-                guest_history = request.session.get('guest_analyses', [])
-                guest_history.append(new_analysis.id)
-                request.session['guest_analyses'] = guest_history
+           # if not user:
+            #    # Παίρνουμε την υπάρχουσα λίστα ή δημιουργούμε νέα
+             #   guest_history = request.session.get('guest_analyses', [])
+              #  guest_history.append(new_analysis.id)
+               # request.session['guest_analyses'] = guest_history
                 # Ενημερώνουμε τη Django ότι το session άλλαξε
-                request.session.modified = True
+                #request.session.modified = True
             
-            task_result = run_gasket_analysis.enqueue(package, package_version, task_id=new_analysis.id)
-            new_analysis.task_id = task_result.id
-            new_analysis.save()
+          #  task_result = run_gasket_analysis.enqueue(package, package_version, task_id=new_analysis.id)
+           # new_analysis.task_id = task_result.id
+            #new_analysis.save()
 
             # Επανεκτέλεση ή ενημέρωση για να ξέρει το task ποιο ID να ψάξει
-            run_gasket_analysis.enqueue(package, package_version, task_id=task_result.id)
+            #run_gasket_analysis.enqueue(package, package_version, task_id=task_result.id)
 
             #return redirect('results_gasket', package_name=package, package_version=package_version)
-            return redirect('gasket_results', package_name=package, package_version=package_version)
+            #return redirect('gasket_results', package_name=package, package_version=package_version)
             
     user_id = request.session.get('user_id')
     current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
@@ -125,7 +158,43 @@ def gasket(request):
         'user': current_user # Τώρα το navbar θα βλέπει "Guest"
     })
 
+def start_gasket_ajax(request):
+    if request.method == 'POST':
+        package = request.POST.get('package_name')
+        version = request.POST.get('version', 'latest')
+        
+        user_id = request.session.get('user_id')
+        user = User.objects.get(id=user_id) if user_id else None
 
+        # Δημιουργία ανάλυσης
+        new_analysis = Analyses.objects.create(
+            package_name=package,
+            package_version=version,
+            user=user,
+            analysis_type='gasket',
+            status='running'
+        )
+
+        # Session logic για guests
+        if not user:
+            guest_history = request.session.get('guest_analyses', [])
+            guest_history.append(new_analysis.id)
+            request.session['guest_analyses'] = guest_history
+            request.session.modified = True
+
+        # Εκκίνηση Task
+        task_result = run_gasket_analysis.enqueue(package, version, task_id=new_analysis.id)
+        new_analysis.task_id = task_result.id
+        new_analysis.save()
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Analysis started!',
+            'analysis_id': new_analysis.id
+        })
+    return JsonResponse({'status': 'error'}, status=400)
+
+    
 def gasket_results(request, package_name, package_version):
 
     file_path = os.path.join(
