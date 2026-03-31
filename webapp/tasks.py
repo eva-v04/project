@@ -22,7 +22,7 @@ def run_gasket_analysis(package_name, package_version=None, task_id=None):
             Notification.objects.create(
                 user=analysis.user,
                 message=f"Your analysis for {package_name} is complete!",
-                link=f"/analysis/{analysis.id}/"  # Υποθέτοντας ότι αυτή είναι η URL για τα αποτελέσματα
+                link=f"/analysis/{analysis.id}/"  
             )
         return f"Analysis for {package_name} completed."
     else:

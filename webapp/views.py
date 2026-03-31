@@ -358,3 +358,17 @@ def get_package_versions(request):
         # Αν υπάρξει σφάλμα (π.χ. δεν υπάρχει το πακέτο), επιστρέφουμε κενή λίστα
         print(f"Error fetching versions: {e}")
         return JsonResponse({'versions': []})
+
+def notifications(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    
+    current_user = User.objects.get(id=user_id)
+    # Παίρνουμε όλες τις ειδοποιήσεις του χρήστη, τις πιο πρόσφατες πρώτες
+    user_notifications = current_user.notification_set.all().order_by('-created_at')
+    
+    return render(request, 'notifications.html', {
+        'notifications': user_notifications,
+        'user': current_user
+    })
