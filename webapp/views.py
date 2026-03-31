@@ -163,20 +163,53 @@ def start_gasket_ajax(request):
         package = request.POST.get('package_name')
         version = request.POST.get('version', 'latest')
         
+        # Λήψη τρέχοντος χρήστη από το session
         user_id = request.session.get('user_id')
-        user = User.objects.get(id=user_id) if user_id else None
+        current_user = User.objects.filter(id=user_id).first() if user_id else None
+
+        #Αναζήτηση αν υπάρχει ήδη ολοκληρωμένη ανάλυση (από οποιονδήποτε)
+        existing_analysis = Analyses.objects.filter(
+            package_name=package,
+            package_version=version,
+            analysis_type='gasket',
+            status='completed'
+        ).first()
+
+        if existing_analysis:
+            # Δημιουργούμε νέα εγγραφή για τον τρέχοντα χρήστη, αλλά με status 'completed'
+            new_analysis = Analyses.objects.create(
+                package_name=package,
+                package_version=version,
+                user=current_user,
+                analysis_type='gasket',
+                status='completed', # Άμεση ολοκλήρωση
+                task_id=existing_analysis.task_id # Χρήση του υπάρχοντος αποτελέσματος
+            )
+
+            # Αν είναι Guest, αποθηκεύουμε το ID στο session του
+            if not current_user:
+                guest_history = request.session.get('guest_analyses', [])
+                guest_history.append(new_analysis.id)
+                request.session['guest_analyses'] = guest_history
+                request.session.modified = True
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Results found in cache!',
+                'redirect': True  # Η JavaScript θα ξέρει να κάνει άμεσο redirect
+            })
 
         # Δημιουργία ανάλυσης
         new_analysis = Analyses.objects.create(
             package_name=package,
             package_version=version,
-            user=user,
+            user=current_user,
             analysis_type='gasket',
             status='running'
         )
 
         # Session logic για guests
-        if not user:
+        if not current_user:
             guest_history = request.session.get('guest_analyses', [])
             guest_history.append(new_analysis.id)
             request.session['guest_analyses'] = guest_history
