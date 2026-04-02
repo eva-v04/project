@@ -63,29 +63,60 @@ def start_jelly_ajax(request):
         package = request.POST.get('package_name')
         version = request.POST.get('version', 'latest')
         
+        # Λήψη τρέχοντος χρήστη
         user_id = request.session.get('user_id')
-        user = User.objects.get(id=user_id) if user_id else None
+        current_user = User.objects.filter(id=user_id).first() if user_id else None
+
+        # 1. ΕΛΕΓΧΟΣ CACHE: Ψάχνουμε αν οποιοσδήποτε χρήστης έχει ολοκληρώσει αυτή την ανάλυση
+        existing_analysis = Analyses.objects.filter(
+            package_name=package,
+            package_version=version,
+            analysis_type='jelly',
+            status='completed'
+        ).first()
+
+        if existing_analysis:
+            # Δημιουργούμε νέα εγγραφή για το ιστορικό του τρέχοντος χρήστη, ήδη ολοκληρωμένη
+            new_analysis = Analyses.objects.create(
+                package_name=package,
+                package_version=version,
+                user=current_user,
+                analysis_type='jelly',
+                status='completed',
+              # task_id=existing_analysis.task_id  # Χρησιμοποιούμε το ID του υπάρχοντος task/αποτελέσματος
+            )
+
+            # Ενημέρωση session για Guests
+            if not current_user:
+                guest_history = request.session.get('guest_analyses', [])
+                guest_history.append(new_analysis.id)
+                request.session['guest_analyses'] = guest_history
+                request.session.modified = True
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Call Graph found in cache!',
+                'redirect': True  # Ειδοποιούμε τη JS για άμεση ανακατεύθυνση
+            })
 
         # Δημιουργία ανάλυσης
         new_analysis = Analyses.objects.create(
             package_name=package,
             package_version=version,
-            user=user,
+            user=current_user,
             analysis_type='jelly',
             status='running'
         )
 
         # Session logic για guests
-        if not user:
+        if not current_user:
             guest_history = request.session.get('guest_analyses', [])
             guest_history.append(new_analysis.id)
             request.session['guest_analyses'] = guest_history
             request.session.modified = True
 
         # Εκκίνηση Task
-        task_result = run_jelly_analysis.enqueue(package, version, task_id=new_analysis.id)
-        new_analysis.task_id = task_result.id
-        new_analysis.save()
+        run_jelly_analysis.enqueue(package, version, analysis_id=new_analysis.id)
 
         return JsonResponse({
             'status': 'success',
@@ -183,7 +214,7 @@ def start_gasket_ajax(request):
                 user=current_user,
                 analysis_type='gasket',
                 status='completed', # Άμεση ολοκλήρωση
-                task_id=existing_analysis.task_id # Χρήση του υπάρχοντος αποτελέσματος
+               # task_id=existing_analysis.task_id # Χρήση του υπάρχοντος αποτελέσματος
             )
 
             # Αν είναι Guest, αποθηκεύουμε το ID στο session του
@@ -216,9 +247,7 @@ def start_gasket_ajax(request):
             request.session.modified = True
 
         # Εκκίνηση Task
-        task_result = run_gasket_analysis.enqueue(package, version, task_id=new_analysis.id)
-        new_analysis.task_id = task_result.id
-        new_analysis.save()
+        run_gasket_analysis.enqueue(package, version, analysis_id=new_analysis.id)
 
         return JsonResponse({
             'status': 'success',

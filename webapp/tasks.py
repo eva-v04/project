@@ -3,7 +3,7 @@ from .models import Analyses, User, Notification
 import subprocess
 
 @task
-def run_gasket_analysis(package_name, package_version=None, task_id=None):
+def run_gasket_analysis(package_name, package_version=None, analysis_id=None):
     
     # Εκτέλεση του script
     if package_version:
@@ -11,7 +11,7 @@ def run_gasket_analysis(package_name, package_version=None, task_id=None):
     else:
         subprocess.run(["./analyze_gasket.sh", package_name])
         
-    analysis = Analyses.objects.filter(task_id=task_id).first()
+    analysis = Analyses.objects.filter(id=analysis_id).first()
 
     if analysis:
         analysis.status = 'completed'
@@ -30,16 +30,18 @@ def run_gasket_analysis(package_name, package_version=None, task_id=None):
 
 
 @task
-def run_jelly_analysis(package_name, package_version=None, task_id=None):
+def run_jelly_analysis(package_name, package_version=None, analysis_id=None):
     # Εκτέλεση του script για Jelly
     if package_version:
         subprocess.run(["./analyze_jelly.sh", package_name, package_version])
     else:
         subprocess.run(["./analyze_jelly.sh", package_name])
     
-    analysis = Analyses.objects.filter(task_id=task_id).first()
+    analysis = Analyses.objects.filter(id=analysis_id).first()
+    print("hello")
 
     if analysis:
+        print("foo")
         analysis.status = 'completed'
         analysis.save()
 
