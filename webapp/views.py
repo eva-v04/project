@@ -24,39 +24,11 @@ def homepage(request):
 
 
 def callgraph(request):
-    form = AnalysisForm()
-
-  #  if request.method == 'POST':
-    form = AnalysisForm(request.POST)
-   #     if form.is_valid():
-    #        package = form.cleaned_data['package_name']
-     #       package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
-
-    user_id = request.session.get('user_id')
-      #      user = User.objects.get(id=user_id) if user_id else None
-
-       #     new_analysis = Analyses.objects.create(
-        #        package_name=package,
-         #       package_version=package_version,
-          ##      analysis_type='jelly',
-            #    status='running',
-                #task_id=''
-          #  )  # Αποθήκευση της ανάλυσης στη βάση δεδομένων
-
-     #       if not user:
-      #          guest_history = request.session.get('guest_analyses', [])
-       #         guest_history.append(new_analysis.id)
-       #         request.session['guest_analyses'] = guest_history
-       #         request.session.modified = True
-       #     
-       #     task_result = run_jelly_analysis.enqueue(package, package_version, task_id=new_analysis.id)
-       #     new_analysis.task_id = task_result.id
-       #     new_analysis.save()
-       #     return redirect('results', package_name=package)
-            
+    form = AnalysisForm(request.POST)            
     user_id = request.session.get('user_id')
     current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
     return render(request, 'callgraph.html', {'form': form, 'user': current_user})
+
 
 def start_jelly_ajax(request):
     if request.method == 'POST':
@@ -124,6 +96,7 @@ def start_jelly_ajax(request):
         })
     return JsonResponse({'status': 'error'}, status=400)
 
+
 def results(request, package_name):
     #url αρχείου που δημιούργησε το jelly
     analysis = Analyses.objects.filter(
@@ -145,49 +118,16 @@ def gasket(request):
 
     if request.method == 'POST':
         form = AnalysisForm(request.POST) 
-        
-        #if form.is_valid():
-         #   package = form.cleaned_data['package_name']
-          #  package_version = request.POST.get('version', 'latest')  # Παίρνουμε την έκδοση από το POST, αν δεν υπάρχει χρησιμοποιούμε "latest"
-
         user_id = request.session.get('user_id')
-           # user = User.objects.get(id=user_id) if user_id else None
 
-            #new_analysis = Analyses.objects.create(
-             #   package_name=package,
-            #    package_version=package_version,
-             #   user=user,
-             #   analysis_type='gasket',
-             #   status='running',
-                #task_id=''  # Θα ενημερωθεί μετά την εκκίνηση του task
-            #)
-
-            # ΑΝ ΔΕΝ ΕΙΝΑΙ ΣΥΝΔΕΔΕΜΕΝΟΣ: Κρατάμε το ID της ανάλυσης στο session
-           # if not user:
-            #    # Παίρνουμε την υπάρχουσα λίστα ή δημιουργούμε νέα
-             #   guest_history = request.session.get('guest_analyses', [])
-              #  guest_history.append(new_analysis.id)
-               # request.session['guest_analyses'] = guest_history
-                # Ενημερώνουμε τη Django ότι το session άλλαξε
-                #request.session.modified = True
-            
-          #  task_result = run_gasket_analysis.enqueue(package, package_version, task_id=new_analysis.id)
-           # new_analysis.task_id = task_result.id
-            #new_analysis.save()
-
-            # Επανεκτέλεση ή ενημέρωση για να ξέρει το task ποιο ID να ψάξει
-            #run_gasket_analysis.enqueue(package, package_version, task_id=task_result.id)
-
-            #return redirect('results_gasket', package_name=package, package_version=package_version)
-            #return redirect('gasket_results', package_name=package, package_version=package_version)
-            
     user_id = request.session.get('user_id')
     current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
     
     return render(request, 'gasket.html', {
         'form': form,
-        'user': current_user # Τώρα το navbar θα βλέπει "Guest"
+        'user': current_user 
     })
+
 
 def start_gasket_ajax(request):
     if request.method == 'POST':
@@ -321,6 +261,7 @@ def signup(request):
         form = SignupForm()  # Επαναφορά της φόρμας σε περίπτωση μη έγκυρων δεδομένων
     return render(request, 'signup.html', {'form': form})
 
+
 def login_view(request):
     error_message = None  # Αρχικοποίηση του μηνύματος λάθους
     if request.method == 'POST':
@@ -395,6 +336,7 @@ def analysis_detail(request, analysis_id):
         return redirect('results', package_name=analysis.package_name)    
     return redirect('analyses')
 
+
 def get_package_versions(request):
     package_name = request.GET.get('package_name')
     if not package_name:
@@ -421,6 +363,7 @@ def get_package_versions(request):
         print(f"Error fetching versions: {e}")
         return JsonResponse({'versions': []})
 
+
 def notifications(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -434,3 +377,13 @@ def notifications(request):
         'notifications': user_notifications,
         'user': current_user
     })
+
+
+def unread_notifications_count(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return JsonResponse({'count': 0})
+    
+    # Μετράμε τις μη αναγνωσμένες ειδοποιήσεις για αυτόν τον χρήστη
+    count = Notification.objects.filter(user_id=user_id, is_read=False).count()
+    return JsonResponse({'count': count})
