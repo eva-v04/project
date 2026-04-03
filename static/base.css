@@ -177,3 +177,14 @@ input[type="text"], .form-control {
     flex-direction: row;
 }
 
+/* Επιβάλλει σκούρο χρώμα σε όλες τις επιλογές του dropdown */
+#version_select option {
+    color: #000000 !important;
+    background-color: #ffffff !important;
+}
+
+/* Για να φαίνεται σωστά και το επιλεγμένο κείμενο στο κουτί */
+#version_select {
+    color: #ffffff; /* Το κείμενο μέσα στο κουτί (όταν είναι κλειστό) */
+    background-color: var(--card-bg);
+}
