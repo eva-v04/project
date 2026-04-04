@@ -19,7 +19,7 @@ class Analyses(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     analysis_type = models.CharField(max_length=20, choices=[('callgraph', 'Call Graph'), ('gasket', 'Gasket')], default='callgraph')
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('completed', 'Completed')], default='pending')
-    task_id = models.CharField(max_length=50, blank=True, null=True)  # Προσθήκη πεδίου για το task ID
+   # task_id = models.CharField(max_length=50, blank=True, null=True)  # Προσθήκη πεδίου για το task ID
 
 
 class Notification(models.Model):

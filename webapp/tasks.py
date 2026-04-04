@@ -1,7 +1,9 @@
 from django.tasks import task
+#import dramatiq
 from .models import Analyses, User, Notification
 import subprocess
 
+#@dramatiq.actor
 @task
 def run_gasket_analysis(package_name, package_version=None, analysis_id=None):
     
