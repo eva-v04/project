@@ -97,18 +97,23 @@ def start_jelly_ajax(request):
     return JsonResponse({'status': 'error'}, status=400)
 
 
-def results(request, package_name):
+def results(request, analysis_id):
     #url αρχείου που δημιούργησε το jelly
-    analysis = Analyses.objects.filter(
-        package_name=package_name, 
-        analysis_type='jelly').last()
-        
-    version = analysis.package_version if analysis else "latest"
+    analysis = Analyses.objects.get(id=analysis_id)
+
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    package_name = analysis.package_name
+    version = analysis.package_version
+
     graph_url = f"/static/analysis_{package_name}_{version}/{package_name}.html"
     
     context = {
         'package_name': package_name,
-        'graph_url': graph_url
+        'package_version': version,
+        'graph_url': graph_url,
+        'date': analysis.date,
     }
     return render(request, 'results.html', context)
 
@@ -333,7 +338,7 @@ def analysis_detail(request, analysis_id):
         return redirect('gasket_results', package_name=analysis.package_name, package_version=analysis.package_version)
 
     if analysis.analysis_type == 'jelly':
-        return redirect('results', package_name=analysis.package_name)    
+        return redirect('results', analysis_id=analysis.id)   
     return redirect('analyses')
 
 
