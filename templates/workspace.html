@@ -24,7 +24,12 @@
                             {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                         </a>
                         <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.5rem;">2</a>
+                            <a href="{% url 'notifications' %}" 
+                            id="notification-badge" 
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                            {{ unread_count }}
+                        </a>
                         </i>
             </div>
         </div>
@@ -86,5 +91,6 @@
         });
     }
 </script>
+
 </body>
 </html>
