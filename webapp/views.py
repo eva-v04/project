@@ -202,7 +202,13 @@ def start_gasket_ajax(request):
     return JsonResponse({'status': 'error'}, status=400)
 
     
-def gasket_results(request, package_name, package_version):
+def gasket_results(request, analysis_id):
+    analysis = Analyses.objects.get(id=analysis_id)
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    package_name = analysis.package_name
+    package_version = analysis.package_version
 
     file_path = os.path.join(
         settings.BASE_DIR, 
@@ -335,7 +341,7 @@ def analysis_detail(request, analysis_id):
     
     # Αν είναι Gasket, πήγαινε στα αποτελέσματα του Gasket
     if analysis.analysis_type == 'gasket':
-        return redirect('gasket_results', package_name=analysis.package_name, package_version=analysis.package_version)
+        return redirect('gasket_results', analysis_id=analysis.id)
 
     if analysis.analysis_type == 'jelly':
         return redirect('results', analysis_id=analysis.id)   
