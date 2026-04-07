@@ -9,7 +9,7 @@ import json
 import os
 from django.conf import settings
 
-from .models import User, Package, Analyses
+from .models import User, Package, Analyses, Notification
 from .forms import AnalysisForm, LoginForm, SignupForm
 from django.contrib.auth import authenticate, login
 
@@ -393,8 +393,8 @@ def notifications(request):
 def unread_notifications_count(request):
     user_id = request.session.get('user_id')
     if not user_id:
-        return JsonResponse({'count': 0})
+        return JsonResponse({'unread_count': 0})
     
     # Μετράμε τις μη αναγνωσμένες ειδοποιήσεις για αυτόν τον χρήστη
     count = Notification.objects.filter(user_id=user_id, is_read=False).count()
-    return JsonResponse({'count': count})
+    return JsonResponse({'unread_count': count})
