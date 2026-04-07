@@ -4,22 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workspace</title>
+    <title>{% block title %}Project{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <h2>Project</h2>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <nav class="navbar navbar-dark">
-        <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">
-                <i class="fa-solid fa-square-n text-info me-2"></i>Project
-            </span>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workspace' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analyses">My History</a>
+                </li>
+            </ul>
+            
             <div class="d-flex align-items-center">
                 <button id="theme-toggle" class="btn btn-link text-info me-3">
                     <i class="fa-solid fa-moon"></i>
                 </button>
+                
                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                             {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                         </a>
@@ -31,42 +49,13 @@
                             {{ unread_count }}
                         </a>
                         </i>
+                <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
         </div>
-    </nav>
-
-    <div class="container mt-4">
-        <h2>WELCOME, {{ user.username }}!</h2>
-        <p class="text-secondary">Ready to analyze a new package?</p>
-
-        <h5 class="mb-4">SELECT ANALYSIS TYPE:</h5>
-        
-        <div class="row g-4 mb-5">
-            <div class="col-md-4">
-                <a href="{% url 'gasket' %}" class="analysis-card-link">
-                <div class="analysis-card">
-                    <i class="fa-solid fa-eye card-icon"></i>
-                    <h6>BRIDGES ANALYSIS (GASKET)</h6>
-                    <p class="small text-secondary">Map all native bridges in memory.</p>
-                    <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
-                </div>
-            </a></div>
-            <div class="col-md-4">
-                <a href="{% url 'callgraph' %}" class="analysis-card-link">
-                <div class="analysis-card">
-                    <i class="fa-solid fa-circle-nodes card-icon"></i>
-                    <h6>CALL GRAPH (JELLY)</h6>
-                    <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
-                    <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
-                </div>
-            </a></div>
-        </div>
-
-        <h5 class="mt-5 mb-3">Click here to see your analyses</h5>
-        <a href="/analyses" class="btn btn-info">MY HISTORY</a>
     </div>
-
+    </nav>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
     const btn = document.getElementById('theme-toggle');
     const icon = btn.querySelector('i');
@@ -91,35 +80,31 @@
         });
     }
 </script>
- <script>
- function updateNotificationBadge() {
-// Καλούμε το API endpoint που φτιάξαμε στο urls.py
-    fetch('/api/unread-notifications-count/')
-    .then(response => response.json())
-    .then(data => {
-        const badge = document.getElementById('notification-badge');
-        if (badge) {
-            const count = data.unread_count; 
-            
-            if (count > 0) {
-                badge.innerText = count;
-				badge.style.display = 'block';
-			} else {
-				badge.style.display = 'none';
-			 }
-	}
-	})
-	
-    .catch(err => console.error('Error fetching notifications:', err));
-}
+<script>
+	function updateNotificationBadge() {
+        // Καλούμε το API endpoint που φτιάξαμε στο urls.py
+		fetch('/api/unread-notifications-count/')
+	    .then(response => response.json())
+	    .then(data => {
+            const badge = document.getElementById('notification-badge');
+            if (badge) {
+                const count = data.unread_count;
+                if (count > 0) {
+                    badge.innerText = count;
+                    badge.style.display = 'block';
+                } else {
+			        badge.style.display = 'none';
+													                        }
+				}
+			})
+            .catch(err => console.error('Error fetching notifications:', err));
+		}
 
-		    // Εκτέλεση αμέσως μόλις φορτώσει η σελίδα
-		    document.addEventListener('DOMContentLoaded', updateNotificationBadge);
-		    // Έλεγχος για νέες ειδοποιήσεις κάθε 10 δευτερόλεπτα
-		    setInterval(updateNotificationBadge, 10000);
+		// Εκτέλεση αμέσως μόλις φορτώσει η σελίδα
+		document.addEventListener('DOMContentLoaded', updateNotificationBadge);
+		// Έλεγχος για νέες ειδοποιήσεις κάθε 10 δευτερόλεπτα
+		setInterval(updateNotificationBadge, 10000);
     </script>
-
-    
     <script>
     let previousCount = -1; // Αρχικοποίηση
 
@@ -171,5 +156,14 @@
     setInterval(checkNewNotifications, 10000); // Έλεγχος κάθε 10 δευτερόλεπτα
     document.addEventListener('DOMContentLoaded', checkNewNotifications);
 </script>
+</nav>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

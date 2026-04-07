@@ -1,53 +1,8 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="el">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'base.css' %}">
-    <title>Jelly Analysis - Call Graph</title>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <h2 class="text-white m-0">Project</h2>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+{% extends 'base.html' %}
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'workspace' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'callgraph' %}">Jelly Analysis</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/analyses">My History</a></li>
-                </ul>
-                
-                <div class="d-flex align-items-center">
-                    <button id="theme-toggle" class="btn btn-link text-info me-3">
-                        <i class="fa-solid fa-moon"></i>
-                    </button>
-                    
-                        <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
-                            {{ user.username }} <i class="fa-regular fa-circle-user"></i>
-                        </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </a>
-                        </i>
-                    
-                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+{% block title %}Jelly Analysis - Call Graph{% endblock %}
 
+{% block content %}
     <div class="container-centered">
         <div class="glass-card">
             <h1>Jelly Engine</h1>
@@ -57,8 +12,8 @@
                 {% csrf_token %}
                 
                 <label for="id_package_name" style="font-weight: 700; color: var(--primary);">NPM Package Name</label><br>
-                {{ form.package_name }}
-                <br><span class="helper-text" style=" color: var(--primary);">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code></span><br><br>
+                <input type="text" name="package_name" class="form-control" placeholder="e.g. sqlite3" required>
+                <br><span class="helper-text" style="color: var(--primary);">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code></span><br><br>
 
                 <label for="version_select" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Επιλογή Έκδοσης</label>
                 <select name="version" id="version_select" class="form-control" style="margin-top: 5px;">
@@ -80,11 +35,11 @@
             </form>
         </div>
     </div>
+{% endblock %}
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+{% block extra_js %}
     <script>
-        // 1. Version Fetching Logic
+        // 1. Logic για το τράβηγμα των εκδόσεων (NPM Show)
         const packageInput = document.querySelector('input[name="package_name"]');
         const versionSelect = document.getElementById('version_select');
         let timeout = null;
@@ -104,17 +59,17 @@
                                 versionSelect.add(new Option(ver, ver));
                             });
                         } else {
-                            versionSelect.innerHTML = '<option value="latest" style="color: #333;">Latest</option>';
+                            versionSelect.innerHTML = '<option value="latest">Latest</option>';
                         }
                     })
                     .catch(() => {
-                        versionSelect.innerHTML = '<option value="latest" style="color: #333;">Σφάλμα σύνδεσης</option>';
+                        versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
                     });
                 }, 500);
             }
         });
 
-        // 2. AJAX Submission Logic
+        // 2. AJAX Submission Logic (Έναρξη ανάλυσης Jelly)
         document.getElementById('jellyForm').onsubmit = function(e) {
             e.preventDefault();
             
@@ -136,7 +91,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ξεκίνησε! Μεταφέρεστε στο ιστορικό...</p>";
+                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ξεκίνησε! Θα λάβετε ειδοποίηση μόλις τελειώσει.</p>";
                     setTimeout(() => { window.location.href = '/analyses'; }, 2000);
                 } else {
                     alert('Σφάλμα: ' + (data.message || 'Αποτυχία εκκίνησης'));
@@ -151,27 +106,5 @@
                 this.style.opacity = '1';
             });
         };
-
-        // 3. Theme Toggle Logic
-        const themeBtn = document.getElementById('theme-toggle');
-        const themeIcon = themeBtn.querySelector('i');
-        const body = document.body;
-
-        if (localStorage.getItem('theme') === 'light') {
-            body.classList.add('light-mode');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-        }
-
-        themeBtn.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            if (body.classList.contains('light-mode')) {
-                themeIcon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                themeIcon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
     </script>
-</body>
-</html>
+{% endblock %}

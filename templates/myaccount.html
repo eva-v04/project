@@ -108,5 +108,32 @@
         }
     });
 </script>
+<script>
+	        function updateNotificationBadge() {
+			        // Καλούμε το API endpoint που φτιάξαμε στο urls.py
+			        fetch('/api/unread-notifications-count/')
+			            .then(response => response.json())
+			            .then(data => {
+					                    const badge = document.getElementById('notification-badge');
+					                    if (badge) {
+								                        // ΠΡΟΣΟΧΗ: Εδώ χρησιμοποιούμε το 'unread_count' γιατί έτσι το έχεις στο views.py
+								                        const count = data.unread_count; 
+								                        
+								                        if (count > 0) {
+												                        badge.innerText = count;
+												                        badge.style.display = 'block';
+												                    } else {
+															                            badge.style.display = 'none';
+															                        }
+								                    }
+					                })
+			            .catch(err => console.error('Error fetching notifications:', err));
+			    }
+
+		    // Εκτέλεση αμέσως μόλις φορτώσει η σελίδα
+		    document.addEventListener('DOMContentLoaded', updateNotificationBadge);
+		    // Έλεγχος για νέες ειδοποιήσεις κάθε 10 δευτερόλεπτα
+		    setInterval(updateNotificationBadge, 10000);
+    </script>
 </body>
 </html>
