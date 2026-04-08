@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}My History{% endblock %}
+
+{% block content %}
+<div class="container-centered"> <div class="glass-card" style="width: 90%; max-width: 1200px;"> <h1 class="mb-4">My History</h1>
+        <p class="text-secondary mb-4">Click here to see your analyses</p>
+        
+        <div class="table-responsive">
+            <table class="table text-white" style="background: transparent;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--primary); color: var(--primary);">
+                        <th>Package</th>
+                        <th>Version</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="border: none;">
+                    {% for analysis in analyses %}
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); vertical-align: middle;">
+                        <td class="py-3"><strong>{{ analysis.package_name }}</strong></td>
+                        <td><span class="badge bg-secondary">{{ analysis.package_version }}</span></td>
+                        <td>
+                            {% if analysis.analysis_type == 'jelly' %}
+                                <span class="text-info">Jelly</span>
+                            {% else %}
+                                <span class="text-warning">Gasket</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if analysis.status == 'completed' %}
+                                <span class="text-success">● Completed</span>
+                            {% elif analysis.status == 'running' %}
+                                <span class="text-primary">○ Running...</span>
+                            {% else %}
+                                <span class="text-danger">× Failed</span>
+                            {% endif %}
+                        </td>
+                        <td class="small text-secondary">{{ analysis.date|date:"d/m/Y H:i" }}</td>
+                        <td>
+                            <a href="{% url 'analysis_detail' analysis.id %}" class="btn btn-outline-info btn-sm">
+                                View Results
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-secondary">
+                            Δεν υπάρχουν ακόμα αναλύσεις.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
