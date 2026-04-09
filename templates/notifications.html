@@ -33,14 +33,14 @@
                     <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                             {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                         </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                        <a href="{% url 'notifications' %}" class="text-decoration-none position-relative me-3" style="color: inherit;">
+                            <i class="fa-solid fa-bell" style="cursor: pointer; font-size: 1.2rem;"></i>
+                            <span id="notification-badge" 
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                                style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
                             {{ unread_count }}
+                            </span>
                         </a>
-                        </i>
 
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
                 </div>
@@ -74,7 +74,6 @@
         if (data.count > 0) {
             badge.innerText = data.count;
             badge.style.display = 'block';
-            // Προαιρετικά: Εμφάνισε ένα browser alert ή toast
         }
     });
 }
@@ -88,7 +87,6 @@ setInterval(checkNotifications, 10000); // Έλεγχος κάθε 10 δευτε
 			            .then(data => {
 					                    const badge = document.getElementById('notification-badge');
 					                    if (badge) {
-								                        // ΠΡΟΣΟΧΗ: Εδώ χρησιμοποιούμε το 'unread_count' γιατί έτσι το έχεις στο views.py
 								                        const count = data.unread_count; 
 								                        
 								                        if (count > 0) {
