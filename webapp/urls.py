@@ -38,4 +38,5 @@ urlpatterns = [
     path('ajax/get-versions/', views.get_package_versions, name='get_package_versions'),
     path('notifications/', views.notifications, name='notifications'),
     path('api/unread-notifications-count/', views.unread_notifications_count, name='unread_notifications_count'),
+    path('mark-notifications-read/', views.mark_notifications_as_read, name='mark_notifications_read'),
 ]

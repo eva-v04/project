@@ -1,0 +1,19 @@
+{
+  "objects_examined": 5522,
+  "callable_objects": 5207,
+  "foreign_callable_objects": 0,
+  "duration_sec": 0.833,
+  "count": 0,
+  "modules": [
+    "/home/gasket/node_modules/sqlite/build/Database.js",
+    "/home/gasket/node_modules/sqlite/build/Statement.js",
+    "/home/gasket/node_modules/sqlite/build/index.js",
+    "/home/gasket/node_modules/sqlite/build/interfaces.js",
+    "/home/gasket/node_modules/sqlite/build/utils/migrate.js",
+    "/home/gasket/node_modules/sqlite/build/utils/strings.js"
+  ],
+  "jump_libs": [],
+  "bridges": [],
+  "ambiguous": [],
+  "unresolved": []
+}

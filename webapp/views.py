@@ -381,8 +381,10 @@ def notifications(request):
         return redirect('login')
     
     current_user = User.objects.get(id=user_id)
-    # Παίρνουμε όλες τις ειδοποιήσεις του χρήστη, τις πιο πρόσφατες πρώτες
+    
     user_notifications = current_user.notification_set.all().order_by('-created_at')
+    
+    user_notifications.filter(is_read=False).update(is_read=True)
     
     return render(request, 'notifications.html', {
         'notifications': user_notifications,
@@ -398,3 +400,13 @@ def unread_notifications_count(request):
     # Μετράμε τις μη αναγνωσμένες ειδοποιήσεις για αυτόν τον χρήστη
     count = Notification.objects.filter(user_id=user_id, is_read=False).count()
     return JsonResponse({'unread_count': count})
+
+
+def mark_notifications_as_read(request):
+    if request.method == 'POST':
+        user_id = request.session.get('user_id')
+        if user_id:
+            # Ενημερώνουμε τις ειδοποιήσεις χρησιμοποιώντας το user_id από το session
+            Notification.objects.filter(user_id=user_id, is_read=False).update(is_read=True)
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)

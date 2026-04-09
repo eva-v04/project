@@ -54,14 +54,13 @@
         <p>Δείτε την πρόοδο των αναλύσεών σας.</p>
         <ul class="list-group">
             {% for notification in notifications %}
-                <a href="{{ notification.link }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    {{ notification.message }}
-                    {% if not notification.is_read %}
-                        <span class="badge bg-primary rounded-pill">New</span>
-                    {% endif %}
-                </a>
-                {% empty %}
-                <li class="list-group-item">Δεν υπάρχουν νέες ειδοποιήσεις.</li>
+            <div class="list-group-item {% if not notification.is_read %}list-group-item-info{% else %}list-group-item-secondary{% endif %} mb-2" style="border-radius: 10px; background: rgba(255,255,255,0.05); color: white;">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-info">{{ notification.title }}</h5>
+                    <small class="text-secondary">{{ notification.created_at|timesince }} ago</small>
+                </div>
+                <p class="mb-1">{{ notification.message }}</p>
+            </div>
             {% endfor %}
         </ul>
         </div>
@@ -107,6 +106,21 @@ setInterval(checkNotifications, 10000); // Έλεγχος κάθε 10 δευτε
 		    document.addEventListener('DOMContentLoaded', updateNotificationBadge);
 		    // Έλεγχος για νέες ειδοποιήσεις κάθε 10 δευτερόλεπτα
 		    setInterval(updateNotificationBadge, 10000);
+
+            document.querySelector('.fa-bell').parentElement.addEventListener('click', function() {
+    fetch("{% url 'mark_notifications_read' %}", {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': "{{ csrf_token }}", // Απαραίτητο για ασφάλεια στο Django
+        },
+    }).then(response => {
+        if (response.ok) {
+            // Μόλις διαβαστούν, κρύβουμε το κόκκινο κυκλάκι (badge)
+            const badge = document.getElementById('notification-badge');
+            if (badge) badge.style.display = 'none';
+        }
+    });
+});
     </script>
 </body>
 </html> 
