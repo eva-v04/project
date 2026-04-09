@@ -410,3 +410,26 @@ def mark_notifications_as_read(request):
             Notification.objects.filter(user_id=user_id, is_read=False).update(is_read=True)
             return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'}, status=400)
+
+
+def download_results(request, analysis_id):
+    analysis = Analyses.objects.get(id=analysis_id)
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    package_name = analysis.package_name
+    version = analysis.package_version
+
+    file_path = os.path.join(
+        settings.BASE_DIR, 
+        'static', 
+        f'analysis_{package_name}_{version}', 
+        f'{package_name}.html')
+    
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as f:
+            response = HttpResponse(f.read(), content_type='text/html')
+            response['Content-Disposition'] = f'attachment; filename="{package_name}_callgraph.html"'
+            return response
+    else:
+        return HttpResponse("File not found.", status=404)

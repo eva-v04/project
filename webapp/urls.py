@@ -39,4 +39,5 @@ urlpatterns = [
     path('notifications/', views.notifications, name='notifications'),
     path('api/unread-notifications-count/', views.unread_notifications_count, name='unread_notifications_count'),
     path('mark-notifications-read/', views.mark_notifications_as_read, name='mark_notifications_read'),
+    path('download/<int:analysis_id>/', views.download_results, name='download_analysis'),
 ]

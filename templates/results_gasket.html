@@ -55,6 +55,11 @@
     </nav>
 
     <h1>Gasket Analysis for: {{ package_name }}</h1>
+    <a href="{% static 'analysis_' %}{{ package_name }}_{{ package_version }}/{{ package_name }}.json" 
+        download="{{ package_name }}_analysis.json" 
+        class="btn btn-outline-info">
+        <i class="fa-solid fa-download me-2"></i> Download JSON Analysis
+    </a>
 
     <div class="container-centered">
         <p><strong>Package Version:</strong> {{ package_version }}</p>
