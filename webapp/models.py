@@ -23,8 +23,10 @@ class Analyses(models.Model):
 
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    message = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+#    session_key = models.CharField(max_length=40, null=True, blank=True)  # Προσθήκη πεδίου για session_key
+    title = models.CharField(max_length=100)
+    message = models.CharField(max_length=500)
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
     #link για να πηγαίνει κατευθείαν στα αποτελέσματα

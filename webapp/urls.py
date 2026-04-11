@@ -37,7 +37,8 @@ urlpatterns = [
     path('analysis/<int:analysis_id>/', views.analysis_detail, name='analysis_detail'),
     path('ajax/get-versions/', views.get_package_versions, name='get_package_versions'),
     path('notifications/', views.notifications, name='notifications'),
-    path('api/unread-notifications-count/', views.unread_notifications_count, name='unread_notifications_count'),
-    path('mark-notifications-read/', views.mark_notifications_as_read, name='mark_notifications_read'),
+    #path('api/unread-notifications-count/', views.unread_notifications_count, name='unread_notifications_count'),
+    #path('mark-notifications-read/', views.mark_notifications_as_read, name='mark_notifications_read'),
+    path('check-notifications/', views.check_notifications, name='check_notifications'),
     path('download/<int:analysis_id>/', views.download_results, name='download_analysis'),
 ]

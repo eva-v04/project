@@ -375,42 +375,46 @@ def get_package_versions(request):
         return JsonResponse({'versions': []})
 
 
+
+def check_notifications(request):
+    user_id = request.session.get('user_id')
+    # Αν είναι Guest, χρησιμοποιούμε το session_key του
+    if not request.session.session_key:
+        request.session.create()
+    s_key = request.session.session_key
+
+    if user_id:
+        new_notifications = Notification.objects.filter(user_id=user_id, is_read=False)
+    else:
+        new_notifications = Notification.objects.filter(session_key=s_key, is_read=False)
+
+    data = []
+    for n in new_notifications:
+        data.append({
+            'id': n.id,
+            'title': n.title,
+            'message': n.message, # πχ Η ανάλυση sqlite3 5.1.7 είναι έτοιμη
+        })
+        # διαβασμένες για να μην ξαναβγεί το pop-up
+        n.is_read = True 
+        n.save()
+
+    return JsonResponse({'notifications': data})
+
+
 def notifications(request):
     user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login')
-    
-    current_user = User.objects.get(id=user_id)
-    
-    user_notifications = current_user.notification_set.all().order_by('-created_at')
-    
-    user_notifications.filter(is_read=False).update(is_read=True)
-    
-    return render(request, 'notifications.html', {
-        'notifications': user_notifications,
-        'user': current_user
-    })
+    # Αν είναι Guest, χρησιμοποιούμε το session_key του
+    if not request.session.session_key:
+        request.session.create()
+    s_key = request.session.session_key
 
+    if user_id:
+        notifications = Notification.objects.filter(user_id=user_id).order_by('-created_at')
+    else:
+        notifications = Notification.objects.filter(session_key=s_key).order_by('-created_at')
 
-def unread_notifications_count(request):
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return JsonResponse({'unread_count': 0})
-    
-    # Μετράμε τις μη αναγνωσμένες ειδοποιήσεις για αυτόν τον χρήστη
-    count = Notification.objects.filter(user_id=user_id, is_read=False).count()
-    return JsonResponse({'unread_count': count})
-
-
-def mark_notifications_as_read(request):
-    if request.method == 'POST':
-        user_id = request.session.get('user_id')
-        if user_id:
-            # Ενημερώνουμε τις ειδοποιήσεις χρησιμοποιώντας το user_id από το session
-            Notification.objects.filter(user_id=user_id, is_read=False).update(is_read=True)
-            return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'}, status=400)
-
+    return render(request, 'notifications.html', {'notifications': notifications})
 
 def download_results(request, analysis_id):
     analysis = Analyses.objects.get(id=analysis_id)
