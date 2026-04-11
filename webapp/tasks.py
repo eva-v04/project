@@ -24,6 +24,7 @@ def run_gasket_analysis(package_name, package_version=None, analysis_id=None):
             Notification.objects.create(
                 user=analysis.user,
                 message=f"Your gasket analysis for {package_name} is complete!",
+                title="Gasket Analysis Complete",
                 link=f"/analysis/{analysis.id}/"  
             )
         return f"Analysis for {package_name} completed."
@@ -52,6 +53,7 @@ def run_jelly_analysis(package_name, package_version=None, analysis_id=None):
             Notification.objects.create(
                 user=analysis.user,
                 message=f"Your jelly analysis for {package_name} is complete!",
+                title="Jelly Analysis Complete",
                 link=f"/analysis/{analysis.id}/" 
             )
         return f"Analysis for {package_name} completed."

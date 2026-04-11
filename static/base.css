@@ -230,3 +230,9 @@ input[type="text"], .form-control {
 .notification-toast.show {
     transform: translateX(0);
 }
+
+.notification-hover:hover {
+    background: rgba(255,255,255,0.1) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.2);
+}

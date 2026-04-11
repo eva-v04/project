@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}Jelly Analysis - Call Graph{% endblock %}
+
+{% block content %}
+    <div class="container-centered">
+        <div class="glass-card">
+            <h1>Jelly Engine</h1>
+            <p>Generate Call Graphs for any NPM package.</p>
+            
+            <form id="jellyForm" method="post" class="form-group">
+                {% csrf_token %}
+                
+                <label for="id_package_name" style="font-weight: 700; color: var(--primary);">NPM Package Name</label><br>
+                <input type="text" name="package_name" class="form-control" placeholder="e.g. sqlite3" required>
+                <br><span class="helper-text" style="color: var(--primary);">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code></span><br><br>
+
+                <label for="version_select" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Επιλογή Έκδοσης</label>
+                <select name="version" id="version_select" class="form-control" style="margin-top: 5px;">
+                    <option value="">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
+                </select>
+
+                <div id="loading" style="display: none; margin-top: 20px; text-align: center;">
+                    <p class="text-info">⚙️ Generating Call Graph... This may take a few minutes.</p>
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" id="submitBtn" class="btn-main w-100" style="border: none; cursor: pointer;">
+                        Generate Analysis
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // 1. Logic για το τράβηγμα των εκδόσεων (NPM Show)
+        const packageInput = document.querySelector('input[name="package_name"]');
+        const versionSelect = document.getElementById('version_select');
+        let timeout = null;
+        
+        packageInput.addEventListener('input', function() {
+            clearTimeout(timeout);
+            const packageName = this.value.trim();
+            if (packageName.length > 2) {
+                timeout = setTimeout(() => {
+                    versionSelect.innerHTML = '<option value="">Φόρτωση εκδόσεων...</option>';
+                    fetch(`/ajax/get-versions/?package_name=${packageName}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        versionSelect.innerHTML = '';
+                        if (data.versions && data.versions.length > 0) {
+                            data.versions.forEach(ver => {
+                                versionSelect.add(new Option(ver, ver));
+                            });
+                        } else {
+                            versionSelect.innerHTML = '<option value="latest">Latest</option>';
+                        }
+                    })
+                    .catch(() => {
+                        versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
+                    });
+                }, 500);
+            }
+        });
+
+        // 2. AJAX Submission Logic (Έναρξη ανάλυσης Jelly)
+        document.getElementById('jellyForm').onsubmit = function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const loadingDiv = document.getElementById('loading');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            loadingDiv.style.display = 'block';
+            this.style.opacity = '0.5';
+            submitBtn.disabled = true;
+
+            fetch('/start-jelly-ajax/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ξεκίνησε! Θα λάβετε ειδοποίηση μόλις τελειώσει.</p>";
+                    setTimeout(() => { window.location.href = '/analyses'; }, 2000);
+                } else {
+                    alert('Σφάλμα: ' + (data.message || 'Αποτυχία εκκίνησης'));
+                    submitBtn.disabled = false;
+                    this.style.opacity = '1';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Σφάλμα σύνδεσης με τον διακομιστή.');
+                submitBtn.disabled = false;
+                this.style.opacity = '1';
+            });
+        };
+    </script>
+    <script src="{% static 'notifications.js' %}"></script>
+{% endblock %}
