@@ -378,15 +378,21 @@ def get_package_versions(request):
 
 def check_notifications(request):
     user_id = request.session.get('user_id')
-    # Αν είναι Guest, χρησιμοποιούμε το session_key του
-    if not request.session.session_key:
-        request.session.create()
-    s_key = request.session.session_key
 
     if user_id:
         new_notifications = Notification.objects.filter(user_id=user_id, is_read=False)
     else:
-        new_notifications = Notification.objects.filter(session_key=s_key, is_read=False)
+        guest_analysis_ids = request.session.get('guest_analyses', [])
+        
+        # Αν η λίστα είναι άδεια επιστρέφουμε κενό
+        if not guest_analysis_ids:
+            return JsonResponse({'notifications': []})
+
+        new_notifications = Notification.objects.filter(
+            analysis_id__in=guest_analysis_ids,
+            user__isnull=True, 
+            is_read=False
+        )
 
     data = []
     for n in new_notifications:
@@ -404,17 +410,25 @@ def check_notifications(request):
 
 def notifications(request):
     user_id = request.session.get('user_id')
-    # Αν είναι Guest, χρησιμοποιούμε το session_key του
-    if not request.session.session_key:
-        request.session.create()
-    s_key = request.session.session_key
 
     if user_id:
-        notifications = Notification.objects.filter(user_id=user_id).order_by('-created_at')
+        current_user = User.objects.get(id=user_id)
+        #notifications = Notification.objects.filter(user=current_user).order_by('-created_at')
+        user_notifications = Notification.objects.filter(user_id=user_id).order_by('-created_at')
     else:
-        notifications = Notification.objects.filter(session_key=s_key).order_by('-created_at')
+        guest_analysis_ids = request.session.get('guest_analyses', [])
+        user_notifications = Notification.objects.filter(
+            analysis_id__in=guest_analysis_ids,
+        ).order_by('-created_at')
 
-    return render(request, 'notifications.html', {'notifications': notifications})
+    # Μαρκάρουμε ως διαβασμένες
+    user_notifications.filter(is_read=False).update(is_read=True)
+
+    return render(request, 'notifications.html', {
+        'notifications': user_notifications,
+        'user': current_user if user_id else {'username': 'Guest'}
+    })
+
 
 def download_results(request, analysis_id):
     analysis = Analyses.objects.get(id=analysis_id)
