@@ -75,7 +75,12 @@
                         <span class="fs-5">{{ user.user_analyses.count }}</span> </div>
                 </div>
 
-                <a href="/analyses" class="btn btn-launch w-100 py-3">VIEW MY ANALYSES</a>
+                <div class="text-center mt-4">
+                    <a href="/analyses" class="btn btn-analysis-custom px-5 py-3">
+                        <i class="fa-solid fa-clock-rotate-left me-2"></i> VIEW MY ANALYSES
+                    </a>
+                </div>
+
             {% else %}
                 <div class="alert alert-warning">
                     You are not logged in. <a href="{% url 'login' %}">Login here</a>.
