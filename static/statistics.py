@@ -36,14 +36,14 @@ def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_na
         name = name.replace('\\', '/') # Κανονικοποίηση για Windows/Linux
         pkg_found = None #αρχικοποίηση μεταβλητής για το πακέτο που θα βρούμε
 
-
         #είμαστε ήδη στο Node_modules, άρα για να βγει True, πρέπει το path να είναι node_modules/node_modules/...
+        if 'node_modules/' in name:
             parts = name.split('node_modules/')[-1].split('/')#παίρνουμε το μέρος μετά το node_modules και το χωρίζουμε με /
             if parts[0].startswith('@') and len(parts) > 1: #αν το όνομα ξεκινάει με @ και έχει τουλάχιστον δύο μέρη (π.χ. @types/lodash)
-                print("DEBUG βρηκα scoped package:", parts[0], parts[1]) #debug print για να δούμε τα μέρη του scoped package
+                #print("DEBUG βρηκα scoped package:", parts[0], parts[1]) #debug print για να δούμε τα μέρη του scoped package
                 pkg_found = f"{parts[0]}/{parts[1]}" #κρατάμε το πρώτο μέρος + το δεύτερο μέρος 
             else:
-                print("DEBUG βρηκα regular package:", parts[0]) #debug print για να δούμε τα μέρη του regular package
+                #print("DEBUG βρηκα regular package:", parts[0]) #debug print για να δούμε τα μέρη του regular package
                 pkg_found = parts[0] #αλλιώς κρατάμε μόνο το πρώτο μέρος
         else: #αν το όνομα δεν περιέχει node_modules
             # Περίπτωση Jelly path (π.χ. 'nan/lib/...') ή root πακέτου
@@ -54,14 +54,14 @@ def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_na
                 #αν το πρώτο μέρος είναι ένα από τα πακέτα που έχουμε στο lockfile ή είναι το root πακέτο
                 if first_part in all_packages or first_part == root_pkg_name:
                     pkg_found = first_part #κρατάμε το πρώτο μέρος ως το πακέτο που βρήκαμε
-                    print("DEBUG βρηκα package από Jelly path:", first_part) #debug print για να δούμε το πακέτο που βρήκαμε από το Jelly path
+                    #print("DEBUG βρηκα package από Jelly path:", first_part) #debug print για να δούμε το πακέτο που βρήκαμε από το Jelly path
                 else:
                     # Αλλιώς θεωρούμε ότι ανήκει στο root πακέτο (π.χ. lib/index.js)
                     pkg_found = root_pkg_name 
-                    print("DEBUG θεωρώ ότι ανήκει στο root πακέτο:", root_pkg_name) #debug print για να δούμε ότι θεωρούμε ότι ανήκει στο root πακέτο
+                    #print("DEBUG θεωρώ ότι ανήκει στο root πακέτο:", root_pkg_name) #debug print για να δούμε ότι θεωρούμε ότι ανήκει στο root πακέτο
 
                 if parts[0].startswith('@') and len(parts) > 1: #αν το όνομα ξεκινάει με @ και έχει τουλάχιστον δύο μέρη (π.χ. @types/lodash)
-                    print("DEBUG βρηκα scoped package (Jelly path):", parts[0], parts[1]) #debug print για να δούμε τα μέρη του scoped package
+                    #print("DEBUG βρηκα scoped package (Jelly path):", parts[0], parts[1]) #debug print για να δούμε τα μέρη του scoped package
                     pkg_found = f"{parts[0]}/{parts[1]}" #κρατάμε το πρώτο μέρος + το δεύτερο μέρος 
             
         if pkg_found:
@@ -89,12 +89,63 @@ def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_na
     print(f"Ποσοστό Χρήσης: {percentage:.2f}%")
     print(f"Αχρησιμοποίητα πακέτα: {total_count + 1 - final_reachable_count}")
 
+
+def calculate_reachability_files(analysis_dir, jelly_json_path):
+    # 1. Καταμέτρηση ΟΛΩΝ των αρχείων στο δίσκο
+    all_physical_files = set()
+    node_modules_path = os.path.join(analysis_dir, "node_modules")
+    
+    if not os.path.exists(node_modules_path):
+        print(f"Σφάλμα: Δεν βρέθηκε ο φάκελος {node_modules_path}")
+        return
+
+    for root, dirs, files in os.walk(node_modules_path):
+        for file in files:
+            if file.endswith(('.js', '.json', '.node', '.mjs', '.cjs')):
+                full_path = os.path.join(root, file)
+                # Σχετικό path ως προς το analysis_dir (π.χ. node_modules/sharp/...)
+                rel_path = os.path.relpath(full_path, analysis_dir).replace('\\', '/')
+                all_physical_files.add(rel_path)
+
+    # 2. Φόρτωση από Jelly
+    try:
+        with open(jelly_json_path, 'r', encoding='utf-8') as f:
+            jelly_data = json.load(f)
+    except FileNotFoundError:
+        return
+
+    reachable_files = set()
+    for name in jelly_data.get('files', []):
+        clean_name = name.replace('\\', '/')
+        # Ταύτιση Jelly path με Physical path (endswith trick)
+        found_match = False
+        for phys_f in all_physical_files:
+            if phys_f.endswith(clean_name):
+                reachable_files.add(phys_f)
+                found_match = True
+                break
+        if not found_match:
+             # Αν το Jelly έχει ήδη το σωστό path
+             if clean_name in all_physical_files:
+                 reachable_files.add(clean_name)
+
+    total_count = len(all_physical_files)
+    reachable_count = len(reachable_files) # Ήδη κάναμε το φιλτράρισμα παραπάνω
+    percentage = (reachable_count / total_count * 100) if total_count > 0 else 0
+
+    print(f"\n Στατιστικά Ανάλυσης Αρχείων: {os.path.basename(jelly_json_path)}")
+    print(f"Συνολικά αρχεία στο node_modules: {total_count}")
+    print(f"Πραγματικά προσβάσιμα αρχεία (Reachable): {reachable_count}")
+    print(f"Ποσοστό Χρήσης Αρχείων: {percentage:.2f}%")
+
 # εκτέλεση
-pkg = "sharp"
-ver = "0.34.4"
+pkg = "sqlite3"
+ver = "6.0.1"
+
+analysis_folder = f"static/analysis_{pkg}_{ver}"
 
 lock_path = f"static/analysis_{pkg}_{ver}/package-lock.json"
 jelly_path = f"static/analysis_{pkg}_{ver}/{pkg}.json"
 
-# Περνάμε και το όνομα του root πακέτου ως τρίτο όρισμα
 calculate_reachability_packages(lock_path, jelly_path, pkg)
+calculate_reachability_files(analysis_folder, jelly_path)
