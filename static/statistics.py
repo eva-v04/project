@@ -1,5 +1,6 @@
 import json
 import os
+import re #regex για επίπεδο συναρτήσεων
 
 def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_name):
     # Φόρτωση του package-lock.json
@@ -82,16 +83,16 @@ def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_na
     percentage = (final_reachable_count / (total_count + 1) * 100) if total_count > 0 else 0
 
     # εκτύπωση Αποτελεσμάτων
-    print(f"\n Στατιστικά Ανάλυσης: {os.path.basename(jelly_json_path)}")
-    print(f"Τα πακέτα που εντόπισε το Jelly είναι: {reachable_packages}")
-    print(f"Συνολικά εγκατεστημένα πακέτα (Lockfile): {total_count}")
+    print(f"\n Στατιστικά Ανάλυσης Πακέτων: {os.path.basename(jelly_json_path)}")
+    print(f"Τα πακέτα που εντοπίστηκαν είναι: {reachable_packages}")
+    print(f"Συνολικά εγκατεστημένα πακέτα: {total_count}")
     print(f"Πραγματικά προσβάσιμα πακέτα (Reachable): {final_reachable_count}")
     print(f"Ποσοστό Χρήσης: {percentage:.2f}%")
-    print(f"Αχρησιμοποίητα πακέτα: {total_count + 1 - final_reachable_count}")
+    print(f"Αχρησιμοποίητα πακέτα: {total_count + 1 - final_reachable_count}") #+1 για το root πακέτο
 
 
 def calculate_reachability_files(analysis_dir, jelly_json_path):
-    # 1. Καταμέτρηση ΟΛΩΝ των αρχείων στο δίσκο
+    # Καταμέτρηση ΟΛΩΝ των αρχείων 
     all_physical_files = set()
     node_modules_path = os.path.join(analysis_dir, "node_modules")
     
@@ -107,7 +108,7 @@ def calculate_reachability_files(analysis_dir, jelly_json_path):
                 rel_path = os.path.relpath(full_path, analysis_dir).replace('\\', '/')
                 all_physical_files.add(rel_path)
 
-    # 2. Φόρτωση από Jelly
+    # Φόρτωση από Jelly
     try:
         with open(jelly_json_path, 'r', encoding='utf-8') as f:
             jelly_data = json.load(f)
@@ -117,7 +118,7 @@ def calculate_reachability_files(analysis_dir, jelly_json_path):
     reachable_files = set()
     for name in jelly_data.get('files', []):
         clean_name = name.replace('\\', '/')
-        # Ταύτιση Jelly path με Physical path (endswith trick)
+        # Ταύτιση Jelly path με Physical path (endswith)
         found_match = False
         for phys_f in all_physical_files:
             if phys_f.endswith(clean_name):
@@ -130,13 +131,75 @@ def calculate_reachability_files(analysis_dir, jelly_json_path):
                  reachable_files.add(clean_name)
 
     total_count = len(all_physical_files)
-    reachable_count = len(reachable_files) # Ήδη κάναμε το φιλτράρισμα παραπάνω
+    reachable_count = len(reachable_files) 
     percentage = (reachable_count / total_count * 100) if total_count > 0 else 0
 
     print(f"\n Στατιστικά Ανάλυσης Αρχείων: {os.path.basename(jelly_json_path)}")
     print(f"Συνολικά αρχεία στο node_modules: {total_count}")
     print(f"Πραγματικά προσβάσιμα αρχεία (Reachable): {reachable_count}")
     print(f"Ποσοστό Χρήσης Αρχείων: {percentage:.2f}%")
+    print(f"Αχρησιμοποίητα αρχεία: {total_count - reachable_count}")
+
+
+def count_functions_in_file(file_path):
+    """
+    Χρησιμοποιεί Regex για να μετρήσει ορισμούς συναρτήσεων σε ένα αρχείο JS.
+    """
+    total = 0
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # 1. Κανονικές συναρτήσεις: function name() ή function()
+            # 2. Arrow functions: (args) => { ... }
+            # 3. Μέθοδοι κλάσεων: name(args) { ... }
+            patterns = [
+                r'\bfunction\s*[\w$]*\s*\(', # function declarations
+                r'=\s*\([^)]*\)\s*=>',       # arrow functions
+                r'\b[\w$]+\s*\([^)]*\)\s*\{'  # class methods / object shorthand
+            ]
+            for pattern in patterns:
+                matches = re.findall(pattern, content)
+                total += len(matches)
+    except Exception:
+        pass # Αγνοούμε αρχεία που δεν διαβάζονται (π.χ. binary)
+    return total
+
+
+def calculate_reachability_functions(analysis_dir, jelly_json_path):
+    # Καταμέτρηση ΟΛΩΝ των συναρτήσεων που υπάρχουν στο node_modules
+    total_functions_in_disk = 0
+    node_modules_path = os.path.join(analysis_dir, "node_modules")
+    
+    if not os.path.exists(node_modules_path):
+        print("Σφάλμα: Δεν βρέθηκε ο φάκελος node_modules")
+        return
+
+    print("Σάρωση αρχείων για καταμέτρηση συνολικών συναρτήσεων (μπορεί να πάρει λίγη ώρα)...")
+    for root, dirs, files in os.walk(node_modules_path):
+        for file in files:
+            if file.endswith(('.js', '.mjs', '.cjs')):
+                full_path = os.path.join(root, file)
+                total_functions_in_disk += count_functions_in_file(full_path)
+
+    # Φόρτωση Προσβάσιμων (Reachable) συναρτήσεων από το Jelly
+    try:
+        with open(jelly_json_path, 'r', encoding='utf-8') as f:
+            jelly_data = json.load(f)
+    except FileNotFoundError:
+        return
+
+    # Το Jelly έχει έτοιμο το πλήθος των συναρτήσεων στο κλειδί "functions"
+    functions_dict = jelly_data.get('functions', {})
+    reachable_functions_count = len(functions_dict)
+
+    # Υπολογισμοί
+    percentage = (reachable_functions_count / total_functions_in_disk * 100) if total_functions_in_disk > 0 else 0
+
+    print(f"\nΣτατιστικά Ανάλυσης Συναρτήσεων: {os.path.basename(jelly_json_path)}")
+    print(f"Συνολικές συναρτήσεις στον κώδικα (στατική εκτίμηση): {total_functions_in_disk}")
+    print(f"Πραγματικά προσβάσιμες συναρτήσεις (από Jelly): {reachable_functions_count}")
+    print(f"Ποσοστό Χρήσης Συναρτήσεων: {percentage:.2f}%")
+    print(f"Αχρησιμοποίητες συναρτήσεις: {total_functions_in_disk - reachable_functions_count}")
 
 # εκτέλεση
 pkg = "sqlite3"
@@ -149,3 +212,4 @@ jelly_path = f"static/analysis_{pkg}_{ver}/{pkg}.json"
 
 calculate_reachability_packages(lock_path, jelly_path, pkg)
 calculate_reachability_files(analysis_folder, jelly_path)
+calculate_reachability_functions(analysis_folder, jelly_path)
