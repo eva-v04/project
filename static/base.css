@@ -363,3 +363,126 @@ input[type="password"] {
     background: var(--primary);
     color: white;
 }
+
+/* Γενική Βελτίωση */
+body {
+    background-color: #f8f9fa; /* Ελαφρύ φόντο για light mode */
+    transition: background-color 0.3s ease;
+}
+
+/* Glass Card Style για τα Metrics */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--primary, #0d6efd);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card h5 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+
+.stat-card p {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+/* Πίνακας */
+.table-container {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-top: 20px;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table thead {
+    background-color: #f1f3f5;
+}
+
+.table th {
+    padding: 15px;
+    font-weight: 600;
+    border: none;
+}
+
+.table td {
+    padding: 15px;
+    vertical-align: middle;
+}
+
+/* Dark Mode Προσαρμογές */
+body:not(.light-mode) {
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+body:not(.light-mode) .stat-card, 
+body:not(.light-mode) .table-container {
+    background: #16213e;
+    color: white;
+}
+
+body:not(.light-mode) .table thead {
+    background-color: #0f3460;
+    color: #00d2ff;
+}
+
+.btn-download-custom {
+    background: rgba(0, 210, 255, 0.1); /* Απαλό μπλε ημιδιαφανές */
+    border: 1px solid #00d2ff;
+    color: #00d2ff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-download-custom:hover {
+    background: #00d2ff;
+    color: #1a1a2e; /* Το σκούρο χρώμα του φόντου σου */
+    box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #6c757d;
+    content: "/";
+}
+
+
+/* Πρόσθεσε αυτό στο base.css */
+.jelly-iframe-container {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+    background: var(--bg-card); /* Ώστε να φαίνεται το blur από πίσω */
+}
+
+iframe {
+    background: transparent !important; /* Επιτρέπει στο background του container να φανεί */
+}

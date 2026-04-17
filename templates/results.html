@@ -52,16 +52,25 @@
         </div>
     </div>
     </nav>
-		<h1>Αποτελέσματα Ανάλυσης για το πακέτο: {{ package_name }}</h1>
-		<a href="{% url 'callgraph' %}">← Νέα Ανάλυση</a>
+		<div class="d-flex justify-content-between align-items-end mb-4 flex-wrap">
+    <div>
+        <h1 class="main-title text-start mb-0">Analysis for: <span class="text-primary">{{ package_name }}</span></h1>
+        <p class="text-secondary small mb-0">Version: {{ package_version|default:"latest" }}</p>
+    </div>
+
+    <div class="mt-3 mt-md-0">
         <a href="{% static 'analysis_' %}{{ package_name }}_{{ package_version }}/{{ package_name }}.json" 
-        download="{{ package_name }}_analysis.json" 
-        class="btn btn-outline-info">
-        <i class="fa-solid fa-download me-2"></i> Download JSON Analysis
-    </a>
+           download="{{ package_name }}_analysis.json" 
+           class="btn btn-download-custom">
+            <i class="fa-solid fa-file-export me-2"></i>Export JSON
+        </a>
+    </div>
+</div>
 		<hr>
-		<iframe src="{{ graph_url }}" width="100%" height="600px"></iframe>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<div class="jelly-iframe-container mt-4">
+    <iframe src="{{ graph_url }}" width="100%" height="700px" frameborder="0"></iframe>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
     const btn = document.getElementById('theme-toggle');
@@ -88,5 +97,86 @@
     }
 </script>
 <script src="{% static 'notifications.js' %}"></script>
+
+
+<script>
+const iframe = document.querySelector('iframe');
+
+function updateIframeStyles() {
+    try {
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        const isLight = document.body.classList.contains('light-mode');
+        
+        // Καθορισμός χρωμάτων
+        const bgColor = isLight ? '#f1f5f9' : '#0f172a'; 
+        const textColor = isLight ? '#000000' : '#ffffff'; 
+        const nodeColor = isLight ? '#ffffff' : '#1e293b';
+
+        const styleTag = iframeDoc.createElement('style');
+        styleTag.innerHTML = `
+            /* 1. Επιβολή φόντου στο body και στο container του visualizer */
+            body, #container, .visualizer-root { 
+                background-color: ${bgColor} !important; 
+                color: ${textColor} !important; 
+            }
+
+            /* 2. Επιβολή χρώματος σε ΟΛΑ τα κείμενα (SVG και HTML) */
+            text, tspan, span, div, label, p, h1, h2, h3 { 
+                fill: ${textColor} !important; 
+                color: ${textColor} !important; 
+            }
+
+            /* 3. Διόρθωση των κουμπιών και των input (Collapse, Expand, κλπ) */
+            button, input, select {
+                background-color: rgba(255, 255, 255, 0.1) !important;
+                color: ${textColor} !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                padding: 4px 8px !important;
+                margin: 2px !important;
+                cursor: pointer;
+            }
+            
+            button:hover {
+                background-color: rgba(255, 255, 255, 0.2) !important;
+            }
+
+            /* Διόρθωση των γραμμών και των σχημάτων του γραφήματος */
+            path, line, polyline { 
+                stroke: ${isLight ? '#334155' : '#94a3b8'} !important; 
+            }
+            
+            rect, circle, ellipse {
+                stroke: ${isLight ? '#334155' : '#38bdf8'} !important;
+                fill: ${nodeColor} !important;
+            }
+
+            /* Διόρθωση για το "canvas" label που φαίνεται μαύρο στην εικόνα */
+            .label, .node-label {
+                fill: ${textColor} !important;
+                color: ${textColor} !important;
+            }
+        `;
+        
+        const existingStyle = iframeDoc.querySelector('style');
+        if (existingStyle) existingStyle.remove();
+        iframeDoc.head.appendChild(styleTag);
+
+    } catch (e) {
+        console.warn("Cross-origin access blocked or iframe not ready.");
+    }
+}
+
+// Εκτέλεση όταν φορτώσει
+iframe.addEventListener('load', updateIframeStyles);
+
+// Σύνδεση με το δικό σου Theme Toggle κουμπί
+const themeBtn = document.getElementById('theme-toggle');
+if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+        // Χρειάζεται μια μικρή καθυστέρηση για να προλάβει το body να πάρει την κλάση light-mode
+        setTimeout(updateIframeStyles, 50);
+    });
+}
+</script>
     </body>
 </html>
