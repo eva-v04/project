@@ -24,6 +24,7 @@ urlpatterns = [
     path('callgraph/', views.callgraph, name='callgraph'),
     path('start-jelly-ajax/', views.start_jelly_ajax, name='start_jelly_ajax'),
     path('results/<int:analysis_id>/', views.results, name='results'),
+    path('statistics/<int:analysis_id>/', views.statistics, name='statistics'),
     path('gasket/', views.gasket, name='gasket'),
     path('start-gasket-ajax/', views.start_gasket_ajax, name='start_gasket_ajax'),
     path('results_gasket/<int:analysis_id>/', views.gasket_results, name='gasket_results'),

@@ -486,3 +486,24 @@ body:not(.light-mode) .table thead {
 iframe {
     background: transparent !important; /* Επιτρέπει στο background του container να φανεί */
 }
+
+.card-icon {
+    font-size: 2rem;
+    display: block;
+}
+
+.progress {
+    border-radius: 50px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 1s ease-in-out; /* Εφέ γεμίσματος κατά το φόρτωμα */
+}
+
+/* Εφέ στο hover για τις κάρτες στατιστικών */
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px 0 rgba(0, 210, 255, 0.2);
+    border-color: var(--primary);
+}

@@ -56,6 +56,11 @@
     <div>
         <h1 class="main-title text-start mb-0">Analysis for: <span class="text-primary">{{ package_name }}</span></h1>
         <p class="text-secondary small mb-0">Version: {{ package_version|default:"latest" }}</p>
+        {% if analysis_id %}
+        <a href="{% url 'statistics' analysis_id=analysis_id %}" class="btn btn-link text-info p-0 mt-1">
+            View Statistics
+        </a>
+        {% endif %}
     </div>
 
     <div class="mt-3 mt-md-0">

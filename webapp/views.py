@@ -19,6 +19,8 @@ from django.tasks import task
 import json
 from django.http import JsonResponse
 
+from .statistics import generate_full_stats
+
 def homepage(request):
     return render(request, 'homepage.html')
 
@@ -114,6 +116,7 @@ def results(request, analysis_id):
         'package_version': version,
         'graph_url': graph_url,
         'date': analysis.date,
+        'analysis_id': analysis.id
     }
     return render(request, 'results.html', context)
 
@@ -451,3 +454,20 @@ def download_results(request, analysis_id):
             return response
     else:
         return HttpResponse("File not found.", status=404)
+
+
+def statistics(request, analysis_id):
+    analysis = Analyses.objects.get(id=analysis_id)
+    pkg = analysis.package_name
+    ver = analysis.package_version
+
+    stats_data = generate_full_stats(pkg, ver)
+    
+    if stats_data is None:
+        stats_data = {}
+
+    return render(request, 'statistics.html', {
+        'stats': stats_data,
+        'package_name': pkg,
+        'analysis_id': analysis_id
+    })

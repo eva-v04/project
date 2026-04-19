@@ -2,6 +2,14 @@ import json
 import os
 import re #regex για επίπεδο συναρτήσεων
 
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+#def generate_full_stats(pkg, ver):
+    # Χρησιμοποιούμε το BASE_DIR για να βρούμε σίγουρα τον φάκελο static
+    #analysis_folder = os.path.join(BASE_DIR, 'static', f"analysis_{pkg}_{ver}")
+
+
 def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_name):
     # Φόρτωση του package-lock.json
     try:
@@ -78,10 +86,15 @@ def calculate_reachability_packages(lock_file_path, jelly_json_path, root_pkg_na
 
     total_count = len(all_packages)
     final_reachable_count = len(final_reachable)
-    
     # Ποσοστό του συνόλου των εγκατεστημένων + το root πακέτο
     percentage = (final_reachable_count / (total_count + 1) * 100) if total_count > 0 else 0
 
+    return {
+        "total_packages": total_count + 1,
+        "reachable_packages": final_reachable_count,
+        "package_percentage": round(percentage, 2),
+        "unused_packages": (total_count + 1) - final_reachable_count
+    }
     # εκτύπωση Αποτελεσμάτων
     print(f"\n Στατιστικά Ανάλυσης Πακέτων: {os.path.basename(jelly_json_path)}")
     print(f"Τα πακέτα που εντοπίστηκαν είναι: {reachable_packages}")
@@ -134,6 +147,13 @@ def calculate_reachability_files(analysis_dir, jelly_json_path):
     reachable_count = len(reachable_files) 
     percentage = (reachable_count / total_count * 100) if total_count > 0 else 0
 
+    return {
+        "total_files": total_count,
+        "reachable_files": reachable_count,
+        "file_percentage": round(percentage, 2),
+        "unused_files": total_count - reachable_count
+    }
+
     print(f"\n Στατιστικά Ανάλυσης Αρχείων: {os.path.basename(jelly_json_path)}")
     print(f"Συνολικά αρχεία στο node_modules: {total_count}")
     print(f"Πραγματικά προσβάσιμα αρχεία (Reachable): {reachable_count}")
@@ -174,7 +194,7 @@ def calculate_reachability_functions(analysis_dir, jelly_json_path):
         print("Σφάλμα: Δεν βρέθηκε ο φάκελος node_modules")
         return
 
-    print("Σάρωση αρχείων για καταμέτρηση συνολικών συναρτήσεων (μπορεί να πάρει λίγη ώρα)...")
+    #print("Σάρωση αρχείων για καταμέτρηση συνολικών συναρτήσεων")
     for root, dirs, files in os.walk(node_modules_path):
         for file in files:
             if file.endswith(('.js', '.mjs', '.cjs')):
@@ -195,21 +215,52 @@ def calculate_reachability_functions(analysis_dir, jelly_json_path):
     # Υπολογισμοί
     percentage = (reachable_functions_count / total_functions_in_disk * 100) if total_functions_in_disk > 0 else 0
 
+    return {
+        "total_functions": total_functions_in_disk,
+        "reachable_functions": reachable_functions_count,
+        "function_percentage": round(percentage, 2),
+        "unused_functions": total_functions_in_disk - reachable_functions_count
+    }
     print(f"\nΣτατιστικά Ανάλυσης Συναρτήσεων: {os.path.basename(jelly_json_path)}")
     print(f"Συνολικές συναρτήσεις στον κώδικα (στατική εκτίμηση): {total_functions_in_disk}")
     print(f"Πραγματικά προσβάσιμες συναρτήσεις (από Jelly): {reachable_functions_count}")
     print(f"Ποσοστό Χρήσης Συναρτήσεων: {percentage:.2f}%")
     print(f"Αχρησιμοποίητες συναρτήσεις: {total_functions_in_disk - reachable_functions_count}")
 
+
+def generate_full_stats(pkg, ver):
+    analysis_folder = os.path.join(BASE_DIR, 'static', f"analysis_{pkg}_{ver}")
+    lock_path = os.path.join(analysis_folder, "package-lock.json")
+    jelly_path = os.path.join(analysis_folder, f"{pkg}.json")
+
+    if not os.path.exists(analysis_folder):
+        print(f"Error: Folder {analysis_folder} not found!")
+        return None
+        
+    # Συλλογή όλων των αποτελεσμάτων σε ένα dictionary
+    full_report = {
+        "package_stats": calculate_reachability_packages(lock_path, jelly_path, pkg),
+        "file_stats": calculate_reachability_files(analysis_folder, jelly_path),
+        "function_stats": calculate_reachability_functions(analysis_folder, jelly_path)
+    }
+
+    # Αποθήκευση σε stats.json
+    output_path = os.path.join(analysis_folder, 'stats.json')
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(full_report, f, indent=4, ensure_ascii=False)
+    
+    return full_report
+
+
 # εκτέλεση
-pkg = "sqlite3"
-ver = "6.0.1"
+#pkg = "sqlite3"
+#ver = "6.0.1"
 
-analysis_folder = f"static/analysis_{pkg}_{ver}"
+#analysis_folder = f"static/analysis_{pkg}_{ver}"
 
-lock_path = f"static/analysis_{pkg}_{ver}/package-lock.json"
-jelly_path = f"static/analysis_{pkg}_{ver}/{pkg}.json"
+#lock_path = f"static/analysis_{pkg}_{ver}/package-lock.json"
+#jelly_path = f"static/analysis_{pkg}_{ver}/{pkg}.json"
 
-calculate_reachability_packages(lock_path, jelly_path, pkg)
-calculate_reachability_files(analysis_folder, jelly_path)
-calculate_reachability_functions(analysis_folder, jelly_path)
+#calculate_reachability_packages(lock_path, jelly_path, pkg)
+#calculate_reachability_files(analysis_folder, jelly_path)
+#calculate_reachability_functions(analysis_folder, jelly_path)
