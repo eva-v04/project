@@ -8,22 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
-    <style>
-    /* Εξασφαλίζουμε ότι τα γράμματα μέσα στις κάρτες είναι πάντα ορατά στο Dark Mode */
-    .glass-card .text-muted {
-        color: rgba(255, 255, 255, 0.7) !important; /* Ανοιχτό γκρι/λευκό */
-    }
     
-    .glass-card span, .glass-card p {
-        color: #f8fafc !important; /* Σχεδόν λευκό */
-    }
-
-    /* Αν οι τίτλοι των καρτών (h5) είναι πολύ σκούροι */
-    .glass-card h5 {
-        font-weight: 600;
-        letter-spacing: 0.5px;
-    }
-</style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
@@ -71,7 +56,7 @@
         </div>
     </div>
     </nav>
-    
+
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-5">
             <div>
@@ -83,66 +68,116 @@
             <a href="{% url 'results' analysis_id=analysis_id %}" class="btn btn-main btn-sm">
                 <i class="fas fa-arrow-left me-2"></i>Back to Graph
             </a>
+            <a href="{% static 'analysis_' %}{{ package_name }}_{{ package_version }}/stats.json" 
+           download="{{ package_name }}_analysis.json" 
+           class="btn btn-download-custom">
+            <i class="fa-solid fa-file-export me-2"></i>Export stats.json
+        </a>
         </div>
 
-        <div class="row g-4 mb-5">
+
+        <h4 class="level-title">1. Package-Level Analysis (Dependencies)</h4>
+        <div class="row g-4">
             <div class="col-md-4">
-                <div class="glass-card text-center p-4 h-100">
-                    <i class="fas fa-code mb-3 card-icon"></i>
-                    <div class="text-muted small">Total Functions</div>
-                    <div class="h2 mb-0 text-primary">{{ stats.function_stats.total_functions }}</div>
+                <div class="glass-card p-4 text-center">
+                    <p class="stat-label">Total Packages</p>
+                    <h2 class="stat-value text-info">{{ stats.package_stats.total_packages }}</h2>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="glass-card text-center p-4 h-100">
-                    <i class="fas fa-bullseye mb-3 card-icon" style="color: var(--accent);"></i>
-                    <div class="text-muted small">Reachable Functions</div>
-                    <div class="h2 mb-0" style="color: var(--accent);">{{ stats.function_stats.reachable_functions }}</div>
+                <div class="glass-card p-4 text-center border-bottom border-success">
+                    <p class="stat-label">Reachable</p>
+                    <h2 class="stat-value text-success">{{ stats.package_stats.reachable_packages }}</h2>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="glass-card text-center p-4 h-100">
-                    <i class="fas fa-percentage mb-3 card-icon text-info"></i>
-                    <div class="text-muted small">Function Reachability</div>
-                    <div class="h2 mb-3 text-info">{{ stats.function_stats.function_percentage }}%</div>
-                    <div class="progress" style="height: 10px; background: rgba(255,255,255,0.1);">
-                        <div class="progress-bar bg-info" role="progressbar" 
-                             style="width: {{ stats.function_stats.function_percentage }}%"></div>
-                    </div>
+                <div class="glass-card p-4 text-center">
+                    <p class="stat-label">Percentage</p>
+                    <h2 class="stat-value text-primary">{{ stats.package_stats.package_percentage }}%</h2>
                 </div>
             </div>
         </div>
 
-        <div class="row g-4 mb-5">
-            <div class="col-md-6">
-                <div class="glass-card p-4">
-                    <h5 class="mb-4 text-primary"><i class="fas fa-box me-2"></i>Package-Level</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Used Packages:</span>
-                        <span class="fw-bold">{{ stats.package_stats.reachable_packages }} / {{ stats.package_stats.total_packages }}</span>
-                    </div>
-                    <div class="progress mb-4" style="height: 8px; background: rgba(255,255,255,0.1);">
-                        <div class="progress-bar bg-primary" style="width: {{ stats.package_stats.package_percentage }}%"></div>
-                    </div>
-                    <p class="text-muted small mb-0">Unused Packages: {{ stats.package_stats.unused_packages }}</p>
+        <div class="glass-card p-4 text-center">
+            <h5 class="text-primary mb-3">Package Chart</h5>
+            <img src="data:image/png;base64,{{ chart_packages }}" alt="Packages Chart" class="img-fluid">        </div>
+
+        <h4 class="level-title">2. File-Level Analysis</h4>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="glass-card p-4 text-center">
+                    <p class="stat-label">Total Files</p>
+                    <h2 class="stat-value text-info">{{ stats.file_stats.total_files }}</h2>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="glass-card p-4">
-                    <h5 class="mb-4 text-accent"><i class="fas fa-file-code me-2"></i>File-Level</h5>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Used Files:</span>
-                        <span class="fw-bold">{{ stats.file_stats.reachable_files }} / {{ stats.file_stats.total_files }}</span>
-                    </div>
-                    <div class="progress mb-4" style="height: 8px; background: rgba(255,255,255,0.1);">
-                        <div class="progress-bar bg-accent" style="width: {{ stats.file_stats.file_percentage }}%"></div>
-                    </div>
-                    <p class="text-muted small mb-0">Unused Files: {{ stats.file_stats.unused_files }}</p>
+            <div class="col-md-4">
+                <div class="glass-card p-4 text-center border-bottom border-success">
+                    <p class="stat-label">Reachable</p>
+                    <h2 class="stat-value text-success">{{ stats.file_stats.reachable_files }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 text-center">
+                    <p class="stat-label">Percentage</p>
+                    <h2 class="stat-value text-accent">{{ stats.file_stats.file_percentage }}%</h2>
                 </div>
             </div>
         </div>
+
+        <div class="glass-card p-4 text-center">
+            <h5 class="text-primary mb-3">File Chart</h5>
+            <img src="data:image/png;base64,{{ chart_files }}" alt="Files Chart" class="img-fluid">        </div>
+
+        <h4 class="level-title">3. Function-Level Analysis</h4>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="glass-card p-4 text-center">
+                    <p class="stat-label">Total Functions</p>
+                    <h2 class="stat-value text-info">{{ stats.function_stats.total_functions }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 text-center border-bottom border-success">
+                    <p class="stat-label">Reachable</p>
+                    <h2 class="stat-value text-success">{{ stats.function_stats.reachable_functions }}</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 text-center">
+                    <p class="stat-label">Percentage</p>
+                    <h2 class="stat-value text-info">{{ stats.function_stats.function_percentage }}%</h2>
+                </div>
+            </div>
+            <div class="col-12 mt-3"></div>
+        </div>
+
+        <div class="glass-card p-4 text-center">
+            <h5 class="text-primary mb-3">Function Chart</h5>
+            <img src="data:image/png;base64,{{ chart_functions }}" alt="Functions Chart" class="img-fluid">        </div>
+
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeBtn.querySelector('i');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+    <script src="{% static 'notifications.js' %}"></script>
 </body>
 </html>

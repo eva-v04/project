@@ -1,0 +1,20 @@
+{
+    "package_stats": {
+        "total_packages": 38,
+        "reachable_packages": 1,
+        "package_percentage": 2.63,
+        "unused_packages": 37
+    },
+    "file_stats": {
+        "total_files": 221,
+        "reachable_files": 13,
+        "file_percentage": 5.88,
+        "unused_files": 208
+    },
+    "function_stats": {
+        "total_functions": 3234,
+        "reachable_functions": 164,
+        "function_percentage": 5.07,
+        "unused_functions": 3070
+    }
+}

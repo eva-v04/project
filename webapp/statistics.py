@@ -1,6 +1,11 @@
 import json
 import os
 import re #regex για επίπεδο συναρτήσεων
+import matplotlib
+import matplotlib.pyplot as plt
+matplotlib.use('Agg')
+import io
+import base64
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -251,6 +256,32 @@ def generate_full_stats(pkg, ver):
     
     return full_report
 
+
+
+def get_matplotlib_graph(reachable, total):
+
+    plt.clf() # Καθαρίζει το προηγούμενο γράφημα
+    if total == 0: return ""
+
+    # Δεδομένα
+    labels = ['Used', 'Unused']
+    sizes = [reachable, total - reachable]
+    colors = ['#00d2ff', '#1e293b']
+
+    # Δημιουργία Plot
+    fig, ax = plt.subplots(figsize=(5, 4), facecolor='none')
+    ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors, textprops={'color':"white"})
+    
+    # Μετατροπή σε εικόνα στη μνήμη
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', transparent=True)
+    buf.seek(0)
+    
+    # Μετατροπή σε Base64 string
+    string = base64.b64encode(buf.read())
+    uri = string.decode('utf-8')
+    plt.close(fig)
+    return uri
 
 # εκτέλεση
 #pkg = "sqlite3"

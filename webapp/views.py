@@ -20,6 +20,7 @@ import json
 from django.http import JsonResponse
 
 from .statistics import generate_full_stats
+from .statistics import generate_full_stats, get_matplotlib_graph
 
 def homepage(request):
     return render(request, 'homepage.html')
@@ -459,15 +460,37 @@ def download_results(request, analysis_id):
 def statistics(request, analysis_id):
     analysis = Analyses.objects.get(id=analysis_id)
     pkg = analysis.package_name
-    ver = analysis.package_version
+    version = analysis.package_version
 
-    stats_data = generate_full_stats(pkg, ver)
-    
+    stats_data = generate_full_stats(pkg, version)
+
     if stats_data is None:
         stats_data = {}
+
+    # Διάγραμμα για Functions
+    chart_functions = get_matplotlib_graph(
+        stats_data['function_stats']['reachable_functions'], 
+        stats_data['function_stats']['total_functions']
+    )
+
+    #Διάγραμμα για Files
+    chart_files = get_matplotlib_graph(
+        stats_data['file_stats']['reachable_files'], 
+        stats_data['file_stats']['total_files']
+    )
+
+    #Διάγραμμα για Packages
+    chart_packages = get_matplotlib_graph(
+        stats_data['package_stats']['reachable_packages'], 
+        stats_data['package_stats']['total_packages']
+    )
 
     return render(request, 'statistics.html', {
         'stats': stats_data,
         'package_name': pkg,
+        'package_version': version,
+        'chart_functions': chart_functions,
+        'chart_files': chart_files,
+        'chart_packages': chart_packages,
         'analysis_id': analysis_id
     })
