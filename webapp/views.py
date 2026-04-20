@@ -20,7 +20,8 @@ import json
 from django.http import JsonResponse
 
 from .statistics import generate_full_stats
-from .statistics import generate_full_stats, get_matplotlib_graph
+from .statistics import generate_full_stats, get_matplotlib_graph, get_matplotlib_bar_graph
+
 
 def homepage(request):
     return render(request, 'homepage.html')
@@ -467,30 +468,25 @@ def statistics(request, analysis_id):
     if stats_data is None:
         stats_data = {}
 
-    # Διάγραμμα για Functions
-    chart_functions = get_matplotlib_graph(
-        stats_data['function_stats']['reachable_functions'], 
-        stats_data['function_stats']['total_functions']
-    )
+    stats_f = stats_data.get('function_stats', {})
+    stats_fi = stats_data.get('file_stats', {})
+    stats_p = stats_data.get('package_stats', {})
 
-    #Διάγραμμα για Files
-    chart_files = get_matplotlib_graph(
-        stats_data['file_stats']['reachable_files'], 
-        stats_data['file_stats']['total_files']
-    )
-
-    #Διάγραμμα για Packages
-    chart_packages = get_matplotlib_graph(
-        stats_data['package_stats']['reachable_packages'], 
-        stats_data['package_stats']['total_packages']
-    )
-
-    return render(request, 'statistics.html', {
+    context = {
         'stats': stats_data,
         'package_name': pkg,
         'package_version': version,
-        'chart_functions': chart_functions,
-        'chart_files': chart_files,
-        'chart_packages': chart_packages,
-        'analysis_id': analysis_id
-    })
+        'analysis_id': analysis_id,
+        
+        # Pie Charts
+        'chart_functions': get_matplotlib_graph(stats_f.get('reachable_functions', 0), stats_f.get('total_functions', 0)),
+        'chart_files': get_matplotlib_graph(stats_fi.get('reachable_files', 0), stats_fi.get('total_files', 0)),
+        'chart_packages': get_matplotlib_graph(stats_p.get('reachable_packages', 0), stats_p.get('total_packages', 0)),
+        
+        # Bar Charts (Αν έχεις υλοποιήσει τη συνάρτηση get_matplotlib_bar_graph)
+        'bar_functions': get_matplotlib_bar_graph(stats_f.get('reachable_functions', 0), stats_f.get('total_functions', 0)),
+        'bar_files': get_matplotlib_bar_graph(stats_fi.get('reachable_files', 0), stats_fi.get('total_files', 0)),
+        'bar_packages': get_matplotlib_bar_graph(stats_p.get('reachable_packages', 0), stats_p.get('total_packages', 0)),
+    }
+    
+    return render(request, 'statistics.html', context)

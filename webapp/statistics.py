@@ -283,6 +283,29 @@ def get_matplotlib_graph(reachable, total):
     plt.close(fig)
     return uri
 
+
+def get_matplotlib_bar_graph(reachable, total):
+    plt.clf()
+    if total == 0: return ""
+    
+    unused = total - reachable
+    labels = ['Used', 'Unused']
+    values = [reachable, unused]
+    
+    fig, ax = plt.subplots(figsize=(5, 4), facecolor='none')
+    bars = ax.bar(labels, values, color=['#38bdf8', '#1e293b'])
+    
+    # Ρυθμίσεις για να φαίνεται όμορφα στο UI
+    ax.set_facecolor('none')
+    ax.tick_params(colors='blue')
+    for spine in ax.spines.values():
+        spine.set_edgecolor('blue')
+    
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png', transparent=True)
+    buf.seek(0)
+    return base64.b64encode(buf.read()).decode('utf-8')
+
 # εκτέλεση
 #pkg = "sqlite3"
 #ver = "6.0.1"
