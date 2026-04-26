@@ -507,3 +507,29 @@ iframe {
     box-shadow: 0 12px 40px 0 rgba(0, 210, 255, 0.2);
     border-color: var(--primary);
 }
+
+.custom-dropdown {
+    /* Χρήση των μεταβλητών που αλλάζουν ανάλογα με το theme */
+    background-color: var(--bg-card) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--glass-border) !important;
+    
+    /* Εφέ γυαλιού (Glassmorphism) */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Διόρθωση για τις επιλογές (options) μέσα στο μενού */
+.custom-dropdown option {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+/* Hover εφέ που ταιριάζει με το theme */
+.custom-dropdown:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25);
+}

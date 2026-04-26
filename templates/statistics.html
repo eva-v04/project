@@ -73,15 +73,17 @@
                 <a href="{% static 'analysis_' %}{{ package_name }}_{{ package_version }}/stats.json" 
                     download="{{ package_name }}_analysis.json" 
                     class="btn btn-download-custom btn-sm">
-                    <i class="fa-solid fa-file-export me-2"></i>Export JSON
+                    <i class="fa-solid fa-file-export me-2"></i>Export Statistics file
                 </a>
             </div>
         </div>
-        <div style="color: #2577db;" class="glass-card p-3 mb-4 d-flex align-items-center justify-content-between">
-            <span class="text-muted" style="color: #2577db;"><i class="fas fa-chart-pie me-2" style="color: #2577db;"></i >Select Visualization Type:</span>
-            <select id="chartTypeSelector" class="form-select w-25 bg-dark text-white border-primary">
-            <option value="pie">Pie Chart (Percentage)</option>
-            <option value="bar">Bar Chart (Quantity)</option>
+        <div class="glass-card p-3 mb-4 d-flex align-items-center justify-content-between">
+            <span class="chart-selector-label">
+                <i class="fas fa-chart-pie me-2"></i>Select Visualization Type:
+            </span>
+            <select id="chartTypeSelector" class="form-select form-select-sm custom-dropdown w-auto">
+                <option value="pie">Pie Chart (Percentage)</option>
+                <option value="bar">Bar Chart (Quantity)</option>
             </select>
         </div>
 
@@ -103,7 +105,7 @@
             <div class="col-md-4">
                 <div class="glass-card p-4 text-center">
                     <p class="stat-label">Percentage</p>
-                    <h2 class="stat-value text-primary">{{ stats.package_stats.package_percentage }}%</h2>
+                    <h2 class="stat-value text-primary">{{ stats.package_stats.percent }}%</h2>
                 </div>
             </div>
 
@@ -115,7 +117,7 @@
             </div>
     
             <div class="chart-container bar-view" style="display: none;">
-                <img src="data:image/png;base64,{{ bar_functions }}" class="img-fluid" alt="Bar Chart">
+                <img src="data:image/png;base64,{{ bar_packages }}" class="img-fluid" alt="Bar Chart">
             </div>
         </div>
     
@@ -136,7 +138,7 @@
             <div class="col-md-4">
                 <div class="glass-card p-4 text-center">
                     <p class="stat-label">Percentage</p>
-                    <h2 class="stat-value text-accent">{{ stats.file_stats.file_percentage }}%</h2>
+                    <h2 class="stat-value text-accent">{{ stats.file_stats.percent }}%</h2>
                 </div>
             </div>
         </div>
@@ -149,7 +151,7 @@
             </div>
     
             <div class="chart-container bar-view" style="display: none;">
-                <img src="data:image/png;base64,{{ bar_functions }}" class="img-fluid" alt="Bar Chart">
+                <img src="data:image/png;base64,{{ bar_files }}" class="img-fluid" alt="Bar Chart">
             </div>
         </div>
 
@@ -170,7 +172,7 @@
             <div class="col-md-4">
                 <div class="glass-card p-4 text-center">
                     <p class="stat-label">Percentage</p>
-                    <h2 class="stat-value text-info">{{ stats.function_stats.function_percentage }}%</h2>
+                    <h2 class="stat-value text-info">{{ stats.function_stats.percent }}%</h2>
                 </div>
             </div>
             <div class="col-12 mt-3"></div>
