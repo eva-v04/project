@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: "v2.x"
+
+      - name: Check Formatting
+        run: deno fmt --check
+
+      - name: Lint
+        run: deno lint
+
+      - name: Check
+        run: deno check src/ test/ scripts/ mod.ts
+
+  build-and-test:
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, ubuntu-24.04-arm, windows-2022, macos-14]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install Deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: "v2.x"
+
+      - name: Setup MSVC Dev Env
+        if: matrix.os == 'windows-2022'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Build sqlite3 (windows)
+        if: matrix.os == 'windows-2022'
+        env:
+          TARGET_ARCH: x86_64
+        run: deno task build
+
+      - name: Build sqlite3 (linux x86_64)
+        if: matrix.os == 'ubuntu-24.04'
+        env:
+          TARGET_ARCH: x86_64
+        run: deno task build
+
+      - name: Build sqlite3 (linux arm)
+        if: matrix.os == 'ubuntu-24.04-arm'
+        env:
+          TARGET_ARCH: aarch64
+        run: deno task build
+
+      - name: Build sqlite3 (macos-x86_64)
+        if: matrix.os == 'macos-14'
+        env:
+          TARGET_ARCH: x86_64
+          CC: clang -arch x86_64
+        run: deno task build
+
+      - name: Build sqlite3 (macos-aarch64)
+        if: matrix.os == 'macos-14'
+        env:
+          TARGET_ARCH: aarch64
+          CC: clang -arch arm64
+        run: deno task build
+
+      - name: Run Tests
+        env:
+          DENO_SQLITE_LOCAL: 1
+        run: deno task test
+
+      - name: Release
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: softprops/action-gh-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: "Release Draft"
+          draft: true
+          files: |
+            build/libsqlite3.so
+            build/libsqlite3_aarch64.so
+            build/libsqlite3.dylib
+            build/libsqlite3_aarch64.dylib
+            build/sqlite3.dll

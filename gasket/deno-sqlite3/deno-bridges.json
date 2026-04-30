@@ -1,0 +1,737 @@
+{
+  "objects_examined": 10844,
+  "callable_objects": 4507,
+  "foreign_callable_objects": 73,
+  "duration_sec": 26,
+  "count": 73,
+  "modules": [
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/@babel/parser/typings/babel-parser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/emoji-regex/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/escalade/sync/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/escalade/sync/index.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/escalade/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/escalade/index.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/string-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/get-caller-file/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/ansi-styles/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/ansi-regex/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/trace-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/resolve.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/by-source.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/binary-search.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/sort.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/strip-filename.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/src/flatten-map.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/sort.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/by-source.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/binary-search.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/by-source.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/resolve.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/resolve.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/binary-search.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/sort.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/resolve-uri/dist/types/resolve-uri.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/src/scopes.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/src/strings.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/src/sourcemap-codec.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/src/vlq.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/strings.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/strings.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/src/set-array.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/src/gen-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/set-array.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/gen-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/gen-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/types/set-array.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/dist/types/types.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/dist/types/gen-mapping.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/dist/types/set-array.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/@jridgewell/gen-mapping/dist/types/sourcemap-segment.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/get-east-asian-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/strip-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/wrap-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/picocolors/types.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/node_modules/picocolors/picocolors.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/trace-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/resolve.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/by-source.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/binary-search.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/sort.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/strip-filename.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/src/flatten-map.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/sort.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/by-source.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/binary-search.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/by-source.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/resolve.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/resolve.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/binary-search.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/sort.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/resolve-uri/dist/types/resolve-uri.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/src/scopes.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/src/strings.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/src/sourcemap-codec.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/src/vlq.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/strings.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/strings.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+trace-mapping@0.3.31/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/string-width@7.2.0/node_modules/emoji-regex/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/string-width@7.2.0/node_modules/string-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/string-width@7.2.0/node_modules/get-east-asian-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/string-width@7.2.0/node_modules/strip-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+parser@7.29.0/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+parser@7.29.0/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+parser@7.29.0/node_modules/@babel/parser/typings/babel-parser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+code-frame@7.29.0/node_modules/picocolors/types.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+code-frame@7.29.0/node_modules/picocolors/picocolors.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/src/scopes.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/src/strings.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/src/sourcemap-codec.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/src/vlq.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/strings.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/strings.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+sourcemap-codec@1.5.5/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/escalade@3.2.0/node_modules/escalade/sync/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/escalade@3.2.0/node_modules/escalade/sync/index.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/escalade@3.2.0/node_modules/escalade/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/escalade@3.2.0/node_modules/escalade/index.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/emoji-regex@10.6.0/node_modules/emoji-regex/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/get-caller-file@2.0.5/node_modules/get-caller-file/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/strip-ansi@7.2.0/node_modules/ansi-regex/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/strip-ansi@7.2.0/node_modules/strip-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+resolve-uri@3.1.2/node_modules/@jridgewell/resolve-uri/dist/types/resolve-uri.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@babel/parser/typings/babel-parser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/trace-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/resolve.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/by-source.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/binary-search.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/sort.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/strip-filename.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/src/flatten-map.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/sort.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/by-source.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/binary-search.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/by-source.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/resolve.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/resolve.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/binary-search.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/sort.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/src/set-array.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/src/gen-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/set-array.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/gen-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/gen-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/types/set-array.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/dist/types/types.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/dist/types/gen-mapping.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/dist/types/set-array.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+generator@7.29.1/node_modules/@jridgewell/gen-mapping/dist/types/sourcemap-segment.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/get-east-asian-width@1.5.0/node_modules/get-east-asian-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/cliui@9.0.1/node_modules/string-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/cliui@9.0.1/node_modules/strip-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/cliui@9.0.1/node_modules/wrap-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+traverse@7.29.0/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+traverse@7.29.0/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+traverse@7.29.0/node_modules/@babel/parser/typings/babel-parser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/ansi-styles@6.2.3/node_modules/ansi-styles/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/trace-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/resolve.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/by-source.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/binary-search.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/sort.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/strip-filename.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/src/flatten-map.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/sort.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/by-source.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/binary-search.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/by-source.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/resolve.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/resolve.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/strip-filename.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/binary-search.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/flatten-map.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/sort.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/trace-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/trace-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/src/scopes.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/src/strings.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/src/sourcemap-codec.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/src/vlq.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/vlq.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/scopes.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/strings.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/strings.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/sourcemap-codec/types/sourcemap-codec.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/src/sourcemap-segment.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/src/set-array.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/src/gen-mapping.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/src/types.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/set-array.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/types.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/gen-mapping.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/gen-mapping.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/types.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/sourcemap-segment.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/sourcemap-segment.d.cts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/types/set-array.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/dist/types/types.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/dist/types/gen-mapping.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/dist/types/set-array.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@jridgewell+gen-mapping@0.3.13/node_modules/@jridgewell/gen-mapping/dist/types/sourcemap-segment.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/escalade/sync/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/escalade/sync/index.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/escalade/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/escalade/index.d.mts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/string-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/get-caller-file/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/yargs@18.0.0/node_modules/yargs/browser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/ansi-regex@6.2.2/node_modules/ansi-regex/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+types@7.29.0/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+types@7.29.0/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/picocolors@1.1.1/node_modules/picocolors/types.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/picocolors@1.1.1/node_modules/picocolors/picocolors.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+template@7.28.6/node_modules/@babel/types/lib/index-legacy.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+template@7.28.6/node_modules/@babel/types/lib/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/@babel+template@7.28.6/node_modules/@babel/parser/typings/babel-parser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/wrap-ansi@9.0.2/node_modules/string-width/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/wrap-ansi@9.0.2/node_modules/ansi-styles/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/wrap-ansi@9.0.2/node_modules/strip-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/.deno/wrap-ansi@9.0.2/node_modules/wrap-ansi/index.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/node_modules/yargs/browser.d.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/src/util.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/src/constants.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/src/database.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/src/ffi.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/src/statement.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/src/blob.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/scripts/build.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/test/test.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/test/deps.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/mod.ts",
+    "/home/eva/PtErgasia/gasket/deno-sqlite3/deps.ts"
+  ],
+  "jump_libs": [
+    null
+  ],
+  "bridges": [
+    {
+      "jsname": "./src/ffi.default.sqlite3_errmsg",
+      "cfunc": "sqlite3_errmsg",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_text",
+      "cfunc": "sqlite3_column_text",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_load_extension",
+      "cfunc": "sqlite3_load_extension",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_double",
+      "cfunc": "sqlite3_result_double",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_changes",
+      "cfunc": "sqlite3_changes",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_int",
+      "cfunc": "sqlite3_column_int",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_backup_finish",
+      "cfunc": "sqlite3_backup_finish",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_parameter_name",
+      "cfunc": "sqlite3_bind_parameter_name",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_finalize",
+      "cfunc": "sqlite3_finalize",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_blob_open",
+      "cfunc": "sqlite3_blob_open",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_reset",
+      "cfunc": "sqlite3_reset",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_stmt_readonly",
+      "cfunc": "sqlite3_stmt_readonly",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_type",
+      "cfunc": "sqlite3_column_type",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_text",
+      "cfunc": "sqlite3_bind_text",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_int64",
+      "cfunc": "sqlite3_result_int64",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_int64",
+      "cfunc": "sqlite3_value_int64",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_last_insert_rowid",
+      "cfunc": "sqlite3_last_insert_rowid",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_step",
+      "cfunc": "sqlite3_step",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_blob",
+      "cfunc": "sqlite3_bind_blob",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_open_v2",
+      "cfunc": "sqlite3_open_v2",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_total_changes",
+      "cfunc": "sqlite3_total_changes",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_backup_step",
+      "cfunc": "sqlite3_backup_step",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_aggregate_context",
+      "cfunc": "sqlite3_aggregate_context",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_bytes",
+      "cfunc": "sqlite3_column_bytes",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_null",
+      "cfunc": "sqlite3_result_null",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_int",
+      "cfunc": "sqlite3_bind_int",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_subtype",
+      "cfunc": "sqlite3_value_subtype",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_blob_read",
+      "cfunc": "sqlite3_blob_read",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_type",
+      "cfunc": "sqlite3_value_type",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_backup_pagecount",
+      "cfunc": "sqlite3_backup_pagecount",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_get_autocommit",
+      "cfunc": "sqlite3_get_autocommit",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_sourceid",
+      "cfunc": "sqlite3_sourceid",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_backup_remaining",
+      "cfunc": "sqlite3_backup_remaining",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_free",
+      "cfunc": "sqlite3_free",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_int",
+      "cfunc": "sqlite3_result_int",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_decltype",
+      "cfunc": "sqlite3_column_decltype",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_close_v2",
+      "cfunc": "sqlite3_close_v2",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_double",
+      "cfunc": "sqlite3_value_double",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_text",
+      "cfunc": "sqlite3_value_text",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_text",
+      "cfunc": "sqlite3_result_text",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_int64",
+      "cfunc": "sqlite3_bind_int64",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_bytes",
+      "cfunc": "sqlite3_value_bytes",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_initialize",
+      "cfunc": "sqlite3_initialize",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_value",
+      "cfunc": "sqlite3_column_value",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_parameter_count",
+      "cfunc": "sqlite3_bind_parameter_count",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_int64",
+      "cfunc": "sqlite3_column_int64",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_blob",
+      "cfunc": "sqlite3_value_blob",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_sql",
+      "cfunc": "sqlite3_sql",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_blob",
+      "cfunc": "sqlite3_result_blob",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_blob",
+      "cfunc": "sqlite3_column_blob",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_exec",
+      "cfunc": "sqlite3_exec",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_errcode",
+      "cfunc": "sqlite3_errcode",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_parameter_index",
+      "cfunc": "sqlite3_bind_parameter_index",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_double",
+      "cfunc": "sqlite3_bind_double",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_prepare_v2",
+      "cfunc": "sqlite3_prepare_v2",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_double",
+      "cfunc": "sqlite3_column_double",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_complete",
+      "cfunc": "sqlite3_complete",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_count",
+      "cfunc": "sqlite3_column_count",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_enable_load_extension",
+      "cfunc": "sqlite3_enable_load_extension",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_blob_write",
+      "cfunc": "sqlite3_blob_write",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_expanded_sql",
+      "cfunc": "sqlite3_expanded_sql",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_result_error",
+      "cfunc": "sqlite3_result_error",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_errstr",
+      "cfunc": "sqlite3_errstr",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_clear_bindings",
+      "cfunc": "sqlite3_clear_bindings",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_column_name",
+      "cfunc": "sqlite3_column_name",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_blob_bytes",
+      "cfunc": "sqlite3_blob_bytes",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_create_function",
+      "cfunc": "sqlite3_create_function",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_bind_null",
+      "cfunc": "sqlite3_bind_null",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_blob_close",
+      "cfunc": "sqlite3_blob_close",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_libversion",
+      "cfunc": "sqlite3_libversion",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_value_int",
+      "cfunc": "sqlite3_value_int",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_backup_init",
+      "cfunc": "sqlite3_backup_init",
+      "library": null,
+      "DENO_FFI": true
+    },
+    {
+      "jsname": "./src/ffi.default.sqlite3_update_hook",
+      "cfunc": "sqlite3_update_hook",
+      "library": null,
+      "DENO_FFI": true
+    }
+  ]
+}
