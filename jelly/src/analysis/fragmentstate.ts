@@ -495,28 +495,30 @@ export class FragmentState {
     registerEscapingToExternal(v: ConstraintVar | undefined, n: Node, encl: FunctionInfo | ModuleInfo) {
     if (v && options.externalMatches) {
         const exitPoint = n.loc ? n.loc.start.line : "unknown";
-        const callerLine = (encl && encl.loc) ? encl.loc.start.line : "top-level";
+        //const callerLine = (encl && encl.loc) ? encl.loc.start.line : "top-level";
 
         // Αναγνώριση αν είναι Function ή Module
         let callerDetails = "";
+        let callerLocation = "";
         if (encl instanceof FunctionInfo) {
             const funcName = encl.name || "<anonymous>";
             const moduleName = encl.moduleInfo.toString();
             const isConstructor = encl.isDummyConstructor ? "[Constructor]" : "";
             
-            //  Όνομα, Module και τύπος
             callerDetails = `Function: ${funcName} ${isConstructor} in ${moduleName}`;
+        
+            callerLocation = locationToStringWithFileAndEnd(encl.loc); 
         } else {
             callerDetails = `Module Level: ${encl.toString()}`;
-        }
-
+            callerLocation = locationToStringWithFileAndEnd(encl.loc);
+}
         // Εκτύπωση εμπλουτισμένου DEBUG μηνύματος
         logger.info(`DEBUG [EXTERNAL_ESCAPE]`);
         logger.info(`  - Escape Point: line ${exitPoint}`);
-        logger.info(`  - Caller Info: ${callerDetails} (starts at line: ${callerLine})`);
-
-        if (logger.isDebugEnabled())
-            logger.debug(`Values of ${v} escape to non-analyzed code at ${locationToStringWithFileAndEnd(n.loc)}`);
+        logger.info(`  - Caller Info: ${callerDetails}`);
+        logger.info(`  - Caller Location: ${callerLocation}`);        if (logger.isDebugEnabled())
+        
+        logger.debug(`Values of ${v} escape to non-analyzed code at ${locationToStringWithFileAndEnd(n.loc)}`);
         
         mapGetMap(this.maybeEscapingToExternal, v).set(n, encl);
     }

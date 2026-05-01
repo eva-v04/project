@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+
+//DEBUG
+import { convertAPIUsageToJSON } from "./patternmatching/apiusage";
+
 import {analyzeFiles} from "./analysis/analyzer";
 import {closeSync, openSync, readdirSync, readFileSync, unlinkSync} from "fs";
 import {program} from "commander";
@@ -405,6 +409,7 @@ async function main() {
 
             if (options.apiUsage) {
                 const [r1, r2] = getAPIUsage(f);
+                //DEBUG
                 reportAPIUsage(r1, r2); // TODO: remove r2, also in getAPIUsage? (currently used for server, but maybe can be replaced by a function that gets patterns at a node from the fragment state)
             }
 

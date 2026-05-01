@@ -1,3 +1,4 @@
+
 import fs, {readFileSync, statSync} from "fs";
 import {resolve} from "path";
 import logger, {writeStdOutIfActive} from "../misc/logger";
@@ -186,6 +187,8 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
 
     // collect final call edges
     finalizeCallEdges(solver);
+
+
     solver.updateDiagnostics();
 
     // output statistics
