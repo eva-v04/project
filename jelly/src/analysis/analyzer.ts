@@ -22,6 +22,8 @@ import {ProcessManager} from "../approx/processmanager";
 import {Patching} from "../approx/patching";
 import {PatchingDiagnostics} from "../approx/diagnostics";
 import {patchThis} from "../patching/patchthis";
+//DEBUG
+import { convertAPIUsageToJSON, getAPIUsage } from "../patternmatching/apiusage";
 
 export async function analyzeFiles(files: Array<string>, solver: Solver) {
     const a = solver.globalState;
@@ -188,6 +190,25 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
     // collect final call edges
     finalizeCallEdges(solver);
 
+    //DEBUG
+    // import fs from "fs"; 
+
+    // DEBUG
+    if (options.apiUsage) {
+        // Παίρνουμε τα δεδομ   ένα από το FragmentState
+        const [res1, _res2] = getAPIUsage(solver.fragmentState); 
+    
+        // Μετατρέπουμε τα αποτελέσματα σε JSON μορφή
+        const apiJsonData = convertAPIUsageToJSON(res1, _res2, solver.fragmentState);
+
+        // Ορίζουμε το όνομα του νέου αρχείου
+        const apiFileName = "api_results.json";
+
+        // Γράφουμε το αρχείο στο δίσκο
+        fs.writeFileSync(apiFileName, JSON.stringify(apiJsonData, null, 2));
+    
+        logger.info(`Results exported to ${apiFileName}`);
+    }
 
     solver.updateDiagnostics();
 

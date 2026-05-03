@@ -39,6 +39,9 @@ import {getEnclosingNonArrowFunction, isInTryBlockOrBranch} from "../misc/asthel
 import {isAbsoluteModuleName, isLocalRequire, resolveModule} from "../misc/files";
 import {ArrayMap, ArrayMapMap, ArrayMapSet} from "../misc/arraymap";
 
+//DEBUG
+//import { Location } from "../misc/util";
+
 export type ListenerID = bigint;
 
 /**
@@ -83,6 +86,9 @@ export type PostponedListenerCall =
 export class FragmentState {
 
     readonly a: GlobalState;
+
+    //DEBUG
+    public nodeToCallers = new Map<Node, Array<{name: string, loc: string}>>();
 
     /**
      * Constraint variable producer.
@@ -520,6 +526,15 @@ export class FragmentState {
         
         logger.debug(`Values of ${v} escape to non-analyzed code at ${locationToStringWithFileAndEnd(n.loc)}`);
         
+        //DEBUG
+        const callerList = this.nodeToCallers.get(n) || [];
+        //for (const c of callers) { // χρησιμοποιούμε 'c' για να μην μπερδεύεται με το 'caller'
+            callerList.push({
+                name: encl.toString(),
+            loc: encl.loc ? locationToStringWithFileAndEnd(encl.loc) : "Unknown"
+            });
+        //}
+        this.nodeToCallers.set(n, callerList);
         mapGetMap(this.maybeEscapingToExternal, v).set(n, encl);
     }
 }

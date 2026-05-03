@@ -20,6 +20,12 @@ export type NodeToAccessPathPatterns = Record<PatternType, Map<Node, Set<AccessP
 export type AccessPathString = string;
 export type AccessPathPatternToLocations = Record<PatternType, Record<AccessPathString, Array<SimpleLocation & {filename: string}>>>;
 
+
+//DEBUG
+// Map που συνδέει το ID του Node με μια λίστα από callers
+//const nodeToCallers = new Map<number, Array<{name: string, loc: string}>>();
+
+
 /**
  * Finds the usage of the API of external modules.
  */
@@ -166,18 +172,51 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
     logger.info(`Access path patterns: ${numAccessPathPatterns}, access path patterns at nodes: ${numAccessPathPatternsAtNodes}`);
 }
 
-export function convertAPIUsageToJSON(r: AccessPathPatternToNodes): AccessPathPatternToLocations {
-    const res: AccessPathPatternToLocations = {import: {}, read: {}, write: {}, call: {}, component: {}};
+//DEBUG
+//export function convertAPIUsageToJSON(r: AccessPathPatternToNodes): AccessPathPatternToLocations {
+  //  const res: AccessPathPatternToLocations = {import: {}, read: {}, write: {}, call: {}, component: {}};
+    //for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
+      //  const t: Record<AccessPathString, Array<SimpleLocation & {filename: string}>> = {};
+        //for (const [p, nodes] of r[type]) {
+          //  const a: Array<SimpleLocation & {filename: string}> = [];
+            //for (const n of nodes)
+              //  if (n.loc) {
+                //    const loc = n.loc as Location;
+                  //  if (loc.module)
+                    //    a.push({filename: loc.module.getPath(), start: loc.start, end: loc.end});
+                //}
+//            t[p.toString()] = a;
+  //      }
+    //    res[type] = t;
+//    }
+  //  return res;
+//}
+
+// Εισαγωγή του Reporter στην αρχή του αρχείου αν δεν υπάρχει
+//import {AnalysisStateReporter} from "../output/analysisstatereporter";
+
+export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
+    const res: any = {import: {}, read: {}, write: {}, call: {}, component: {}};
+    
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
-        const t: Record<AccessPathString, Array<SimpleLocation & {filename: string}>> = {};
+        const t: Record<string, any> = {};
         for (const [p, nodes] of r[type]) {
-            const a: Array<SimpleLocation & {filename: string}> = [];
-            for (const n of nodes)
+            const a: Array<any> = [];
+            for (const n of nodes) {
                 if (n.loc) {
                     const loc = n.loc as Location;
-                    if (loc.module)
-                        a.push({filename: loc.module.getPath(), start: loc.start, end: loc.end});
+                    if (loc.module) {
+                        const nodeInfo: any = {
+                            filename: loc.module.getPath(),
+                            start: loc.start,
+                            end: loc.end,
+                            // Παίρνουμε τους callers που αποθηκεύσαμε στο fragment state f
+                            callers: f ? (f.nodeToCallers.get(n) || []) : []
+                        };
+                        a.push(nodeInfo);
+                    }
                 }
+            }
             t[p.toString()] = a;
         }
         res[type] = t;

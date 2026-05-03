@@ -1,9 +1,5 @@
 #!/usr/bin/env node
 
-
-//DEBUG
-import { convertAPIUsageToJSON } from "./patternmatching/apiusage";
-
 import {analyzeFiles} from "./analysis/analyzer";
 import {closeSync, openSync, readdirSync, readFileSync, unlinkSync} from "fs";
 import {program} from "commander";
