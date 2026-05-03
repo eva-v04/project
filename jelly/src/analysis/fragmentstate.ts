@@ -413,6 +413,8 @@ export class FragmentState {
         calleeVar: ConstraintVar | undefined,
         {native, external, accessor}: {native?: boolean, external?: boolean, accessor?: boolean} = {}
     ) {
+        //DEBUG
+        this.saveCaller(n, enclosing);
         if (accessor && !options.callgraphImplicit)
             return;
         if (!this.callLocations.has(n) ||
@@ -499,6 +501,8 @@ export class FragmentState {
      * Ignored if options.externalMatches is disabled.
      */
     registerEscapingToExternal(v: ConstraintVar | undefined, n: Node, encl: FunctionInfo | ModuleInfo) {
+        //DEUG
+        this.saveCaller(n, encl);
     if (v && options.externalMatches) {
         const exitPoint = n.loc ? n.loc.start.line : "unknown";
         //const callerLine = (encl && encl.loc) ? encl.loc.start.line : "top-level";
@@ -527,14 +531,17 @@ export class FragmentState {
         logger.debug(`Values of ${v} escape to non-analyzed code at ${locationToStringWithFileAndEnd(n.loc)}`);
         
         //DEBUG
-        const callerList = this.nodeToCallers.get(n) || [];
+        //const callerList = this.nodeToCallers.get(n) || [];
+        const locKey = locationToStringWithFileAndEnd(n.loc);
+        const callerList = this.nodeToCallers.get(locKey as any) || [];
         //for (const c of callers) { // χρησιμοποιούμε 'c' για να μην μπερδεύεται με το 'caller'
             callerList.push({
                 name: encl.toString(),
             loc: encl.loc ? locationToStringWithFileAndEnd(encl.loc) : "Unknown"
             });
         //}
-        this.nodeToCallers.set(n, callerList);
+        //this.nodeToCallers.set(n, callerList);
+        this.nodeToCallers.set(locKey as any, callerList);
         mapGetMap(this.maybeEscapingToExternal, v).set(n, encl);
     }
 }
@@ -582,6 +589,8 @@ export class FragmentState {
         typ: "read" | "call", result: ConstraintVar | undefined, base: ConstraintVar | undefined,
         pck: PackageObjectToken | undefined, prop: string | undefined, node: Node, encl: FunctionInfo | ModuleInfo
     ) {
+        //DEBUG
+        this.saveCaller(node, encl);
         if (typ === "read" && result && base && pck)
             this.maybeEmptyPropertyReads.push({typ, result, base, pck, prop});
         else if (typ === "call" && base && prop)
@@ -889,7 +898,7 @@ export class FragmentState {
      */
     loadModule(mode: "commonjs" | "module", str: string, path: NodePath, moduleInfo: ModuleInfo): ModuleInfo | DummyModuleInfo | undefined {
         let m: ModuleInfo | DummyModuleInfo | undefined;
-        let filepath
+        let filepath: string | undefined;
         try {
             filepath = resolveModule(mode, str, moduleInfo.getPath(), this.a);
             if (filepath !== undefined && !filepath.startsWith(options.basedir) && !filepath.startsWith(options.basedir)) {
@@ -914,5 +923,20 @@ export class FragmentState {
         else if (isAbsoluteModuleName(str)) // couldn't find module file (probably hasn't been installed), use a DummyModuleInfo if absolute module name
             m = getOrSet(this.a.dummyModuleInfos, str, () => new DummyModuleInfo(str));
         return m;
+    }
+
+    //DEBUG
+    public saveCaller(n: Node, encl: FunctionInfo | ModuleInfo) {
+        const locKey = locationToStringWithFileAndEnd(n.loc);
+        const callerList = this.nodeToCallers.get(locKey as any) || [];
+        // Αποθήκευση μόνο αν δεν υπάρχει ήδη ο ίδιος caller για αυτό το σημείο
+        const callerName = encl.toString();
+        if (!callerList.find(c => c.name === callerName)) {
+            callerList.push({
+                name: callerName,
+                loc: encl.loc ? locationToStringWithFileAndEnd(encl.loc) : "Unknown"
+            });
+            this.nodeToCallers.set(locKey as any, callerList);
+        }
     }
 }

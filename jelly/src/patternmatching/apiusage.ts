@@ -206,12 +206,15 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                 if (n.loc) {
                     const loc = n.loc as Location;
                     if (loc.module) {
+                        //DEBUG
+                        const locKey = locationToStringWithFileAndEnd(n.loc);
                         const nodeInfo: any = {
                             filename: loc.module.getPath(),
                             start: loc.start,
                             end: loc.end,
                             // Παίρνουμε τους callers που αποθηκεύσαμε στο fragment state f
-                            callers: f ? (f.nodeToCallers.get(n) || []) : []
+                            //callers: f ? (f.nodeToCallers.get(n) || []) : []
+                            callers: f ? (f.nodeToCallers.get(locKey as any) || []) : []
                         };
                         a.push(nodeInfo);
                     }
