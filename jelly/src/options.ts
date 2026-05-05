@@ -165,7 +165,11 @@ export function setOptions(opts: OptionValues & Partial<typeof options>) {
             (options as any)[opt] = v;
     }
     if (options.apiUsage)
-        options.ignoreDependencies = true;
+
+        //DEBUG
+        options.ignoreDependencies = false;
+
+        //options.ignoreDependencies = true;
     if (options.excludeEntries)
         options.excludeEntries =
             options.excludeEntries.length === 0 ? undefined : // micromatch bug workaround

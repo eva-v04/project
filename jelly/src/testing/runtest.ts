@@ -74,7 +74,11 @@ export function runTest(basedir: string,
                 [tapirPatterns, detectionPatterns] = tapirLoadPatterns(args.patterns);
 
             if (args.apiUsageAccessPathPatternsAtNodes !== undefined) {
-                options.apiUsage = options.ignoreDependencies = true;
+                //DEBUG
+                options.apiUsage = true;
+                options.ignoreDependencies = false; // Εξαναγκασμός σε false
+                
+                //options.apiUsage = options.ignoreDependencies = true;
                 options.trackedModules ??= ["**"];
             }
 

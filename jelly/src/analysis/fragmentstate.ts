@@ -16,6 +16,8 @@ import assert from "assert";
 import {
     addMapHybridSet,
     getOrSet,
+    Location,
+    //Location,
     locationToStringWithFile,
     locationToStringWithFileAndEnd,
     mapGetMap,
@@ -929,14 +931,41 @@ export class FragmentState {
     public saveCaller(n: Node, encl: FunctionInfo | ModuleInfo) {
         const locKey = locationToStringWithFileAndEnd(n.loc);
         const callerList = this.nodeToCallers.get(locKey as any) || [];
-        // Αποθήκευση μόνο αν δεν υπάρχει ήδη ο ίδιος caller για αυτό το σημείο
-        const callerName = encl.toString();
-        if (!callerList.find(c => c.name === callerName)) {
+    
+        //DEBUG
+
+        const loc = encl.loc as Location;
+        const module = encl instanceof FunctionInfo ? encl.moduleInfo : encl;
+    
+
+        const funcId = (encl as any).id !== undefined ? (encl as any).id : 0;
+        const moduleId = (module as any).id !== undefined ? (module as any).id : 0;
+
+        let callerId = `${funcId}:${moduleId}`;
+        if (loc) {
+            // Χρήση των τιμών από το SimpleLocation
+            callerId += `:${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
+        }
+
+        //Αποθήκευση στο Map
+        if (!callerList.find(c => c.name === callerId)) {
             callerList.push({
-                name: callerName,
+                name: callerId,
                 loc: encl.loc ? locationToStringWithFileAndEnd(encl.loc) : "Unknown"
             });
             this.nodeToCallers.set(locKey as any, callerList);
         }
     }
+        
+        // Αποθήκευση μόνο αν δεν υπάρχει ήδη ο ίδιος caller για αυτό το σημείο
+        //const callerName = encl.toString();
+        //if (!callerList.find(c => c.name === callerName)) {
+          //  callerList.push({
+            //    name: callerName,
+              //  loc: encl.loc ? locationToStringWithFileAndEnd(encl.loc) : "Unknown"
+            //});
+            //this.nodeToCallers.set(locKey as any, callerList);
+       // }
+    //}
+//}
 }
