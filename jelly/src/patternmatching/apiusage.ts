@@ -202,19 +202,26 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
         const t: Record<string, any> = {};
         for (const [p, nodes] of r[type]) {
             const a: Array<any> = [];
+            // Χρησιμοποιούμε Set για να κρατάμε μοναδικά locations ΑΝΑ pattern
+            const seenAtPattern = new Set<string>(); 
+
             for (const n of nodes) {
                 if (n.loc) {
                     const loc = n.loc as Location;
-                    if (loc.module) {
-                        //DEBUG
-                        const locKey = locationToStringWithFileAndEnd(n.loc);
+                    const locKey = locationToStringWithFileAndEnd(n.loc);
+                    
+                    // Δημιουργία κλειδιού για να δούμε αν έχουμε ξαναβάλει αυτή τη γραμμή
+                    const dedupeKey = `${loc.module?.getPath()}:${loc.start.line}:${loc.start.column}`;
+
+                    if (!seenAtPattern.has(dedupeKey)) {
+                        seenAtPattern.add(dedupeKey);
+                        
                         const nodeInfo: any = {
-                            filename: loc.module.getPath(),
+                            filename: loc.module?.getPath(),
                             start: loc.start,
                             end: loc.end,
-                            // Παίρνουμε τους callers που αποθηκεύσαμε στο fragment state f
-                            //callers: f ? (f.nodeToCallers.get(n) || []) : []
-                            callers: f ? (f.nodeToCallers.get(locKey as any) || []) : []
+                            // Deduplication και στους callers
+                            callers: deduplicateCallers(f ? (f.nodeToCallers.get(locKey as any) || []) : [])
                         };
                         a.push(nodeInfo);
                     }
@@ -225,4 +232,16 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
         res[type] = t;
     }
     return res;
+}
+
+// Βοηθητική συνάρτηση για να καθαρίσει τους callers βάσει ΜΟΝΟ του Loc
+function deduplicateCallers(callers: any[]): any[] {
+    const seenLocs = new Set();
+    return callers.filter(c => {
+        // Χρησιμοποιούμε μόνο το c.loc ως κλειδί μοναδικότητας
+        const key = c.loc; 
+        if (seenLocs.has(key)) return false;
+        seenLocs.add(key);
+        return true;
+    });
 }
