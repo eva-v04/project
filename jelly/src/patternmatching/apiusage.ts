@@ -1,7 +1,7 @@
 import logger from "../misc/logger";
 import {mapGetSet, locationToStringWithFileAndEnd, Location, SimpleLocation} from "../misc/util";
 import {
-    AbbreviatedPathPattern,
+    //AbbreviatedPathPattern,
     AccessPathPattern,
     CallResultAccessPathPattern,
     ComponentAccessPathPattern,
@@ -29,7 +29,7 @@ export type AccessPathPatternToLocations = Record<PatternType, Record<AccessPath
 /**
  * Finds the usage of the API of external modules.
  */
-export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeToAccessPathPatterns] { // TODO: parameter to choose which map to produce?
+export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeToAccessPathPatterns] {
     logger.info("Collecting API usage");
     const reached: AccessPathPatternToNodes = {import: new Map, read: new Map, write: new Map, call: new Map, component: new Map};
     const res1: AccessPathPatternToNodes = {import: new Map, read: new Map, write: new Map, call: new Map, component: new Map};
@@ -38,60 +38,15 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
     const worklist = new Map<AccessPathPattern, Set<AccessPath>>();
 
     function add(t: PatternType, p: AccessPathPattern, ap: AccessPath, n: Node) {
-
-        function sub(p: AccessPathPattern): AccessPathPattern | undefined {
-            return p instanceof PropertyAccessPathPattern ? p.base :
-                    p instanceof CallResultAccessPathPattern ? p.fun :
-                        p instanceof ComponentAccessPathPattern ? p.component :
-                            undefined;
-        }
-
-        function copyWithSub(as: AccessPathPattern, sub: AccessPathPattern): AccessPathPattern {
-            if (as instanceof PropertyAccessPathPattern)
-                return new PropertyAccessPathPattern(sub, as.props);
-            else if (as instanceof CallResultAccessPathPattern)
-                return new CallResultAccessPathPattern(sub);
-            else if (as instanceof ComponentAccessPathPattern)
-                return new ComponentAccessPathPattern(sub);
-            else
-                return as;
-        }
-
-        // abbreviate long patterns
-        const p1 = sub(p); //ελέγχει πόσο μεγάλο είναι το path με την χρήση της sub, και το μικραίνει όπου χρειάζεται με την χρήση της copyWithSub
-        if (p1) {
-            const p2 = sub(p1);
-            if (p2) {
-                if (p2 instanceof AbbreviatedPathPattern && p1 instanceof CallResultAccessPathPattern && !(p instanceof CallResultAccessPathPattern)) // m…()d --> m…d
-                    p = copyWithSub(p, p2);
-                else {
-                    const p3 = sub(p2);
-                    if (p3) {
-                        if (p3 instanceof AbbreviatedPathPattern) {
-                            if (p1 instanceof CallResultAccessPathPattern) // m…b()d --> m…d
-                                p = copyWithSub(p, p3);
-                            else // m…bcd --> m…cd
-                                p = copyWithSub(p, copyWithSub(p1, p3));
-                        } else {
-                            const p4 = sub(p3);
-                            if (p4)
-                                if (p1 instanceof CallResultAccessPathPattern) // mab()d --> ma…d
-                                    p = copyWithSub(p, new AbbreviatedPathPattern(p3));
-                                else // mabcd --> ma…cd
-                                    p = copyWithSub(p, copyWithSub(p1, new AbbreviatedPathPattern(p3)));
-
-                        }
-                    }
-                }
-            }
-        }
-
+        // Καθαρισμός του pattern μέσω του canonicalizer (χωρίς abbreviations)
         p = c.canonicalize(p);
+        
         const aps = mapGetSet(reached[t], p);
         if (!aps.has(n)) {
             if (logger.isDebugEnabled())
                 logger.debug(`Found ${t} ${p} at ${locationToStringWithFileAndEnd(n.loc)}`);
             aps.add(n);
+
             function isReadAtCall(): boolean {
                 if (t === "read") {
                     const m = f.callResultAccessPaths.get(ap);
@@ -102,7 +57,8 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
                 }
                 return false;
             }
-            if (isReadAtCall()) { // if read occurs at call function expression, exclude in output
+
+            if (isReadAtCall()) { 
                 if (logger.isDebugEnabled())
                     logger.debug(`Read-call ${ap} at ${locationToStringWithFileAndEnd(n.loc)}`);
             } else {
@@ -111,42 +67,47 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
             }
             mapGetSet(worklist, p).add(ap);
         }
-    }
-    
-    //βρίσκει σε ποια από τις 5 κατηγορίες που έχει δημιουργήσει, ανήκει η αλληλεπίδραση που αναλύει`
+    } // κλείνει σωστά η add
+
     // find imports
     for (const [ap, m] of f.moduleAccessPaths)
         for (const n of m.keys())
-            add("import", c.canonicalize(new ImportAccessPathPattern(ap.moduleInfo.getOfficialName())), ap, n); // TODO: technically, official-name is not a glob?
+            add("import", c.canonicalize(new ImportAccessPathPattern(ap.moduleInfo.getOfficialName())), ap, n);
+
     // iteratively find property reads, writes, calls and components
     for (const [p, aps] of worklist)
         for (const ap of aps) {
             aps.delete(ap);
             if (aps.size === 0)
                 worklist.delete(p);
+            
             // property reads
             const m1 = f.propertyReadAccessPaths.get(ap);
             if (m1)
                 for (const [prop, np] of m1)
                     for (const [n2, {bp}] of np)
                         add("read", c.canonicalize(new PropertyAccessPathPattern(p, [prop])), bp, n2);
+            
             // property writes
             const m2 = f.propertyWriteAccessPaths.get(ap);
             if (m2)
                 for (const [prop, np] of m2)
                     for (const [n2, {bp}] of np)
                         add("write", c.canonicalize(new PropertyAccessPathPattern(p, [prop])), bp, n2);
+
             // calls
             const m3 = f.callResultAccessPaths.get(ap);
             if (m3)
                 for (const [n2, {bp}] of m3)
                     add("call", c.canonicalize(new CallResultAccessPathPattern(p)), bp, n2);
+
             // components
             const m4 = f.componentAccessPaths.get(ap);
             if (m4)
                 for (const [n2, {bp}] of m4)
                     add("component", c.canonicalize(new ComponentAccessPathPattern(p)), bp, n2);
         }
+
     return [res1, res2];
 }
 
