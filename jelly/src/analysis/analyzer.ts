@@ -202,7 +202,7 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
         const apiJsonData = convertAPIUsageToJSON(res1, _res2, solver.fragmentState);
 
         // Ορίζουμε το πλήρες μονοπάτι στο Current Working Directory
-        // Το process.cwd() επιστρέφει τον φάκελο από τον οποίο κάλεσες το jelly
+        // Το process.cwd() επιστρέφει τον φάκελο από τον οποίο καλώ το jelly
         const apiFilePath = resolve(process.cwd(), "api_results.json");
 
         // Γράφουμε το αρχείο στο σωστό σημείο
