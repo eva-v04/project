@@ -195,19 +195,20 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
 
     // DEBUG
     if (options.apiUsage) {
-        // Παίρνουμε τα δεδομ   ένα από το FragmentState
+        // Παίρνουμε τα δεδομένα από το FragmentState
         const [res1, _res2] = getAPIUsage(solver.fragmentState); 
     
         // Μετατρέπουμε τα αποτελέσματα σε JSON μορφή
         const apiJsonData = convertAPIUsageToJSON(res1, _res2, solver.fragmentState);
 
-        // Ορίζουμε το όνομα του νέου αρχείου
-        const apiFileName = "api_results.json";
+        // Ορίζουμε το πλήρες μονοπάτι στο Current Working Directory
+        // Το process.cwd() επιστρέφει τον φάκελο από τον οποίο κάλεσες το jelly
+        const apiFilePath = resolve(process.cwd(), "api_results.json");
 
-        // Γράφουμε το αρχείο στο δίσκο
-        fs.writeFileSync(apiFileName, JSON.stringify(apiJsonData, null, 2));
+        // Γράφουμε το αρχείο στο σωστό σημείο
+        fs.writeFileSync(apiFilePath, JSON.stringify(apiJsonData, null, 2));
     
-        logger.info(`Results exported to ${apiFileName}`);
+        logger.info(`Results exported to ${apiFilePath}`);
     }
 
     solver.updateDiagnostics();
