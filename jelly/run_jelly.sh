@@ -36,3 +36,5 @@ JELLY_PATH="/home/eva/Ptuxiakh/jelly/lib/main.js"
 node "$JELLY_PATH" --api-usage --external-matches \
   -j "./${package_name}-withflags.json" \
   "./node_modules/${package_name}"
+
+node ../merge_results.js "./${package_name}-withflags.json"
