@@ -9,27 +9,53 @@ if (!jsonFile || !outputFile || !templateFile) {
     process.exit(1);
 }
 
+//Το visualizer.ts περιμένει ένα συγκεκριμένο format για τα nodes και edges, οπότε πρέπει να μετατρέψω το merged_results.json σε αυτό το format.
 try {
     const rawData = fs.readFileSync(jsonFile, 'utf-8');
     const template = fs.readFileSync(templateFile, 'utf-8');
-    const analysisData = JSON.parse(rawData);
+    const data = JSON.parse(rawData);
 
-    // ΜΕΤΑΤΡΟΠΗ: Φτιάχνουμε τη δομή που περιμένει το visualizer.ts
-    const visualizerFormat = {
+    // Μετατροπή των functions σε Nodes
+    const nodes = Object.keys(data.functions).map(id => ({
+        data: {
+            id: parseInt(id),
+            name: data.functions[id],
+            kind: data.functions[id].startsWith("NATIVE") ? "function" : "function",
+            fullName: data.functions[id]
+        }
+    }));
+
+    //Μετατροπή των fun2fun σε Edges
+    const edges = data.fun2fun.map((edge, index) => ({
+        data: {
+            id: `e${index}`,
+            source: edge[0],
+            target: edge[1],
+            kind: "call"
+        }
+    }));
+
+    //Δημιουργία της δομής που περιμένει το Visualizer.ts 
+    const visualizerData = {
         graphs: [{
-            title: "Merged Call Graph (JS + Native)",
+            title: "Native Bridge Analysis (Merged)",
             kind: "callgraph",
-            elements: [] // Θα το γεμίσει το script μέσα στο HTML
-        }],
-        // Περνάμε τα ωμά δεδομένα σε ένα δικό μας πεδίο για να τα επεξεργαστεί το HTML
-        rawJellyData: analysisData 
+            elements: [...nodes, ...edges]
+        }]
     };
 
-    const safeJsonData = JSON.stringify(visualizerFormat);
-    const finalHtml = template.replace("$DATA", () => safeJsonData);
+    const safeJsonData = JSON.stringify(visualizerData);
+
+    // Χρήση substring αντί για replace για αποφυγή προβλημάτων με μεγάλα αρχεία
+    const dataMarker = "$DATA";
+    const i = template.indexOf(dataMarker);
+    if (i === -1) throw new Error("Could not find $DATA marker in template");
+
+    const finalHtml = template.substring(0, i) + safeJsonData + template.substring(i + dataMarker.length);
 
     fs.writeFileSync(outputFile, finalHtml);
-    console.log("Generated successfully with Visualizer Format!");
+    console.log(`Successfully generated ${outputFile} with ${nodes.length} nodes and ${edges.length} edges.`);
+
 } catch (err) {
     console.error("Error:", err.message);
 }
