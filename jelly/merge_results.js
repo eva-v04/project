@@ -1,6 +1,5 @@
 const fs = require('fs');
 
-// Στο merge_results.js, άλλαξε την ανάγνωση του apiFile:
 const analysisFile = process.argv[2];
 const apiFile = process.argv[3] || 'api_results.json';
 const outputFile = 'merged_results.json';
