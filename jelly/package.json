@@ -50,6 +50,7 @@
     "@babel/types": "^7.28.5",
     "commander": "^9.5.0",
     "micromatch": "^4.0.8",
+    "re2": "^1.24.0",
     "semver": "^7.7.3",
     "stringify2stream": "^1.1.0",
     "typescript": "^5.9.3",

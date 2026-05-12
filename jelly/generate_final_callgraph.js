@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const jsonFile = process.argv[2];
-const outputFile = process.argv[3];
-const templateFile = process.argv[4];
+const jsonFile = process.argv[2]; //merged_results
+const outputFile = process.argv[3]; //όνομα html αρχείου
+const templateFile = process.argv[4]; //visualizer template html
 
 if (!jsonFile || !outputFile || !templateFile) {
     console.error("Usage: node generate_final_html.js <json> <output> <template_path>");
@@ -11,6 +11,7 @@ if (!jsonFile || !outputFile || !templateFile) {
 
 //Το visualizer.ts περιμένει ένα συγκεκριμένο format για τα nodes και edges, οπότε πρέπει να μετατρέψω το merged_results.json σε αυτό το format.
 try {
+    //διαβάζουμε τα αρχεία και τα μετετρέπουμε σε αντικείμενα JavaScript
     const rawData = fs.readFileSync(jsonFile, 'utf-8');
     const template = fs.readFileSync(templateFile, 'utf-8');
     const data = JSON.parse(rawData);
@@ -44,9 +45,10 @@ try {
         }]
     };
 
+    // Μετατροπή σε JSON string για Το HTML
     const safeJsonData = JSON.stringify(visualizerData);
 
-    // Χρήση substring αντί για replace για αποφυγή προβλημάτων με μεγάλα αρχεία
+    // Εισαγωγή του JSON string στο visualizer.html
     const dataMarker = "$DATA";
     const i = template.indexOf(dataMarker);
     if (i === -1) throw new Error("Could not find $DATA marker in template");
