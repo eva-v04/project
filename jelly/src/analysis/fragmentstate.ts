@@ -46,6 +46,37 @@ import {ArrayMap, ArrayMapMap, ArrayMapSet} from "../misc/arraymap";
 
 export type ListenerID = bigint;
 
+//DEUBUG
+export class NativeInfo {
+    readonly name: string;
+    readonly moduleInfo: ModuleInfo;
+    readonly loc: SourceLocation;
+    readonly isNative: boolean = true;
+
+    // Συμβατότητα με Set<FunctionInfo> 
+    readonly functions = new Set<any>(); 
+    readonly isDummyConstructor = false;
+
+    // ΛΥΣΗ ΓΙΑ  ERRORS
+    readonly packageInfo: any;
+
+    constructor(name: string, moduleInfo: ModuleInfo | DummyModuleInfo, loc: SourceLocation) {
+        this.name = name;
+        // Αν το moduleInfo είναι Dummy, το κάνουμε cast, αλλιώς το κρατάμε ως έχει
+        this.moduleInfo = moduleInfo as ModuleInfo;
+        
+        this.loc = loc;
+
+
+        this.packageInfo = (moduleInfo && (moduleInfo as any).packageInfo) 
+            ? (moduleInfo as any).packageInfo 
+            : { name: "native_edge", toString: () => "native_edge" };
+    }
+
+    toString(): string {
+        return this.name;
+    }
+}
 /**
  * A RepresentativeVar is a constraint variable that is statically guaranteed to be its own representative (see below for exceptions).
  * Using the RepresentativeVar type in place of the plain ConstraintVar type in APIs that require representatives
@@ -156,17 +187,20 @@ export class FragmentState {
     /**
      * Map that provides for each function/module the set of functions that may be called.
      */
-    readonly functionToFunction: Map<FunctionInfo | ModuleInfo, Set<FunctionInfo>> = new Map;
+    //DEBUG : Added nativeinfo
+    readonly functionToFunction: Map<FunctionInfo | ModuleInfo, Set<FunctionInfo | NativeInfo>> = new Map;
 
     /**
      * Map that provides for each call site location the set of functions that may be called. (For output only.)
      */
-    readonly callToFunction: Map<Node, Set<FunctionInfo>> = new Map; // TODO: redundant? see callToFunctionOrModule
+    //DEBUG : Added NativeInfo
+    readonly callToFunction: Map<Node, Set<FunctionInfo | NativeInfo>> = new Map; // TODO: redundant? see callToFunctionOrModule
 
     /**
      * Map from call/require/import node to functions/modules that may be called/imported.
      */
-    readonly callToFunctionOrModule: Map<Node, Set<FunctionInfo | ModuleInfo | DummyModuleInfo>> = new Map;
+    //DEBUG : Added NativeInfo
+    readonly callToFunctionOrModule: Map<Node, Set<FunctionInfo | ModuleInfo | DummyModuleInfo | NativeInfo>> = new Map;
 
     /**
      * Map from call node to the containing function/module.
@@ -382,18 +416,19 @@ export class FragmentState {
     /**
      * Adds an edge in the call graph (both function->function and call->function).
      */
-    registerCallEdge(call: Node, from: FunctionInfo | ModuleInfo, to: FunctionInfo,
+    //DEBUG : added to: NativeInfo
+    registerCallEdge(call: Node, from: FunctionInfo | ModuleInfo, to: FunctionInfo | NativeInfo,
                      {native, accessor, external}: {native?: boolean, accessor?: boolean, external?: boolean} = {}) {
         if ((!accessor || options.callgraphImplicit) &&
-            (!native || options.callgraphNative) &&
+            (!native || options.callgraphNative) && //μόνο αν η κλήση δεν είναι native/external/accessor, φτι΄σχνει το edge
             (!external || options.callgraphExternal)) {
             // register function->function
-            const fs = mapGetSet(this.functionToFunction, from);
+            const fs = mapGetSet(this.functionToFunction, from); //πρσοθέτει την κλήση στο fun2fun
             if (!fs.has(to))
-                this.numberOfFunctionToFunctionEdges++;
+                this.numberOfFunctionToFunctionEdges++; //Για στατιστικά
             fs.add(to);
             // register call->function
-            const cs = mapGetSet(this.callToFunction, call);
+            const cs = mapGetSet(this.callToFunction, call); //πρσοθέτει την κλήση στο call2fun
             if (!cs.has(to)) {
                 this.numberOfCallToFunctionEdges++;
                 if (logger.isVerboseEnabled())
@@ -401,6 +436,7 @@ export class FragmentState {
             }
             cs.add(to);
         }
+        //ακόμα και αν είναι native/external/accessor, καταγράφουμε την κλήση στο callToFunctionOrModule για να έχουμε πλήρη εικόνα των κλήσεων
         // register call->function/module
         mapGetSet(this.callToFunctionOrModule, call).add(to);
         this.callToContainingFunction.set(call, from);
@@ -410,30 +446,54 @@ export class FragmentState {
      * Registers a call location.
      */
     registerCall(
-        n: Node,
-        enclosing: FunctionInfo | ModuleInfo,
-        calleeVar: ConstraintVar | undefined,
-        {native, external, accessor}: {native?: boolean, external?: boolean, accessor?: boolean} = {}
-    ) {
+        n: Node, //κόμβος του δέντρου στον οποίο γίνεται η κλήση
+        enclosing: FunctionInfo | ModuleInfo, //caller
+        calleeVar: ConstraintVar | undefined, //callee !τι είναι ConstraintVar
+        {native, external, accessor}: {native?: boolean, external?: boolean, accessor?: boolean} = {} //object με προαιρετικά flags που υποδεικνύουν αν η κλήση είναι σε native function, εξωτερική ή accessor
+    ) { //native: κώδικας χαμηλού επιπέδους
+        //external: JavaScript κώδικας που για κάποιον λόγο δεν θα περιλαμβάνεται στην ανάλυση 
+        //accessor: getter/setter κλήση
         //DEBUG
         this.saveCaller(n, enclosing);
-        if (accessor && !options.callgraphImplicit)
+        if (accessor && !options.callgraphImplicit) //αν η κλήση έρχεται από getter/setter και δεν έχουμε ενεργοποιήσει την επιλογή για implicit calls, τότε δεν την καταγράφουμε
             return;
-        if (!this.callLocations.has(n) ||
+        if (!this.callLocations.has(n) || //έλεγχος για διπλοεγγραφές
             (native && !this.nativeCallLocations.has(n)) ||
             (external && !this.externalCallLocations.has(n))) {
-            if (logger.isDebugEnabled())
+            if (logger.isDebugEnabled()) //εκτυπώνει debug αν είναι ενεργοποιημένο
                 logger.debug(`Adding ${native ? "native " : external ? "external " : accessor ? "accessor " : ""}call ${locationToStringWithFileAndEnd(n.loc!)}`);
-            this.callLocations.add(n);
-            if (native)
+            this.callLocations.add(n); //καταγράφει την τοποθεσία της κλήσης    
+            if (native) //αν η κλήση είναι native, την αποθηκεύει στο nativeCallLocations
                 this.nativeCallLocations.add(n);
             else if (external)
                 this.externalCallLocations.add(n);
         }
-        this.callToContainingFunction.set(n, enclosing);
-        if (calleeVar)
+        this.callToContainingFunction.set(n, enclosing); //καταγράφει τη συνάρτηση ή το module που περιέχει την κλήση
+        if (calleeVar) //αν υπάρχει calleeVar, καταγράφει τη μεταβλητή που αντιπροσωπεύει τον callee για αυτή την κλήση
             mapGetSet(this.callToCalleeVars, n).add(calleeVar);
-    }
+
+        //DEBUG
+        // ΠΡΟΣΘΗΚΗ: ΔΗΜΙΟΥΡΓΙΑ NATIVEINFO ΚΑΙ ΑΥΤΟΜΑΤΟ CALL EDGE
+        if (native && options.callgraphNative) { 
+            
+            // Παράγουμε ένα μοναδικό όνομα για το native endpoint βασισμένο στην τοποθεσία στο AST δεντρο
+            const nativeFuncName = `NativeCall_${locationToStringWithFileAndEnd(n.loc!)}`;
+            
+            // Εντοπίζουμε το τρέχον ModuleInfo του Caller για να το συνδέσουμε με το NativeInfo
+            const currentModule = enclosing instanceof FunctionInfo ? enclosing.moduleInfo : enclosing;
+
+            // Δημιουργούμε το επίσημο αντικείμενο NativeInfo χρησιμοποιώντας τον constructor του
+            const nativeInfoTarget = new NativeInfo(
+                nativeFuncName,   // Το μοναδικό όνομα της native συνάρτησης
+                currentModule,    // Το module από το οποίο καλείται
+                n.loc!            // Οι συντεταγμένες του AST node της JavaScript 
+            );
+
+            // Καλούμε την registerCallEdge για να περάσει ο γράφος στην μνημη
+            this.registerCallEdge(n, enclosing, nativeInfoTarget as any, {native: true});
+        }
+    } 
+    
 
     /**
      * Registers a method call.

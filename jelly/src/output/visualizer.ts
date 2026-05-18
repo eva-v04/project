@@ -78,7 +78,7 @@ class Elements {
 function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | FunctionInfo> {
     const reachable = new Set<PackageInfo | ModuleInfo | FunctionInfo>();
     const w = new Array<ModuleInfo | FunctionInfo>();
-    function reach(v: ModuleInfo | FunctionInfo) {
+    function reach(v: ModuleInfo | FunctionInfo | any) { //DEBUG: added any
         if (!reachable.has(v)) {
             reachable.add(v);
             w.push(v);
@@ -124,6 +124,8 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
     let maxFunctionCallCount = 1, maxModuleCallCount = 1, maxPackageCallCount = 1;
     for (const dsts of f.functionToFunction.values())
         for (const dst of dsts) {
+            //DEBUG : Παράκαμψη των μετρητών για native συναρτήσεις, γιατί αλλιώς θα σκάσει το normalization (διαφορετικά θα έχουν callWeight=0 και θα φαίνονται πολύ μικρές στο visualization)
+            if ((dst as any).isNative) continue; // Παράκαμψη των μετρητών για native συναρτήσεις
             const fw = getOrSet(functionCallCounts, dst, () => 0) + 1;
             functionCallCounts.set(dst, fw);
             if (fw > maxFunctionCallCount)
