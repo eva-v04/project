@@ -75,9 +75,9 @@ class Elements {
 /**
  * Finds the modules and functions that are reachable from the entries, and their packages.
  */
-function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | FunctionInfo> {
-    const reachable = new Set<PackageInfo | ModuleInfo | FunctionInfo>();
-    const w = new Array<ModuleInfo | FunctionInfo>();
+function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | FunctionInfo> { //add NativeInfo;;;;
+    const reachable = new Set<PackageInfo | ModuleInfo | FunctionInfo>(); //add NativeInfo;;;;
+    const w = new Array<ModuleInfo | FunctionInfo>(); //add NativeInfo;;;;
     function reach(v: ModuleInfo | FunctionInfo | any) { //DEBUG: added any
         if (!reachable.has(v)) {
             reachable.add(v);
@@ -88,6 +88,7 @@ function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | Function
         reach(f.a.moduleInfosByPath.get(e)!);
     while (w.length > 0) {
         const v = w.pop()!;
+        if ((v as any).isNative) continue; // Τα native endpoints δεν έχουν εσωτερικές JS κλήσεις/requires
         for (const n of [...f.requireGraph.get(v) || [], ...f.functionToFunction.get(v) || []])
             reach(n);
     }
@@ -118,15 +119,13 @@ function isTrivialVar(v: ConstraintVar, ts: Iterable<Token>, size: number, redir
  */
 function getVisualizerCallGraph(f: FragmentState, vulnerabilities: VulnerabilityResults): VisualizerGraphs {
     // count number of calls edges for all functions, modules and packages
-    const functionCallCounts = new Map<FunctionInfo, number>();
-    const moduleCallCounts = new Map<ModuleInfo, number>();
-    const packageCallCounts = new Map<PackageInfo, number>();
+    const functionCallCounts = new Map<FunctionInfo, number>(); //αριθμός κλήσεων προς κάθε function
+    const moduleCallCounts = new Map<ModuleInfo, number>(); //αριθμός κλήσεων προς κάθε module
+    const packageCallCounts = new Map<PackageInfo, number>(); //αριθμός κλήσεων προς κάθε package
     let maxFunctionCallCount = 1, maxModuleCallCount = 1, maxPackageCallCount = 1;
-    for (const dsts of f.functionToFunction.values())
-        for (const dst of dsts) {
-            //DEBUG : Παράκαμψη των μετρητών για native συναρτήσεις, γιατί αλλιώς θα σκάσει το normalization (διαφορετικά θα έχουν callWeight=0 και θα φαίνονται πολύ μικρές στο visualization)
-            if ((dst as any).isNative) continue; // Παράκαμψη των μετρητών για native συναρτήσεις
-            const fw = getOrSet(functionCallCounts, dst, () => 0) + 1;
+    for (const dsts of f.functionToFunction.values()) //προσθέτει στην μεταβλητή dsts Κάθε value Που υπάρχει στο map functionToFuction
+        for (const dst of dsts) { //για κάθε τιμή που βρίσκεται στο συγκεκριμένο value
+            const fw = getOrSet(functionCallCounts, dst, () => 0) + 1; //μετράει πόσες φορές έχει κληθεί το dst
             functionCallCounts.set(dst, fw);
             if (fw > maxFunctionCallCount)
                 maxFunctionCallCount = fw;
@@ -138,6 +137,22 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             packageCallCounts.set(dst.packageInfo, fp);
             if (fp > maxPackageCallCount)
                 maxPackageCallCount = fp;
+            //DEBUG
+            // Αν είναι native, διαβάζουμε με ασφάλεια το moduleInfo που του δώσαμε στον constructor
+            //const mInfo = dst.moduleInfo;
+            //if (mInfo) {
+              //  const fm = getOrSet(moduleCallCounts, mInfo, () => 0) + 1;
+               // moduleCallCounts.set(mInfo, fm);
+             //   if (fm > maxModuleCallCount)
+               //     maxModuleCallCount = fm;
+
+            //    if (mInfo.packageInfo) {
+              //      const fp = getOrSet(packageCallCounts, mInfo.packageInfo, () => 0) + 1;
+                //    packageCallCounts.set(mInfo.packageInfo, fp);
+                  //  if (fp > maxPackageCallCount)
+                    //    maxPackageCallCount = fp;
+              //  }
+           // }
         }
     for (const dsts of f.requireGraph.values())
         for (const dst of dsts) {
@@ -204,6 +219,26 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
         // add nodes for functions
         for (const fun of m.functions)
             addFunction(fun, m);
+
+        //DEBUG
+        //Σκανάρουμε αν υπάρχουν native κλήσεις που ανήκουν σε αυτό το module
+        //for (const [ , dsts] of f.functionToFunction) {
+          //  for (const dst of dsts) {
+            //    if ((dst as any).isNative && dst.moduleInfo === m && reachable.has(dst)) {
+              //      const functionCallCount = functionCallCounts.get(dst) ?? 0;
+                //    e.add({
+                  //      id: id(dst),
+                    //    kind: "function",
+                      //  parent: id(m), 
+                        //name: `[Native] ${(dst as any).name || "<anon>"}`,
+        //                fullName: (dst as any).name || "Native Endpoint",
+          //              callWeight: Math.round(100 * functionCallCount / maxFunctionCallCount),
+            //            callCount: functionCallCount,
+              //          isReachable: "true"
+                //    });
+            //    }
+            //}
+        //}
     }
     // add edges
     let numEdges = 0;

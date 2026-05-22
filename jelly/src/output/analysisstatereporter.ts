@@ -183,7 +183,7 @@ export class AnalysisStateReporter {
                           //  assert.fail(`Function index not found for ${callee}`);
                         //DEBUG : Αν είναι NativeInfo και δεν έχει ID, του δίνουμε ID τώρα!
                         let calleeIndex = functionIndices.get(callee);
-                        // Αν είναι NativeInfo και ξέφυγε από την προηγούμενη λούπα, του δίνουμε ID τώρα!
+                        // Αν είναι NativeInfo και ξέφυγε από το προηγούμενο loop του δίνουμε ID τώρα
                         if (calleeIndex === undefined && (callee as any).isNative) {
                             calleeIndex = functionIndices.size;
                             functionIndices.set(callee, calleeIndex);
