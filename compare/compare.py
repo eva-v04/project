@@ -1,16 +1,27 @@
 import json
 from jsondiff import diff
 
-# Φόρτωση των δύο πειραμάτων
-with open('serialport-withflags.json', 'r') as f1:
+# Φόρτωση των δύο αρχείων
+with open('tiny-secp256k1-withflags.json', 'r') as f1:
     with_flags = json.load(f1)
 
-with open('serialport-noflags.json', 'r') as f2:
+with open('tiny-secp256k1-noflags.json', 'r') as f2:
     no_flags = json.load(f2)
 
 # Σύγκριση των αρχείων
 # Το syntax='symmetric' δείχνει ξεκάθαρα τι υπάρχει στο ένα και λείπει από το άλλο
 differences = diff(no_flags, with_flags, syntax='symmetric')
+
+
+#set_with = set(tuple(x) for x in with_flags['call2fun'])
+#set_no = set(tuple(x) for x in no_flags['call2fun'])
+
+#added = set_with - set_no
+#removed = set_no - set_with
+
+#print("Κλήσεις που υπάρχουν ΜΟΝΟ στο withflags:", added)
+
+
 print("defferences", differences)
 print(f"Συνολικές κλήσεις (withflags): {len(with_flags['fun2fun'])}")
 print(f"Συνολικές κλήσεις (noflags): {len(no_flags['fun2fun'])}")
