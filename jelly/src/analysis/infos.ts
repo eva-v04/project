@@ -37,8 +37,10 @@ export class ModuleInfo {
     readonly functions: Set<FunctionInfo> = new Set; // functions directly inside this module
 
     loc: Location | undefined; // top-level source location, undefined if not yet analyzed
+    //isNative: boolean = false; //DEBUG: προσθέτω πεδίο για να μην έχω errors
 
     readonly hash: number;
+
 
     readonly directDependents: Set<ModuleInfo> = new Set; // modules that directly depend on this module
 
@@ -100,6 +102,10 @@ export class FunctionInfo {
 
     readonly functions: Set<FunctionInfo> = new Set; // functions directly inside this function
 
+    //DEBUG
+    isNative: boolean = false; 
+    nativeUniqueId?: string; // γιατί χρειάζεται ΣΟΣ ΓΙΑ ΑΥΤΟ ΕΙΧΑ ΛΑΘΗ;;
+
     get packageInfo(): PackageInfo {
         return this.moduleInfo.packageInfo;
     }
@@ -108,10 +114,27 @@ export class FunctionInfo {
         readonly name: string | undefined, // function name
         readonly loc: Location, // function source location
         readonly moduleInfo: ModuleInfo, // module containing this function
-        readonly isDummyConstructor: boolean // true if dummy constructor
-    ) {}
+        readonly isDummyConstructor: boolean, // true if dummy constructor
+       //DEBUG
+        isNative?: boolean,  // true if native function, undefined if not specified (treated as false)
+        nativeUniqueId?: string //? για να είναι optional
+    ) {
+        if (isNative) {
+            this.isNative = isNative;
+            this.nativeUniqueId = nativeUniqueId;
+        }
+    }
 
     toString(): string {
+        //DEBUG 
+        if (this.isNative && this.nativeUniqueId) {
+            return this.nativeUniqueId;
+        }
+        if (this.isNative) {
+            return `[Native]:${this.name ?? "<anonymous>"}`;
+        }
+
+        
         return `${this.moduleInfo}:${locationToString(this.loc)}:${this.name ?? "<anonymous>"}`;
     }
 }

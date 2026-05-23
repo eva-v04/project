@@ -219,6 +219,41 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
         // add nodes for functions
         for (const fun of m.functions)
             addFunction(fun, m);
+            //DEBUG
+            const addedNativeFunctions = new Set<FunctionInfo>();
+            for (const [, dsts] of f.functionToFunction) {
+    for (const dst of dsts) {
+
+        if (dst.isNative && dst.moduleInfo === m) {
+
+            if (!addedNativeFunctions.has(dst)) {
+
+                addedNativeFunctions.add(dst);
+
+                const functionCallCount =
+                    functionCallCounts.get(dst) ?? 0;
+
+                e.add({
+                    id: id(dst),
+                    kind: "function",
+                    parent: id(m),
+
+                    name: `[Native] ${dst.nativeUniqueId ?? dst.name ?? "<anon>"}`,
+                    fullName: dst.nativeUniqueId ?? dst.toString(),
+                    callWeight: Math.round(
+                        100 * functionCallCount / maxFunctionCallCount
+                    ),
+
+                    callCount: functionCallCount,
+
+                    isReachable: reachable.has(dst)
+                        ? "true"
+                        : undefined
+                });
+            }
+        }
+    }
+}
 
         //DEBUG
         //Σκανάρουμε αν υπάρχουν native κλήσεις που ανήκουν σε αυτό το module
@@ -244,6 +279,24 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
     let numEdges = 0;
     for (const [src, dsts] of f.functionToFunction)
         for (const dst of dsts) {
+
+            //DEBUG
+            //if (dst.isNative) {
+            //console.log(
+              ////  "NATIVE",
+            //    dst.name,
+              //  dst.nativeUniqueId,
+                //dst
+            //);
+            //}
+            console.log(
+            "DST:",
+            dst.constructor.name,
+            dst.name,
+            (dst as any).isNative, //
+            dst.toString()
+            );
+
             e.add({
                 kind: "call",
                 source: id(src),

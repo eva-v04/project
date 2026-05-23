@@ -215,6 +215,9 @@ export class FragmentState {
      */
     readonly nativeCallLocations: Set<Node> = new Set;
 
+    //DEBUG: προσθέτω map που θα αποθηκεύεται το custom id για κάθε native node
+    readonly nativeNodeToId: Map<Node, string> = new Map;
+
     /**
      * Source locations of calls to external functions.
      */
@@ -426,9 +429,28 @@ export class FragmentState {
             if (logger.isDebugEnabled())
                 logger.debug(`Adding ${native ? "native " : external ? "external " : accessor ? "accessor " : ""}call ${locationToStringWithFileAndEnd(n.loc!)}`);
             this.callLocations.add(n);
-            if (native)
+            if (native) {
                 this.nativeCallLocations.add(n);
-            else if (external)
+                //DEBUG
+                //Αποθηκεύω το custom id για το native call node
+                const currentModule = enclosing instanceof FunctionInfo ? enclosing.moduleInfo : enclosing;
+                const locStr = `${currentModule.relativePath}:${n.loc!.start.line}:${n.loc!.start.column}:${n.loc!.end.line}:${n.loc!.end.column}`;
+                
+                //DEBUG
+                //Κλήση νεας συνάρτησης
+                const nativeFuncInfo = this.a.registerNativeFunctionInfo(
+                    currentModule,
+                    //n.loc!,
+                    n,
+                    "native",
+                    locStr
+                );
+                this.registerCallEdge(n, enclosing, nativeFuncInfo, {native: true});
+
+
+
+                this.nativeNodeToId.set(n, locStr);
+            } else if (external)
                 this.externalCallLocations.add(n);
         }
         this.callToContainingFunction.set(n, enclosing);

@@ -256,15 +256,37 @@ export class GlobalState {
 
     /**
      * Registers a new FunctionInfo for a function/method/constructor.
-     */
+     */ //DEBUG: πρόσθεσα isNative
     registerFunctionInfo(m: ModuleInfo, path: NodePath<Function>, name: string | undefined) {
         const fun = path.node;
+        //DEBUG: προσθέτω isNative
         const f = new FunctionInfo(name, fun.loc!, m, isDummyConstructor(fun));
         this.functionInfos.set(fun, f);
         const parent = getEnclosingFunction(path)?.node;
         (parent ? this.functionInfos.get(parent)!.functions : m.functions).add(f);
         this.vulnerabilities?.reachedFunction(f); // TODO: move to FragmentState?
     }
+
+    //DEBUG
+    registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined, nativeUniqueId: string): FunctionInfo {
+        //ατασκευή του FunctionInfo object με true για το isNative και το custom locStr
+        const f = new FunctionInfo(name, n.loc!, m, false, true, nativeUniqueId);
+    
+        //Δίνουμε ΜΟΝΑΔΙΚΟ ID με βάση το τρέχον μέγεθος του global χάρτη συναρτήσεων!
+        // Κάνουμε cast σε (f as any) για να παρακάμψουμε το readonly του id αν χρειάζεται
+        (f as any).id = this.functionInfos.size + 1; 
+    
+        //Εγγραφή στο global state του Jelly
+        this.functionInfos.set(n as any, f);
+        m.functions.add(f);
+    
+        if (this.vulnerabilities) {
+            this.vulnerabilities.reachedFunction(f);
+        }
+    
+        return f;
+    }
+
 
     /**
      * Records that the given file has been reached, and returns its ModuleInfo.

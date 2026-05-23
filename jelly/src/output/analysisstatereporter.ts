@@ -135,26 +135,6 @@ export class AnalysisStateReporter {
                 fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, fun.loc))}`);
                 first = false;
             }
-        //DEBUG
-        //Δίνουμε ID και στα NativeInfo για να γραφτούν στο "functions" του JSON!
-        for (const [, callees] of this.f.functionToFunction) {
-            for (const callee of callees) {
-                if ((callee as any).isNative && !functionIndices.has(callee)) {
-                    const funIndex = functionIndices.size;
-                    functionIndices.set(callee, funIndex);
-                    
-                    // Παίρνουμε το fileIndex του module που κάλεσε τη native συνάρτηση
-                    let fileIndex = fileIndices.get(callee.moduleInfo as any);
-                    if (fileIndex === undefined) {
-                        // Αν είναι DummyModule, αναγκαστικά βάζουμε το 0 ή το πρώτο διαθέσιμο αρχείο
-                        fileIndex = fileIndices.values().next().value ?? 0;
-                    }
-                    
-                    fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, callee.loc))}`);
-                    first = false;
-                }
-            }
-        }
         fs.writeSync(fd, `\n },\n "calls": {`);
         const callIndices = new Map<Node, number>();
         first = true;
@@ -178,16 +158,7 @@ export class AnalysisStateReporter {
                         const callerIndex = functionIndices.get(caller);
                         if (callerIndex === undefined)
                             assert.fail(`Function index not found for ${caller}`);
-                        //const calleeIndex = functionIndices.get(callee);
-                        //if (calleeIndex === undefined)
-                          //  assert.fail(`Function index not found for ${callee}`);
-                        //DEBUG : Αν είναι NativeInfo και δεν έχει ID, του δίνουμε ID τώρα!
-                        let calleeIndex = functionIndices.get(callee);
-                        // Αν είναι NativeInfo και ξέφυγε από το προηγούμενο loop του δίνουμε ID τώρα
-                        if (calleeIndex === undefined && (callee as any).isNative) {
-                            calleeIndex = functionIndices.size;
-                            functionIndices.set(callee, calleeIndex);
-                        }
+                        const calleeIndex = functionIndices.get(callee);
                         if (calleeIndex === undefined)
                             assert.fail(`Function index not found for ${callee}`);
                         fs.writeSync(fd, `${first ? "\n  " : ", "}[${callerIndex}, ${calleeIndex}]`);
@@ -200,14 +171,7 @@ export class AnalysisStateReporter {
             const mods = this.f.callToModule.get(call) || [];
             for (const callee of [...funs, ...mods])
                 if (!(callee instanceof DummyModuleInfo) && callee.loc) { // skipping require/import edges to modules that haven't been analyzed
-                    //const calleeIndex = functionIndices.get(callee);
-                    //DEBUG : Αν είναι NativeInfo και δεν έχει ID, του δίνουμε ID τώρα!
-                    let calleeIndex = functionIndices.get(callee);
-                    // Αν είναι NativeInfo, του δίνουμε ID on the fly για να μην σκάσει το assert παρακάτω
-                    if (calleeIndex === undefined && (callee as any).isNative) {
-                        calleeIndex = functionIndices.size;
-                        functionIndices.set(callee, calleeIndex);
-                    }
+                    const calleeIndex = functionIndices.get(callee);
                     if (calleeIndex === undefined)
                         assert.fail(`Function index not found for ${callee}`);
                     fs.writeSync(fd, `${first ? "\n  " : ", "}[${callIndex}, ${calleeIndex}]`);
@@ -252,7 +216,12 @@ export class AnalysisStateReporter {
                 const fileIndex = fileIndices.get(fun instanceof ModuleInfo ? fun : fun.moduleInfo);
                 if (fileIndex === undefined)
                     assert.fail(`File index not found for ${fun}`);
-                functions.push(this.makeLocStr(fileIndex, fun.loc));
+                if (fun instanceof FunctionInfo && fun.isNative) {
+                    functions.push(`native:${fun.name}`);
+                } else {
+                    functions.push(this.makeLocStr(fileIndex, fun.loc));
+                }
+                //functions.push(this.makeLocStr(fileIndex, fun.loc));
             }
         const callIndices = new Map<Node, number>();
         for (const call of this.f.callLocations) {
