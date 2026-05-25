@@ -104,7 +104,7 @@ export class FunctionInfo {
 
     //DEBUG
     isNative: boolean = false; 
-    nativeUniqueId?: string; // γιατί χρειάζεται ΣΟΣ ΓΙΑ ΑΥΤΟ ΕΙΧΑ ΛΑΘΗ;;
+    //nativeUniqueId?: string; // γιατί χρειάζεται ΣΟΣ ΓΙΑ ΑΥΤΟ ΕΙΧΑ ΛΑΘΗ;;
 
     get packageInfo(): PackageInfo {
         return this.moduleInfo.packageInfo;
@@ -117,24 +117,24 @@ export class FunctionInfo {
         readonly isDummyConstructor: boolean, // true if dummy constructor
        //DEBUG
         isNative?: boolean,  // true if native function, undefined if not specified (treated as false)
-        nativeUniqueId?: string //? για να είναι optional
+        //nativeUniqueId?: string //? για να είναι optional
     ) {
         if (isNative) {
             this.isNative = isNative;
-            this.nativeUniqueId = nativeUniqueId;
+            //this.nativeUniqueId = nativeUniqueId;
         }
     }
 
     toString(): string {
         //DEBUG 
-        if (this.isNative && this.nativeUniqueId) {
-            return this.nativeUniqueId;
-        }
+        //if (this.isNative && this.nativeUniqueId) {
+          //  return this.nativeUniqueId;
+        //}
         if (this.isNative) {
             return `[Native]:${this.name ?? "<anonymous>"}`;
         }
 
-        
+
         return `${this.moduleInfo}:${locationToString(this.loc)}:${this.name ?? "<anonymous>"}`;
     }
 }

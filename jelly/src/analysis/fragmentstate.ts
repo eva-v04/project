@@ -443,7 +443,7 @@ export class FragmentState {
                     //n.loc!,
                     n,
                     "native",
-                    locStr
+                    //locStr
                 );
                 this.registerCallEdge(n, enclosing, nativeFuncInfo, {native: true});
 

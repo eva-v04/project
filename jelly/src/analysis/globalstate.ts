@@ -268,9 +268,9 @@ export class GlobalState {
     }
 
     //DEBUG
-    registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined, nativeUniqueId: string): FunctionInfo {
+    registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined): FunctionInfo {
         //ατασκευή του FunctionInfo object με true για το isNative και το custom locStr
-        const f = new FunctionInfo(name, n.loc!, m, false, true, nativeUniqueId);
+        const f = new FunctionInfo(name, n.loc!, m, false, true);
     
         //Δίνουμε ΜΟΝΑΔΙΚΟ ID με βάση το τρέχον μέγεθος του global χάρτη συναρτήσεων!
         // Κάνουμε cast σε (f as any) για να παρακάμψουμε το readonly του id αν χρειάζεται

@@ -238,8 +238,8 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
                     kind: "function",
                     parent: id(m),
 
-                    name: `[Native] ${dst.nativeUniqueId ?? dst.name ?? "<anon>"}`,
-                    fullName: dst.nativeUniqueId ?? dst.toString(),
+                    name: `[Native] ${  dst.name ?? "<anon>"}`,
+                    fullName: dst.toString(),
                     callWeight: Math.round(
                         100 * functionCallCount / maxFunctionCallCount
                     ),
