@@ -155,7 +155,7 @@ export function runTest(basedir: string,
 
         if (args.apiUsageAccessPathPatternsAtNodes !== undefined)
             test("API usage", () => {
-                const [r1] = getAPIUsage(solver.fragmentState);
+                const [r1] = getAPIUsage(solver.fragmentState); //DEBUG: Προσθέτουμε και το globalState ως όρισμα στη getAPIUsage
                 let numAccessPathPatternsAtNodes = 0;
                 for (const m of Object.values(r1))
                     for (const ns of m.values())

@@ -129,10 +129,23 @@ export class AnalysisStateReporter {
             if (fun instanceof FunctionInfo || fun.loc) {
                 const funIndex = functionIndices.size;
                 functionIndices.set(fun, funIndex);
-                const fileIndex = fileIndices.get(fun instanceof ModuleInfo ? fun : fun.moduleInfo);
-                if (fileIndex === undefined)
-                    assert.fail(`File index not found for ${fun}`);
-                fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, fun.loc))}`);
+
+                // Ανάκτηση του fileIndex από το moduleInfo της συνάρτησης (δουλεύει και για τις κανονικές και για τις native)
+                const targetModule = fun instanceof ModuleInfo ? fun : fun.moduleInfo;
+                const fileIndex = fileIndices.get(targetModule);
+
+                if (fileIndex === undefined) {
+                    // Αν για κάποιο λόγο δεν υπάρχει το module στα αρχεία, fallback στην παλιά συμπεριφορά
+                    if (fun instanceof FunctionInfo && fun.isNative) {
+                        fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(`native:${fun.name}`)}`);
+                    } else {
+                        assert.fail(`File index not found for ${fun}`);
+                    }
+                } else {
+                    // Εδώ τυπώνεται η σωστή τοποθεσία (αρχείο, γραμμή, στήλη) της native κλήσης!
+                    fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, fun.loc))}`);
+                }
+                
                 first = false;
             }
         fs.writeSync(fd, `\n },\n "calls": {`);
@@ -156,27 +169,29 @@ export class AnalysisStateReporter {
                 for (const callee of callees)
                     if (callee instanceof FunctionInfo || callee.loc) {
                         const callerIndex = functionIndices.get(caller);
-                        if (callerIndex === undefined)
-                            assert.fail(`Function index not found for ${caller}`);
                         const calleeIndex = functionIndices.get(callee);
-                        if (calleeIndex === undefined)
-                            assert.fail(`Function index not found for ${callee}`);
-                        fs.writeSync(fd, `${first ? "\n  " : ", "}[${callerIndex}, ${calleeIndex}]`);
-                        first = false;
+                        
+                        if (callerIndex !== undefined && calleeIndex !== undefined) {
+                            fs.writeSync(fd, `${first ? "\n  " : ", "}[${callerIndex}, ${calleeIndex}]`);
+                            first = false;
+                        }
                     }
+
         fs.writeSync(fd, `${first ? "" : "\n "}],\n "call2fun": [`);
         first = true;
         for (const [call, callIndex] of callIndices) {
             const funs = this.f.callToFunction.get(call) || [];
             const mods = this.f.callToModule.get(call) || [];
-            for (const callee of [...funs, ...mods])
-                if (!(callee instanceof DummyModuleInfo) && callee.loc) { // skipping require/import edges to modules that haven't been analyzed
+            for (const callee of [...funs, ...mods]) {
+                if (!(callee instanceof DummyModuleInfo) && (callee instanceof FunctionInfo || callee.loc)) {
                     const calleeIndex = functionIndices.get(callee);
-                    if (calleeIndex === undefined)
-                        assert.fail(`Function index not found for ${callee}`);
-                    fs.writeSync(fd, `${first ? "\n  " : ", "}[${callIndex}, ${calleeIndex}]`);
-                    first = false;
+                    
+                    if (calleeIndex !== undefined) {
+                        fs.writeSync(fd, `${first ? "\n  " : ", "}[${callIndex}, ${calleeIndex}]`);
+                        first = false;
+                    }
                 }
+            }
         }
         fs.writeSync(fd, `${first ? "" : "\n "}],\n "ignore": [`);
         first = true;

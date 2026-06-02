@@ -22,6 +22,7 @@ export type AccessPathPatternToLocations = Record<PatternType, Record<AccessPath
 
 
 //DEBUG
+//import { GlobalState } from "../analysis/globalstate";
 // Map που συνδέει το ID του Node με μια λίστα από callers
 //const nodeToCallers = new Map<number, Array<{name: string, loc: string}>>();
 
@@ -156,35 +157,77 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
 // Εισαγωγή του Reporter στην αρχή του αρχείου αν δεν υπάρχει
 //import {AnalysisStateReporter} from "../output/analysisstatereporter";
 
-export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
+export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, globalState?: any, f?: any): any {
     const res: any = {import: {}, read: {}, write: {}, call: {}, component: {}};
     
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
         const t: Record<string, any> = {};
         for (const [p, nodes] of r[type]) {
             const a: Array<any> = [];
-            // Χρησιμοποιούμε Set για να κρατάμε μοναδικά locations ΑΝΑ pattern
             const seenAtPattern = new Set<string>(); 
 
             for (const n of nodes) {
                 if (n.loc) {
                     const loc = n.loc as Location;
                     const locKey = locationToStringWithFileAndEnd(n.loc);
+                    const filename = loc.module?.getPath() || "";
                     
-                    // Δημιουργία κλειδιού για να δούμε αν έχουμε ξαναβάλει αυτή τη γραμμή
-                    const dedupeKey = `${loc.module?.getPath()}:${loc.start.line}:${loc.start.column}`;
+                    const dedupeKey = `${filename}:${loc.start.line}:${loc.start.column}`;
 
                     if (!seenAtPattern.has(dedupeKey)) {
                         seenAtPattern.add(dedupeKey);
                         
-                        const nodeInfo: any = {
-                            filename: loc.module?.getPath(),
-                            start: loc.start,
-                            end: loc.end,
-                            // Deduplication και στους callers
-                            callers: deduplicateCallers(f ? (f.nodeToCallers.get(locKey as any) || []) : [])
-                        };
-                        a.push(nodeInfo);
+                        // Παίρνουμε τους callers για το συγκεκριμένο call site
+                        const callersList = f ? (f.nodeToCallers.get(locKey as any) || []) : [];
+                        const deduplicatedCallers = deduplicateCallers(callersList);
+
+                        // Μορφοποίηση του Callee (Native Κλήση)
+                        const calleeName = `${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
+                        const calleeLoc = `${filename}:${calleeName}`;
+
+                        // Αν δεν υπάρχουν callers (π.χ. top-level κλήση), φτιάχνουμε μια εγγραφή μόνο με τον callee
+                        if (deduplicatedCallers.length === 0) {
+                            a.push({
+                                callee: {
+                                    name: calleeName,
+                                    loc: calleeLoc
+                                },
+                                caller: null
+                            });
+                        } else {
+                            // Για κάθε caller, κάνουμε parse το string τοποθεσίας του
+                            for (const c of deduplicatedCallers) {
+                                let callerName = c.name; // Fallback αν αποτύχει το string split
+                                let callerLoc = c.loc;
+
+                                if (c.loc && typeof c.loc === "string") {
+                                    // Το c.loc έχει τη μορφή: /path/to/file.js:startLine:startCol:endLine:endCol
+                                    // Ψάχνουμε το property index για να απομονώσουμε το filename από τις συντεταγμένες
+                                    const parts = c.loc.split(":");
+                                    if (parts.length >= 5) {
+                                        const endCol = parts.pop();
+                                        const endLine = parts.pop();
+                                        const startCol = parts.pop();
+                                        const startLine = parts.pop();
+                                        const cFilename = parts.join(":"); // Ξαναενώνουμε το filename (σε περίπτωση που έχει ':' στα Windows)
+
+                                        callerName = `${startLine}:${startCol}:${endLine}:${endCol}`;
+                                        callerLoc = `${cFilename}:${callerName}`;
+                                    }
+                                }
+
+                                a.push({
+                                    callee: {
+                                        name: calleeName,
+                                        loc: calleeLoc
+                                    },
+                                    caller: {
+                                        name: callerName,
+                                        loc: callerLoc
+                                    }
+                                });
+                            }
+                        }
                     }
                 }
             }

@@ -269,23 +269,25 @@ export class GlobalState {
 
     //DEBUG
     registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined): FunctionInfo {
-        //ατασκευή του FunctionInfo object με true για το isNative και το custom locStr
-        const f = new FunctionInfo(name, n.loc!, m, false, true);
+    // 1. Κατασκευή του FunctionInfo object
+    const f = new FunctionInfo(name, n.loc!, m, false, true);
     
-        //Δίνουμε ΜΟΝΑΔΙΚΟ ID με βάση το τρέχον μέγεθος του global χάρτη συναρτήσεων!
-        // Κάνουμε cast σε (f as any) για να παρακάμψουμε το readonly του id αν χρειάζεται
-        (f as any).id = this.functionInfos.size + 1; 
+    // 2. Δίνουμε ΜΟΝΑΔΙΚΟ ID
+    (f as any).id = this.functionInfos.size + 1; 
     
-        //Εγγραφή στο global state του Jelly
-        this.functionInfos.set(n as any, f);
-        m.functions.add(f);
+    // 3. Αποθήκευση στο map. 
+    // Χρησιμοποιούμε το node 'n' ως key για να είναι συμβατό με το υπόλοιπο framework
+    this.functionInfos.set(n as any, f);
     
-        if (this.vulnerabilities) {
-            this.vulnerabilities.reachedFunction(f);
-        }
+    // Προσθήκη στις συναρτήσεις του module
+    m.functions.add(f);
     
-        return f;
+    if (this.vulnerabilities) {
+        this.vulnerabilities.reachedFunction(f);
     }
+    
+    return f;
+}
 
 
     /**

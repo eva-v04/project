@@ -433,23 +433,23 @@ export class FragmentState {
                 this.nativeCallLocations.add(n);
                 //DEBUG
                 //Αποθηκεύω το custom id για το native call node
-                const currentModule = enclosing instanceof FunctionInfo ? enclosing.moduleInfo : enclosing;
-                const locStr = `${currentModule.relativePath}:${n.loc!.start.line}:${n.loc!.start.column}:${n.loc!.end.line}:${n.loc!.end.column}`;
+                //const currentModule = enclosing instanceof FunctionInfo ? enclosing.moduleInfo : enclosing;
+                //const locStr = `${currentModule.relativePath}:${n.loc!.start.line}:${n.loc!.start.column}:${n.loc!.end.line}:${n.loc!.end.column}`;
                 
                 //DEBUG
                 //Κλήση νεας συνάρτησης
-                const nativeFuncInfo = this.a.registerNativeFunctionInfo(
-                    currentModule,
+                //const nativeFuncInfo = this.a.registerNativeFunctionInfo(
+                  //  currentModule,
                     //n.loc!,
-                    n,
-                    "native",
+                    //n,
+                //    "native",
                     //locStr
-                );
-                this.registerCallEdge(n, enclosing, nativeFuncInfo, {native: true});
+                //);
+                //this.registerCallEdge(n, enclosing, nativeFuncInfo, {native: true});
 
 
 
-                this.nativeNodeToId.set(n, locStr);
+                //this.nativeNodeToId.set(n, locStr);
             } else if (external)
                 this.externalCallLocations.add(n);
         }

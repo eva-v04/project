@@ -289,13 +289,13 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
                 //dst
             //);
             //}
-            console.log(
-            "DST:",
-            dst.constructor.name,
-            dst.name,
-            (dst as any).isNative, //
-            dst.toString()
-            );
+            //console.log(
+            //  "DST:",
+            //  dst.constructor.name,
+            //  dst.name,
+            //  (dst as any).isNative, //
+            //  dst.toString()
+            //);
 
             e.add({
                 kind: "call",

@@ -126,15 +126,9 @@ export class FunctionInfo {
     }
 
     toString(): string {
-        //DEBUG 
-        //if (this.isNative && this.nativeUniqueId) {
-          //  return this.nativeUniqueId;
-        //}
-        if (this.isNative) {
-            return `[Native]:${this.name ?? "<anonymous>"}`;
-        }
-
-
-        return `${this.moduleInfo}:${locationToString(this.loc)}:${this.name ?? "<anonymous>"}`;
+    if (this.isNative) {
+        return `[Native]:${this.name ?? "<anonymous>"}`;
     }
+    return `${this.moduleInfo}:${locationToString(this.loc)}:${this.name ?? "<anonymous>"}`;
+}
 }

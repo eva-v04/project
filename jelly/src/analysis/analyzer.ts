@@ -196,10 +196,11 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
     // DEBUG
     if (options.apiUsage) {
         // Παίρνουμε τα δεδομένα από το FragmentState
+        //DEBUG: Προσθέτουμε και το globalState ως όρισμα στη getAPIUsage
         const [res1, _res2] = getAPIUsage(solver.fragmentState); 
     
         // Μετατρέπουμε τα αποτελέσματα σε JSON μορφή
-        const apiJsonData = convertAPIUsageToJSON(res1, _res2, solver.fragmentState);
+        const apiJsonData = convertAPIUsageToJSON(res1, solver.globalState, solver.fragmentState);
 
         // Ορίζουμε το πλήρες μονοπάτι στο Current Working Directory
         // Το process.cwd() επιστρέφει τον φάκελο από τον οποίο καλώ το jelly

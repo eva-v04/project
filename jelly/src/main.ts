@@ -404,7 +404,7 @@ async function main() {
                 tapirPatternMatch(tapirPatterns, patterns, solver, typer, undefined);
 
             if (options.apiUsage) {
-                const [r1, r2] = getAPIUsage(f);
+                const [r1, r2] = getAPIUsage(f); //DEBUG: Προσθέτουμε και το globalState ως όρισμα στη getAPIUsage
                 //DEBUG
                 reportAPIUsage(r1, r2); // TODO: remove r2, also in getAPIUsage? (currently used for server, but maybe can be replaced by a function that gets patterns at a node from the fragment state)
             }
