@@ -212,6 +212,7 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
         logger.info(`Results exported to ${apiFilePath}`);
     }
 
+    
     solver.updateDiagnostics();
 
     // output statistics

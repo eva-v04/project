@@ -375,6 +375,8 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
     };
 }
 
+
+
 /**
  * Produces the dataflow graphs.
  */

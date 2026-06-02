@@ -76,6 +76,7 @@ export class AnalysisStateReporter {
         fs.closeSync(fd);
         logger.info(`Analysis tokens written to ${outfile}`);
     }
+    
 
 
     private makeLocStr(fileIndex: number, loc: SimpleLocation | undefined | null): string {
