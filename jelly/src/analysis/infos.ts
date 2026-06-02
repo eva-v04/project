@@ -104,7 +104,7 @@ export class FunctionInfo {
 
     //DEBUG
     isNative: boolean = false; 
-    //nativeUniqueId?: string; // γιατί χρειάζεται ΣΟΣ ΓΙΑ ΑΥΤΟ ΕΙΧΑ ΛΑΘΗ;;
+    //nativeUniqueId?: string; // 
 
     get packageInfo(): PackageInfo {
         return this.moduleInfo.packageInfo;

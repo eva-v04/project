@@ -158,6 +158,11 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
 //import {AnalysisStateReporter} from "../output/analysisstatereporter";
 
 export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
+    //r:AccessPathPatternToNodes είναι το αποτέλεσμα της getAPIUsage, 
+    // !getAPIUsage ΔΕΝ εντοπίζει native nodes, απλά τα κατανομεί΄;;;;;;;;;
+    //native nodes εντοπίζονται στο operations.ts και καταχωρούνται στο FragmentState;;;
+    //native nodes αποθηκεύονται στο FragmentState και συνδέονται με τους callers τους μέσω του nodeToCallers;;
+    //f:FragmentState είναι το fragment state για να έχουμε πρόσβαση στο nodeToCallers;;;
     const res: any = {import: {}, read: {}, write: {}, call: {}, component: {}};
     
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
