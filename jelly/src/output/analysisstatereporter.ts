@@ -123,6 +123,7 @@ export class AnalysisStateReporter {
                 first = false;
             }
         fs.writeSync(fd, `\n ],\n "functions": {`);
+        //map to store function indices
         const functionIndices = new Map<FunctionInfo | ModuleInfo, number>();
         first = true;
         for (const fun of [...this.a.functionInfos.values(), ...this.a.moduleInfos.values()])
@@ -231,7 +232,7 @@ export class AnalysisStateReporter {
                 const fileIndex = fileIndices.get(fun instanceof ModuleInfo ? fun : fun.moduleInfo);
                 if (fileIndex === undefined)
                     assert.fail(`File index not found for ${fun}`);
-                if (fun instanceof FunctionInfo && fun.isNative) {
+                if (fun instanceof FunctionInfo && fun.isNative) { //αν είναι native, βάζουμε το όνομά του αντί για την τοποθεσία 
                     functions.push(`native:${fun.name}`);
                 } else {
                     functions.push(this.makeLocStr(fileIndex, fun.loc));

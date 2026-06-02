@@ -200,7 +200,7 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
         const [res1, _res2] = getAPIUsage(solver.fragmentState); 
     
         // Μετατρέπουμε τα αποτελέσματα σε JSON μορφή
-        const apiJsonData = convertAPIUsageToJSON(res1, solver.globalState, solver.fragmentState);
+        const apiJsonData = convertAPIUsageToJSON(res1, undefined, solver.fragmentState);
 
         // Ορίζουμε το πλήρες μονοπάτι στο Current Working Directory
         // Το process.cwd() επιστρέφει τον φάκελο από τον οποίο καλώ το jelly
