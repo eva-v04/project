@@ -13,6 +13,10 @@ import {AccessPathPatternCanonicalizer} from "./patternparser";
 import {AccessPath} from "../analysis/accesspaths";
 import {FragmentState} from "../analysis/fragmentstate";
 
+
+import { globalNativeEdgesStore } from "./nativestore";
+
+
 export type PatternType = "import" | "read" | "write" | "call" | "component";
 
 export type AccessPathPatternToNodes = Record<PatternType, Map<AccessPathPattern, Set<Node>>>;
@@ -154,15 +158,10 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
   //  return res;
 //}
 
-// Εισαγωγή του Reporter στην αρχή του αρχείου αν δεν υπάρχει
 //import {AnalysisStateReporter} from "../output/analysisstatereporter";
 
+//DEBUG
 export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
-    //r:AccessPathPatternToNodes είναι το αποτέλεσμα της getAPIUsage, 
-    // !getAPIUsage ΔΕΝ εντοπίζει native nodes, απλά τα κατανομεί΄;;;;;;;;;
-    //native nodes εντοπίζονται στο operations.ts και καταχωρούνται στο FragmentState;;;
-    //native nodes αποθηκεύονται στο FragmentState και συνδέονται με τους callers τους μέσω του nodeToCallers;;
-    //f:FragmentState είναι το fragment state για να έχουμε πρόσβαση στο nodeToCallers;;;
     const res: any = {import: {}, read: {}, write: {}, call: {}, component: {}};
     
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
@@ -188,10 +187,18 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                         const calleeName = `${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
                         const calleeLoc = `${filename}:${calleeName}`;
 
+                        const patternName = `native:${p.toString()}`;
+
                         if (deduplicatedCallers.length === 0) {
                             a.push({
                                 callee: { name: calleeName, loc: calleeLoc },
                                 caller: null
+                            });
+
+                            globalNativeEdgesStore.push({
+                                calleeLoc: calleeLoc,
+                                callerLoc: null,
+                                patternName: patternName
                             });
                         } else {
                             for (const c of deduplicatedCallers) {
@@ -216,6 +223,12 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                                     callee: { name: calleeName, loc: calleeLoc },
                                     caller: { name: callerName, loc: callerLoc }
                                 });
+
+                                globalNativeEdgesStore.push({
+                                    calleeLoc: calleeLoc,
+                                    callerLoc: callerLoc,
+                                    patternName: patternName
+                                });
                             }
                         }
                     }
@@ -225,7 +238,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
         }
         res[type] = t;
     }
-    return res; // Επιστρέφει το κλασικό flat JSON
+    return res; 
 }
 
 // Βοηθητική συνάρτηση για να καθαρίσει τους callers βάσει ΜΟΝΟ του Loc

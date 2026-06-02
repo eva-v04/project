@@ -269,14 +269,13 @@ export class GlobalState {
 
     //DEBUG
     registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined): FunctionInfo {
-    // 1. Κατασκευή του FunctionInfo object
+    //Κατασκευή του FunctionInfo object
     const f = new FunctionInfo(name, n.loc!, m, false, true);
     
-    // 2. Δίνουμε ΜΟΝΑΔΙΚΟ ID
+    // ΜΟΝΑΔΙΚΟ ID
     (f as any).id = this.functionInfos.size + 1; 
     
-    // 3. Αποθήκευση στο map. 
-    // Χρησιμοποιούμε το node 'n' ως key για να είναι συμβατό με το υπόλοιπο framework
+    // Αποθήκευση στο map. 
     this.functionInfos.set(n as any, f);
     
     // Προσθήκη στις συναρτήσεις του module
