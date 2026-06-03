@@ -10,6 +10,8 @@ import {getVulnerabilityId, Vulnerability} from "../typings/vulnerabilities";
 import {constraintVarToStringWithCode, funcToStringWithCode} from "./tostringwithcode";
 import {sep} from "path";
 
+import { globalNativeEdgesStore } from "../patternmatching/nativestore";
+
 export interface VisualizerGraphs {
     graphs: Array<{
         title?: string,
@@ -118,58 +120,66 @@ function isTrivialVar(v: ConstraintVar, ts: Iterable<Token>, size: number, redir
  * Produces the call graph.
  */
 function getVisualizerCallGraph(f: FragmentState, vulnerabilities: VulnerabilityResults): VisualizerGraphs {
-    // count number of calls edges for all functions, modules and packages
-    const functionCallCounts = new Map<FunctionInfo, number>(); //αριθμός κλήσεων προς κάθε function
-    const moduleCallCounts = new Map<ModuleInfo, number>(); //αριθμός κλήσεων προς κάθε module
-    const packageCallCounts = new Map<PackageInfo, number>(); //αριθμός κλήσεων προς κάθε package
+    //  Υπολογισμός κλήσεων (Call Counts)
+    const functionCallCounts = new Map<FunctionInfo | string, number>(); // Πλέον δέχεται και string για native locations
+    const moduleCallCounts = new Map<ModuleInfo, number>();
+    const packageCallCounts = new Map<PackageInfo, number>();
     let maxFunctionCallCount = 1, maxModuleCallCount = 1, maxPackageCallCount = 1;
-    for (const dsts of f.functionToFunction.values()) //προσθέτει στην μεταβλητή dsts Κάθε value Που υπάρχει στο map functionToFuction
-        for (const dst of dsts) { //για κάθε τιμή που βρίσκεται στο συγκεκριμένο value
-            const fw = getOrSet(functionCallCounts, dst, () => 0) + 1; //μετράει πόσες φορές έχει κληθεί το dst
+
+    // Α) Κανονικές JS κλήσεις
+    for (const dsts of f.functionToFunction.values()) 
+        for (const dst of dsts) { 
+            const fw = getOrSet(functionCallCounts, dst, () => 0) + 1;
             functionCallCounts.set(dst, fw);
-            if (fw > maxFunctionCallCount)
-                maxFunctionCallCount = fw;
+            if (fw > maxFunctionCallCount) maxFunctionCallCount = fw;
+
             const fm = getOrSet(moduleCallCounts, dst.moduleInfo, () => 0) + 1;
             moduleCallCounts.set(dst.moduleInfo, fm);
-            if (fm > maxModuleCallCount)
-                maxModuleCallCount = fm;
+            if (fm > maxModuleCallCount) maxModuleCallCount = fm;
+
             const fp = getOrSet(packageCallCounts, dst.packageInfo, () => 0) + 1;
             packageCallCounts.set(dst.packageInfo, fp);
-            if (fp > maxPackageCallCount)
-                maxPackageCallCount = fp;
-            //DEBUG
-            // Αν είναι native, διαβάζουμε με ασφάλεια το moduleInfo που του δώσαμε στον constructor
-            //const mInfo = dst.moduleInfo;
-            //if (mInfo) {
-              //  const fm = getOrSet(moduleCallCounts, mInfo, () => 0) + 1;
-               // moduleCallCounts.set(mInfo, fm);
-             //   if (fm > maxModuleCallCount)
-               //     maxModuleCallCount = fm;
-
-            //    if (mInfo.packageInfo) {
-              //      const fp = getOrSet(packageCallCounts, mInfo.packageInfo, () => 0) + 1;
-                //    packageCallCounts.set(mInfo.packageInfo, fp);
-                  //  if (fp > maxPackageCallCount)
-                    //    maxPackageCallCount = fp;
-              //  }
-           // }
+            if (fp > maxPackageCallCount) maxPackageCallCount = fp;
         }
+
+    // Β) ΕΝΣΩΜΑΤΩΣΗ NATIVE ΣΤΑ COUNTS
+    // Μετράμε τις κλήσεις προς τα Native Endpoints για να υπολογιστεί σωστά το μέγεθος (weight) των Nodes τους
+    for (const edge of globalNativeEdgesStore) {
+        const fw = getOrSet(functionCallCounts, edge.calleeLoc, () => 0) + 1;
+        functionCallCounts.set(edge.calleeLoc, fw);
+        if (fw > maxFunctionCallCount) maxFunctionCallCount = fw;
+
+        // Βρίσκουμε σε ποιο module ανήκει ο callee για να αυξήσουμε το βάρος του module
+        const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
+        const targetMod = f.a.moduleInfosByPath.get(calleeFilepath);
+        if (targetMod) {
+            const fm = getOrSet(moduleCallCounts, targetMod, () => 0) + 1;
+            moduleCallCounts.set(targetMod, fm);
+            if (fm > maxModuleCallCount) maxModuleCallCount = fm;
+
+            const fp = getOrSet(packageCallCounts, targetMod.packageInfo, () => 0) + 1;
+            packageCallCounts.set(targetMod.packageInfo, fp);
+            if (fp > maxPackageCallCount) maxPackageCallCount = fp;
+        }
+    }
+
     for (const dsts of f.requireGraph.values())
         for (const dst of dsts) {
             const fm = getOrSet(moduleCallCounts, dst, () => 0) + 1;
             moduleCallCounts.set(dst, fm);
-            if (fm > maxModuleCallCount)
-                maxModuleCallCount = fm;
+            if (fm > maxModuleCallCount) maxModuleCallCount = fm;
             const fp = getOrSet(packageCallCounts, dst.packageInfo, () => 0) + 1;
             packageCallCounts.set(dst.packageInfo, fp);
-            if (fp > maxPackageCallCount)
-                maxPackageCallCount = fp;
+            if (fp > maxPackageCallCount) maxPackageCallCount = fp;
         }
-    // prepare the new graph
+
+    //Προετοιμασία ID Generator & Elements
     const reachable = getReachable(f);
-    const id = IdGenerator<PackageInfo | ModuleInfo | FunctionInfo>();
+    // Επεκτείνουμε τον IdGenerator να δέχεται και string (για τα native callee locations)
+    const id = IdGenerator<PackageInfo | ModuleInfo | FunctionInfo | string>();
     const e = new Elements();
-    // add nodes for packages
+
+    // [Προσθήκη Packages
     for (const p of f.a.packageInfos.values()) {
         const packageCallCount = packageCallCounts.get(p) ?? 0;
         e.add({
@@ -198,11 +208,10 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
         });
 
         for (const fun of n.functions)
-            // use parent instead of n to nest all functions directly in the module
             addFunction(fun, n);
     }
 
-    // add nodes for modules
+    // Προσθήκη Modules & Functions
     for (const m of f.a.moduleInfos.values()) {
         const moduleCallCount = moduleCallCounts.get(m) ?? 0;
         e.add({
@@ -216,87 +225,42 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             isEntry: m.isEntry ? "true" : undefined,
             isReachable: reachable.has(m) ? "true" : undefined
         });
-        // add nodes for functions
+
+        // Κανονικές συναρτήσεις
         for (const fun of m.functions)
             addFunction(fun, m);
-            //DEBUG
-            const addedNativeFunctions = new Set<FunctionInfo>();
-            for (const [, dsts] of f.functionToFunction) {
-    for (const dst of dsts) {
 
-        if (dst.isNative && dst.moduleInfo === m) {
-
-            if (!addedNativeFunctions.has(dst)) {
-
-                addedNativeFunctions.add(dst);
-
-                const functionCallCount =
-                    functionCallCounts.get(dst) ?? 0;
+        // ΕΓΧΥΣΗ NATIVE NODES ΣΤΟ ΣΩΣΤΟ MODULE
+        // Φιλτράρουμε τον global πίνακα για να βρούμε ποιοι native callees ανήκουν σε αυτό το αρχείο
+        const seenNativeInModule = new Set<string>();
+        for (const edge of globalNativeEdgesStore) {
+            const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
+            if (m.getPath() === calleeFilepath && !seenNativeInModule.has(edge.calleeLoc)) {
+                seenNativeInModule.add(edge.calleeLoc);
+                
+                const nativeCallCount = functionCallCounts.get(edge.calleeLoc) ?? 0;
+                const coordinates = edge.calleeLoc.substring(edge.calleeLoc.indexOf(":") + 1);
 
                 e.add({
-                    id: id(dst),
+                    id: id(edge.calleeLoc),
                     kind: "function",
                     parent: id(m),
-
-                    name: `[Native] ${  dst.name ?? "<anon>"}`,
-                    fullName: dst.toString(),
-                    callWeight: Math.round(
-                        100 * functionCallCount / maxFunctionCallCount
-                    ),
-
-                    callCount: functionCallCount,
-
-                    isReachable: reachable.has(dst)
-                        ? "true"
-                        : undefined
+                    name: `[Native] ${edge.patternName.replace("native:", "")} (${coordinates})`,
+                    fullName: `${edge.patternName} at ${edge.calleeLoc}`,
+                    callWeight: Math.round(100 * nativeCallCount / maxFunctionCallCount),
+                    callCount: nativeCallCount,
+                    isReachable: "true" // Θεωρείται reachable αφού καταγράφηκε στο API usage
                 });
             }
         }
     }
-}
 
-        //DEBUG
-        //Σκανάρουμε αν υπάρχουν native κλήσεις που ανήκουν σε αυτό το module
-        //for (const [ , dsts] of f.functionToFunction) {
-          //  for (const dst of dsts) {
-            //    if ((dst as any).isNative && dst.moduleInfo === m && reachable.has(dst)) {
-              //      const functionCallCount = functionCallCounts.get(dst) ?? 0;
-                //    e.add({
-                  //      id: id(dst),
-                    //    kind: "function",
-                      //  parent: id(m), 
-                        //name: `[Native] ${(dst as any).name || "<anon>"}`,
-        //                fullName: (dst as any).name || "Native Endpoint",
-          //              callWeight: Math.round(100 * functionCallCount / maxFunctionCallCount),
-            //            callCount: functionCallCount,
-              //          isReachable: "true"
-                //    });
-            //    }
-            //}
-        //}
-    }
-    // add edges
+    // Κατασκευή Edges (Ακμών)
     let numEdges = 0;
+
+    // Α) Κανονικά Edges
     for (const [src, dsts] of f.functionToFunction)
         for (const dst of dsts) {
-
-            //DEBUG
-            //if (dst.isNative) {
-            //console.log(
-              ////  "NATIVE",
-            //    dst.name,
-              //  dst.nativeUniqueId,
-                //dst
-            //);
-            //}
-            //console.log(
-            //  "DST:",
-            //  dst.constructor.name,
-            //  dst.name,
-            //  (dst as any).isNative, //
-            //  dst.toString()
-            //);
-
             e.add({
                 kind: "call",
                 source: id(src),
@@ -304,6 +268,65 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             });
             numEdges++;
         }
+
+    // Β) ΕΓΧΥΣΗ NATIVE EDGES (Σύνδεση Caller -> Native Callee)
+    for (const edge of globalNativeEdgesStore) {
+        const calleeNodeId = id(edge.calleeLoc);
+        
+        if (edge.callerLoc) {
+            const callerCoords = edge.callerLoc.substring(edge.callerLoc.indexOf(":") + 1);
+            let callerFound = false;
+
+            // Αναζήτηση της JS Function που εκτέλεσε την κλήση
+            for (const fun of [...f.a.functionInfos.values(), ...f.a.moduleInfos.values()]) {
+                if (fun.loc) {
+                    const funModule = fun instanceof ModuleInfo ? fun : fun.moduleInfo;
+                    if (edge.callerLoc.startsWith(funModule.getPath())) {
+                        const funLocStr = `${fun.loc.start.line}:${fun.loc.start.column}`;
+                        
+                        if (callerCoords.includes(funLocStr) || fun.toString().includes(callerCoords)) {
+                            e.add({
+                                kind: "call",
+                                source: id(fun),
+                                target: calleeNodeId
+                            });
+                            numEdges++;
+                            callerFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Αν ο caller ήταν top-level στο module (και όχι μέσα σε function), σύνδεσε απευθείας το Module Node
+            if (!callerFound) {
+                const callerFilepath = edge.callerLoc.substring(0, edge.callerLoc.indexOf(":"));
+                const mod = f.a.moduleInfosByPath.get(callerFilepath);
+                if (mod) {
+                    e.add({
+                        kind: "call",
+                        source: id(mod),
+                        target: calleeNodeId
+                    });
+                    numEdges++;
+                }
+            }
+        } else {
+            // Αν το callerLoc είναι null (π.χ. απροσδιόριστο top-level), το συνδέουμε με το Module του Callee
+            const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
+            const mod = f.a.moduleInfosByPath.get(calleeFilepath);
+            if (mod) {
+                e.add({
+                    kind: "call",
+                    source: id(mod),
+                    target: calleeNodeId
+                });
+                numEdges++;
+            }
+        }
+    }
+
+    // Γ) Require Edges
     for (const [src, dsts] of f.requireGraph)
         for (const dst of dsts) {
             e.add({
