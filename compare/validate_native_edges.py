@@ -37,7 +37,7 @@ def validate_native_diff():
                 return f"UnknownNode_{node_id}"
             f_str = functions[node_id]
             parts = f_str.split(":")
-            if len(parts) == 5: # Δικό μας custom native string (fileIdx:line:col:line:col)
+            if len(parts) == 5: 
                 f_idx = parts[0]
                 if int(f_idx) < len(files):
                     filename = os.path.basename(files[int(f_idx)])

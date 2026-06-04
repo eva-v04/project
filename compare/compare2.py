@@ -1,7 +1,7 @@
 import json
 
 def find_jelly_differences():
-    old_jelly_file = "sqlite3.json"
+    old_jelly_file = "sqlite3-noflags.json"
     new_jelly_file = "sqlite3-withflags.json"
     
     print("=== Ανάλυση Διαφορών: Νέο JSON vs Παλιό JSON ===\n")

@@ -2,3662 +2,2060 @@
   "import": {
     "<tar>": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/deps/extract.js",
-        "start": {
-          "line": 1,
-          "column": 12,
-          "index": 12
+        "callee": {
+          "name": "1:12:1:26",
+          "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:12:1:26"
         },
-        "end": {
-          "line": 1,
-          "column": 26,
-          "index": 26
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:20:0",
-            "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:1:20:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:20:0",
+          "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:1:20:1"
+        }
       }
     ],
     "<bindings>": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js",
-        "start": {
-          "line": 1,
-          "column": 17,
-          "index": 17
+        "callee": {
+          "name": "1:17:1:36",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:17:1:36"
         },
-        "end": {
-          "line": 1,
-          "column": 36,
-          "index": 36
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:2:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:1:2:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:2:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:1:2:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 2,
-          "column": 16,
-          "index": 46
+        "callee": {
+          "name": "2:16:2:47",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:2:16:2:47"
         },
-        "end": {
-          "line": 2,
-          "column": 47,
-          "index": 77
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/trace>": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 178,
-          "column": 22,
-          "index": 5738
+        "callee": {
+          "name": "178:22:178:40",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:178:22:178:40"
         },
-        "end": {
-          "line": 178,
-          "column": 40,
-          "index": 5756
-        },
-        "callers": [
-          {
-            "name": "0:0:176:18:207:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:19:207:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:176:18:207:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:19:207:2"
+        }
       }
     ],
     "<file-uri-to-path>": [
       {
-        "filename": "/home/eva/node_modules/bindings/bindings.js",
-        "start": {
-          "line": 7,
-          "column": 18,
-          "index": 101
+        "callee": {
+          "name": "7:18:7:45",
+          "loc": "/home/eva/node_modules/bindings/bindings.js:7:18:7:45"
         },
-        "end": {
-          "line": 7,
-          "column": 45,
-          "index": 128
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:222:0",
-            "loc": "/home/eva/node_modules/bindings/bindings.js:1:1:222:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:222:0",
+          "loc": "/home/eva/node_modules/bindings/bindings.js:1:1:222:1"
+        }
       }
     ]
   },
   "read": {
     "<sqlite3/lib/sqlite3-binding>.cached": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 39,
-          "column": 13,
-          "index": 1087
+        "callee": {
+          "name": "39:13:39:27",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:27"
         },
-        "end": {
-          "line": 39,
-          "column": 27,
-          "index": 1101
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 40,
-          "column": 17,
-          "index": 1136
+        "callee": {
+          "name": "40:17:40:31",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:31"
         },
-        "end": {
-          "line": 40,
-          "column": 31,
-          "index": 1150
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 44,
-          "column": 17,
-          "index": 1284
+        "callee": {
+          "name": "44:17:44:31",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:31"
         },
-        "end": {
-          "line": 44,
-          "column": 31,
-          "index": 1298
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 59,
-          "column": 17,
-          "index": 1667
+        "callee": {
+          "name": "59:17:59:33",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:59:17:59:33"
         },
-        "end": {
-          "line": 59,
-          "column": 33,
-          "index": 1683
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 60,
-          "column": 18,
-          "index": 1703
+        "callee": {
+          "name": "60:18:60:35",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:60:18:60:35"
         },
-        "end": {
-          "line": 60,
-          "column": 35,
-          "index": 1720
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Backup": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 61,
-          "column": 15,
-          "index": 1737
+        "callee": {
+          "name": "61:15:61:29",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:61:15:61:29"
         },
-        "end": {
-          "line": 61,
-          "column": 29,
-          "index": 1751
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.BUSY": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 116,
-          "column": 26,
-          "index": 3829
+        "callee": {
+          "name": "116:26:116:38",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:26:116:38"
         },
-        "end": {
-          "line": 116,
-          "column": 38,
-          "index": 3841
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.LOCKED": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 116,
-          "column": 40,
-          "index": 3843
+        "callee": {
+          "name": "116:40:116:54",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:40:116:54"
         },
-        "end": {
-          "line": 116,
-          "column": 54,
-          "index": 3857
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<bindings>().cached": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 39,
-          "column": 13,
-          "index": 1087
+        "callee": {
+          "name": "39:13:39:27",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:27"
         },
-        "end": {
-          "line": 39,
-          "column": 27,
-          "index": 1101
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 40,
-          "column": 17,
-          "index": 1136
+        "callee": {
+          "name": "40:17:40:31",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:31"
         },
-        "end": {
-          "line": 40,
-          "column": 31,
-          "index": 1150
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 44,
-          "column": 17,
-          "index": 1284
+        "callee": {
+          "name": "44:17:44:31",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:31"
         },
-        "end": {
-          "line": 44,
-          "column": 31,
-          "index": 1298
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<bindings>().Database": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 59,
-          "column": 17,
-          "index": 1667
+        "callee": {
+          "name": "59:17:59:33",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:59:17:59:33"
         },
-        "end": {
-          "line": 59,
-          "column": 33,
-          "index": 1683
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Statement": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 60,
-          "column": 18,
-          "index": 1703
+        "callee": {
+          "name": "60:18:60:35",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:60:18:60:35"
         },
-        "end": {
-          "line": 60,
-          "column": 35,
-          "index": 1720
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Backup": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 61,
-          "column": 15,
-          "index": 1737
+        "callee": {
+          "name": "61:15:61:29",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:61:15:61:29"
         },
-        "end": {
-          "line": 61,
-          "column": 29,
-          "index": 1751
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().BUSY": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 116,
-          "column": 26,
-          "index": 3829
+        "callee": {
+          "name": "116:26:116:38",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:26:116:38"
         },
-        "end": {
-          "line": 116,
-          "column": 38,
-          "index": 3841
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<bindings>().LOCKED": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 116,
-          "column": 40,
-          "index": 3843
+        "callee": {
+          "name": "116:40:116:54",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:40:116:54"
         },
-        "end": {
-          "line": 116,
-          "column": 54,
-          "index": 3857
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.cached.objects": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 44,
-          "column": 17,
-          "index": 1284
+        "callee": {
+          "name": "44:17:44:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:39"
         },
-        "end": {
-          "line": 44,
-          "column": 39,
-          "index": 1306
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 40,
-          "column": 17,
-          "index": 1136
+        "callee": {
+          "name": "40:17:40:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:39"
         },
-        "end": {
-          "line": 40,
-          "column": 39,
-          "index": 1158
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 39,
-          "column": 13,
-          "index": 1087
+        "callee": {
+          "name": "39:13:39:35",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:35"
         },
-        "end": {
-          "line": 39,
-          "column": 35,
-          "index": 1109
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 68,
-          "column": 0,
-          "index": 1914
+        "callee": {
+          "name": "68:0:68:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:68:18"
         },
-        "end": {
-          "line": 68,
-          "column": 18,
-          "index": 1932
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 75,
-          "column": 0,
-          "index": 2144
+        "callee": {
+          "name": "75:0:75:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:75:18"
         },
-        "end": {
-          "line": 75,
-          "column": 18,
-          "index": 2162
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 81,
-          "column": 0,
-          "index": 2346
+        "callee": {
+          "name": "81:0:81:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:81:18"
         },
-        "end": {
-          "line": 81,
-          "column": 18,
-          "index": 2364
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 87,
-          "column": 0,
-          "index": 2548
+        "callee": {
+          "name": "87:0:87:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:87:18"
         },
-        "end": {
-          "line": 87,
-          "column": 18,
-          "index": 2566
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 93,
-          "column": 0,
-          "index": 2763
+        "callee": {
+          "name": "93:0:93:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:93:18"
         },
-        "end": {
-          "line": 93,
-          "column": 18,
-          "index": 2781
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 98,
-          "column": 0,
-          "index": 2913
+        "callee": {
+          "name": "98:0:98:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:98:18"
         },
-        "end": {
-          "line": 98,
-          "column": 18,
-          "index": 2931
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 105,
-          "column": 0,
-          "index": 3181
+        "callee": {
+          "name": "105:0:105:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:105:18"
         },
-        "end": {
-          "line": 105,
-          "column": 18,
-          "index": 3199
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 0,
-          "index": 4851
+        "callee": {
+          "name": "151:0:151:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:151:18"
         },
-        "end": {
-          "line": 151,
-          "column": 18,
-          "index": 4869
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 33,
-          "index": 4884
+        "callee": {
+          "name": "151:33:151:51",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:151:51"
         },
-        "end": {
-          "line": 151,
-          "column": 51,
-          "index": 4902
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 159,
-          "column": 0,
-          "index": 5108
+        "callee": {
+          "name": "159:0:159:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:159:18"
         },
-        "end": {
-          "line": 159,
-          "column": 18,
-          "index": 5126
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 167,
-          "column": 0,
-          "index": 5371
+        "callee": {
+          "name": "167:0:167:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:167:18"
         },
-        "end": {
-          "line": 167,
-          "column": 18,
-          "index": 5389
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 189,
-          "column": 30,
-          "index": 5993
+        "callee": {
+          "name": "189:30:189:48",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:189:30:189:48"
         },
-        "end": {
-          "line": 189,
-          "column": 48,
-          "index": 6011
-        },
-        "callers": [
-          {
-            "name": "0:0:188:18:190:9",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
-          }
-        ]
+        "caller": {
+          "name": "0:0:188:18:190:9",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 26,
-          "column": 8,
-          "index": 768
+        "callee": {
+          "name": "26:8:26:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
-        "end": {
-          "line": 26,
-          "column": 24,
-          "index": 784
-        },
-        "callers": [
-          {
-            "name": "0:0:24:0:27:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:24:0:27:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement.prototype": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 120,
-          "column": 0,
-          "index": 3883
+        "callee": {
+          "name": "120:0:120:19",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:120:19"
         },
-        "end": {
-          "line": 120,
-          "column": 19,
-          "index": 3902
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 201,
-          "column": 30,
-          "index": 6269
+        "callee": {
+          "name": "201:30:201:49",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:201:30:201:49"
         },
-        "end": {
-          "line": 201,
-          "column": 49,
-          "index": 6288
-        },
-        "callers": [
-          {
-            "name": "0:0:200:18:202:9",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
-          }
-        ]
+        "caller": {
+          "name": "0:0:200:18:202:9",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 26,
-          "column": 8,
-          "index": 768
+        "callee": {
+          "name": "26:8:26:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
-        "end": {
-          "line": 26,
-          "column": 24,
-          "index": 784
-        },
-        "callers": [
-          {
-            "name": "0:0:24:0:27:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:24:0:27:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Backup.prototype": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 26,
-          "column": 8,
-          "index": 768
+        "callee": {
+          "name": "26:8:26:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
-        "end": {
-          "line": 26,
-          "column": 24,
-          "index": 784
-        },
-        "callers": [
-          {
-            "name": "0:0:24:0:27:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:24:0:27:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
+        }
       }
     ],
     "<file-uri-to-path>().length": [
       {
-        "filename": "/home/eva/node_modules/file-uri-to-path/index.js",
-        "start": {
-          "line": 24,
-          "column": 6,
-          "index": 308
+        "callee": {
+          "name": "24:6:24:16",
+          "loc": "/home/eva/node_modules/file-uri-to-path/index.js:24:6:24:16"
         },
-        "end": {
-          "line": 24,
-          "column": 16,
-          "index": 318
-        },
-        "callers": [
-          {
-            "name": "0:0:22:0:66:1",
-            "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:22:0:66:1",
+          "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
+        }
       }
     ],
     "<bindings>().cached.objects": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 44,
-          "column": 17,
-          "index": 1284
+        "callee": {
+          "name": "44:17:44:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:39"
         },
-        "end": {
-          "line": 44,
-          "column": 39,
-          "index": 1306
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 40,
-          "column": 17,
-          "index": 1136
+        "callee": {
+          "name": "40:17:40:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:39"
         },
-        "end": {
-          "line": 40,
-          "column": 39,
-          "index": 1158
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 39,
-          "column": 13,
-          "index": 1087
+        "callee": {
+          "name": "39:13:39:35",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:35"
         },
-        "end": {
-          "line": 39,
-          "column": 35,
-          "index": 1109
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<bindings>().Database.prototype": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 68,
-          "column": 0,
-          "index": 1914
+        "callee": {
+          "name": "68:0:68:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:68:18"
         },
-        "end": {
-          "line": 68,
-          "column": 18,
-          "index": 1932
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 75,
-          "column": 0,
-          "index": 2144
+        "callee": {
+          "name": "75:0:75:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:75:18"
         },
-        "end": {
-          "line": 75,
-          "column": 18,
-          "index": 2162
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 81,
-          "column": 0,
-          "index": 2346
+        "callee": {
+          "name": "81:0:81:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:81:18"
         },
-        "end": {
-          "line": 81,
-          "column": 18,
-          "index": 2364
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 87,
-          "column": 0,
-          "index": 2548
+        "callee": {
+          "name": "87:0:87:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:87:18"
         },
-        "end": {
-          "line": 87,
-          "column": 18,
-          "index": 2566
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 93,
-          "column": 0,
-          "index": 2763
+        "callee": {
+          "name": "93:0:93:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:93:18"
         },
-        "end": {
-          "line": 93,
-          "column": 18,
-          "index": 2781
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 98,
-          "column": 0,
-          "index": 2913
+        "callee": {
+          "name": "98:0:98:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:98:18"
         },
-        "end": {
-          "line": 98,
-          "column": 18,
-          "index": 2931
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 105,
-          "column": 0,
-          "index": 3181
+        "callee": {
+          "name": "105:0:105:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:105:18"
         },
-        "end": {
-          "line": 105,
-          "column": 18,
-          "index": 3199
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 0,
-          "index": 4851
+        "callee": {
+          "name": "151:0:151:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:151:18"
         },
-        "end": {
-          "line": 151,
-          "column": 18,
-          "index": 4869
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 33,
-          "index": 4884
+        "callee": {
+          "name": "151:33:151:51",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:151:51"
         },
-        "end": {
-          "line": 151,
-          "column": 51,
-          "index": 4902
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 159,
-          "column": 0,
-          "index": 5108
+        "callee": {
+          "name": "159:0:159:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:159:18"
         },
-        "end": {
-          "line": 159,
-          "column": 18,
-          "index": 5126
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 167,
-          "column": 0,
-          "index": 5371
+        "callee": {
+          "name": "167:0:167:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:167:18"
         },
-        "end": {
-          "line": 167,
-          "column": 18,
-          "index": 5389
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 189,
-          "column": 30,
-          "index": 5993
+        "callee": {
+          "name": "189:30:189:48",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:189:30:189:48"
         },
-        "end": {
-          "line": 189,
-          "column": 48,
-          "index": 6011
-        },
-        "callers": [
-          {
-            "name": "0:0:188:18:190:9",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
-          }
-        ]
+        "caller": {
+          "name": "0:0:188:18:190:9",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 26,
-          "column": 8,
-          "index": 768
+        "callee": {
+          "name": "26:8:26:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
-        "end": {
-          "line": 26,
-          "column": 24,
-          "index": 784
-        },
-        "callers": [
-          {
-            "name": "0:0:24:0:27:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:24:0:27:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
+        }
       }
     ],
     "<bindings>().Statement.prototype": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 120,
-          "column": 0,
-          "index": 3883
+        "callee": {
+          "name": "120:0:120:19",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:120:19"
         },
-        "end": {
-          "line": 120,
-          "column": 19,
-          "index": 3902
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 201,
-          "column": 30,
-          "index": 6269
+        "callee": {
+          "name": "201:30:201:49",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:201:30:201:49"
         },
-        "end": {
-          "line": 201,
-          "column": 49,
-          "index": 6288
-        },
-        "callers": [
-          {
-            "name": "0:0:200:18:202:9",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
-          }
-        ]
+        "caller": {
+          "name": "0:0:200:18:202:9",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 26,
-          "column": 8,
-          "index": 768
+        "callee": {
+          "name": "26:8:26:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
-        "end": {
-          "line": 26,
-          "column": 24,
-          "index": 784
-        },
-        "callers": [
-          {
-            "name": "0:0:24:0:27:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:24:0:27:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
+        }
       }
     ],
     "<bindings>().Backup.prototype": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 26,
-          "column": 8,
-          "index": 768
+        "callee": {
+          "name": "26:8:26:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
-        "end": {
-          "line": 26,
-          "column": 24,
-          "index": 784
-        },
-        "callers": [
-          {
-            "name": "0:0:24:0:27:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:24:0:27:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.constructor": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
-        "end": {
-          "line": 8,
-          "column": 39,
-          "index": 284
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database().open": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 48,
-          "column": 20,
-          "index": 1505
+        "callee": {
+          "name": "48:20:48:27",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:48:20:48:27"
         },
-        "end": {
-          "line": 48,
-          "column": 27,
-          "index": 1512
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement.prototype.constructor": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
-        "end": {
-          "line": 8,
-          "column": 39,
-          "index": 284
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().map": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:17"
         },
-        "end": {
-          "line": 99,
-          "column": 17,
-          "index": 3001
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().each": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:18"
         },
-        "end": {
-          "line": 94,
-          "column": 18,
-          "index": 2853
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().all": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:17"
         },
-        "end": {
-          "line": 88,
-          "column": 17,
-          "index": 2636
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().get": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:17"
         },
-        "end": {
-          "line": 82,
-          "column": 17,
-          "index": 2434
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().run": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:17"
         },
-        "end": {
-          "line": 76,
-          "column": 17,
-          "index": 2232
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().bind": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 70,
-          "column": 10,
-          "index": 2024
+        "callee": {
+          "name": "70:10:70:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:24"
         },
-        "end": {
-          "line": 70,
-          "column": 24,
-          "index": 2038
-        },
-        "callers": [
-          {
-            "name": "0:0:68:45:72:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:68:45:72:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
+        }
       }
     ],
     "<bindings>().Database.prototype.constructor": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
-        "end": {
-          "line": 8,
-          "column": 39,
-          "index": 284
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<bindings>().Database().open": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 48,
-          "column": 20,
-          "index": 1505
+        "callee": {
+          "name": "48:20:48:27",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:48:20:48:27"
         },
-        "end": {
-          "line": 48,
-          "column": 27,
-          "index": 1512
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<bindings>().Statement.prototype.constructor": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:39",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
-        "end": {
-          "line": 8,
-          "column": 39,
-          "index": 284
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<bindings>().Statement().map": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:17"
         },
-        "end": {
-          "line": 99,
-          "column": 17,
-          "index": 3001
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<bindings>().Statement().each": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:18",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:18"
         },
-        "end": {
-          "line": 94,
-          "column": 18,
-          "index": 2853
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<bindings>().Statement().all": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:17"
         },
-        "end": {
-          "line": 88,
-          "column": 17,
-          "index": 2636
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<bindings>().Statement().get": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:17"
         },
-        "end": {
-          "line": 82,
-          "column": 17,
-          "index": 2434
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<bindings>().Statement().run": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:17",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:17"
         },
-        "end": {
-          "line": 76,
-          "column": 17,
-          "index": 2232
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<bindings>().Statement().bind": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 70,
-          "column": 10,
-          "index": 2024
+        "callee": {
+          "name": "70:10:70:24",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:24"
         },
-        "end": {
-          "line": 70,
-          "column": 24,
-          "index": 2038
-        },
-        "callers": [
-          {
-            "name": "0:0:68:45:72:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:68:45:72:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.constructor.name": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:44",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
-        "end": {
-          "line": 8,
-          "column": 44,
-          "index": 289
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement.prototype.constructor.name": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:44",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
-        "end": {
-          "line": 8,
-          "column": 44,
-          "index": 289
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<bindings>().Database.prototype.constructor.name": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:44",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
-        "end": {
-          "line": 8,
-          "column": 44,
-          "index": 289
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ],
     "<bindings>().Statement.prototype.constructor.name": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/trace.js",
-        "start": {
-          "line": 8,
-          "column": 21,
-          "index": 266
+        "callee": {
+          "name": "8:21:8:44",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
-        "end": {
-          "line": 8,
-          "column": 44,
-          "index": 289
-        },
-        "callers": [
-          {
-            "name": "0:0:6:23:29:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:6:23:29:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
+        }
       }
     ]
   },
   "write": {
     "<sqlite3/lib/sqlite3-binding>.cached": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 29,
-          "column": 0,
-          "index": 814
+        "callee": {
+          "name": "29:0:56:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:29:0:56:1"
         },
-        "end": {
-          "line": 56,
-          "column": 1,
-          "index": 1646
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.verbose": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 176,
-          "column": 0,
-          "index": 5663
+        "callee": {
+          "name": "176:0:207:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:0:207:1"
         },
-        "end": {
-          "line": 207,
-          "column": 1,
-          "index": 6363
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().cached": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 29,
-          "column": 0,
-          "index": 814
+        "callee": {
+          "name": "29:0:56:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:29:0:56:1"
         },
-        "end": {
-          "line": 56,
-          "column": 1,
-          "index": 1646
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().verbose": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 176,
-          "column": 0,
-          "index": 5663
+        "callee": {
+          "name": "176:0:207:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:0:207:1"
         },
-        "end": {
-          "line": 207,
-          "column": 1,
-          "index": 6363
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.prepare": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 68,
-          "column": 0,
-          "index": 1914
+        "callee": {
+          "name": "68:0:72:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:72:2"
         },
-        "end": {
-          "line": 72,
-          "column": 2,
-          "index": 2087
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.run": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 75,
-          "column": 0,
-          "index": 2144
+        "callee": {
+          "name": "75:0:78:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:78:2"
         },
-        "end": {
-          "line": 78,
-          "column": 2,
-          "index": 2289
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.get": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 81,
-          "column": 0,
-          "index": 2346
+        "callee": {
+          "name": "81:0:84:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:84:2"
         },
-        "end": {
-          "line": 84,
-          "column": 2,
-          "index": 2491
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.all": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 87,
-          "column": 0,
-          "index": 2548
+        "callee": {
+          "name": "87:0:90:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:90:2"
         },
-        "end": {
-          "line": 90,
-          "column": 2,
-          "index": 2693
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.each": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 93,
-          "column": 0,
-          "index": 2763
+        "callee": {
+          "name": "93:0:96:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:96:2"
         },
-        "end": {
-          "line": 96,
-          "column": 2,
-          "index": 2910
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.map": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 98,
-          "column": 0,
-          "index": 2913
+        "callee": {
+          "name": "98:0:101:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:101:2"
         },
-        "end": {
-          "line": 101,
-          "column": 2,
-          "index": 3058
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.backup": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 105,
-          "column": 0,
-          "index": 3181
+        "callee": {
+          "name": "105:0:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:118:1"
         },
-        "end": {
-          "line": 118,
-          "column": 1,
-          "index": 3880
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.addListener": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 0,
-          "index": 4851
+        "callee": {
+          "name": "151:0:157:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:157:1"
         },
-        "end": {
-          "line": 157,
-          "column": 1,
-          "index": 5105
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.on": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 33,
-          "index": 4884
+        "callee": {
+          "name": "151:33:157:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:157:1"
         },
-        "end": {
-          "line": 157,
-          "column": 1,
-          "index": 5105
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.removeListener": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 159,
-          "column": 0,
-          "index": 5108
+        "callee": {
+          "name": "159:0:165:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:165:1"
         },
-        "end": {
-          "line": 165,
-          "column": 1,
-          "index": 5368
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database.prototype.removeAllListeners": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 167,
-          "column": 0,
-          "index": 5371
+        "callee": {
+          "name": "167:0:173:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:173:1"
         },
-        "end": {
-          "line": 173,
-          "column": 1,
-          "index": 5616
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement.prototype.map": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 120,
-          "column": 0,
-          "index": 3883
+        "callee": {
+          "name": "120:0:145:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:145:1"
         },
-        "end": {
-          "line": 145,
-          "column": 1,
-          "index": 4765
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Backup().retryErrors": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 116,
-          "column": 4,
-          "index": 3807
+        "callee": {
+          "name": "116:4:116:55",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:4:116:55"
         },
-        "end": {
-          "line": 116,
-          "column": 55,
-          "index": 3858
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<bindings>().Database.prototype.prepare": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 68,
-          "column": 0,
-          "index": 1914
+        "callee": {
+          "name": "68:0:72:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:72:2"
         },
-        "end": {
-          "line": 72,
-          "column": 2,
-          "index": 2087
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.run": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 75,
-          "column": 0,
-          "index": 2144
+        "callee": {
+          "name": "75:0:78:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:78:2"
         },
-        "end": {
-          "line": 78,
-          "column": 2,
-          "index": 2289
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.get": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 81,
-          "column": 0,
-          "index": 2346
+        "callee": {
+          "name": "81:0:84:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:84:2"
         },
-        "end": {
-          "line": 84,
-          "column": 2,
-          "index": 2491
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.all": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 87,
-          "column": 0,
-          "index": 2548
+        "callee": {
+          "name": "87:0:90:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:90:2"
         },
-        "end": {
-          "line": 90,
-          "column": 2,
-          "index": 2693
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.each": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 93,
-          "column": 0,
-          "index": 2763
+        "callee": {
+          "name": "93:0:96:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:96:2"
         },
-        "end": {
-          "line": 96,
-          "column": 2,
-          "index": 2910
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.map": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 98,
-          "column": 0,
-          "index": 2913
+        "callee": {
+          "name": "98:0:101:2",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:101:2"
         },
-        "end": {
-          "line": 101,
-          "column": 2,
-          "index": 3058
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.backup": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 105,
-          "column": 0,
-          "index": 3181
+        "callee": {
+          "name": "105:0:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:118:1"
         },
-        "end": {
-          "line": 118,
-          "column": 1,
-          "index": 3880
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.addListener": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 0,
-          "index": 4851
+        "callee": {
+          "name": "151:0:157:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:157:1"
         },
-        "end": {
-          "line": 157,
-          "column": 1,
-          "index": 5105
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.on": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 151,
-          "column": 33,
-          "index": 4884
+        "callee": {
+          "name": "151:33:157:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:157:1"
         },
-        "end": {
-          "line": 157,
-          "column": 1,
-          "index": 5105
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.removeListener": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 159,
-          "column": 0,
-          "index": 5108
+        "callee": {
+          "name": "159:0:165:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:165:1"
         },
-        "end": {
-          "line": 165,
-          "column": 1,
-          "index": 5368
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Database.prototype.removeAllListeners": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 167,
-          "column": 0,
-          "index": 5371
+        "callee": {
+          "name": "167:0:173:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:173:1"
         },
-        "end": {
-          "line": 173,
-          "column": 1,
-          "index": 5616
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Statement.prototype.map": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 120,
-          "column": 0,
-          "index": 3883
+        "callee": {
+          "name": "120:0:145:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:145:1"
         },
-        "end": {
-          "line": 145,
-          "column": 1,
-          "index": 4765
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:208:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:208:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
+        }
       }
     ],
     "<bindings>().Backup().retryErrors": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 116,
-          "column": 4,
-          "index": 3807
+        "callee": {
+          "name": "116:4:116:55",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:4:116:55"
         },
-        "end": {
-          "line": 116,
-          "column": 55,
-          "index": 3858
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ]
   },
   "call": {
     "<bindings>()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js",
-        "start": {
-          "line": 1,
-          "column": 17,
-          "index": 17
+        "callee": {
+          "name": "1:17:1:57",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:17:1:57"
         },
-        "end": {
-          "line": 1,
-          "column": 57,
-          "index": 57
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:2:0",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:1:2:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:2:0",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:1:2:1"
+        }
       }
     ],
     "<file-uri-to-path>()": [
       {
-        "filename": "/home/eva/node_modules/bindings/bindings.js",
-        "start": {
-          "line": 179,
-          "column": 15,
-          "index": 4948
+        "callee": {
+          "name": "179:15:179:38",
+          "loc": "/home/eva/node_modules/bindings/bindings.js:179:15:179:38"
         },
-        "end": {
-          "line": 179,
-          "column": 38,
-          "index": 4971
-        },
-        "callers": [
-          {
-            "name": "0:0:145:22:183:1",
-            "loc": "/home/eva/node_modules/bindings/bindings.js:145:23:183:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:145:22:183:1",
+          "loc": "/home/eva/node_modules/bindings/bindings.js:145:23:183:2"
+        }
       }
     ],
     "<tar>.extract()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/deps/extract.js",
-        "start": {
-          "line": 7,
-          "column": 0,
-          "index": 179
+        "callee": {
+          "name": "7:0:11:2",
+          "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:7:0:11:2"
         },
-        "end": {
-          "line": 11,
-          "column": 2,
-          "index": 248
-        },
-        "callers": [
-          {
-            "name": "0:0:1:0:20:0",
-            "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:1:20:1"
-          }
-        ]
+        "caller": {
+          "name": "0:0:1:0:20:0",
+          "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:1:20:1"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 33,
-          "column": 19,
-          "index": 985
+        "callee": {
+          "name": "33:19:33:43",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:33:19:33:43"
         },
-        "end": {
-          "line": 33,
-          "column": 43,
-          "index": 1009
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 40,
-          "column": 48,
-          "index": 1167
+        "callee": {
+          "name": "40:48:40:72",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:48:40:72"
         },
-        "end": {
-          "line": 40,
-          "column": 72,
-          "index": 1191
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 19,
-          "column": 26,
-          "index": 594
+        "callee": {
+          "name": "19:26:19:59",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:19:26:19:59"
         },
-        "end": {
-          "line": 19,
-          "column": 59,
-          "index": 627
-        },
-        "callers": [
-          {
-            "name": "0:0:7:11:21:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:7:12:21:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:7:11:21:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:7:12:21:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Backup()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 110,
-          "column": 17,
-          "index": 3440
+        "callee": {
+          "name": "110:17:110:83",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:110:17:110:83"
         },
-        "end": {
-          "line": 110,
-          "column": 83,
-          "index": 3506
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 113,
-          "column": 17,
-          "index": 3627
+        "callee": {
+          "name": "113:17:113:103",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:113:17:113:103"
         },
-        "end": {
-          "line": 113,
-          "column": 103,
-          "index": 3713
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<sqlite3/lib/trace>.extendTrace()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 189,
-          "column": 12,
-          "index": 5975
+        "callee": {
+          "name": "189:12:189:55",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:189:12:189:55"
         },
-        "end": {
-          "line": 189,
-          "column": 55,
-          "index": 6018
-        },
-        "callers": [
-          {
-            "name": "0:0:188:18:190:9",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
-          }
-        ]
+        "caller": {
+          "name": "0:0:188:18:190:9",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 201,
-          "column": 12,
-          "index": 6251
+        "callee": {
+          "name": "201:12:201:56",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:201:12:201:56"
         },
-        "end": {
-          "line": 201,
-          "column": 56,
-          "index": 6295
-        },
-        "callers": [
-          {
-            "name": "0:0:200:18:202:9",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
-          }
-        ]
+        "caller": {
+          "name": "0:0:200:18:202:9",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
+        }
       }
     ],
     "<bindings>().Database()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 33,
-          "column": 19,
-          "index": 985
+        "callee": {
+          "name": "33:19:33:43",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:33:19:33:43"
         },
-        "end": {
-          "line": 33,
-          "column": 43,
-          "index": 1009
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 40,
-          "column": 48,
-          "index": 1167
+        "callee": {
+          "name": "40:48:40:72",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:48:40:72"
         },
-        "end": {
-          "line": 40,
-          "column": 72,
-          "index": 1191
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<bindings>().Statement()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 19,
-          "column": 26,
-          "index": 594
+        "callee": {
+          "name": "19:26:19:59",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:19:26:19:59"
         },
-        "end": {
-          "line": 19,
-          "column": 59,
-          "index": 627
-        },
-        "callers": [
-          {
-            "name": "0:0:7:11:21:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:7:12:21:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:7:11:21:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:7:12:21:6"
+        }
       }
     ],
     "<bindings>().Backup()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 110,
-          "column": 17,
-          "index": 3440
+        "callee": {
+          "name": "110:17:110:83",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:110:17:110:83"
         },
-        "end": {
-          "line": 110,
-          "column": 83,
-          "index": 3506
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 113,
-          "column": 17,
-          "index": 3627
+        "callee": {
+          "name": "113:17:113:103",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:113:17:113:103"
         },
-        "end": {
-          "line": 113,
-          "column": 103,
-          "index": 3713
-        },
-        "callers": [
-          {
-            "name": "0:0:105:28:118:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:105:28:118:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
+        }
       }
     ],
     "<file-uri-to-path>().indexOf()": [
       {
-        "filename": "/home/eva/node_modules/bindings/bindings.js",
-        "start": {
-          "line": 178,
-          "column": 6,
-          "index": 4895
+        "callee": {
+          "name": "178:6:178:34",
+          "loc": "/home/eva/node_modules/bindings/bindings.js:178:6:178:34"
         },
-        "end": {
-          "line": 178,
-          "column": 34,
-          "index": 4923
-        },
-        "callers": [
-          {
-            "name": "0:0:145:22:183:1",
-            "loc": "/home/eva/node_modules/bindings/bindings.js:145:23:183:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:145:22:183:1",
+          "loc": "/home/eva/node_modules/bindings/bindings.js:145:23:183:2"
+        }
       }
     ],
     "<file-uri-to-path>().substring()": [
       {
-        "filename": "/home/eva/node_modules/file-uri-to-path/index.js",
-        "start": {
-          "line": 25,
-          "column": 19,
-          "index": 346
+        "callee": {
+          "name": "25:19:25:38",
+          "loc": "/home/eva/node_modules/file-uri-to-path/index.js:25:19:25:38"
         },
-        "end": {
-          "line": 25,
-          "column": 38,
-          "index": 365
-        },
-        "callers": [
-          {
-            "name": "0:0:22:0:66:1",
-            "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:22:0:66:1",
+          "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
+        }
       },
       {
-        "filename": "/home/eva/node_modules/file-uri-to-path/index.js",
-        "start": {
-          "line": 29,
-          "column": 23,
-          "index": 478
+        "callee": {
+          "name": "29:23:29:39",
+          "loc": "/home/eva/node_modules/file-uri-to-path/index.js:29:23:29:39"
         },
-        "end": {
-          "line": 29,
-          "column": 39,
-          "index": 494
-        },
-        "callers": [
-          {
-            "name": "0:0:22:0:66:1",
-            "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:22:0:66:1",
+          "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Database().once()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 49,
-          "column": 21,
-          "index": 1557
+        "callee": {
+          "name": "49:21:49:40",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:49:21:49:40"
         },
-        "end": {
-          "line": 49,
-          "column": 40,
-          "index": 1576
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().map()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
-        "end": {
-          "line": 99,
-          "column": 42,
-          "index": 3026
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().each()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:43",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
-        "end": {
-          "line": 94,
-          "column": 43,
-          "index": 2878
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().all()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
-        "end": {
-          "line": 88,
-          "column": 42,
-          "index": 2661
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().get()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
-        "end": {
-          "line": 82,
-          "column": 42,
-          "index": 2459
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().run()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
-        "end": {
-          "line": 76,
-          "column": 42,
-          "index": 2257
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().bind()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 70,
-          "column": 10,
-          "index": 2024
+        "callee": {
+          "name": "70:10:70:49",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
-        "end": {
-          "line": 70,
-          "column": 49,
-          "index": 2063
-        },
-        "callers": [
-          {
-            "name": "0:0:68:45:72:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:68:45:72:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
+        }
       }
     ],
     "<bindings>().Database().once()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 49,
-          "column": 21,
-          "index": 1557
+        "callee": {
+          "name": "49:21:49:40",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:49:21:49:40"
         },
-        "end": {
-          "line": 49,
-          "column": 40,
-          "index": 1576
-        },
-        "callers": [
-          {
-            "name": "0:0:30:14:54:5",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
-          }
-        ]
+        "caller": {
+          "name": "0:0:30:14:54:5",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
+        }
       }
     ],
     "<bindings>().Statement().map()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
-        "end": {
-          "line": 99,
-          "column": 42,
-          "index": 3026
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<bindings>().Statement().each()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:43",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
-        "end": {
-          "line": 94,
-          "column": 43,
-          "index": 2878
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<bindings>().Statement().all()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
-        "end": {
-          "line": 88,
-          "column": 42,
-          "index": 2661
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<bindings>().Statement().get()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
-        "end": {
-          "line": 82,
-          "column": 42,
-          "index": 2459
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<bindings>().Statement().run()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
-        "end": {
-          "line": 76,
-          "column": 42,
-          "index": 2257
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<bindings>().Statement().bind()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 70,
-          "column": 10,
-          "index": 2024
+        "callee": {
+          "name": "70:10:70:49",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
-        "end": {
-          "line": 70,
-          "column": 49,
-          "index": 2063
-        },
-        "callers": [
-          {
-            "name": "0:0:68:45:72:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:68:45:72:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().map.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
-        "end": {
-          "line": 99,
-          "column": 42,
-          "index": 3026
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().each.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:43",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
-        "end": {
-          "line": 94,
-          "column": 43,
-          "index": 2878
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().all.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
-        "end": {
-          "line": 88,
-          "column": 42,
-          "index": 2661
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().get.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
-        "end": {
-          "line": 82,
-          "column": 42,
-          "index": 2459
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().run.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
-        "end": {
-          "line": 76,
-          "column": 42,
-          "index": 2257
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().bind.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 70,
-          "column": 10,
-          "index": 2024
+        "callee": {
+          "name": "70:10:70:49",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
-        "end": {
-          "line": 70,
-          "column": 49,
-          "index": 2063
-        },
-        "callers": [
-          {
-            "name": "0:0:68:45:72:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:68:45:72:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
+        }
       }
     ],
     "<bindings>().Statement().map.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
-        "end": {
-          "line": 99,
-          "column": 42,
-          "index": 3026
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<bindings>().Statement().each.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:43",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
-        "end": {
-          "line": 94,
-          "column": 43,
-          "index": 2878
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<bindings>().Statement().all.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
-        "end": {
-          "line": 88,
-          "column": 42,
-          "index": 2661
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<bindings>().Statement().get.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
-        "end": {
-          "line": 82,
-          "column": 42,
-          "index": 2459
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<bindings>().Statement().run.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:42",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
-        "end": {
-          "line": 76,
-          "column": 42,
-          "index": 2257
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<bindings>().Statement().bind.apply()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 70,
-          "column": 10,
-          "index": 2024
+        "callee": {
+          "name": "70:10:70:49",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
-        "end": {
-          "line": 70,
-          "column": 49,
-          "index": 2063
-        },
-        "callers": [
-          {
-            "name": "0:0:68:45:72:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:68:45:72:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().map().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
-        "end": {
-          "line": 99,
-          "column": 53,
-          "index": 3037
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().each().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:54",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
-        "end": {
-          "line": 94,
-          "column": 54,
-          "index": 2889
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().all().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
-        "end": {
-          "line": 88,
-          "column": 53,
-          "index": 2672
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().get().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
-        "end": {
-          "line": 82,
-          "column": 53,
-          "index": 2470
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().run().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
-        "end": {
-          "line": 76,
-          "column": 53,
-          "index": 2268
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<bindings>().Statement().map().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
-        "end": {
-          "line": 99,
-          "column": 53,
-          "index": 3037
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<bindings>().Statement().each().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:54",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
-        "end": {
-          "line": 94,
-          "column": 54,
-          "index": 2889
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<bindings>().Statement().all().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
-        "end": {
-          "line": 88,
-          "column": 53,
-          "index": 2672
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<bindings>().Statement().get().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
-        "end": {
-          "line": 82,
-          "column": 53,
-          "index": 2470
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<bindings>().Statement().run().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
-        "end": {
-          "line": 76,
-          "column": 53,
-          "index": 2268
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().map.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
-        "end": {
-          "line": 99,
-          "column": 53,
-          "index": 3037
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().each.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:54",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
-        "end": {
-          "line": 94,
-          "column": 54,
-          "index": 2889
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().all.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
-        "end": {
-          "line": 88,
-          "column": 53,
-          "index": 2672
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().get.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
-        "end": {
-          "line": 82,
-          "column": 53,
-          "index": 2470
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<sqlite3/lib/sqlite3-binding>.Statement().run.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
-        "end": {
-          "line": 76,
-          "column": 53,
-          "index": 2268
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ],
     "<bindings>().Statement().map.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 99,
-          "column": 4,
-          "index": 2988
+        "callee": {
+          "name": "99:4:99:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
-        "end": {
-          "line": 99,
-          "column": 53,
-          "index": 3037
-        },
-        "callers": [
-          {
-            "name": "0:0:98:41:101:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:98:41:101:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
+        }
       }
     ],
     "<bindings>().Statement().each.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 94,
-          "column": 4,
-          "index": 2839
+        "callee": {
+          "name": "94:4:94:54",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
-        "end": {
-          "line": 94,
-          "column": 54,
-          "index": 2889
-        },
-        "callers": [
-          {
-            "name": "0:0:93:42:96:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:93:42:96:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
+        }
       }
     ],
     "<bindings>().Statement().all.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 88,
-          "column": 4,
-          "index": 2623
+        "callee": {
+          "name": "88:4:88:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
-        "end": {
-          "line": 88,
-          "column": 53,
-          "index": 2672
-        },
-        "callers": [
-          {
-            "name": "0:0:87:41:90:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:87:41:90:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
+        }
       }
     ],
     "<bindings>().Statement().get.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 82,
-          "column": 4,
-          "index": 2421
+        "callee": {
+          "name": "82:4:82:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
-        "end": {
-          "line": 82,
-          "column": 53,
-          "index": 2470
-        },
-        "callers": [
-          {
-            "name": "0:0:81:41:84:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:81:41:84:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
+        }
       }
     ],
     "<bindings>().Statement().run.apply().finalize()": [
       {
-        "filename": "/home/eva/node_modules/sqlite3/lib/sqlite3.js",
-        "start": {
-          "line": 76,
-          "column": 4,
-          "index": 2219
+        "callee": {
+          "name": "76:4:76:53",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
-        "end": {
-          "line": 76,
-          "column": 53,
-          "index": 2268
-        },
-        "callers": [
-          {
-            "name": "0:0:75:41:78:1",
-            "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
-          }
-        ]
+        "caller": {
+          "name": "0:0:75:41:78:1",
+          "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
+        }
       }
     ]
   },
