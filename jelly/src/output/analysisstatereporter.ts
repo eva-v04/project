@@ -80,7 +80,7 @@ export class AnalysisStateReporter {
 
 
     private makeLocStr(fileIndex: number, loc: SimpleLocation | undefined | null): string {
-        return `${fileIndex}:${loc ? `${loc.start.line}:${loc.start.column + 1}:${loc.end.line}:${loc.end.column + 1}` : "?:?:?:?"}`;
+        return `${fileIndex}:${loc ? `${loc.start.line}:${loc.start.column + 1}:${loc.end.line}:${loc.end.column + 1}` : "?:?:?:?"}`; //!προσθέτω +1 στις στήλες (είναι 1-based αντί για 0-based)
     }
 
     /**
