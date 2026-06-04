@@ -229,7 +229,7 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
         for (const fun of m.functions)
             addFunction(fun, m);
 
-        // Έγχυση Native Nodes
+        // βαζω Native Nodes
         const seenNativeInModule = new Set<string>();
         for (const edge of globalNativeEdgesStore) {
             const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
@@ -267,7 +267,7 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             numEdges++;
         }
 
-    // Β) ΕΓΧΥΣΗ NATIVE EDGES (Σύνδεση Caller -> Native Callee)
+    // Β) ΒΑΖΩ NATIVE EDGES (Σύνδεση Caller -> Native Callee)
     for (const edge of globalNativeEdgesStore) {
         const calleeNodeId = id(edge.calleeLoc);
         
@@ -281,7 +281,7 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             
             let sourceNodeId: number | undefined = undefined;
 
-            // 1. Αναζήτηση υπάρχουσας JS συνάρτησης βάσει scope γραμμών
+            // Αναζήτηση υπάρχουσας JS συνάρτησης βάσει τοποθεσιας
             for (const fun of f.a.functionInfos.values()) {
                 if (fun.loc && fun.moduleInfo.getPath() === callerFilepath) {
                     if (Number(startLine) >= fun.loc.start.line && Number(endLine) <= fun.loc.end.line) {
@@ -291,7 +291,7 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
                 }
             }
 
-            // 2. 	Top-Level στο Module
+            // Top-Level στο Module
             if (!sourceNodeId) {
                 const mod = f.a.moduleInfosByPath.get(callerFilepath);
                 if (mod) {
@@ -299,7 +299,7 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
                 }
             }
 
-            // 3. Virtual Placeholder Node (αν δεν υπάρχει τίποτα άλλο)
+            // Virtual Placeholder Node (αν δεν υπάρχει τίποτα άλλο)
             if (!sourceNodeId) {
                 const virtualCallerKey = `virtual:${edge.callerLoc}`;
                 sourceNodeId = id(virtualCallerKey);
@@ -349,7 +349,7 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             numEdges++;
         }
 
-    // Επιστροφή των τελικών αποτελεσμάτων (Αυτό έλειπε!)
+    // Επιστροφή των τελικών αποτελεσμάτων
     return {
         graphs: [{
             kind: "callgraph",
