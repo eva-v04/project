@@ -7,7 +7,7 @@
           "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:12:1:26"
         },
         "caller": {
-          "name": "1:1:20:1",
+          "name": "0:0:1:0:20:0",
           "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:1:20:1"
         }
       }
@@ -19,7 +19,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:17:1:36"
         },
         "caller": {
-          "name": "1:1:2:1",
+          "name": "0:0:1:0:2:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:1:2:1"
         }
       }
@@ -31,7 +31,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:2:16:2:47"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -43,7 +43,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:178:22:178:40"
         },
         "caller": {
-          "name": "176:19:207:2",
+          "name": "0:0:176:18:207:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:19:207:2"
         }
       }
@@ -55,7 +55,7 @@
           "loc": "/home/eva/node_modules/bindings/bindings.js:7:18:7:45"
         },
         "caller": {
-          "name": "1:1:222:1",
+          "name": "0:0:1:0:222:0",
           "loc": "/home/eva/node_modules/bindings/bindings.js:1:1:222:1"
         }
       }
@@ -69,7 +69,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:27"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -79,7 +79,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:31"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -89,7 +89,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:31"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -101,7 +101,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:59:17:59:33"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -113,7 +113,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:60:18:60:35"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -125,7 +125,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:61:15:61:29"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -137,7 +137,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:26:116:38"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -149,7 +149,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:40:116:54"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -161,7 +161,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:27"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -171,7 +171,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:31"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -181,7 +181,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:31"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -193,7 +193,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:59:17:59:33"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -205,7 +205,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:60:18:60:35"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -217,7 +217,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:61:15:61:29"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -229,7 +229,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:26:116:38"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -241,7 +241,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:40:116:54"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -253,7 +253,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:39"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -263,7 +263,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:39"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -273,7 +273,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:35"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -285,7 +285,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:68:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -295,7 +295,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:75:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -305,7 +305,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:81:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -315,7 +315,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:87:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -325,7 +325,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:93:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -335,7 +335,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:98:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -345,7 +345,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:105:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -355,7 +355,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:151:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -365,7 +365,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:151:51"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -375,7 +375,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:159:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -385,7 +385,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:167:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -395,7 +395,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:189:30:189:48"
         },
         "caller": {
-          "name": "188:19:190:10",
+          "name": "0:0:188:18:190:9",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
         }
       },
@@ -405,7 +405,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
         "caller": {
-          "name": "24:1:27:2",
+          "name": "0:0:24:0:27:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
         }
       }
@@ -417,7 +417,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:120:19"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -427,7 +427,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:201:30:201:49"
         },
         "caller": {
-          "name": "200:19:202:10",
+          "name": "0:0:200:18:202:9",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
         }
       },
@@ -437,7 +437,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
         "caller": {
-          "name": "24:1:27:2",
+          "name": "0:0:24:0:27:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
         }
       }
@@ -449,7 +449,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
         "caller": {
-          "name": "24:1:27:2",
+          "name": "0:0:24:0:27:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
         }
       }
@@ -461,7 +461,7 @@
           "loc": "/home/eva/node_modules/file-uri-to-path/index.js:24:6:24:16"
         },
         "caller": {
-          "name": "22:1:66:2",
+          "name": "0:0:22:0:66:1",
           "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
         }
       }
@@ -473,7 +473,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:44:17:44:39"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -483,7 +483,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:17:40:39"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -493,7 +493,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:39:13:39:35"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -505,7 +505,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:68:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -515,7 +515,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:75:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -525,7 +525,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:81:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -535,7 +535,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:87:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -545,7 +545,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:93:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -555,7 +555,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:98:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -565,7 +565,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:105:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -575,7 +575,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:151:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -585,7 +585,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:151:51"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -595,7 +595,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:159:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -605,7 +605,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:167:18"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -615,7 +615,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:189:30:189:48"
         },
         "caller": {
-          "name": "188:19:190:10",
+          "name": "0:0:188:18:190:9",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
         }
       },
@@ -625,7 +625,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
         "caller": {
-          "name": "24:1:27:2",
+          "name": "0:0:24:0:27:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
         }
       }
@@ -637,7 +637,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:120:19"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       },
@@ -647,7 +647,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:201:30:201:49"
         },
         "caller": {
-          "name": "200:19:202:10",
+          "name": "0:0:200:18:202:9",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
         }
       },
@@ -657,7 +657,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
         "caller": {
-          "name": "24:1:27:2",
+          "name": "0:0:24:0:27:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
         }
       }
@@ -669,7 +669,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:26:8:26:24"
         },
         "caller": {
-          "name": "24:1:27:2",
+          "name": "0:0:24:0:27:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:24:1:27:2"
         }
       }
@@ -681,7 +681,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -693,7 +693,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:48:20:48:27"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -705,7 +705,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -717,7 +717,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:17"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -729,7 +729,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:18"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -741,7 +741,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:17"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -753,7 +753,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:17"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -765,7 +765,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:17"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -777,7 +777,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:24"
         },
         "caller": {
-          "name": "68:46:72:2",
+          "name": "0:0:68:45:72:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
         }
       }
@@ -789,7 +789,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -801,7 +801,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:48:20:48:27"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -813,7 +813,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:39"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -825,7 +825,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:17"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -837,7 +837,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:18"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -849,7 +849,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:17"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -861,7 +861,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:17"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -873,7 +873,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:17"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -885,7 +885,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:24"
         },
         "caller": {
-          "name": "68:46:72:2",
+          "name": "0:0:68:45:72:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
         }
       }
@@ -897,7 +897,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -909,7 +909,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -921,7 +921,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -933,7 +933,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:8:21:8:44"
         },
         "caller": {
-          "name": "6:24:29:6",
+          "name": "0:0:6:23:29:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/trace.js:6:24:29:6"
         }
       }
@@ -947,7 +947,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:29:0:56:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -959,7 +959,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:0:207:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -971,7 +971,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:29:0:56:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -983,7 +983,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:176:0:207:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -995,7 +995,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:72:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1007,7 +1007,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:78:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1019,7 +1019,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:84:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1031,7 +1031,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:90:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1043,7 +1043,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:96:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1055,7 +1055,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:101:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1067,7 +1067,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:118:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1079,7 +1079,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:157:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1091,7 +1091,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:157:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1103,7 +1103,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:165:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1115,7 +1115,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:173:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1127,7 +1127,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:145:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1139,7 +1139,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:4:116:55"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -1151,7 +1151,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:0:72:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1163,7 +1163,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:0:78:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1175,7 +1175,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:0:84:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1187,7 +1187,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:0:90:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1199,7 +1199,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:0:96:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1211,7 +1211,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:0:101:2"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1223,7 +1223,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:0:118:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1235,7 +1235,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:0:157:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1247,7 +1247,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:151:33:157:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1259,7 +1259,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:159:0:165:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1271,7 +1271,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:167:0:173:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1283,7 +1283,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:120:0:145:1"
         },
         "caller": {
-          "name": "1:1:208:1",
+          "name": "0:0:1:0:208:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:1:1:208:1"
         }
       }
@@ -1295,7 +1295,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:116:4:116:55"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -1309,7 +1309,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:17:1:57"
         },
         "caller": {
-          "name": "1:1:2:1",
+          "name": "0:0:1:0:2:0",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3-binding.js:1:1:2:1"
         }
       }
@@ -1321,7 +1321,7 @@
           "loc": "/home/eva/node_modules/bindings/bindings.js:179:15:179:38"
         },
         "caller": {
-          "name": "145:23:183:2",
+          "name": "0:0:145:22:183:1",
           "loc": "/home/eva/node_modules/bindings/bindings.js:145:23:183:2"
         }
       }
@@ -1333,7 +1333,7 @@
           "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:7:0:11:2"
         },
         "caller": {
-          "name": "1:1:20:1",
+          "name": "0:0:1:0:20:0",
           "loc": "/home/eva/node_modules/sqlite3/deps/extract.js:1:1:20:1"
         }
       }
@@ -1345,7 +1345,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:33:19:33:43"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -1355,7 +1355,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:48:40:72"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -1367,7 +1367,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:19:26:19:59"
         },
         "caller": {
-          "name": "7:12:21:6",
+          "name": "0:0:7:11:21:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:7:12:21:6"
         }
       }
@@ -1379,7 +1379,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:110:17:110:83"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       },
@@ -1389,7 +1389,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:113:17:113:103"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -1401,7 +1401,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:189:12:189:55"
         },
         "caller": {
-          "name": "188:19:190:10",
+          "name": "0:0:188:18:190:9",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:188:19:190:10"
         }
       },
@@ -1411,7 +1411,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:201:12:201:56"
         },
         "caller": {
-          "name": "200:19:202:10",
+          "name": "0:0:200:18:202:9",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:200:19:202:10"
         }
       }
@@ -1423,7 +1423,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:33:19:33:43"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       },
@@ -1433,7 +1433,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:40:48:40:72"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -1445,7 +1445,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:19:26:19:59"
         },
         "caller": {
-          "name": "7:12:21:6",
+          "name": "0:0:7:11:21:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:7:12:21:6"
         }
       }
@@ -1457,7 +1457,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:110:17:110:83"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       },
@@ -1467,7 +1467,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:113:17:113:103"
         },
         "caller": {
-          "name": "105:29:118:2",
+          "name": "0:0:105:28:118:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:105:29:118:2"
         }
       }
@@ -1479,7 +1479,7 @@
           "loc": "/home/eva/node_modules/bindings/bindings.js:178:6:178:34"
         },
         "caller": {
-          "name": "145:23:183:2",
+          "name": "0:0:145:22:183:1",
           "loc": "/home/eva/node_modules/bindings/bindings.js:145:23:183:2"
         }
       }
@@ -1491,7 +1491,7 @@
           "loc": "/home/eva/node_modules/file-uri-to-path/index.js:25:19:25:38"
         },
         "caller": {
-          "name": "22:1:66:2",
+          "name": "0:0:22:0:66:1",
           "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
         }
       },
@@ -1501,7 +1501,7 @@
           "loc": "/home/eva/node_modules/file-uri-to-path/index.js:29:23:29:39"
         },
         "caller": {
-          "name": "22:1:66:2",
+          "name": "0:0:22:0:66:1",
           "loc": "/home/eva/node_modules/file-uri-to-path/index.js:22:1:66:2"
         }
       }
@@ -1513,7 +1513,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:49:21:49:40"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -1525,7 +1525,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1537,7 +1537,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1549,7 +1549,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1561,7 +1561,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1573,7 +1573,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -1585,7 +1585,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
         "caller": {
-          "name": "68:46:72:2",
+          "name": "0:0:68:45:72:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
         }
       }
@@ -1597,7 +1597,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:49:21:49:40"
         },
         "caller": {
-          "name": "30:15:54:6",
+          "name": "0:0:30:14:54:5",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:30:15:54:6"
         }
       }
@@ -1609,7 +1609,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1621,7 +1621,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1633,7 +1633,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1645,7 +1645,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1657,7 +1657,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -1669,7 +1669,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
         "caller": {
-          "name": "68:46:72:2",
+          "name": "0:0:68:45:72:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
         }
       }
@@ -1681,7 +1681,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1693,7 +1693,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1705,7 +1705,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1717,7 +1717,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1729,7 +1729,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -1741,7 +1741,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
         "caller": {
-          "name": "68:46:72:2",
+          "name": "0:0:68:45:72:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
         }
       }
@@ -1753,7 +1753,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:42"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1765,7 +1765,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:43"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1777,7 +1777,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:42"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1789,7 +1789,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:42"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1801,7 +1801,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:42"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -1813,7 +1813,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:70:10:70:49"
         },
         "caller": {
-          "name": "68:46:72:2",
+          "name": "0:0:68:45:72:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:68:46:72:2"
         }
       }
@@ -1825,7 +1825,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1837,7 +1837,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1849,7 +1849,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1861,7 +1861,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1873,7 +1873,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -1885,7 +1885,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1897,7 +1897,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1909,7 +1909,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1921,7 +1921,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1933,7 +1933,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -1945,7 +1945,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -1957,7 +1957,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -1969,7 +1969,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -1981,7 +1981,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -1993,7 +1993,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }
@@ -2005,7 +2005,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:99:4:99:53"
         },
         "caller": {
-          "name": "98:42:101:2",
+          "name": "0:0:98:41:101:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:98:42:101:2"
         }
       }
@@ -2017,7 +2017,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:94:4:94:54"
         },
         "caller": {
-          "name": "93:43:96:2",
+          "name": "0:0:93:42:96:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:93:43:96:2"
         }
       }
@@ -2029,7 +2029,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:88:4:88:53"
         },
         "caller": {
-          "name": "87:42:90:2",
+          "name": "0:0:87:41:90:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:87:42:90:2"
         }
       }
@@ -2041,7 +2041,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:82:4:82:53"
         },
         "caller": {
-          "name": "81:42:84:2",
+          "name": "0:0:81:41:84:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:81:42:84:2"
         }
       }
@@ -2053,7 +2053,7 @@
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:76:4:76:53"
         },
         "caller": {
-          "name": "75:42:78:2",
+          "name": "0:0:75:41:78:1",
           "loc": "/home/eva/node_modules/sqlite3/lib/sqlite3.js:75:42:78:2"
         }
       }

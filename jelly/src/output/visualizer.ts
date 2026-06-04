@@ -6,11 +6,8 @@ import {FragmentState} from "../analysis/fragmentstate";
 import {NativeObjectToken, Token} from "../analysis/tokens";
 import {isIdentifier} from "@babel/types";
 import {VulnerabilityResults} from "../patternmatching/vulnerabilitydetector";
-//import {getVulnerabilityId, Vulnerability} from "../typings/vulnerabilities";
 import {constraintVarToStringWithCode, funcToStringWithCode} from "./tostringwithcode";
 import {sep} from "path";
-
-import { globalNativeEdgesStore } from "../patternmatching/nativestore";
 
 export interface VisualizerGraphs {
     graphs: Array<{
@@ -19,7 +16,7 @@ export interface VisualizerGraphs {
         info?: string,
         elements: Array<{data: Node | Edge}>,
         vulnerabilities?: Array<{
-            title: string // TODO: include more information?
+            title: string 
         } &
             Record<"package" | "module" | "function", {
                 sources: Array<number>;
@@ -34,10 +31,10 @@ export interface Node {
     parent?: number;
     name?: string;
     fullName?: string;
-    callWeight?: number; // number of incoming call edges (normalized to 0-100)
-    tokenWeight?: number; // number of tokens (normalized to 0-100)
-    callCount?: number; // number of incoming call edges
-    tokenCount?: number; // number of tokens
+    callWeight?: number; 
+    tokenWeight?: number; 
+    callCount?: number; 
+    tokenCount?: number; 
     isEntry?: "true";
     isReachable?: "true";
 }
@@ -62,25 +59,17 @@ function IdGenerator<T>() {
     };
 }
 
-/**
- * Collection of nodes and edges.
- */
 class Elements {
-
     readonly elements: Array<{data: Node | Edge}> = [];
-
     add(data: Node | Edge) {
         this.elements.push({data});
     }
 }
 
-/**
- * Finds the modules and functions that are reachable from the entries, and their packages.
- */
-function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | FunctionInfo> { //add NativeInfo;;;;
-    const reachable = new Set<PackageInfo | ModuleInfo | FunctionInfo>(); //add NativeInfo;;;;
-    const w = new Array<ModuleInfo | FunctionInfo>(); //add NativeInfo;;;;
-    function reach(v: ModuleInfo | FunctionInfo | any) { //DEBUG: added any
+function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | FunctionInfo> { 
+    const reachable = new Set<PackageInfo | ModuleInfo | FunctionInfo>(); 
+    const w = new Array<ModuleInfo | FunctionInfo>(); 
+    function reach(v: ModuleInfo | FunctionInfo | any) { 
         if (!reachable.has(v)) {
             reachable.add(v);
             w.push(v);
@@ -90,7 +79,7 @@ function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | Function
         reach(f.a.moduleInfosByPath.get(e)!);
     while (w.length > 0) {
         const v = w.pop()!;
-        if ((v as any).isNative) continue; // Τα native endpoints δεν έχουν εσωτερικές JS κλήσεις/requires
+        if ((v as any).isNative) continue; 
         for (const n of [...f.requireGraph.get(v) || [], ...f.functionToFunction.get(v) || []])
             reach(n);
     }
@@ -100,10 +89,6 @@ function getReachable(f: FragmentState): Set<PackageInfo | ModuleInfo | Function
     return reachable;
 }
 
-/**
- * Checks whether the constraint variable is "trivial", i.e., it has no tokens or it is a native object property
- * with only the native library value, or it represents 'undefined'.
- */
 function isTrivialVar(v: ConstraintVar, ts: Iterable<Token>, size: number, redir: Map<ConstraintVar, Array<ConstraintVar>>): boolean {
     if (size > 1)
         return false;
@@ -116,11 +101,7 @@ function isTrivialVar(v: ConstraintVar, ts: Iterable<Token>, size: number, redir
     return true;
 }
 
-/**
- * Produces the call graph.
- */
-function getVisualizerCallGraph(f: FragmentState, vulnerabilities: VulnerabilityResults): VisualizerGraphs {
-    // count number of calls edges for all functions, modules and packages
+export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: VulnerabilityResults): VisualizerGraphs {
     const functionCallCounts = new Map<FunctionInfo | string, number>(); 
     const moduleCallCounts = new Map<ModuleInfo, number>(); 
     const packageCallCounts = new Map<PackageInfo, number>(); 
@@ -142,25 +123,6 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
                 maxPackageCallCount = fp;
         }
 
-    // Ενσωμάτωση Native στα counts
-    for (const edge of globalNativeEdgesStore) {
-        const fw = getOrSet(functionCallCounts, edge.calleeLoc, () => 0) + 1;
-        functionCallCounts.set(edge.calleeLoc, fw);
-        if (fw > maxFunctionCallCount) maxFunctionCallCount = fw;
-
-        const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
-        const targetMod = f.a.moduleInfosByPath.get(calleeFilepath);
-        if (targetMod) {
-            const fm = getOrSet(moduleCallCounts, targetMod, () => 0) + 1;
-            moduleCallCounts.set(targetMod, fm);
-            if (fm > maxModuleCallCount) maxModuleCallCount = fm;
-
-            const fp = getOrSet(packageCallCounts, targetMod.packageInfo, () => 0) + 1;
-            packageCallCounts.set(targetMod.packageInfo, fp);
-            if (fp > maxPackageCallCount) maxPackageCallCount = fp;
-        }
-    }
-
     for (const dsts of f.requireGraph.values())
         for (const dst of dsts) {
             const fm = getOrSet(moduleCallCounts, dst, () => 0) + 1;
@@ -173,12 +135,10 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
                 maxPackageCallCount = fp;
         }
 
-    // prepare the new graph
     const reachable = getReachable(f);
     const id = IdGenerator<PackageInfo | ModuleInfo | FunctionInfo | string>();
     const e = new Elements();
     
-    // add nodes for packages
     for (const p of f.a.packageInfos.values()) {
         const packageCallCount = packageCallCounts.get(p) ?? 0;
         e.add({
@@ -195,12 +155,17 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
 
     function addFunction(n: FunctionInfo, parent: FunctionInfo | ModuleInfo) {
         const functionCallCount = functionCallCounts.get(n) ?? 0;
+        
+        const displayName = n.isNative 
+            ? `[Native API] ${n.name}`
+            : (n.name ?? "<anon>") + ` ${locationToString(n.loc, false, true)}`;
+
         e.add({
             id: id(n),
             kind: "function",
             parent: id(parent),
-            name: (n.name ?? "<anon>") + ` ${locationToString(n.loc, false, true)}`,
-            fullName: funcToStringWithCode(n),
+            name: displayName,
+            fullName: n.isNative ? `Native Call: ${n.name}` : funcToStringWithCode(n),
             callWeight: Math.round(100 * functionCallCount / maxFunctionCallCount),
             callCount: functionCallCount,
             isReachable: reachable.has(n) ? "true" : undefined,
@@ -210,7 +175,6 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             addFunction(fun, n);
     }
 
-    // add nodes for modules
     for (const m of f.a.moduleInfos.values()) {
         const moduleCallCount = moduleCallCounts.get(m) ?? 0;
         e.add({
@@ -225,38 +189,12 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             isReachable: reachable.has(m) ? "true" : undefined
         });
         
-        // Κανονικές συναρτήσεις
         for (const fun of m.functions)
             addFunction(fun, m);
-
-        // βαζω Native Nodes
-        const seenNativeInModule = new Set<string>();
-        for (const edge of globalNativeEdgesStore) {
-            const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
-            if (m.getPath() === calleeFilepath && !seenNativeInModule.has(edge.calleeLoc)) {
-                seenNativeInModule.add(edge.calleeLoc);
-                
-                const nativeCallCount = functionCallCounts.get(edge.calleeLoc) ?? 0;
-                const coordinates = edge.calleeLoc.substring(edge.calleeLoc.indexOf(":") + 1);
-
-                e.add({
-                    id: id(edge.calleeLoc),
-                    kind: "function",
-                    parent: id(m),
-                    name: `[Native] ${edge.patternName.replace("native:", "")} (${coordinates})`,
-                    fullName: `${edge.patternName} at ${edge.calleeLoc}`,
-                    callWeight: Math.round(100 * nativeCallCount / maxFunctionCallCount),
-                    callCount: nativeCallCount,
-                    isReachable: "true"
-                });
-            }
-        }
     }
 
-    // add edges
     let numEdges = 0;
     
-    // Α) Κανονικά Edges
     for (const [src, dsts] of f.functionToFunction)
         for (const dst of dsts) {
             e.add({
@@ -267,78 +205,6 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             numEdges++;
         }
 
-    // Β) ΒΑΖΩ NATIVE EDGES (Σύνδεση Caller -> Native Callee)
-    for (const edge of globalNativeEdgesStore) {
-        const calleeNodeId = id(edge.calleeLoc);
-        
-        if (edge.callerLoc) {
-            const parts = edge.callerLoc.split(":");
-            parts.pop();
-            const endLine = parts.pop();
-            const startCol = parts.pop();
-            const startLine = parts.pop();
-            const callerFilepath = parts.join(":");
-            
-            let sourceNodeId: number | undefined = undefined;
-
-            // Αναζήτηση υπάρχουσας JS συνάρτησης βάσει τοποθεσιας
-            for (const fun of f.a.functionInfos.values()) {
-                if (fun.loc && fun.moduleInfo.getPath() === callerFilepath) {
-                    if (Number(startLine) >= fun.loc.start.line && Number(endLine) <= fun.loc.end.line) {
-                        sourceNodeId = id(fun);
-                        break;
-                    }
-                }
-            }
-
-            // Top-Level στο Module
-            if (!sourceNodeId) {
-                const mod = f.a.moduleInfosByPath.get(callerFilepath);
-                if (mod) {
-                    sourceNodeId = id(mod);
-                }
-            }
-
-            // Virtual Placeholder Node (αν δεν υπάρχει τίποτα άλλο)
-            if (!sourceNodeId) {
-                const virtualCallerKey = `virtual:${edge.callerLoc}`;
-                sourceNodeId = id(virtualCallerKey);
-
-                e.add({
-                    id: sourceNodeId,
-                    kind: "function",
-                    name: `JS Call (${startLine}:${startCol})`,
-                    fullName: `Unknown JS Caller at ${edge.callerLoc}`,
-                    callWeight: 10,
-                    callCount: 1,
-                    isReachable: "true"
-                });
-            }
-
-            if (sourceNodeId) {
-                e.add({
-                    kind: "call",
-                    source: sourceNodeId,
-                    target: calleeNodeId
-                });
-                numEdges++;
-            }
-
-        } else {
-            const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
-            const mod = f.a.moduleInfosByPath.get(calleeFilepath);
-            if (mod) {
-                e.add({
-                    kind: "call",
-                    source: id(mod),
-                    target: calleeNodeId
-                });
-                numEdges++;
-            }
-        }
-    }
-
-    // Γ) Require Graph Edges
     for (const [src, dsts] of f.requireGraph)
         for (const dst of dsts) {
             e.add({
@@ -349,13 +215,12 @@ function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulnerability
             numEdges++;
         }
 
-    // Επιστροφή των τελικών αποτελεσμάτων
     return {
         graphs: [{
             kind: "callgraph",
             elements: e.elements,
             info: `Packages: ${f.a.packageInfos.size}\nModules: ${f.a.moduleInfos.size}\nFunctions: ${f.a.functionInfos.size}\nCall edges: ${numEdges}\nMax number of calls for packages: ${maxPackageCallCount}, modules: ${maxModuleCallCount}, functions: ${maxFunctionCallCount}`,
-            vulnerabilities: undefined // Μπορείς να το συνδέσεις με τα vuls αν τα χρησιμοποιεί η "Jelly" σου
+            vulnerabilities: undefined
         }]
     };
 }

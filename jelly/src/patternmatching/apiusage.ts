@@ -14,7 +14,7 @@ import {AccessPath} from "../analysis/accesspaths";
 import {FragmentState} from "../analysis/fragmentstate";
 
 
-import { globalNativeEdgesStore } from "./nativestore";
+//import { globalNativeEdgesStore } from "./nativestore";
 
 
 export type PatternType = "import" | "read" | "write" | "call" | "component";
@@ -26,6 +26,7 @@ export type AccessPathPatternToLocations = Record<PatternType, Record<AccessPath
 
 
 //DEBUG
+import {FunctionInfo, ModuleInfo} from "../analysis/infos";
 //import { GlobalState } from "../analysis/globalstate";
 // Map που συνδέει το ID του Node με μια λίστα από callers
 //const nodeToCallers = new Map<number, Array<{name: string, loc: string}>>();
@@ -186,7 +187,6 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
 
                         const calleeName = `${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
                         const calleeLoc = `${filename}:${calleeName}`;
-
                         const patternName = `native:${p.toString()}`;
 
                         if (deduplicatedCallers.length === 0) {
@@ -195,40 +195,36 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                                 caller: null
                             });
 
-                            globalNativeEdgesStore.push({
-                                calleeLoc: calleeLoc,
-                                callerLoc: null,
-                                patternName: patternName
-                            });
+                            const targetModule = loc.module;
+                            if (targetModule) {
+                                const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, patternName);
+                                f.registerRealNativeCallEdge(n, targetModule, nativeCalleeInfo);
+                            }
                         } else {
                             for (const c of deduplicatedCallers) {
                                 let callerName = c.name;
                                 let callerLoc = c.loc;
-
-                                if (c.loc && typeof c.loc === "string") {
-                                    const parts = c.loc.split(":");
-                                    if (parts.length >= 5) {
-                                        const endCol = parts.pop();
-                                        const endLine = parts.pop();
-                                        const startCol = parts.pop();
-                                        const startLine = parts.pop();
-                                        const cFilename = parts.join(":");
-
-                                        callerName = `${startLine}:${startCol}:${endLine}:${endCol}`;
-                                        callerLoc = `${cFilename}:${callerName}`;
-                                    }
-                                }
 
                                 a.push({
                                     callee: { name: calleeName, loc: calleeLoc },
                                     caller: { name: callerName, loc: callerLoc }
                                 });
 
-                                globalNativeEdgesStore.push({
-                                    calleeLoc: calleeLoc,
-                                    callerLoc: callerLoc,
-                                    patternName: patternName
-                                });
+                                const targetModule = loc.module; 
+                                if (targetModule) {
+                                    const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, patternName); //δημιουργία FunctionInfo για το native callee
+
+                                    let jsCallerInfo: FunctionInfo | ModuleInfo = targetModule;
+                                    for (const fun of f.a.functionInfos.values()) {
+                                        if (fun.loc && fun.moduleInfo === targetModule && !fun.isNative) {
+                                            if (n.loc.start.line >= fun.loc.start.line && n.loc.end.line <= fun.loc.end.line) {
+                                                jsCallerInfo = fun;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    f.registerRealNativeCallEdge(n, jsCallerInfo, nativeCalleeInfo);  
+                                }
                             }
                         }
                     }
@@ -240,6 +236,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
     }
     return res; 
 }
+
 
 
 // Βοηθητική συνάρτηση για να καθαρίσει τους callers βάσει ΜΟΝΟ του Loc

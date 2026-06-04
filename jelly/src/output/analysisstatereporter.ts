@@ -24,7 +24,7 @@ import assert from "assert";
 import AnalysisDiagnostics from "../analysis/diagnostics";
 import {CallGraph} from "../typings/callgraph";
 
-import { globalNativeEdgesStore } from "../patternmatching/nativestore";
+//import { globalNativeEdgesStore } from "../patternmatching/nativestore";
 
 /**
  * Functions for reporting information about the analysis state.
@@ -111,14 +111,19 @@ export class AnalysisStateReporter {
             }
         fs.writeSync(fd, `\n ],\n`);
 
-        // [3] Functions (Κανονικές + NATIVE Injection)
+        // [3] Functions Block (Αυτόματη ανάγνωση κανονικών + Native)
         fs.writeSync(fd, ` "functions": {`);
         const functionIndices = new Map<any, number>();
         first = true;
         
-        // Α) Κανονικές Συναρτήσεις
         for (const fun of [...this.a.functionInfos.values(), ...this.a.moduleInfos.values()]) {
-            if (fun instanceof FunctionInfo || fun.loc) {
+            if (fun instanceof FunctionInfo && fun.isNative) {
+                // Αν είναι native, γράφεται αυτόματα ως string pattern χωρίς σπάσιμο coordinates
+                const funIndex = functionIndices.size;
+                functionIndices.set(fun, funIndex);
+                fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(`[Native]:${fun.name}`)}`);
+                first = false;
+            } else if (fun instanceof FunctionInfo || fun.loc) {
                 const funIndex = functionIndices.size;
                 functionIndices.set(fun, funIndex);
                 const targetModule = fun instanceof ModuleInfo ? fun : fun.moduleInfo;
@@ -127,33 +132,6 @@ export class AnalysisStateReporter {
                     fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(this.makeLocStr(fileIndex, fun.loc))}`);
                     first = false;
                 }
-            }
-        }
-
-        // Β) Έγχυση των Native Callees από το Global Store στο "functions" block
-        const nativeLocToFunIndex = new Map<string, number>();
-        for (const edge of globalNativeEdgesStore) {
-            if (!nativeLocToFunIndex.has(edge.calleeLoc)) {
-                //const lastColon = edge.calleeLoc.lastIndexOf(":");
-                const filepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
-                const coordinates = edge.calleeLoc.substring(edge.calleeLoc.indexOf(":") + 1);
-                
-                let fileIndex = "0";
-                for (const [modObj, idx] of fileIndices.entries()) {
-                    if (modObj.getPath() === filepath) {
-                        fileIndex = idx.toString();
-                        break;
-                    }
-                }
-                
-                const finalNativeLocStr = `${fileIndex}:${coordinates}`;
-                const funIndex = functionIndices.size;
-                
-                functionIndices.set(edge.calleeLoc, funIndex);
-                nativeLocToFunIndex.set(edge.calleeLoc, funIndex);
-                
-                fs.writeSync(fd, `${first ? "" : ","}\n  "${funIndex}": ${JSON.stringify(finalNativeLocStr)}`);
-                first = false;
             }
         }
         fs.writeSync(fd, `\n },\n`);
@@ -176,14 +154,12 @@ export class AnalysisStateReporter {
         }
         fs.writeSync(fd, `\n },\n`);
 
-        // [5] fun2fun (Κανονικά + Native Injection)
+        // [5] fun2fun (Συνδέσεις αυτόματα από το FragmentState)
         fs.writeSync(fd, ` "fun2fun": [`);
         let firstFun2Fun = true;
-        
-        // Α) Κανονικά fun2fun
-        for (const [caller, callees] of [...this.f.functionToFunction, ...(options.callgraphRequire ? this.f.requireGraph : [])])
-            if (caller instanceof FunctionInfo || caller.loc)
-                for (const callee of callees)
+        for (const [caller, callees] of [...this.f.functionToFunction, ...(options.callgraphRequire ? this.f.requireGraph : [])]) {
+            if (caller instanceof FunctionInfo || caller.loc) {
+                for (const callee of callees) {
                     if (callee instanceof FunctionInfo || callee.loc) {
                         const callerIndex = functionIndices.get(caller);
                         const calleeIndex = functionIndices.get(callee);
@@ -192,86 +168,23 @@ export class AnalysisStateReporter {
                             firstFun2Fun = false;
                         }
                     }
-
-        // Β) ΕΓΧΥΣΗ NATIVE ΣΤΟ fun2fun (Αυτό θα ξεκλειδώσει το HTML!)
-        for (const edge of globalNativeEdgesStore) {
-            const calleeIndex = nativeLocToFunIndex.get(edge.calleeLoc);
-            
-            if (calleeIndex !== undefined && edge.callerLoc) {
-                // Απομονώνουμε τις συντεταγμένες του caller από το πλήρες path
-                const callerCoords = edge.callerLoc.substring(edge.callerLoc.indexOf(":") + 1);
-                
-                // Ψάχνουμε να βρούμε ποιο FunctionInfo αντιστοιχεί στον caller
-                for (const fun of [...this.a.functionInfos.values(), ...this.a.moduleInfos.values()]) {
-                    if (fun.loc) {
-                        const funModule = fun instanceof ModuleInfo ? fun : fun.moduleInfo;
-                        const funFilepath = funModule.getPath();
-                        
-                        // Ελέγχουμε αν το αρχείο ταιριάζει
-                        if (edge.callerLoc.startsWith(funFilepath)) {
-                            const funLocStr = `${fun.loc.start.line}:${fun.loc.start.column}`;
-                            
-                            // Αν οι συντεταγμένες έναρξης ταιριάζουν ή περιέχονται --> βρήκα caller
-                            if (callerCoords.includes(funLocStr) || fun.toString().includes(callerCoords)) {
-                                const callerIndex = functionIndices.get(fun);
-                                if (callerIndex !== undefined) {
-                                    fs.writeSync(fd, `${firstFun2Fun ? "\n  " : ", "}[${callerIndex}, ${calleeIndex}]`);
-                                    firstFun2Fun = false;
-                                    break;
-                                }
-                            }
-                        }
-                    }
                 }
             }
         }
         fs.writeSync(fd, `\n ],\n`);
 
-        // [6] call2fun (Κανονικά + Native Injection)
+        // [6] call2fun (Συνδέσεις call sites αυτόματα από το FragmentState)
         fs.writeSync(fd, ` "call2fun": [`);
         let firstCall2Fun = true;
-        
-        // Α) Κανονικά call2fun
         for (const [call, callIndex] of callIndices) {
             const funs = this.f.callToFunction.get(call) || [];
             const mods = this.f.callToModule.get(call) || [];
             for (const callee of [...funs, ...mods]) {
-                if (!(callee instanceof DummyModuleInfo) && (callee instanceof FunctionInfo || callee.loc)) {
+                if (!(callee instanceof DummyModuleInfo) && ((callee instanceof FunctionInfo && callee.isNative) || callee.loc)) {
                     const calleeIndex = functionIndices.get(callee);
                     if (calleeIndex !== undefined) {
                         fs.writeSync(fd, `${firstCall2Fun ? "\n  " : ", "}[${callIndex}, ${calleeIndex}]`);
                         firstCall2Fun = false;
-                    }
-                }
-            }
-        }
-
-        // Β) Έγχυση των NATIVE call2fun ακμών με ελαστικό matching (substring)
-        for (const edge of globalNativeEdgesStore) {
-            const calleeIndex = nativeLocToFunIndex.get(edge.calleeLoc);
-            
-            if (calleeIndex !== undefined) {
-                // Απομονώνουμε τις καθαρές συντεταγμένες του callee (π.χ. "82:4:82:53")
-                const calleeCoords = edge.calleeLoc.substring(edge.calleeLoc.indexOf(":") + 1);
-                const calleeFilepath = edge.calleeLoc.substring(0, edge.calleeLoc.indexOf(":"));
-
-                for (const [callNode, callIdx] of callIndices.entries()) {
-                    if (callNode.loc) {
-                        const nodeLoc = callNode.loc as any;
-                        const nodeFilepath = nodeLoc.module?.getPath() || "";
-                        
-                        // Ελέγχουμε αν είμαστε στο ίδιο αρχείο
-                        if (nodeFilepath === calleeFilepath) {
-                            // Αντί για αυστηρό ===, ελέγχουμε αν η γραμμή και η στήλη έναρξης αναφέρονται στο string
-                            const startMatch = `${nodeLoc.start.line}:${nodeLoc.start.column}`;
-                            const alternateStartMatch = `${nodeLoc.start.line}:${nodeLoc.start.column + 1}`;
-                            
-                            if (calleeCoords.includes(startMatch) || calleeCoords.includes(alternateStartMatch)) {
-                                fs.writeSync(fd, `${firstCall2Fun ? "\n  " : ", "}[${callIdx}, ${calleeIndex}]`);
-                                firstCall2Fun = false;
-                                break;
-                            }
-                        }
                     }
                 }
             }

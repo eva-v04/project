@@ -457,6 +457,20 @@ export class FragmentState {
         if (calleeVar)
             mapGetSet(this.callToCalleeVars, n).add(calleeVar);
     }
+    
+    //registerCall -> javascript συναρτήσεις
+    //registerRealNativeCallEdge -> πραγματικές native συναρτήσεις 
+    public registerRealNativeCallEdge(
+        callNode: Node, 
+        callerInfo: FunctionInfo | ModuleInfo, 
+        nativeCalleeInfo: FunctionInfo ) {
+            // Καταγραφή της ακμής από Function/Module σε Function (για το Call Graph)
+        mapGetSet(this.functionToFunction, callerInfo).add(nativeCalleeInfo);
+
+        //  Καταγραφή της ακμής από το συγκεκριμένο AST Call Node στη Native Function
+        mapGetSet(this.callToFunction, callNode).add(nativeCalleeInfo);
+
+    }
 
     /**
      * Registers a method call.
