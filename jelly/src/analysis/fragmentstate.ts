@@ -463,13 +463,16 @@ export class FragmentState {
     public registerRealNativeCallEdge( //καταγράφει native Κλήσεις + ενημερώνει fragment state 
         callNode: Node, 
         callerInfo: FunctionInfo | ModuleInfo, 
-        nativeCalleeInfo: FunctionInfo ) {
-            // Καταγραφή της ακμής από Function/Module σε Function (για το Call Graph)
+        nativeCalleeInfo: FunctionInfo 
+    ) {
+        // Καταγραφή της ακμής από Function/Module σε Function (για το Call Graph)
         mapGetSet(this.functionToFunction, callerInfo).add(nativeCalleeInfo);
 
-        //  Καταγραφή της ακμής από το συγκεκριμένο AST Call Node στη Native Function
-        mapGetSet(this.callToFunction, callNode).add(nativeCalleeInfo);
-
+        // Καταγραφή της ακμής από το συγκεκριμένο AST Call Node στη Native Function 
+        const callEdges = mapGetSet(this.callToFunction, callNode);
+        if (!callEdges.has(nativeCalleeInfo)) {
+            callEdges.add(nativeCalleeInfo);
+        }
     }
 
     /**

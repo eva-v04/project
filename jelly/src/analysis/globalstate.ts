@@ -268,24 +268,31 @@ export class GlobalState {
 
     //DEBUG
     registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined): FunctionInfo {
-    //Κατασκευή του FunctionInfo object
-    const f = new FunctionInfo(name, n.loc!, m, false, true); //isNative = true
-    
-    // ΜΟΝΑΔΙΚΟ ID
-    (f as any).id = this.functionInfos.size + 1; 
-    
-    // Αποθήκευση στο map. 
-    this.functionInfos.set(n as any, f);
-    
-    // Προσθήκη στις συναρτήσεις του module
-    m.functions.add(f);
-    
-    if (this.vulnerabilities) {
-        this.vulnerabilities.reachedFunction(f);
+        //  Έλεγχος αν η native συνάρτηση έχει ήδη καταχωρηθεί στο module
+        for (const fun of m.functions) {
+            if (fun.isNative && fun.name === name) {
+                return fun; 
+            }
+        }
+
+        // Κατασκευή του FunctionInfo object αν δεν υπάρχει
+        const f = new FunctionInfo(name, n.loc!, m, false, true); //isNative = true
+        
+        // ΜΟΝΑΔΙΚΟ ID
+        (f as any).id = this.functionInfos.size + 1; 
+        
+        // Αποθήκευση στο map. 
+        this.functionInfos.set(n as any, f);
+        
+        // Προσθήκη στις συναρτήσεις του module
+        m.functions.add(f);
+        
+        if (this.vulnerabilities) {
+            this.vulnerabilities.reachedFunction(f);
+        }
+        
+        return f;
     }
-    
-    return f;
-}
 
 
     /**
