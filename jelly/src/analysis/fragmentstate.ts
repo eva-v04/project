@@ -459,8 +459,8 @@ export class FragmentState {
     }
     
     //registerCall -> javascript συναρτήσεις
-    //registerRealNativeCallEdge -> πραγματικές native συναρτήσεις 
-    public registerRealNativeCallEdge(
+    //registerRealNativeCallEdge ->  native συναρτήσεις 
+    public registerRealNativeCallEdge( //καταγράφει native Κλήσεις + ενημερώνει fragment state 
         callNode: Node, 
         callerInfo: FunctionInfo | ModuleInfo, 
         nativeCalleeInfo: FunctionInfo ) {

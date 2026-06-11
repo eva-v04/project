@@ -256,10 +256,9 @@ export class GlobalState {
 
     /**
      * Registers a new FunctionInfo for a function/method/constructor.
-     */ //DEBUG: πρόσθεσα isNative
+     */ 
     registerFunctionInfo(m: ModuleInfo, path: NodePath<Function>, name: string | undefined) {
         const fun = path.node;
-        //DEBUG: προσθέτω isNative
         const f = new FunctionInfo(name, fun.loc!, m, isDummyConstructor(fun));
         this.functionInfos.set(fun, f);
         const parent = getEnclosingFunction(path)?.node;
@@ -270,7 +269,7 @@ export class GlobalState {
     //DEBUG
     registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined): FunctionInfo {
     //Κατασκευή του FunctionInfo object
-    const f = new FunctionInfo(name, n.loc!, m, false, true);
+    const f = new FunctionInfo(name, n.loc!, m, false, true); //isNative = true
     
     // ΜΟΝΑΔΙΚΟ ID
     (f as any).id = this.functionInfos.size + 1; 

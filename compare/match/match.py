@@ -9,14 +9,13 @@ def extract_structural_tokens(fqn_string):
     Method).
     Λειτουργεί γενικά για κάθε JavaScript/Native bridge pattern.
     """
-    # Αφαίρεση των brackets/namespaces στην αρχή: <...> ή <...>()
+    # Αφαίρεση των <...> ή <...>()
     s = re.sub(r"^<[^>]+>(\(\))?", "", fqn_string)
 
     #  Αφαίρεση paths που περιέχουν slashes (π.χ. sqlite3/lib/...)
     if "/" in s:
         s = s.split("/")[-1]
 
-    # Αφαίρεση συντακτικού θορύβου της JS και getters/setters της C++
     s = (
         s.replace("()", "")
         .replace(".prototype", "")
@@ -39,7 +38,7 @@ def match_jelly_with_gasket(jelly_file, gasket_file, threshold=0.7):
 
     και Levenshtein Distance για fallbacks.
     """
-    # Σωστή φόρτωση των αρχείων
+
     with open(jelly_file, "r", encoding="utf-8") as f:
         jelly_data = json.load(f)
     with open(gasket_file, "r", encoding="utf-8") as f:
@@ -50,7 +49,7 @@ def match_jelly_with_gasket(jelly_file, gasket_file, threshold=0.7):
     for category in jelly_data.values():
         if isinstance(category, dict):
             for pattern in category.keys():
-                jelly_patterns.add(pattern)
+                jelly_patterns.add(pattern) #αφαιρώ όταν δεν θα χρησιμοποιώ api_results
 
     gasket_bridges = gasket_data.get("bridges", [])
 
@@ -85,7 +84,7 @@ def match_jelly_with_gasket(jelly_file, gasket_file, threshold=0.7):
                 best_match = bridge
                 break
 
-            # 3. FUZZY MATCH VIA LEVENSHTEIN (Tier 2)
+            # 3. FUZZY MATCH LEVENSHTEIN (Tier 2)
             if similarity > threshold and similarity > highest_similarity:
                 highest_similarity = similarity
                 best_match = bridge
