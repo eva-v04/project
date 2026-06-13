@@ -154,26 +154,39 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
     }
 
     function addFunction(n: FunctionInfo, parent: FunctionInfo | ModuleInfo) {
-        const functionCallCount = functionCallCounts.get(n) ?? 0;
-        
-        const displayName = n.isNative 
-            ? `[Native API] ${n.name}`
-            : (n.name ?? "<anon>") + ` ${locationToString(n.loc, false, true)}`;
+    const functionCallCount = functionCallCounts.get(n) ?? 0;
+    
+    // Έλεγχος αν είναι C Function κοιτάζοντας απλά αν το όνομα ξεκινάει με [C Function]
+    const isC = n.name && n.name.startsWith("[C Function]");
+    
+    let displayName = "";
+    let fullName = "";
 
-        e.add({
-            id: id(n),
-            kind: "function",
-            parent: id(parent),
-            name: displayName,
-            fullName: n.isNative ? `Native Call: ${n.name}` : funcToStringWithCode(n),
-            callWeight: Math.round(100 * functionCallCount / maxFunctionCallCount),
-            callCount: functionCallCount,
-            isReachable: reachable.has(n) ? "true" : undefined,
-        });
-
-        for (const fun of n.functions)
-            addFunction(fun, n);
+    if (isC) {
+        displayName = n.name; // Κρατάει το "[C Function] <όνομα>"
+        fullName = `Native C/C++ Function: ${(n as any).cfunc ?? n.name}`;
+    } else if (n.isNative) {
+        displayName = `[Native API] ${n.name}`;
+        fullName = `Native Call: ${n.name}`;
+    } else {
+        displayName = (n.name ?? "<anon>") + ` ${locationToString(n.loc, false, true)}`;
+        fullName = funcToStringWithCode(n);
     }
+
+    e.add({
+        id: id(n),
+        kind: "function", // Απόλυτα συμβατό με το Union Type του visualizer!
+        parent: id(parent),
+        name: displayName,
+        fullName: fullName,
+        callWeight: Math.round(100 * functionCallCount / maxFunctionCallCount),
+        callCount: functionCallCount,
+        isReachable: reachable.has(n) ? "true" : undefined,
+    });
+
+    for (const fun of n.functions)
+        addFunction(fun, n);
+}
 
     for (const m of f.a.moduleInfos.values()) {
         const moduleCallCount = moduleCallCounts.get(m) ?? 0;
