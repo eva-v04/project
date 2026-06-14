@@ -546,31 +546,31 @@ export class FragmentState {
         //DEUG
         this.saveCaller(n, encl);
     if (v && options.externalMatches) {
-        const exitPoint = n.loc ? n.loc.start.line : "unknown";
+        //const exitPoint = n.loc ? n.loc.start.line : "unknown";
         //const callerLine = (encl && encl.loc) ? encl.loc.start.line : "top-level";
 
         // Αναγνώριση αν είναι Function ή Module
-        let callerDetails = "";
-        let callerLocation = "";
+        //let callerDetails = "";
+        //let callerLocation = "";
         if (encl instanceof FunctionInfo) {
-            const funcName = encl.name || "<anonymous>";
-            const moduleName = encl.moduleInfo.toString();
-            const isConstructor = encl.isDummyConstructor ? "[Constructor]" : "";
+            //const funcName = encl.name || "<anonymous>";
+            //const moduleName = encl.moduleInfo.toString();
+            ///const isConstructor = encl.isDummyConstructor ? "[Constructor]" : "";
             
-            callerDetails = `Function: ${funcName} ${isConstructor} in ${moduleName}`;
+           // callerDetails = `Function: ${funcName} ${isConstructor} in ${moduleName}`;
         
-            callerLocation = locationToStringWithFileAndEnd(encl.loc); 
+            //callerLocation = locationToStringWithFileAndEnd(encl.loc); 
         } else {
-            callerDetails = `Module Level: ${encl.toString()}`;
-            callerLocation = locationToStringWithFileAndEnd(encl.loc);
+            //callerDetails = `Module Level: ${encl.toString()}`;
+            //callerLocation = locationToStringWithFileAndEnd(encl.loc);
 }
         // Εκτύπωση εμπλουτισμένου DEBUG μηνύματος
-        logger.info(`DEBUG [EXTERNAL_ESCAPE]`);
-        logger.info(`  - Escape Point: line ${exitPoint}`);
-        logger.info(`  - Caller Info: ${callerDetails}`);
-        logger.info(`  - Caller Location: ${callerLocation}`);        if (logger.isDebugEnabled())
+        //logger.info(`DEBUG [EXTERNAL_ESCAPE]`);
+        //logger.info(`  - Escape Point: line ${exitPoint}`);
+        //logger.info(`  - Caller Info: ${callerDetails}`);
+        //logger.info(`  - Caller Location: ${callerLocation}`);        if (logger.isDebugEnabled())
         
-        logger.debug(`Values of ${v} escape to non-analyzed code at ${locationToStringWithFileAndEnd(n.loc)}`);
+        //logger.debug(`Values of ${v} escape to non-analyzed code at ${locationToStringWithFileAndEnd(n.loc)}`);
         
         //DEBUG
         //const callerList = this.nodeToCallers.get(n) || [];

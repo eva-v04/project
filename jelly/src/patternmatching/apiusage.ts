@@ -129,13 +129,6 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
         }
         numAccessPathPatterns += m.size;
     }
-    // logger.info("API usage, nodes -> access path patterns:"); // TODO: remove this part, also in getAPIUsage?
-    // for (const [t, m] of Object.entries(r2))
-    //     for (const [n, ps] of m) {
-    //         logger.info(`${locationToStringWithFileAndEnd(n.loc)}:`);
-    //         for (const p of ps)
-    //             logger.info(`  ${t} ${p}`);
-    //     }
     logger.info(`Access path patterns: ${numAccessPathPatterns}, access path patterns at nodes: ${numAccessPathPatternsAtNodes}`);
 }
 
@@ -165,6 +158,22 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
 export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
     const res: any = {import: {}, read: {}, write: {}, call: {}, component: {}};
     
+    // ΦΟΡΤΩΣΗ ΤΟΥ GASKET JSON
+    let gasketBridges: any[] = [];
+    try {
+        const fs = require("fs");
+        const jsonPath = "/home/eva/Ptuxiakh/jelly/src/analysis/bridges_sqlite3.json";
+        console.log(` [GASKET CHECK] Looking for JSON at: ${jsonPath} -> Found? ${fs.existsSync(jsonPath)}`);
+        if (fs.existsSync(jsonPath)) {
+            const raw = fs.readFileSync(jsonPath, "utf-8");
+            const parsed = JSON.parse(raw);
+            gasketBridges = parsed.bridges || []; // Παίρνουμε το array
+            logger.info(`[GASKET] Loaded ${gasketBridges.length} bridges for matching inside API usage stage.`);
+        }
+    } catch (e: any) {
+        logger.warn(`[GASKET] Could not load bridges_sqlite3.json: ${e.message}`);
+    }
+
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
         const t: Record<string, any> = {};
         for (const [p, nodes] of r[type]) {
@@ -179,6 +188,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                     
                     const dedupeKey = `${filename}:${loc.start.line}:${loc.start.column}`;
 
+                    //  Έλεγχος διπλοτύπων
                     if (!seenAtPattern.has(dedupeKey)) {
                         seenAtPattern.add(dedupeKey);
                         
@@ -189,6 +199,43 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                         const calleeLoc = `${filename}:${calleeName}`;
                         const patternName = `native:${p.toString()}`;
 
+                        // Βοηθητική εσωτερική συνάρτηση για να μην επαναλαμβάνουμε τον κώδικα matching
+                        function processCBridgeMatching(nativeNode: FunctionInfo, astNode: Node, targetModule: ModuleInfo) {
+                            if (!nativeNode || (nativeNode as any).hasCBridge) return;
+
+                            // Εκτέλεση του fuzzy match
+                            const matchedCfunc = findGasketCfuncMatch(patternName, gasketBridges);
+                            
+                            if (matchedCfunc) {
+                                (nativeNode as any).cfunc = matchedCfunc;
+                                (nativeNode as any).hasCBridge = true; // Flag αποφυγής διπλοτύπων
+                                
+                                
+                                //  Δημιουργία νεου κομβοθ  για τη C συνάρτηση
+                                const cFuncName = `[C Function] ${matchedCfunc}`;
+                                let cFuncInfo = Array.from(targetModule.functions).find(fun => fun.name === cFuncName);
+                                
+                                if (!cFuncInfo) {
+                                    cFuncInfo = new FunctionInfo(cFuncName, astNode.loc!, targetModule, false, true);
+                                    (cFuncInfo as any).id = f.a.functionInfos.size + 1;
+                                  //  (cFuncInfo as any).isActualC = true; // Μαρκάρισμα για visualizer
+                                    
+                                    targetModule.functions.add(cFuncInfo);
+                                    const artificialKey = { type: "CFunctionNode", id: matchedCfunc } as any;
+                                    f.a.functionInfos.set(artificialKey, cFuncInfo);
+                                }
+
+                                //  Δημιουργία  νέου edge 
+                                //  JS Native Node ➔ C Function
+                                f.registerRealNativeCallEdge(astNode, nativeNode, cFuncInfo);
+                                
+                                // Εξαναγκάζουμε τον reporter να την συμπεριλάβει στο export
+                                const callEdges = mapGetSet(f.callToFunction, astNode);
+                                callEdges.add(cFuncInfo);
+                            }
+                        }
+
+                        // ΠΕΡΙΠΤΩΣΗ 1: καλείται από Module
                         if (deduplicatedCallers.length === 0) {
                             a.push({
                                 callee: { name: calleeName, loc: calleeLoc },
@@ -199,8 +246,13 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                             if (targetModule) {
                                 const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, patternName);
                                 f.registerRealNativeCallEdge(n, targetModule, nativeCalleeInfo);
+                                
+                                //Matching
+                                processCBridgeMatching(nativeCalleeInfo, n, targetModule);
                             }
-                        } else {
+                        } 
+                        // ΠΕΡΙΠΤΩΣΗ 2: Με καλούντες (Function Level)
+                        else {
                             for (const c of deduplicatedCallers) {
                                 let callerName = c.name;
                                 let callerLoc = c.loc;
@@ -212,7 +264,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
 
                                 const targetModule = loc.module; 
                                 if (targetModule) {
-                                    const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, patternName); //δημιουργία FunctionInfo για το native callee
+                                    const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, patternName);
 
                                     let jsCallerInfo: FunctionInfo | ModuleInfo = targetModule;
                                     for (const fun of f.a.functionInfos.values()) {
@@ -224,6 +276,9 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                                         }
                                     }
                                     f.registerRealNativeCallEdge(n, jsCallerInfo, nativeCalleeInfo);  
+                                    
+                                    //\ Matching
+                                    processCBridgeMatching(nativeCalleeInfo, n, targetModule);
                                 }
                             }
                         }
@@ -249,4 +304,104 @@ function deduplicateCallers(callers: any[]): any[] {
         seenLocs.add(key);
         return true;
     });
+}
+
+// συνάρτηση για Το Levenshtein
+function levenshteinDistance(s1: string, s2: string): number {
+    const m = s1.length, n = s2.length;
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+    for (let i = 0; i <= m; i++) dp[i][0] = i;
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (s1[i - 1] === s2[j - 1]) dp[i][j] = dp[i - 1][j - 1];
+            else dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + 1);
+        }
+    }
+    return dp[m][n];
+}
+
+function extractStructuralTokens(fqnString: string): string[] {
+    let s = fqnString.replace(/^<[^>]+>(\(\))?/, "");
+
+    if (s.includes("/")) {
+        const parts = s.split("/");
+        s = parts[parts.length - 1];
+    }
+
+    s = s.replace(/\(\)/g, "")
+         .replace(/\.prototype/g, "")
+         .replace(/\.GET/g, "") //;
+         .replace(/\.SET/g, ""); //;
+
+    let tokens = s.split(".").map(t => t.trim().toLowerCase()).filter(t => t.length > 0);
+
+    //πρέπει να τις αφαιρώ;;;;;;
+    const garbageTokens = new Set(["apply", "constructor", "binding", "node_sqlite3"]);
+    tokens = tokens.filter(t => !garbageTokens.has(t));
+
+    return tokens;
+}
+
+function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[]): string | undefined {
+    // Αφαιρώ "native:" αν υπάρχει
+    const cleanJellyPattern = jellyPattern.replace(/^native:/, "");
+    
+    // Εξαγωγή structural tokens για το Jelly pattern
+    const jTokens = extractStructuralTokens(cleanJellyPattern);
+    if (jTokens.length === 0) return undefined;
+
+    let bestMatch: any = null;
+    let highestSimilarity = 0;
+    const threshold = 0.7;
+
+    for (const bridge of gasketBridges) {
+        if (!bridge.jsname) continue;
+        
+        // Εξαγωγή structural tokens για το Gasket pattern
+        const gTokens = extractStructuralTokens(bridge.jsname);
+
+        if (jTokens.length !== gTokens.length) {
+            continue;
+        }
+
+        // Ένωση των tokens για τον έλεγχο Levenshtein
+        const jCleanStr = jTokens.join("");
+        const gCleanStr = gTokens.join("");
+
+        // Υπολογισμός ομοιότητας (Levenshtein Ratio)
+        const maxLen = Math.max(jCleanStr.length, gCleanStr.length);
+        if (maxLen === 0) continue;
+        const distance = levenshteinDistance(jCleanStr, gCleanStr);
+        const similarity = 1 - distance / maxLen;
+
+        // EXACT MATCH 
+        if (similarity === 1.0) {
+            highestSimilarity = 1.0;
+            bestMatch = bridge;
+            break; 
+        }
+
+        if (similarity > threshold && similarity > highestSimilarity) {
+            highestSimilarity = similarity;
+            bestMatch = bridge;
+        }
+    }
+
+    //debug μήνυμα
+    if (bestMatch) {
+        console.log(` [MATCH DETECTED]`);
+        console.log(JSON.stringify({
+            "jelly_pattern": jellyPattern,
+            "gasket_jsname": bestMatch["jsname"],
+            "cfunc": bestMatch["cfunc"],
+            "confidence": Number(highestSimilarity.toFixed(2))
+        }, null, 2));
+        console.log("--------------------------------------------------");
+
+        return bestMatch.cfunc; // Επιστρέφουμε τη C συνάρτηση για τη σχεδίαση του Call Graph
+    }
+
+    return undefined;
 }

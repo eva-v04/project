@@ -105,6 +105,12 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
     const functionCallCounts = new Map<FunctionInfo | string, number>(); 
     const moduleCallCounts = new Map<ModuleInfo, number>(); 
     const packageCallCounts = new Map<PackageInfo, number>(); 
+
+    //DEBUG
+    //Δημιουργία ενός Set για την καταγραφή των IDs που έχουν ήδη σχεδιαστεί
+    const visitedFunctionIds = new Set<number>();
+
+
     let maxFunctionCallCount = 1, maxModuleCallCount = 1, maxPackageCallCount = 1;
     
     for (const dsts of f.functionToFunction.values()) 
@@ -156,14 +162,20 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
     function addFunction(n: FunctionInfo, parent: FunctionInfo | ModuleInfo) {
     const functionCallCount = functionCallCounts.get(n) ?? 0;
     
-    // Έλεγχος αν είναι C Function κοιτάζοντας απλά αν το όνομα ξεκινάει με [C Function]
+    //DEBUG
+    if (visitedFunctionIds.has(id(n))) {
+            return; 
+        }
+        visitedFunctionIds.add(id(n));
+
+
     const isC = n.name && n.name.startsWith("[C Function]");
     
     let displayName = "";
     let fullName = "";
 
     if (isC) {
-        displayName = n.name; // Κρατάει το "[C Function] <όνομα>"
+        displayName = n.name; //[C Function] 
         fullName = `Native C/C++ Function: ${(n as any).cfunc ?? n.name}`;
     } else if (n.isNative) {
         displayName = `[Native API] ${n.name}`;
@@ -175,7 +187,7 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
 
     e.add({
         id: id(n),
-        kind: "function", // Απόλυτα συμβατό με το Union Type του visualizer!
+        kind: "function", // 
         parent: id(parent),
         name: displayName,
         fullName: fullName,
