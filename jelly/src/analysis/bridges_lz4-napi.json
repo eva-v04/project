@@ -1,0 +1,65 @@
+{
+  "objects_examined": 993,
+  "callable_objects": 865,
+  "foreign_callable_objects": 8,
+  "duration_sec": 3.997,
+  "count": 8,
+  "modules": [
+    "/home/gasket/node_modules/lz4-napi/index.js"
+  ],
+  "jump_libs": [
+    "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.compress",
+      "cfunc": "lz4_napi::__napi__compress::h8d95a59c2e6c0612",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.compressFrame",
+      "cfunc": "lz4_napi::__napi__compress_frame::h1880c7360789b8be",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.compressFrameSync",
+      "cfunc": "lz4_napi::__napi__compress_frame_sync::h587db351100ab6d2",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.compressSync",
+      "cfunc": "lz4_napi::__napi__compress_sync::h555cb23b5d01d0c4",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.decompressFrame",
+      "cfunc": "lz4_napi::__napi__decompress_frame::h51b2dacadc322e56",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.decompressFrameSync",
+      "cfunc": "lz4_napi::__napi__decompress_frame_sync::hf18a020676dc9a4c",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.uncompress",
+      "cfunc": "lz4_napi::__napi__uncompress::h84de25d688533730",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "lz4-napi/index.uncompressSync",
+      "cfunc": "lz4_napi::__napi__uncompress_sync::ha101d34085fc2861",
+      "library": "/home/gasket/node_modules/@antoniomuso/lz4-napi-linux-x64-gnu/lz4-napi.linux-x64-gnu.node"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}

@@ -1,7 +1,7 @@
 import logger from "../misc/logger";
 import {mapGetSet, locationToStringWithFileAndEnd, Location, SimpleLocation} from "../misc/util";
 import {
-    //AbbreviatedPathPattern,
+    AbbreviatedPathPattern,
     AccessPathPattern,
     CallResultAccessPathPattern,
     ComponentAccessPathPattern,
@@ -44,6 +44,52 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
     const worklist = new Map<AccessPathPattern, Set<AccessPath>>();
 
     function add(t: PatternType, p: AccessPathPattern, ap: AccessPath, n: Node) {
+        function sub(p: AccessPathPattern): AccessPathPattern | undefined {
+            return p instanceof PropertyAccessPathPattern ? p.base :
+                    p instanceof CallResultAccessPathPattern ? p.fun :
+                        p instanceof ComponentAccessPathPattern ? p.component :
+                            undefined;
+        }
+
+        function copyWithSub(as: AccessPathPattern, sub: AccessPathPattern): AccessPathPattern {
+            if (as instanceof PropertyAccessPathPattern)
+                return new PropertyAccessPathPattern(sub, as.props);
+            else if (as instanceof CallResultAccessPathPattern)
+                return new CallResultAccessPathPattern(sub);
+            else if (as instanceof ComponentAccessPathPattern)
+                return new ComponentAccessPathPattern(sub);
+            else
+                return as;
+        }
+
+        // abbreviate long patterns
+        const p1 = sub(p); //ελέγχει πόσο μεγάλο είναι το path με την χρήση της sub, και το μικραίνει όπου χρειάζεται με την χρήση της copyWithSub
+        if (p1) {
+            const p2 = sub(p1);
+            if (p2) {
+                if (p2 instanceof AbbreviatedPathPattern && p1 instanceof CallResultAccessPathPattern && !(p instanceof CallResultAccessPathPattern)) // m…()d --> m…d
+                    p = copyWithSub(p, p2);
+                else {
+                    const p3 = sub(p2);
+                    if (p3) {
+                        if (p3 instanceof AbbreviatedPathPattern) {
+                            if (p1 instanceof CallResultAccessPathPattern) // m…b()d --> m…d
+                                p = copyWithSub(p, p3);
+                            else // m…bcd --> m…cd
+                                p = copyWithSub(p, copyWithSub(p1, p3));
+                        } else {
+                            const p4 = sub(p3);
+                            if (p4)
+                                if (p1 instanceof CallResultAccessPathPattern) // mab()d --> ma…d
+                                    p = copyWithSub(p, new AbbreviatedPathPattern(p3));
+                                else // mabcd --> ma…cd
+                                    p = copyWithSub(p, copyWithSub(p1, new AbbreviatedPathPattern(p3)));
+
+                        }
+                    }
+                }
+            }
+        }
         // Καθαρισμός του pattern μέσω του canonicalizer (χωρίς abbreviations)
         p = c.canonicalize(p);
         
@@ -132,27 +178,6 @@ export function reportAPIUsage(r1: AccessPathPatternToNodes, r2: NodeToAccessPat
     logger.info(`Access path patterns: ${numAccessPathPatterns}, access path patterns at nodes: ${numAccessPathPatternsAtNodes}`);
 }
 
-//DEBUG
-//export function convertAPIUsageToJSON(r: AccessPathPatternToNodes): AccessPathPatternToLocations {
-  //  const res: AccessPathPatternToLocations = {import: {}, read: {}, write: {}, call: {}, component: {}};
-    //for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
-      //  const t: Record<AccessPathString, Array<SimpleLocation & {filename: string}>> = {};
-        //for (const [p, nodes] of r[type]) {
-          //  const a: Array<SimpleLocation & {filename: string}> = [];
-            //for (const n of nodes)
-              //  if (n.loc) {
-                //    const loc = n.loc as Location;
-                  //  if (loc.module)
-                    //    a.push({filename: loc.module.getPath(), start: loc.start, end: loc.end});
-                //}
-//            t[p.toString()] = a;
-  //      }
-    //    res[type] = t;
-//    }
-  //  return res;
-//}
-
-//import {AnalysisStateReporter} from "../output/analysisstatereporter";
 
 //DEBUG
 // Βοηθητική συνάρτηση για να καθαρίζει τους callers βάσει ΜΟΝΟ του Loc
@@ -167,7 +192,7 @@ function deduplicateCallers(callers: any[]): any[] {
 }
 
 // DEBUG
-// Ορισμός ενός σταθερού counter εκτός της συνάρτησης για τις Artificial C συναρτήσεις
+// Ορισμός ενός σταθερού counter εκτός της συνάρτησης για τις C συναρτήσεις
 let cFunctionIdCounter = 9000; 
 
 export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
@@ -185,7 +210,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
             logger.info(`[GASKET] Loaded ${gasketBridges.length} bridges for matching inside API usage stage.`);
         }
     } catch (e: any) {
-        logger.warn(`[GASKET] Could not load bridges_sqlite3.json: ${e.message}`);
+        logger.warn(`[GASKET] Could not load json file: ${e.message}`);
     }
 
     const seenGlobalNodes = new Set<string>();
@@ -202,7 +227,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                     const filename = loc.module?.getPath() || "";
                     
                     const dedupeKey = `${filename}:${loc.start.line}:${loc.start.column}:${type}`;
-                    const patternName = `native:${p.toString()}`;
+                    const patternName = `${p.toString()}`;
 
                     const callersList = f ? (f.nodeToCallers.get(locKey as any) || []) : [];
                     const deduplicatedCallers = deduplicateCallers(callersList);
@@ -228,6 +253,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
 
                         const targetModule = loc.module;
                         if (targetModule) {
+                            console.log(patternName);
                             const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, patternName);
                             
                             if (deduplicatedCallers.length === 0) {
@@ -320,7 +346,7 @@ function extractStructuralTokens(fqnString: string): string[] {
 
     let tokens = s.split(".").map(t => t.trim().toLowerCase()).filter(t => t.length > 0);
 
-    const garbageTokens = new Set(["apply", "constructor", "binding", "node_sqlite3"]);
+    const garbageTokens = new Set(["apply", "node_sqlite3"]);
     tokens = tokens.filter(t => !garbageTokens.has(t));
 
     return tokens;
@@ -335,16 +361,16 @@ function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[]): strin
 
     let bestMatch: any = null;
     let highestSimilarity = 0;
-    const threshold = 0.7;
+    const threshold = 0.7; //!! confidence
 
     for (const bridge of gasketBridges) {
         if (!bridge.jsname) continue;
         
         const gTokens = extractStructuralTokens(bridge.jsname);
 
-        if (jTokens.length !== gTokens.length) {
-            continue;
-        }
+        //if (jTokens.length !== gTokens.length) {
+          //  continue;
+       // }
 
         // Ένωση των tokens για τον έλεγχο Levenshtein
         const jCleanStr = jTokens.join("");
@@ -362,6 +388,8 @@ function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[]): strin
             bestMatch = bridge;
             break; 
         }
+
+        //οχι exact match, αλλά similarity > threshold
 
         if (similarity > threshold && similarity > highestSimilarity) {
             highestSimilarity = similarity;
