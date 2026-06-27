@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="utf8">
+<head>
+  <title>Jelly</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.23.0/dist/cytoscape.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/webcola@3.4.0/WebCola/cola.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.5.1/cytoscape-cola.min.js"></script>
+  <!-- Extra dependencies for fcose layout
+  <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+  <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+  <script src="https://unpkg.com/cytoscape-fcose/cytoscape-fcose.js"></script>
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-expand-collapse@4.1.0/cytoscape-expand-collapse.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cytoscape-panzoom@2.5.3/cytoscape.js-panzoom.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-panzoom@2.5.3/cytoscape-panzoom.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    #cy {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 900;
+    }
+    #info {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      z-index: 800;
+      opacity: 0.8;
+      font-size: 15px;
+    }
+    #control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      text-align: right;
+      max-width: calc(100% - 250px);
+    }
+    .group {
+      background: rgba(255, 255, 255, .7);
+      padding: 2px 4px 2px 4px;
+      text-align: left;
+      display: inline-block;
+      z-index: 999;
+      position: relative;
+    }
+    #fields {
+      z-index: 999;
+      position: relative;
+    }
+    #fields label {
+      background: rgba(255, 255, 255, .7);
+      padding: 5px;
+    }
+    #dataset {
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      z-index: 999;
+    }
+    #msg {
+      position: absolute;
+      margin-top: 10px;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background: rgba(255, 255, 255, .7);
+      padding: 4px;
+    }
+    h1 {
+      font-variant: small-caps;
+      opacity: 0.5;
+      font-size: 25px;
+    }
+    button {
+      height: 25px;
+      background-color: white;
+      border-radius: 1px;
+      cursor: pointer;
+    }
+    .cy-panzoom {
+      position: absolute;
+      top: 100px;
+      left: 20px;
+    }
+    .shadow {
+      box-shadow: inset 1px 1px 4px #aaa;
+      background-color: #eee;
+    }
+    body.callgraphModeHidden .callgraphMode {
+      display: none;
+    }
+    body.dataflowModeHidden .dataflowMode {
+      display: none;
+    }
+    input[type=number] {
+      width: 60px;
+      height: 30px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      cytoscape.warnings(false);
+      const cy = window.cy = cytoscape({
+        container: document.getElementById('cy'),
+        layout: null,
+        wheelSensitivity: 0.3,
+        maxZoom: 3,
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'min-zoomed-font-size': '3px',
+              'background-color': '#aaaaaa'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node',
+            style: {
+              'border-width': '1px',
+              'border-style': 'solid',
+              'border-color': '#000000'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node.callWeight',
+            style: {
+              'background-color': 'mapData(callWeight, 0, 100, lightgray, purple)'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node.tokenWeight',
+            style: {
+              'background-color': 'mapData(tokenWeight, 0, 100, lightgray, purple)'
+            }
+          },
+          {
+            selector: 'node[isEntry]',
+            style: {
+              'border-width': '3px',
+              'border-style': 'solid',
+              'border-color': '#000000'
+            }
+          },
+          {
+            selector: 'node:selected',
+            style: {
+              'border-width': '4px',
+              'border-style': 'solid',
+              'border-color': '#3050c0'
+            }
+          },
+          {
+            selector: 'node[isReachable].highlight',
+            style: {
+              'border-width': '2px',
+              'border-style': 'solid',
+              'border-color': '#ffff00'
+            }
+          },
+          {
+            selector: 'node:selected[isReachable].highlight',
+            style: {
+              'border-width': '4px',
+              'border-color': '#50c050'
+            }
+          },
+          {
+            selector: 'node:selected[isEntry]',
+            style: {
+              'border-width': '5px',
+            }
+          },
+          {
+            selector: 'node[isEntry].highlight',
+            style: {
+              'border-width': '5px',
+            }
+          },
+          {
+            selector: 'node[kind="package"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '10px',
+              'shape': 'rectangle'
+            }
+          },
+          {
+            selector: 'node[kind="package"].callWeight',
+            style: {
+              'width': function (node) {
+                return (30 + Math.sqrt(node.data('callWeight'))*2) + 'px';
+              },
+              'height': function (node) {
+                return (30 + Math.sqrt(node.data('callWeight'))*2) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="package"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (30 + Math.sqrt(node.data('tokenWeight'))*2) + 'px';
+              },
+              'height': function (node) {
+                return (30 + Math.sqrt(node.data('tokenWeight'))*2) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="module"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '8px',
+              'shape': 'rectangle'
+            }
+          },
+          {
+            selector: 'node[kind="module"].callWeight',
+            style: {
+              'width': function (node) {
+                return (20 + Math.sqrt(node.data('callWeight'))) + 'px';
+              },
+              'height': function (node) {
+                return (20 + Math.sqrt(node.data('callWeight'))) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="module"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (20 + Math.sqrt(node.data('tokenWeight'))) + 'px';
+              },
+              'height': function (node) {
+                return (20 + Math.sqrt(node.data('tokenWeight'))) + 'px';
+              },
+              'background-color': 'mapData(tokenWeight, 0, 100, gray, red)'
+            }
+          },
+          {
+            selector: 'node[kind="function"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '6px',
+              'shape': 'ellipse'
+            }
+          },
+          {
+            selector: 'node[kind="function"].callWeight',
+            style: {
+              'width': function (node) {
+                return (10 + node.data('callWeight')/3) + 'px';
+              },
+              'height': function (node) {
+                return (10 + node.data('callWeight')/3) + 'px';
+              },
+              'background-color': 'mapData(callWeight, 0, 100, gray, purple)'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node',
+            style: {
+              'shape': 'rectangle',
+            },
+          },
+          {
+            selector: ':parent',
+            style: {
+              'background-opacity': 0.333
+            }
+          },
+          {
+            selector: 'node[isSource]',
+            style: {
+              'background-color': '#aa0000',
+              'background-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[isTarget]',
+            style: {
+              'background-color': '#ff0000',
+              'background-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[kind="variable"]',
+            style: {
+              'shape': 'ellipse',
+              'width': '8px',
+              'height': '8px',
+              'background-color': 'gray'
+            }
+          },
+          {
+            selector: 'node[kind="variable"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (8 + Math.sqrt(node.data('tokenWeight'))/2) + 'px';
+              },
+              'height': function (node) {
+                return (8 + Math.sqrt(node.data('tokenWeight'))/2) + 'px';
+              },
+              'background-color': 'mapData(tokenWeight, 0, 100, gray, red)'
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'width': 1,
+              'line-color': '#888',
+              'target-arrow-color': '#888',
+              'target-arrow-shape': 'triangle',
+              'curve-style': 'bezier'
+            }
+          },
+          {
+            selector: 'edge.cy-expand-collapse-collapsed-edge',
+            style: {
+              'width': function (edge) {
+                return (2 + Math.log2(edge.data('collapsedEdges').length)/2) + 'px';
+              },
+              'curve-style': 'unbundled-bezier'
+            }
+          },
+          {
+            selector: 'edge[kind="require"]',
+            style: {
+              'line-color': '#bbb',
+              'target-arrow-color': '#bbb',
+            }
+          },
+          {
+            selector: '.hidden',
+            css: {
+              'display': 'none'
+            }
+          },
+          {
+            selector: 'edge[sourceTarget]',
+            style: {
+              'line-color': '#aa0000',
+              'target-arrow-color': '#aa0000',
+              'width': '3px'
+            }
+          },
+          {
+            selector: 'edge[kind="data"]',
+            style: {
+              'width': function (edge) {
+                return 1 + Math.log2((edge.data('weight') ?? 0) + 1);
+              }
+            }
+          }
+        ]
+      });
+      cy.panzoom({
+        panSpeed: 5,
+        panDistance: 15
+      });
+
+      cy.on("layoutstart", e => {
+        document.getElementById("layout").classList.add("shadow");
+      });
+      cy.on("layoutstop", e => {
+        document.getElementById("layout").classList.remove("shadow");
+      });
+      cy.on('select', e => {
+        document.getElementById("msg").textContent = e.target?.data()?.fullName ?? '';
+      });
+      cy.on('unselect', () => {
+        document.getElementById("msg").textContent = '';
+      });
+
+      let layout;
+      const stopLayout = () => layout?.stop();
+      function newLayout(fit = false) {
+        layout = cy.layout({
+          name: 'cola',
+          padding: 20,
+          animate: true,
+          randomize: false,
+          fit,
+          centerGraph: false,
+          avoidOverlap: true,
+          maxSimulationTime: 3000,
+        });
+
+        // layout = cy.layout({
+        //   name: 'fcose',
+        //   quality: "proof",
+        //   padding: 20,
+        //   animate: true,
+        //   randomize: false,
+        //   fit,
+        //   nodeDimensionsIncludeLabels: true,
+        // });
+        layout.start();
+      }
+
+      let removed;
+      function hide() {
+        stopLayout();
+        if (removed) {
+          removed.filter("node").restore();
+          removed.filter("edge").forEach(e => {
+            if (e.source().inside() && e.target().inside())
+              e.restore();
+          });
+          removed = removed.filter(":removed");
+        }
+        const threshold = document.getElementById("threshold").value;
+        const count = graph.kind === "callgraph" ? "callCount" : graph.kind === "dataflow" ? "tokenCount" : undefined;
+        const queries = [];
+        if (count && threshold > 0)
+          queries.push(`node[${count} < ${threshold}]`);
+        if (document.getElementById("hideUnreachable").checked)
+          queries.push("node[!isReachable]");
+        if (queries.length > 0) {
+          const nodes = cy.elements(queries.join(","));
+          ec.expandAllEdges();
+          ec.collapseRecursively(nodes);
+          ec.collapseAllEdges();
+          const r = nodes.remove();
+          removed = removed ? removed.union(r) : r;
+        }
+      }
+
+      const ec = cy.expandCollapse({
+        fisheye: false,
+        randomize: false,
+        animate: true,
+        undoable: false,
+        cueEnabled: false,
+        allowNestedEdgeCollapse: false,
+        groupEdgesOfSameTypeOnCollapse: true
+      });
+      cy.on("expandcollapse.afterexpand", node => {
+        cy.batch(() => {
+          const desc = cy.nodes(node.target).descendants();
+          if (document.getElementById("showCallDensity").checked)
+            desc.addClass("callWeight");
+          else
+            desc.removeClass("callWeight");
+          if (document.getElementById("showValueDensity").checked)
+            desc.addClass("tokenWeight");
+          else
+            desc.removeClass("tokenWeight");
+          if (document.getElementById("highlightReachable").checked)
+            desc.addClass("highlight");
+          else
+            desc.removeClass("highlight");
+        });
+      });
+
+      document.getElementById("collapseAll").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.collapseAll();
+        ec.collapseAllEdges();
+        showVulnerabilities();
+        newLayout();
+      });
+      document.getElementById("collapseSelected").addEventListener("click", () => {
+        stopLayout();
+        const ns = cy.$(":selected:compound:visible");
+        if (ns.size() > 0) {
+          ec.expandAllEdges();
+          ec.collapseRecursively(ns);
+          ec.collapseAllEdges();
+          showVulnerabilities();
+          newLayout();
+        }
+      });
+      document.getElementById("expandSelected").addEventListener("click", () => {
+        stopLayout();
+        const es = cy.$(":selected:visible.cy-expand-collapse-collapsed-node,:selected:visible:compound");
+        if (es.size() > 0) {
+          ec.expandAllEdges();
+          ec.expand(es.union(es.children(":visible")));
+          ec.collapseAllEdges();
+          showVulnerabilities();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("expandAllPackages").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.expand(cy.$('node[kind="package"]:visible.cy-expand-collapse-collapsed-node'));
+        ec.collapseAllEdges();
+        showVulnerabilities();
+        hide();
+        newLayout();
+      });
+      document.getElementById("expandAll").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.expandRecursively(cy.nodes(":visible"));
+        hide();
+        newLayout();
+      });
+      document.getElementById("showPredecessors").addEventListener("click", () => {
+        const es = cy.$("node:selected");
+        if (es.size() > 0) {
+          stopLayout();
+          const collapsed = cy.$("node.cy-expand-collapse-collapsed-node");
+          ec.expandAllEdges();
+          ec.expandAll();
+          const sources = es.union(es.descendants());
+          const pred = sources.predecessors().union(sources);
+          const keep = pred.union(pred.ancestors())
+          cy.nodes().difference(keep).remove();
+          ec.collapseRecursively(collapsed.intersection(keep));
+          ec.collapseAllEdges();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("removeSelected").addEventListener("click", () => {
+        const es = cy.$(":selected");
+        if (es.size() > 0) {
+          stopLayout();
+          ec.expandAllEdges();
+          cy.$(":selected").remove();
+          ec.collapseAllEdges();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("removeNonSelected").addEventListener("click", () => {
+        const es = cy.$(":selected");
+        if (es.size() > 0) {
+          stopLayout();
+          ec.expandAllEdges();
+          cy.nodes().difference(es.union(es.descendants()).union(es.ancestors())).remove();
+          ec.collapseAllEdges();
+          removed = undefined;
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("layout").addEventListener("click", () => {
+        stopLayout();
+        if (!document.getElementById("layout").classList.contains("shadow"))
+          newLayout();
+      });
+      document.getElementById("hideUnreachable").addEventListener("change", () => {
+        stopLayout();
+        hide();
+        newLayout();
+      });
+      document.getElementById("threshold").addEventListener("change", () => {
+        stopLayout();
+        hide();
+        newLayout();
+      });
+      document.getElementById("threshold").addEventListener("focus", e => {
+        e.target.select();
+      });
+      document.getElementById("highlightReachable").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("highlightReachable").checked)
+          cy.nodes().addClass("highlight");
+        else
+          cy.nodes().removeClass("highlight");
+        newLayout();
+      });
+      document.getElementById("showCallDensity").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("showCallDensity").checked)
+          cy.nodes().addClass("callWeight");
+        else
+          cy.nodes().removeClass("callWeight");
+        newLayout();
+      });
+      document.getElementById("showValueDensity").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("showValueDensity").checked)
+          cy.nodes().addClass("tokenWeight");
+        else
+          cy.nodes().removeClass("tokenWeight");
+        newLayout();
+      });
+
+      const data = {"graphs":[{"kind":"callgraph","elements":[{"data":{"id":1,"kind":"package","name":"leveldown","fullName":"leveldown@6.1.1","callWeight":87,"callCount":54,"isEntry":"true","isReachable":"true"}},{"data":{"id":2,"kind":"package","name":"node-gyp-build","fullName":"node-gyp-build@4.8.4","callWeight":37,"callCount":23,"isReachable":"true"}},{"data":{"id":3,"kind":"package","name":"abstract-leveldown","fullName":"abstract-leveldown@7.2.0","callWeight":100,"callCount":62,"isReachable":"true"}},{"data":{"id":4,"kind":"package","name":"level-supports","fullName":"level-supports@2.1.0","callWeight":6,"callCount":4,"isReachable":"true"}},{"data":{"id":5,"kind":"package","name":"is-buffer","fullName":"is-buffer@2.0.5","callWeight":3,"callCount":2,"isReachable":"true"}},{"data":{"id":6,"kind":"package","name":"catering","fullName":"catering@2.1.1","callWeight":16,"callCount":10,"isReachable":"true"}},{"data":{"id":7,"kind":"module","parent":1,"name":"binding.js","fullName":"leveldown@6.1.1:binding.js","callWeight":16,"callCount":5,"isEntry":"true","isReachable":"true"}},{"data":{"id":8,"kind":"function","parent":7,"name":"[Native API] <node-gyp-build>","fullName":"Native Call: <node-gyp-build>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":9,"kind":"function","parent":7,"name":"[Native API] <node-gyp-build>()","fullName":"Native Call: <node-gyp-build>()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":10,"kind":"module","parent":1,"name":"chained-batch.js","fullName":"leveldown@6.1.1:chained-batch.js","callWeight":38,"callCount":12,"isEntry":"true","isReachable":"true"}},{"data":{"id":11,"kind":"function","parent":10,"name":"ChainedBatch 7:1:10:2","fullName":"'function ChainedBatc...$ch_init(db.context)}'leveldown@6.1.1:chained-batch.js:7:1:ChainedBatch","callWeight":67,"callCount":2,"isReachable":"true"}},{"data":{"id":12,"kind":"function","parent":10,"name":"<anon> 12:31:14:2","fullName":"'function (key, value...$ontext, key, value)}'leveldown@6.1.1:chained-batch.js:12:31:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":13,"kind":"function","parent":10,"name":"<anon> 16:31:18:2","fullName":"'function (key) { bin...$(this.context, key)}'leveldown@6.1.1:chained-batch.js:16:31:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":14,"kind":"function","parent":10,"name":"<anon> 20:33:22:2","fullName":"'function () { binding.batch_clear(this.context)}'leveldown@6.1.1:chained-batch.js:20:33:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":15,"kind":"function","parent":10,"name":"<anon> 24:33:26:2","fullName":"'function (options, c...$ options, callback)}'leveldown@6.1.1:chained-batch.js:24:33:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":16,"kind":"function","parent":10,"name":"[Native API] <abstract-leveldown>","fullName":"Native Call: <abstract-leveldown>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":17,"kind":"function","parent":10,"name":"[Native API] <leveldown/binding>","fullName":"Native Call: <leveldown/binding>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":18,"kind":"function","parent":10,"name":"[Native API] <abstract-leveldown>.AbstractChainedBatch","fullName":"Native Call: <abstract-leveldown>.AbstractChainedBatch","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":19,"kind":"function","parent":10,"name":"[Native API] <abstract-leveldown/abstract-chained-batch>()","fullName":"Native Call: <abstract-leveldown/abstract-chained-batch>()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":20,"kind":"function","parent":10,"name":"[Native API] <leveldown/binding>.batch_init()","fullName":"Native Call: <leveldown/binding>.batch_init()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":21,"kind":"function","parent":10,"name":"[Native API] <leveldown/binding>.batch_put()","fullName":"Native Call: <leveldown/binding>.batch_put()","callWeight":33,"callCount":1}},{"data":{"id":22,"kind":"function","parent":10,"name":"[Native API] <leveldown/binding>.batch_del()","fullName":"Native Call: <leveldown/binding>.batch_del()","callWeight":33,"callCount":1}},{"data":{"id":23,"kind":"function","parent":10,"name":"[Native API] <leveldown/binding>.batch_clear()","fullName":"Native Call: <leveldown/binding>.batch_clear()","callWeight":33,"callCount":1}},{"data":{"id":24,"kind":"function","parent":10,"name":"[Native API] <leveldown/binding>.batch_write()","fullName":"Native Call: <leveldown/binding>.batch_write()","callWeight":33,"callCount":1}},{"data":{"id":25,"kind":"module","parent":1,"name":"iterator.js","fullName":"leveldown@6.1.1:iterator.js","callWeight":38,"callCount":12,"isEntry":"true","isReachable":"true"}},{"data":{"id":26,"kind":"function","parent":25,"name":"Iterator 7:1:13:2","fullName":"'function Iterator (d...$is.finished = false}'leveldown@6.1.1:iterator.js:7:1:Iterator","callWeight":67,"callCount":2,"isReachable":"true"}},{"data":{"id":27,"kind":"function","parent":25,"name":"<anon> 17:28:25:2","fullName":"'function (target) { ...$is.finished = false}'leveldown@6.1.1:iterator.js:17:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":28,"kind":"function","parent":25,"name":"<anon> 27:28:43:2","fullName":"'function (callback) ...$k) }) } return this}'leveldown@6.1.1:iterator.js:27:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":29,"kind":"function","parent":28,"name":"<anon> 33:41:39:6","fullName":"'(err, array, finishe...$is._next(callback) }'leveldown@6.1.1:iterator.js:33:41:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":30,"kind":"function","parent":25,"name":"<anon> 45:27:48:2","fullName":"'function (callback) ...$.context, callback)}'leveldown@6.1.1:iterator.js:45:27:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":31,"kind":"function","parent":25,"name":"[Native API] <abstract-leveldown>","fullName":"Native Call: <abstract-leveldown>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":32,"kind":"function","parent":25,"name":"[Native API] <leveldown/binding>","fullName":"Native Call: <leveldown/binding>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":33,"kind":"function","parent":25,"name":"[Native API] <abstract-leveldown>.AbstractIterator","fullName":"Native Call: <abstract-leveldown>.AbstractIterator","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":34,"kind":"function","parent":25,"name":"[Native API] <abstract-leveldown/abstract-iterator>()","fullName":"Native Call: <abstract-leveldown/abstract-iterator>()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":35,"kind":"function","parent":25,"name":"[Native API] <leveldown/binding>.iterator_init()","fullName":"Native Call: <leveldown/binding>.iterator_init()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":36,"kind":"function","parent":25,"name":"[Native API] <leveldown/binding>.iterator_seek()","fullName":"Native Call: <leveldown/binding>.iterator_seek()","callWeight":33,"callCount":1}},{"data":{"id":37,"kind":"function","parent":25,"name":"[Native API] <leveldown/binding>.iterator_next()","fullName":"Native Call: <leveldown/binding>.iterator_next()","callWeight":33,"callCount":1}},{"data":{"id":38,"kind":"function","parent":25,"name":"[Native API] <leveldown/binding>.iterator_end()","fullName":"Native Call: <leveldown/binding>.iterator_end()","callWeight":33,"callCount":1}},{"data":{"id":39,"kind":"module","parent":1,"name":"leveldown.js","fullName":"leveldown@6.1.1:leveldown.js","callWeight":78,"callCount":25,"isEntry":"true","isReachable":"true"}},{"data":{"id":40,"kind":"function","parent":39,"name":"LevelDOWN 9:1:35:2","fullName":"'function LevelDOWN (...$= binding.db_init()}'leveldown@6.1.1:leveldown.js:9:1:LevelDOWN","callWeight":67,"callCount":2,"isReachable":"true"}},{"data":{"id":41,"kind":"function","parent":39,"name":"<anon> 39:29:41:2","fullName":"'function (options, c...$ options, callback)}'leveldown@6.1.1:leveldown.js:39:29:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":42,"kind":"function","parent":39,"name":"<anon> 43:30:45:2","fullName":"'function (callback) ...$.context, callback)}'leveldown@6.1.1:leveldown.js:43:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":43,"kind":"function","parent":39,"name":"<anon> 47:37:49:2","fullName":"'function (key) { ret...$? key : String(key)}'leveldown@6.1.1:leveldown.js:47:37:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":44,"kind":"function","parent":39,"name":"<anon> 51:39:53:2","fullName":"'function (value) { r...$lue : String(value)}'leveldown@6.1.1:leveldown.js:51:39:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":45,"kind":"function","parent":39,"name":"<anon> 55:28:57:2","fullName":"'function (key, value...$ options, callback)}'leveldown@6.1.1:leveldown.js:55:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":46,"kind":"function","parent":39,"name":"<anon> 59:28:61:2","fullName":"'function (key, optio...$ options, callback)}'leveldown@6.1.1:leveldown.js:59:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":47,"kind":"function","parent":39,"name":"<anon> 63:32:65:2","fullName":"'function (keys, opti...$ options, callback)}'leveldown@6.1.1:leveldown.js:63:32:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":48,"kind":"function","parent":39,"name":"<anon> 67:28:69:2","fullName":"'function (key, optio...$ options, callback)}'leveldown@6.1.1:leveldown.js:67:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":49,"kind":"function","parent":39,"name":"<anon> 71:30:73:2","fullName":"'function (options, c...$ options, callback)}'leveldown@6.1.1:leveldown.js:71:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":50,"kind":"function","parent":39,"name":"<anon> 75:37:77:2","fullName":"'function () { return new ChainedBatch(this)}'leveldown@6.1.1:leveldown.js:75:37:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":51,"kind":"function","parent":39,"name":"<anon> 79:30:81:2","fullName":"'function (operations...$ options, callback)}'leveldown@6.1.1:leveldown.js:79:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":52,"kind":"function","parent":39,"name":"<anon> 83:39:99:2","fullName":"'function (start, end...$art, end, callback)}'leveldown@6.1.1:leveldown.js:83:39:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":53,"kind":"function","parent":39,"name":"<anon> 101:36:117:2","fullName":"'function (start, end...$art, end, callback)}'leveldown@6.1.1:leveldown.js:101:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":54,"kind":"function","parent":39,"name":"<anon> 119:35:125:2","fullName":"'function (property) ...$.context, property)}'leveldown@6.1.1:leveldown.js:119:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":55,"kind":"function","parent":39,"name":"<anon> 127:33:134:2","fullName":"'function (options) {...$ator(this, options)}'leveldown@6.1.1:leveldown.js:127:33:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":56,"kind":"function","parent":39,"name":"<anon> 136:21:148:2","fullName":"'function (location, ...$location, callback)}'leveldown@6.1.1:leveldown.js:136:21:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":57,"kind":"function","parent":39,"name":"<anon> 150:20:162:2","fullName":"'function (location, ...$location, callback)}'leveldown@6.1.1:leveldown.js:150:20:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":58,"kind":"function","parent":39,"name":"[Native API] <abstract-leveldown>","fullName":"Native Call: <abstract-leveldown>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":59,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>","fullName":"Native Call: <leveldown/binding>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":60,"kind":"function","parent":39,"name":"[Native API] <leveldown/chained-batch>","fullName":"Native Call: <leveldown/chained-batch>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":61,"kind":"function","parent":39,"name":"[Native API] <leveldown/iterator>","fullName":"Native Call: <leveldown/iterator>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":62,"kind":"function","parent":39,"name":"[Native API] <abstract-leveldown>.AbstractLevelDOWN","fullName":"Native Call: <abstract-leveldown>.AbstractLevelDOWN","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":63,"kind":"function","parent":39,"name":"[Native API] <leveldown/chained-batch>()","fullName":"Native Call: <leveldown/chained-batch>()","callWeight":33,"callCount":1}},{"data":{"id":64,"kind":"function","parent":39,"name":"[Native API] <leveldown/iterator>()","fullName":"Native Call: <leveldown/iterator>()","callWeight":33,"callCount":1}},{"data":{"id":65,"kind":"function","parent":39,"name":"[Native API] <abstract-leveldown/abstract-leveldown>()","fullName":"Native Call: <abstract-leveldown/abstract-leveldown>()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":66,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_init()","fullName":"Native Call: <leveldown/binding>.db_init()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":67,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_open()","fullName":"Native Call: <leveldown/binding>.db_open()","callWeight":33,"callCount":1}},{"data":{"id":68,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_close()","fullName":"Native Call: <leveldown/binding>.db_close()","callWeight":33,"callCount":1}},{"data":{"id":69,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_put()","fullName":"Native Call: <leveldown/binding>.db_put()","callWeight":33,"callCount":1}},{"data":{"id":70,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_get()","fullName":"Native Call: <leveldown/binding>.db_get()","callWeight":33,"callCount":1}},{"data":{"id":71,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_get_many()","fullName":"Native Call: <leveldown/binding>.db_get_many()","callWeight":33,"callCount":1}},{"data":{"id":72,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_del()","fullName":"Native Call: <leveldown/binding>.db_del()","callWeight":33,"callCount":1}},{"data":{"id":73,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_clear()","fullName":"Native Call: <leveldown/binding>.db_clear()","callWeight":33,"callCount":1}},{"data":{"id":74,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.batch_do()","fullName":"Native Call: <leveldown/binding>.batch_do()","callWeight":33,"callCount":1}},{"data":{"id":75,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_approximate_size()","fullName":"Native Call: <leveldown/binding>.db_approximate_size()","callWeight":33,"callCount":1}},{"data":{"id":76,"kind":"function","parent":39,"name":"[C Function] db_approximate_size(napi_env__*, napi_callback_info__*)","fullName":"Native C/C++ Function: [C Function] db_approximate_size(napi_env__*, napi_callback_info__*)","callWeight":33,"callCount":1}},{"data":{"id":77,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_compact_range()","fullName":"Native Call: <leveldown/binding>.db_compact_range()","callWeight":33,"callCount":1}},{"data":{"id":78,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.db_get_property()","fullName":"Native Call: <leveldown/binding>.db_get_property()","callWeight":33,"callCount":1}},{"data":{"id":79,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.destroy_db()","fullName":"Native Call: <leveldown/binding>.destroy_db()","callWeight":33,"callCount":1}},{"data":{"id":80,"kind":"function","parent":39,"name":"[Native API] <leveldown/binding>.repair_db()","fullName":"Native Call: <leveldown/binding>.repair_db()","callWeight":33,"callCount":1}},{"data":{"id":81,"kind":"module","parent":2,"name":"index.js","fullName":"node-gyp-build@4.8.4:index.js","callWeight":6,"callCount":2,"isReachable":"true"}},{"data":{"id":82,"kind":"function","parent":81,"name":"[Native API] <node-gyp-build/node-gyp-build>","fullName":"Native Call: <node-gyp-build/node-gyp-build>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":83,"kind":"module","parent":3,"name":"index.js","fullName":"abstract-leveldown@7.2.0:index.js","callWeight":19,"callCount":6,"isReachable":"true"}},{"data":{"id":84,"kind":"function","parent":83,"name":"[Native API] <abstract-leveldown/abstract-leveldown>","fullName":"Native Call: <abstract-leveldown/abstract-leveldown>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":85,"kind":"function","parent":83,"name":"[Native API] <abstract-leveldown/abstract-iterator>","fullName":"Native Call: <abstract-leveldown/abstract-iterator>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":86,"kind":"function","parent":83,"name":"[Native API] <abstract-leveldown/abstract-chained-batch>","fullName":"Native Call: <abstract-leveldown/abstract-chained-batch>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":87,"kind":"module","parent":2,"name":"node-gyp-build.js","fullName":"node-gyp-build@4.8.4:node-gyp-build.js","callWeight":66,"callCount":21,"isReachable":"true"}},{"data":{"id":88,"kind":"function","parent":87,"name":"load 21:1:23:2","fullName":"'function load (dir) ...$(load.resolve(dir))}'node-gyp-build@4.8.4:node-gyp-build.js:21:1:load","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":89,"kind":"function","parent":87,"name":"<anon> 25:28:75:2","fullName":"'function (dir) { dir...$lds, winner.file) }}'node-gyp-build@4.8.4:node-gyp-build.js:25:28:<anonymous>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":90,"kind":"function","parent":89,"name":"resolve 62:3:74:4","fullName":"'function resolve (di...$ilds, winner.file) }'node-gyp-build@4.8.4:node-gyp-build.js:62:3:resolve","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":91,"kind":"function","parent":87,"name":"readdirSync 77:1:83:2","fullName":"'function readdirSync...$(err) { return [] }}'node-gyp-build@4.8.4:node-gyp-build.js:77:1:readdirSync","callWeight":67,"callCount":2,"isReachable":"true"}},{"data":{"id":92,"kind":"function","parent":87,"name":"getFirst 85:1:88:2","fullName":"'function getFirst (d...$join(dir, files[0])}'node-gyp-build@4.8.4:node-gyp-build.js:85:1:getFirst","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":93,"kind":"function","parent":87,"name":"matchBuild 90:1:92:2","fullName":"'function matchBuild ...$\\.node$/.test(name)}'node-gyp-build@4.8.4:node-gyp-build.js:90:1:matchBuild","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":94,"kind":"function","parent":87,"name":"parseTuple 94:1:107:2","fullName":"'function parseTuple ...$rm, architectures }}'node-gyp-build@4.8.4:node-gyp-build.js:94:1:parseTuple","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":95,"kind":"function","parent":87,"name":"matchTuple 109:1:115:2","fullName":"'function matchTuple ...$es.includes(arch) }}'node-gyp-build@4.8.4:node-gyp-build.js:109:1:matchTuple","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":96,"kind":"function","parent":95,"name":"<anon> 110:10:114:4","fullName":"'function (tuple) { i...$res.includes(arch) }'node-gyp-build@4.8.4:node-gyp-build.js:110:10:<anonymous>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":97,"kind":"function","parent":87,"name":"compareTuples 117:1:120:2","fullName":"'function compareTupl...$rchitectures.length}'node-gyp-build@4.8.4:node-gyp-build.js:117:1:compareTuples","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":98,"kind":"function","parent":87,"name":"parseTags 122:1:152:2","fullName":"'function parseTags (...$ity++ } return tags}'node-gyp-build@4.8.4:node-gyp-build.js:122:1:parseTags","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":99,"kind":"function","parent":87,"name":"matchTags 154:1:165:2","fullName":"'function matchTags (...$false return true }}'node-gyp-build@4.8.4:node-gyp-build.js:154:1:matchTags","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":100,"kind":"function","parent":99,"name":"<anon> 155:10:164:4","fullName":"'function (tags) { if...$ false return true }'node-gyp-build@4.8.4:node-gyp-build.js:155:10:<anonymous>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":101,"kind":"function","parent":87,"name":"runtimeAgnostic 167:1:169:2","fullName":"'function runtimeAgno...$'node' && tags.napi}'node-gyp-build@4.8.4:node-gyp-build.js:167:1:runtimeAgnostic","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":102,"kind":"function","parent":87,"name":"compareTags 171:1:184:2","fullName":"'function compareTags...$else { return 0 } }}'node-gyp-build@4.8.4:node-gyp-build.js:171:1:compareTags","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":103,"kind":"function","parent":102,"name":"<anon> 173:10:183:4","fullName":"'function (a, b) { if...$ else { return 0 } }'node-gyp-build@4.8.4:node-gyp-build.js:173:10:<anonymous>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":104,"kind":"function","parent":87,"name":"isNwjs 186:1:188:2","fullName":"'function isNwjs () {...$rocess.versions.nw)}'node-gyp-build@4.8.4:node-gyp-build.js:186:1:isNwjs","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":105,"kind":"function","parent":87,"name":"isElectron 190:1:194:2","fullName":"'function isElectron ...$type === 'renderer'}'node-gyp-build@4.8.4:node-gyp-build.js:190:1:isElectron","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":106,"kind":"function","parent":87,"name":"isAlpine 196:1:198:2","fullName":"'function isAlpine (p...$tc/alpine-release')}'node-gyp-build@4.8.4:node-gyp-build.js:196:1:isAlpine","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":107,"kind":"module","parent":3,"name":"abstract-leveldown.js","fullName":"abstract-leveldown@7.2.0:abstract-leveldown.js","callWeight":100,"callCount":32,"isReachable":"true"}},{"data":{"id":108,"kind":"function","parent":107,"name":"AbstractLevelDOWN 14:1:21:2","fullName":"'function AbstractLev...$, { status: true })}'abstract-leveldown@7.2.0:abstract-leveldown.js:14:1:AbstractLevelDOWN","callWeight":67,"callCount":2,"isReachable":"true"}},{"data":{"id":109,"kind":"function","parent":107,"name":"<anon> 23:36:46:2","fullName":"'function (options, c...$open' callback() })}'abstract-leveldown@7.2.0:abstract-leveldown.js:23:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":110,"kind":"function","parent":109,"name":"<anon> 38:23:45:4","fullName":"'(err) => { if (err) ...$ 'open' callback() }'abstract-leveldown@7.2.0:abstract-leveldown.js:38:23:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":111,"kind":"function","parent":107,"name":"<anon> 48:37:50:2","fullName":"'function (options, c...$_nextTick(callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:48:37:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":112,"kind":"function","parent":107,"name":"<anon> 52:37:68:2","fullName":"'function (callback) ...$osed' callback() })}'abstract-leveldown@7.2.0:abstract-leveldown.js:52:37:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":113,"kind":"function","parent":112,"name":"<anon> 60:15:67:4","fullName":"'(err) => { if (err) ...$closed' callback() }'abstract-leveldown@7.2.0:abstract-leveldown.js:60:15:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":114,"kind":"function","parent":107,"name":"<anon> 70:38:72:2","fullName":"'function (callback) { this._nextTick(callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:70:38:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":115,"kind":"function","parent":107,"name":"<anon> 74:35:91:2","fullName":"'function (key, optio...$ options, callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:74:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":116,"kind":"function","parent":107,"name":"<anon> 93:36:95:2","fullName":"'function (key, optio...$ror('NotFound')) })}'abstract-leveldown@7.2.0:abstract-leveldown.js:93:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":117,"kind":"function","parent":116,"name":"<anon> 94:18:94:65","fullName":"'function () { callback(new Error('NotFound')) }'abstract-leveldown@7.2.0:abstract-leveldown.js:94:18:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":118,"kind":"function","parent":107,"name":"<anon> 97:39:136:2","fullName":"'function (keys, opti...$rn callback.promise}'abstract-leveldown@7.2.0:abstract-leveldown.js:97:39:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":119,"kind":"function","parent":107,"name":"<anon> 138:40:140:2","fullName":"'function (keys, opti...$h).fill(undefined))}'abstract-leveldown@7.2.0:abstract-leveldown.js:138:40:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":120,"kind":"function","parent":107,"name":"<anon> 142:35:158:2","fullName":"'function (key, value...$ options, callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:142:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":121,"kind":"function","parent":107,"name":"<anon> 160:36:162:2","fullName":"'function (key, value...$_nextTick(callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:160:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":122,"kind":"function","parent":107,"name":"<anon> 164:35:179:2","fullName":"'function (key, optio...$ options, callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:164:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":123,"kind":"function","parent":107,"name":"<anon> 181:36:183:2","fullName":"'function (key, optio...$_nextTick(callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:181:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":124,"kind":"function","parent":107,"name":"<anon> 185:37:235:2","fullName":"'function (array, opt...$ options, callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:185:37:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":125,"kind":"function","parent":107,"name":"<anon> 237:38:239:2","fullName":"'function (array, opt...$_nextTick(callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:237:38:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":126,"kind":"function","parent":107,"name":"<anon> 241:37:253:2","fullName":"'function (options, c...$(options, callback)}'abstract-leveldown@7.2.0:abstract-leveldown.js:241:37:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":127,"kind":"function","parent":107,"name":"<anon> 255:38:284:2","fullName":"'function (options, c...$, next) }) } next()}'abstract-leveldown@7.2.0:abstract-leveldown.js:255:38:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":128,"kind":"function","parent":127,"name":"<anon> 265:16:281:4","fullName":"'(err) => { if (err) ...$yOptions, next) }) }'abstract-leveldown@7.2.0:abstract-leveldown.js:265:16:<anonymous>","callWeight":67,"callCount":2}},{"data":{"id":129,"kind":"function","parent":128,"name":"<anon> 267:27:269:8","fullName":"'function () { callback(err) }'abstract-leveldown@7.2.0:abstract-leveldown.js:267:27:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":130,"kind":"function","parent":128,"name":"<anon> 272:19:280:6","fullName":"'(err, key) => { if (...$mptyOptions, next) }'abstract-leveldown@7.2.0:abstract-leveldown.js:272:19:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":131,"kind":"function","parent":107,"name":"<anon> 286:53:297:2","fullName":"'function (options) {...$alse return options}'abstract-leveldown@7.2.0:abstract-leveldown.js:286:53:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":132,"kind":"function","parent":107,"name":"cleanRangeOptions 299:1:321:2","fullName":"'function cleanRangeO...$opt } return result}'abstract-leveldown@7.2.0:abstract-leveldown.js:299:1:cleanRangeOptions","callWeight":67,"callCount":2}},{"data":{"id":133,"kind":"function","parent":107,"name":"isRangeOption 323:1:325:2","fullName":"'function isRangeOpti...$s.indexOf(k) !== -1}'abstract-leveldown@7.2.0:abstract-leveldown.js:323:1:isRangeOption","callWeight":33,"callCount":1}},{"data":{"id":134,"kind":"function","parent":107,"name":"<anon> 327:40:331:2","fullName":"'function (options) {...$._iterator(options)}'abstract-leveldown@7.2.0:abstract-leveldown.js:327:40:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":135,"kind":"function","parent":107,"name":"<anon> 333:41:335:2","fullName":"'function (options) {...$tractIterator(this)}'abstract-leveldown@7.2.0:abstract-leveldown.js:333:41:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":136,"kind":"function","parent":107,"name":"<anon> 337:45:339:2","fullName":"'function () { return...$tChainedBatch(this)}'abstract-leveldown@7.2.0:abstract-leveldown.js:337:45:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":137,"kind":"function","parent":107,"name":"<anon> 341:45:343:2","fullName":"'function (key) { return key}'abstract-leveldown@7.2.0:abstract-leveldown.js:341:45:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":138,"kind":"function","parent":107,"name":"<anon> 345:47:347:2","fullName":"'function (value) { return value}'abstract-leveldown@7.2.0:abstract-leveldown.js:345:47:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":139,"kind":"function","parent":107,"name":"<anon> 349:41:359:2","fullName":"'function (key) { if ...$ an empty Array') }}'abstract-leveldown@7.2.0:abstract-leveldown.js:349:41:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":140,"kind":"function","parent":107,"name":"<anon> 361:43:365:2","fullName":"'function (value) { i...$ or `undefined`') }}'abstract-leveldown@7.2.0:abstract-leveldown.js:361:43:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":141,"kind":"function","parent":107,"name":"<anon> 368:45:370:2","fullName":"'function () { return...$is._isOperational()}'abstract-leveldown@7.2.0:abstract-leveldown.js:368:45:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":142,"kind":"function","parent":107,"name":"<anon> 373:46:375:2","fullName":"'function () { return false}'abstract-leveldown@7.2.0:abstract-leveldown.js:373:46:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":143,"kind":"function","parent":107,"name":"maybeError 384:1:391:2","fullName":"'function maybeError ...$true } return false}'abstract-leveldown@7.2.0:abstract-leveldown.js:384:1:maybeError","callWeight":33,"callCount":1}},{"data":{"id":144,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/abstract-iterator>","fullName":"Native Call: <abstract-leveldown/abstract-iterator>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":145,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/abstract-chained-batch>","fullName":"Native Call: <abstract-leveldown/abstract-chained-batch>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":146,"kind":"function","parent":107,"name":"[Native API] <level-supports>","fullName":"Native Call: <level-supports>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":147,"kind":"function","parent":107,"name":"[Native API] <is-buffer>","fullName":"Native Call: <is-buffer>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":148,"kind":"function","parent":107,"name":"[Native API] <catering>","fullName":"Native Call: <catering>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":149,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/lib/common>","fullName":"Native Call: <abstract-leveldown/lib/common>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":150,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/next-tick>","fullName":"Native Call: <abstract-leveldown/next-tick>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":151,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/lib/common>.getCallback","fullName":"Native Call: <abstract-leveldown/lib/common>.getCallback","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":152,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/lib/common>.getOptions","fullName":"Native Call: <abstract-leveldown/lib/common>.getOptions","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":153,"kind":"function","parent":107,"name":"[Native API] <catering>.fromCallback().promise","fullName":"Native Call: <catering>.fromCallback().promise","callWeight":33,"callCount":1}},{"data":{"id":154,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/lib/common>.getOptions().asBuffer","fullName":"Native Call: <abstract-leveldown/lib/common>.getOptions().asBuffer","callWeight":33,"callCount":1}},{"data":{"id":155,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/abstract-iterator>()","fullName":"Native Call: <abstract-leveldown/abstract-iterator>()","callWeight":33,"callCount":1}},{"data":{"id":156,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/abstract-chained-batch>()","fullName":"Native Call: <abstract-leveldown/abstract-chained-batch>()","callWeight":33,"callCount":1}},{"data":{"id":157,"kind":"function","parent":107,"name":"[Native API] <level-supports>()","fullName":"Native Call: <level-supports>()","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":158,"kind":"function","parent":107,"name":"[Native API] <is-buffer>()","fullName":"Native Call: <is-buffer>()","callWeight":33,"callCount":1}},{"data":{"id":159,"kind":"function","parent":107,"name":"[Native API] <catering>.fromCallback()","fullName":"Native Call: <catering>.fromCallback()","callWeight":33,"callCount":1}},{"data":{"id":160,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/lib/common>.getCallback()","fullName":"Native Call: <abstract-leveldown/lib/common>.getCallback()","callWeight":33,"callCount":1}},{"data":{"id":161,"kind":"function","parent":107,"name":"[Native API] <abstract-leveldown/lib/common>.getOptions()","fullName":"Native Call: <abstract-leveldown/lib/common>.getOptions()","callWeight":33,"callCount":1}},{"data":{"id":162,"kind":"module","parent":3,"name":"abstract-iterator.js","fullName":"abstract-leveldown@7.2.0:abstract-iterator.js","callWeight":38,"callCount":12,"isReachable":"true"}},{"data":{"id":163,"kind":"function","parent":162,"name":"AbstractIterator 3:1:11:2","fullName":"'function AbstractIte...$is._nexting = false}'abstract-leveldown@7.2.0:abstract-iterator.js:3:1:AbstractIterator","callWeight":100,"callCount":3,"isReachable":"true"}},{"data":{"id":164,"kind":"function","parent":162,"name":"<anon> 13:35:46:2","fullName":"'function (callback) ...$rest) }) return ret}'abstract-leveldown@7.2.0:abstract-iterator.js:13:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":165,"kind":"function","parent":164,"name":"<anon> 18:23:24:6","fullName":"'function (resolve, r...$ve([key, value]) } }'abstract-leveldown@7.2.0:abstract-iterator.js:18:23:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":166,"kind":"function","parent":165,"name":"<anon> 19:18:23:8","fullName":"'function (err, key, ...$olve([key, value]) }'abstract-leveldown@7.2.0:abstract-iterator.js:19:18:<anonymous>","callWeight":67,"callCount":2}},{"data":{"id":167,"kind":"function","parent":164,"name":"<anon> 40:14:43:4","fullName":"'(err, ...rest) => { ...$back(err, ...rest) }'abstract-leveldown@7.2.0:abstract-iterator.js:40:14:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":168,"kind":"function","parent":162,"name":"<anon> 48:36:50:2","fullName":"'function (callback) { this._nextTick(callback)}'abstract-leveldown@7.2.0:abstract-iterator.js:48:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":169,"kind":"function","parent":162,"name":"<anon> 52:35:62:2","fullName":"'function (target) { ...$ this._seek(target)}'abstract-leveldown@7.2.0:abstract-iterator.js:52:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":170,"kind":"function","parent":162,"name":"<anon> 64:36:64:56","fullName":"'function (target) {}'abstract-leveldown@7.2.0:abstract-iterator.js:64:36:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":171,"kind":"function","parent":162,"name":"<anon> 66:34:89:2","fullName":"'function (callback) ...$ack) return promise}'abstract-leveldown@7.2.0:abstract-iterator.js:66:34:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":172,"kind":"function","parent":171,"name":"<anon> 70:27:75:6","fullName":"'function (resolve, r...$) else resolve() } }'abstract-leveldown@7.2.0:abstract-iterator.js:70:27:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":173,"kind":"function","parent":172,"name":"<anon> 71:18:74:8","fullName":"'function (err) { if ...$rr) else resolve() }'abstract-leveldown@7.2.0:abstract-iterator.js:71:18:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":174,"kind":"function","parent":162,"name":"<anon> 91:35:93:2","fullName":"'function (callback) { this._nextTick(callback)}'abstract-leveldown@7.2.0:abstract-iterator.js:91:35:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":175,"kind":"function","parent":162,"name":"<anon> 95:52:105:2","fullName":"'async function * () ...$ await this.end() }}'abstract-leveldown@7.2.0:abstract-iterator.js:95:52:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":176,"kind":"function","parent":162,"name":"[Native API] <abstract-leveldown/next-tick>","fullName":"Native Call: <abstract-leveldown/next-tick>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":177,"kind":"module","parent":3,"name":"abstract-chained-batch.js","fullName":"abstract-leveldown@7.2.0:abstract-chained-batch.js","callWeight":19,"callCount":6,"isReachable":"true"}},{"data":{"id":178,"kind":"function","parent":177,"name":"AbstractChainedBatch 5:1:13:2","fullName":"'function AbstractCha...$is._written = false}'abstract-leveldown@7.2.0:abstract-chained-batch.js:5:1:AbstractChainedBatch","callWeight":100,"callCount":3,"isReachable":"true"}},{"data":{"id":179,"kind":"function","parent":177,"name":"<anon> 15:48:19:2","fullName":"'function () { if (th...$d on this batch') }}'abstract-leveldown@7.2.0:abstract-chained-batch.js:15:48:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":180,"kind":"function","parent":177,"name":"<anon> 21:38:33:2","fullName":"'function (key, value...$ptions) return this}'abstract-leveldown@7.2.0:abstract-chained-batch.js:21:38:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":181,"kind":"function","parent":177,"name":"<anon> 35:39:37:2","fullName":"'function (key, value...$put', key, value })}'abstract-leveldown@7.2.0:abstract-chained-batch.js:35:39:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":182,"kind":"function","parent":177,"name":"<anon> 39:38:49:2","fullName":"'function (key, optio...$ptions) return this}'abstract-leveldown@7.2.0:abstract-chained-batch.js:39:38:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":183,"kind":"function","parent":177,"name":"<anon> 51:39:53:2","fullName":"'function (key, optio...$type: 'del', key })}'abstract-leveldown@7.2.0:abstract-chained-batch.js:51:39:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":184,"kind":"function","parent":177,"name":"<anon> 55:40:60:2","fullName":"'function () { this._...$clear() return this}'abstract-leveldown@7.2.0:abstract-chained-batch.js:55:40:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":185,"kind":"function","parent":177,"name":"<anon> 62:41:64:2","fullName":"'function () { this._operations = []}'abstract-leveldown@7.2.0:abstract-chained-batch.js:62:41:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":186,"kind":"function","parent":177,"name":"<anon> 66:40:81:2","fullName":"'function (options, c...$(options, callback)}'abstract-leveldown@7.2.0:abstract-chained-batch.js:66:40:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":187,"kind":"function","parent":177,"name":"<anon> 83:41:85:2","fullName":"'function (options, c...$ options, callback)}'abstract-leveldown@7.2.0:abstract-chained-batch.js:83:41:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":188,"kind":"function","parent":177,"name":"[Native API] <abstract-leveldown/next-tick>","fullName":"Native Call: <abstract-leveldown/next-tick>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":189,"kind":"module","parent":4,"name":"index.js","fullName":"level-supports@2.1.0:index.js","callWeight":13,"callCount":4,"isReachable":"true"}},{"data":{"id":190,"kind":"function","parent":189,"name":"supports 3:18:40:2","fullName":"'function supports (....$ditionalMethods) })}'level-supports@2.1.0:index.js:3:18:supports","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":191,"kind":"function","parent":190,"name":"<anon> 4:37:4:70","fullName":"'(acc, m) => Object.assign(acc, m)'level-supports@2.1.0:index.js:4:37:<anonymous>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":192,"kind":"function","parent":189,"name":"maybeObject 42:1:44:2","fullName":"'function maybeObject...$t.assign({}, value)}'level-supports@2.1.0:index.js:42:1:maybeObject","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":193,"kind":"module","parent":5,"name":"index.js","fullName":"is-buffer@2.0.5:index.js","callWeight":6,"callCount":2,"isReachable":"true"}},{"data":{"id":194,"kind":"function","parent":193,"name":"isBuffer 8:18:11:2","fullName":"'function isBuffer (o...$uctor.isBuffer(obj)}'is-buffer@2.0.5:index.js:8:18:isBuffer","callWeight":33,"callCount":1}},{"data":{"id":195,"kind":"module","parent":6,"name":"index.js","fullName":"catering@2.1.1:index.js","callWeight":28,"callCount":9,"isReachable":"true"}},{"data":{"id":196,"kind":"function","parent":195,"name":"<anon> 5:24:20:2","fullName":"'function (callback, ...$) } return callback}'catering@2.1.1:index.js:5:24:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":197,"kind":"function","parent":196,"name":"<anon> 7:31:12:6","fullName":"'function (resolve, r...$lse resolve(res) } }'catering@2.1.1:index.js:7:31:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":198,"kind":"function","parent":197,"name":"<anon> 8:18:11:8","fullName":"'function (err, res) ...$ else resolve(res) }'catering@2.1.1:index.js:8:18:<anonymous>","callWeight":67,"callCount":2}},{"data":{"id":199,"kind":"function","parent":195,"name":"<anon> 22:23:28:2","fullName":"'function (promise, c...$> callback(err)) })}'catering@2.1.1:index.js:22:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":200,"kind":"function","parent":199,"name":"<anon> 26:11:26:65","fullName":"'function (res) { nex...$llback(null, res)) }'catering@2.1.1:index.js:26:11:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":201,"kind":"function","parent":200,"name":"<anon> 26:37:26:62","fullName":"'() => callback(null, res)'catering@2.1.1:index.js:26:37:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":202,"kind":"function","parent":199,"name":"<anon> 27:12:27:60","fullName":"'function (err) { nextTick(() => callback(err)) }'catering@2.1.1:index.js:27:12:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":203,"kind":"function","parent":202,"name":"<anon> 27:38:27:57","fullName":"'() => callback(err)'catering@2.1.1:index.js:27:38:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":204,"kind":"function","parent":195,"name":"[Native API] <catering/next-tick>","fullName":"Native Call: <catering/next-tick>","callWeight":33,"callCount":1,"isReachable":"true"}},{"data":{"id":205,"kind":"function","parent":195,"name":"[Native API] <catering/next-tick>()","fullName":"Native Call: <catering/next-tick>()","callWeight":33,"callCount":1}},{"data":{"id":206,"kind":"module","parent":3,"name":"lib/common.js","fullName":"abstract-leveldown@7.2.0:lib/common.js","callWeight":9,"callCount":3,"isReachable":"true"}},{"data":{"id":207,"kind":"function","parent":206,"name":"<anon> 3:23:5:2","fullName":"'function (options, c...$ options : callback}'abstract-leveldown@7.2.0:lib/common.js:3:23:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":208,"kind":"function","parent":206,"name":"<anon> 7:22:9:2","fullName":"'function (options) {...$null ? options : {}}'abstract-leveldown@7.2.0:lib/common.js:7:22:<anonymous>","callWeight":33,"callCount":1}},{"data":{"id":209,"kind":"module","parent":3,"name":"next-tick.js","fullName":"abstract-leveldown@7.2.0:next-tick.js","callWeight":9,"callCount":3,"isReachable":"true"}},{"data":{"id":210,"kind":"module","parent":6,"name":"next-tick.js","fullName":"catering@2.1.1:next-tick.js","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"kind":"call","source":92,"target":91}},{"data":{"kind":"call","source":92,"target":93}},{"data":{"kind":"call","source":127,"target":128}},{"data":{"kind":"call","source":167,"target":166}},{"data":{"kind":"call","source":130,"target":128}},{"data":{"kind":"call","source":40,"target":40}},{"data":{"kind":"call","source":40,"target":108}},{"data":{"kind":"call","source":40,"target":65}},{"data":{"kind":"call","source":40,"target":66}},{"data":{"kind":"call","source":89,"target":90}},{"data":{"kind":"call","source":89,"target":92}},{"data":{"kind":"call","source":90,"target":91}},{"data":{"kind":"call","source":90,"target":95}},{"data":{"kind":"call","source":90,"target":99}},{"data":{"kind":"call","source":90,"target":102}},{"data":{"kind":"call","source":90,"target":98}},{"data":{"kind":"call","source":90,"target":94}},{"data":{"kind":"call","source":90,"target":100}},{"data":{"kind":"call","source":90,"target":96}},{"data":{"kind":"call","source":90,"target":97}},{"data":{"kind":"call","source":90,"target":103}},{"data":{"kind":"call","source":100,"target":101}},{"data":{"kind":"call","source":87,"target":104}},{"data":{"kind":"call","source":87,"target":105}},{"data":{"kind":"call","source":87,"target":106}},{"data":{"kind":"call","source":126,"target":132}},{"data":{"kind":"call","source":131,"target":132}},{"data":{"kind":"call","source":132,"target":133}},{"data":{"kind":"call","source":118,"target":143}},{"data":{"kind":"call","source":118,"target":196}},{"data":{"kind":"call","source":118,"target":208}},{"data":{"kind":"call","source":118,"target":207}},{"data":{"kind":"call","source":118,"target":198}},{"data":{"kind":"call","source":118,"target":153}},{"data":{"kind":"call","source":118,"target":154}},{"data":{"kind":"call","source":118,"target":159}},{"data":{"kind":"call","source":118,"target":160}},{"data":{"kind":"call","source":118,"target":161}},{"data":{"kind":"call","source":190,"target":192}},{"data":{"kind":"call","source":190,"target":191}},{"data":{"kind":"call","source":164,"target":165}},{"data":{"kind":"call","source":164,"target":166}},{"data":{"kind":"call","source":164,"target":167}},{"data":{"kind":"call","source":171,"target":172}},{"data":{"kind":"call","source":171,"target":173}},{"data":{"kind":"call","source":196,"target":197}},{"data":{"kind":"call","source":200,"target":201}},{"data":{"kind":"call","source":202,"target":203}},{"data":{"kind":"call","source":88,"target":89}},{"data":{"kind":"call","source":139,"target":194}},{"data":{"kind":"call","source":139,"target":158}},{"data":{"kind":"call","source":108,"target":190}},{"data":{"kind":"call","source":108,"target":157}},{"data":{"kind":"call","source":136,"target":178}},{"data":{"kind":"call","source":136,"target":156}},{"data":{"kind":"call","source":135,"target":163}},{"data":{"kind":"call","source":135,"target":155}},{"data":{"kind":"call","source":7,"target":88}},{"data":{"kind":"call","source":7,"target":8}},{"data":{"kind":"call","source":7,"target":9}},{"data":{"kind":"call","source":55,"target":26}},{"data":{"kind":"call","source":55,"target":64}},{"data":{"kind":"call","source":50,"target":11}},{"data":{"kind":"call","source":50,"target":63}},{"data":{"kind":"call","source":10,"target":11}},{"data":{"kind":"call","source":10,"target":178}},{"data":{"kind":"call","source":10,"target":16}},{"data":{"kind":"call","source":10,"target":17}},{"data":{"kind":"call","source":10,"target":18}},{"data":{"kind":"call","source":25,"target":26}},{"data":{"kind":"call","source":25,"target":163}},{"data":{"kind":"call","source":25,"target":31}},{"data":{"kind":"call","source":25,"target":32}},{"data":{"kind":"call","source":25,"target":33}},{"data":{"kind":"call","source":28,"target":29}},{"data":{"kind":"call","source":28,"target":37}},{"data":{"kind":"call","source":39,"target":40}},{"data":{"kind":"call","source":39,"target":108}},{"data":{"kind":"call","source":39,"target":58}},{"data":{"kind":"call","source":39,"target":59}},{"data":{"kind":"call","source":39,"target":60}},{"data":{"kind":"call","source":39,"target":61}},{"data":{"kind":"call","source":39,"target":62}},{"data":{"kind":"call","source":11,"target":178}},{"data":{"kind":"call","source":11,"target":19}},{"data":{"kind":"call","source":11,"target":20}},{"data":{"kind":"call","source":26,"target":163}},{"data":{"kind":"call","source":26,"target":34}},{"data":{"kind":"call","source":26,"target":35}},{"data":{"kind":"call","source":109,"target":110}},{"data":{"kind":"call","source":112,"target":113}},{"data":{"kind":"call","source":116,"target":117}},{"data":{"kind":"call","source":143,"target":198}},{"data":{"kind":"call","source":128,"target":129}},{"data":{"kind":"call","source":128,"target":130}},{"data":{"kind":"call","source":81,"target":82}},{"data":{"kind":"call","source":83,"target":84}},{"data":{"kind":"call","source":83,"target":85}},{"data":{"kind":"call","source":83,"target":86}},{"data":{"kind":"call","source":107,"target":144}},{"data":{"kind":"call","source":107,"target":145}},{"data":{"kind":"call","source":107,"target":146}},{"data":{"kind":"call","source":107,"target":147}},{"data":{"kind":"call","source":107,"target":148}},{"data":{"kind":"call","source":107,"target":149}},{"data":{"kind":"call","source":107,"target":150}},{"data":{"kind":"call","source":107,"target":151}},{"data":{"kind":"call","source":107,"target":152}},{"data":{"kind":"call","source":162,"target":176}},{"data":{"kind":"call","source":177,"target":188}},{"data":{"kind":"call","source":195,"target":204}},{"data":{"kind":"call","source":199,"target":205}},{"data":{"kind":"call","source":12,"target":21}},{"data":{"kind":"call","source":13,"target":22}},{"data":{"kind":"call","source":14,"target":23}},{"data":{"kind":"call","source":15,"target":24}},{"data":{"kind":"call","source":27,"target":36}},{"data":{"kind":"call","source":30,"target":38}},{"data":{"kind":"call","source":41,"target":67}},{"data":{"kind":"call","source":42,"target":68}},{"data":{"kind":"call","source":45,"target":69}},{"data":{"kind":"call","source":46,"target":70}},{"data":{"kind":"call","source":47,"target":71}},{"data":{"kind":"call","source":48,"target":72}},{"data":{"kind":"call","source":49,"target":73}},{"data":{"kind":"call","source":51,"target":74}},{"data":{"kind":"call","source":52,"target":75}},{"data":{"kind":"call","source":75,"target":76}},{"data":{"kind":"call","source":53,"target":77}},{"data":{"kind":"call","source":54,"target":78}},{"data":{"kind":"call","source":56,"target":79}},{"data":{"kind":"call","source":57,"target":80}},{"data":{"kind":"require","source":7,"target":81}},{"data":{"kind":"require","source":10,"target":83}},{"data":{"kind":"require","source":10,"target":7}},{"data":{"kind":"require","source":25,"target":83}},{"data":{"kind":"require","source":25,"target":7}},{"data":{"kind":"require","source":39,"target":83}},{"data":{"kind":"require","source":39,"target":7}},{"data":{"kind":"require","source":39,"target":10}},{"data":{"kind":"require","source":39,"target":25}},{"data":{"kind":"require","source":81,"target":87}},{"data":{"kind":"require","source":83,"target":107}},{"data":{"kind":"require","source":83,"target":162}},{"data":{"kind":"require","source":83,"target":177}},{"data":{"kind":"require","source":107,"target":189}},{"data":{"kind":"require","source":107,"target":193}},{"data":{"kind":"require","source":107,"target":195}},{"data":{"kind":"require","source":107,"target":162}},{"data":{"kind":"require","source":107,"target":177}},{"data":{"kind":"require","source":107,"target":206}},{"data":{"kind":"require","source":107,"target":209}},{"data":{"kind":"require","source":162,"target":209}},{"data":{"kind":"require","source":177,"target":209}},{"data":{"kind":"require","source":195,"target":210}}],"info":"Packages: 6\nModules: 16\nFunctions: 188\nCall edges: 155\nMax number of calls for packages: 62, modules: 32, functions: 3"}]};
+      let graph;
+
+      function showVulnerabilities() {
+        if (!graph.vulnerabilities)
+          return;
+
+        stopLayout();
+        const vulnerabilityTitle = document.getElementById("vulnerabilities").value;
+        const e = document.getElementsByName("vulnerabilityLevel");
+        let level = "package";
+        for (let i = 0; i < e.length; i++)
+          if (e[i].checked) {
+            level = e[i].value;
+            break;
+          }
+        const sources = new Set(), targets = new Set();
+        for (const v of graph.vulnerabilities)
+          if (v.title === vulnerabilityTitle) {
+            for (const s of v[level].sources)
+              sources.add(String(s));
+            for (const s of v[level].targets)
+              targets.add(String(s));
+          }
+        function has(collection, node) {
+          return collection.has(node.data("id")) || (ec.isExpandable(node) && ec.getCollapsedChildrenRecursively(node).some(n => collection.has(n.data("id"))));
+        }
+        cy.batch(() => {
+          cy.nodes().forEach(node => {
+            node.removeData("isSource isTarget");
+            if (has(sources, node))
+              node.data("isSource", true);
+            if (has(targets, node))
+              node.data("isTarget", true);
+          });
+          cy.edges().forEach(edge => {
+            edge.removeData("sourceTarget");
+            const source = edge.source();
+            const target = edge.target();
+            if (has(sources, source) && (has(targets, target) || has(sources, target)))
+              edge.data("sourceTarget", true);
+          });
+         cy.elements().removeClass("workaround");
+       });
+      }
+      document.getElementById("vulnerabilities").addEventListener("change", showVulnerabilities);
+      document.getElementById("vulnerabilityLevel").addEventListener("change", showVulnerabilities);
+
+      function setGraph(i) {
+        stopLayout();
+        removed = undefined;
+        cy.elements().remove();
+        graph = data.graphs[i];
+        cy.add(structuredClone(graph.elements));
+        ec.collapseAll();
+        ec.collapseAllEdges();
+        if (graph.kind === "callgraph")
+          document.body.classList.remove("callgraphModeHidden");
+        if (graph.kind === "dataflow")
+          document.body.classList.remove("dataflowModeHidden");
+        document.getElementById("showValueDensity").checked = false;
+        if (graph.info)
+          document.getElementById("info").innerText = graph.info;
+        document.getElementById("threshold").value = 0;
+        if (graph.vulnerabilities) {
+          const vulnerabilities = document.getElementById("vulnerabilities");
+          const vulnerabilityLevel = document.getElementById("vulnerabilityLevel");
+          vulnerabilities.hidden = false;
+          vulnerabilityLevel.hidden = false;
+          for (let i = 0; i < graph.vulnerabilities.length; i++) {
+            const opt = document.createElement("option");
+            opt.value = opt.innerText = graph.vulnerabilities[i].title;
+            vulnerabilities.appendChild(opt);
+          }
+          showVulnerabilities();
+        }
+        newLayout(true);
+      }
+
+      if (data.graphs.length >= 1) {
+        setGraph(0);
+        if (data.graphs.length > 1) {
+          const dataset = document.getElementById('dataset');
+          dataset.hidden = false;
+          for (let i = 0; i < data.graphs.length; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = data.graphs[i].title ?? "";
+            dataset.appendChild(opt);
+          }
+          document.getElementById("dataset").addEventListener("change", e => {
+            setGraph(e.target.value);
+          });
+        }
+      }
+    });
+  </script>
+</head>
+<body class="callgraphModeHidden dataflowModeHidden">
+<header>
+<h1>Jelly visualizer</h1>
+<div id="info"></div>
+<div id="control">
+<div class="group">
+<button id="collapseAll">Collapse all</button>
+<button id="collapseSelected">Collapse selected</button>
+<button id="expandSelected">Expand selected</button>
+<span class="callgraphMode"><button id="expandAllPackages">Expand all packages</button></span>
+<button id="expandAll">Expand all</button>
+</div>
+<br/>
+<div class="group">
+<button id="showPredecessors">Show predecessors</button>
+<button id="removeSelected">Remove selected</button>
+<button id="removeNonSelected">Remove non-selected</button>
+</div>
+<br/>
+<div class="group">
+<button id="layout">Layout</button>
+</div>
+<br/>
+<div class="group">
+<span class="callgraphMode">
+<input type="checkbox" id="showCallDensity"><label for="showCallDensity"> Show call density</label>
+<br/>
+<input type="checkbox" id="highlightReachable"><label for="highlightReachable"> Highlight reachable</label>
+<br/>
+<input type="checkbox" id="hideUnreachable"><label for="hideUnreachable"> Hide unreachable</label>
+</span>
+<span class="dataflowMode">
+<input type="checkbox" id="showValueDensity"><label for="showValueDensity"> Show value density</label>
+</span>
+</div>
+<span id="fields">
+<br/>
+<label for="threshold">Threshold: </label><input type="number" id="threshold" value="0" min="0">
+<br/>
+</span>
+<div class="group">
+<span id="vulnerabilityLevel" hidden>
+Vulnerabilities:<br/>
+<select id="vulnerabilities" hidden><option></option></select>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelPackage" value="package" checked><label for="vulnerabilityLevelPackage">Package dependency</label>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelModule" value="module"><label for="vulnerabilityLevelModule">Module dependency</label>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelFunction" value="function"><label for="vulnerabilityLevelFunction">Function reachability</label>
+</span>
+</div>
+</div>
+<select id="dataset" hidden></select>
+<div id="msg"></div>
+</header>
+<div id="cy"></div>
+</body>
+</html>
