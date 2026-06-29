@@ -204,6 +204,10 @@ let cFunctionIdCounter = 9000;
 export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: any): any {
     const res: any = {import: {}, read: {}, write: {}, call: {}, component: {}};
 
+    //πίνακας που αποθηκεύει όλα τα matches για matches.json
+    const allMatches: Array<{jelly_pattern: string, gasket_jsname: string, cfunc: string, confidence: number}> = [];
+
+    
     const seenGlobalNodes = new Set<string>();
 
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
@@ -282,8 +286,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                     const calleeName = `${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
                     const calleeLoc = `${filename}:${calleeName}`;
 
-                    //. Καταγραφή στο JSON output chunk
-                    // Καταγραφή στο JSON output chunk με έλεγχο διπλοτύπων
+                    //Καταγραφή στο JSON output chunk
                     if (deduplicatedCallers.length === 0) {
                         const hasEdge = a.some(e => e.callee.loc === calleeLoc && e.caller === null);
                         if (!hasEdge) {
@@ -322,7 +325,6 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                                 // Καθαρό όνομα του τρέχοντος πακέτου που αναλύει η add αυτή τη στιγμή
                                 const currentPackage = targetModule.getOfficialName().split('/')[0];
                                 
-                                // ΦΙΛΤΡΟ: Αν δεν δόθηκαν μεταβλητές ή αν αναλύουμε βοηθητικό module (π.χ. semver)
                                 if (!targetPackageFromCLI || !targetVersionFromCLI || currentPackage.toLowerCase() !== targetPackageFromCLI.toLowerCase()) {
                                     gasketBridges = [];
                                 } else {
@@ -375,7 +377,8 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
 
                             // C-BRIDGE MATCHING ΛΟΓΙΚΗ
                             console.log(`[DEBUG GASKET] Checking ${patternName} against ${gasketBridges.length} bridges`);
-                            const matchedCfunc = findGasketCfuncMatch(patternName, gasketBridges);
+                            // Περνάμε και το allMatches ως 3ο όρισμα
+                            const matchedCfunc = findGasketCfuncMatch(patternName, gasketBridges, allMatches);
                             if (matchedCfunc) {
                                 (nativeCalleeInfo as any).cfunc = matchedCfunc;
                                 (nativeCalleeInfo as any).hasCBridge = true;
@@ -413,6 +416,20 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
             //t[patternName] = a; //κομμένο access path
         }
         res[type] = t;
+    }
+    //για matches.json
+    try {
+        const fs = require("fs");
+        const path = require("path");
+        const targetPackage = (process.env.PNAME || "unknown").toLowerCase();
+        
+        // Το αρχείο θα αποθηκεύεται στον φάκελο jelly
+        const outputPath = path.join(__dirname, `../../${targetPackage}_matches.json`);
+        
+        fs.writeFileSync(outputPath, JSON.stringify(allMatches, null, 2), "utf-8");
+        console.log(`\n SUCCESS: All native matches exported to ${outputPath}\n`);
+    } catch (err: any) {
+        console.error(`[ERROR EXPORTING MATCHES] ${err.message}`);
     }
     return res;
 }
@@ -460,7 +477,8 @@ function extractStructuralTokens(fqnString: string): string[] {
     return tokens;
 }
 
-function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[]): string | undefined {
+//προσθέτω το allMatches ως 3ο όρισμα για το matches.json
+function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[], allMatches: any[]): string | undefined {
     const cleanJellyPattern = jellyPattern.replace(/^native:/, "");
     const jTokens = extractStructuralTokens(cleanJellyPattern);
     if (jTokens.length === 0) return undefined;
@@ -486,11 +504,11 @@ function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[]): strin
             // Αν η γυμνή μέθοδος του Jelly (get) ταιριάζει ακριβώς με τη μέθοδο της γέφυρας
             if (lastGasketToken === degenerateMethod) {
                 // Σιγουρευόμαστε ότι η γέφυρα ανήκει σε Statement ή Database για να μην πιάνουμε άσχετα πακέτα
-                if (bridge.jsname.toLowerCase().includes("statement") || bridge.jsname.toLowerCase().includes("database")) {
+               // if (bridge.jsname.toLowerCase().includes("statement") || bridge.jsname.toLowerCase().includes("database")) {
                     bestMatch = bridge;
                     highestSimilarity = 1.0;
                     break; 
-                }
+              //  }
             }
             continue; // Πάμε στην επόμενη γέφυρα αν δεν ταιριάζει
         }
@@ -518,6 +536,15 @@ function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[]): strin
 
     if (bestMatch) {
         console.log(` [MATCH DETECTED]`);
+        
+        // ΑΥΤΟ ΕΔΩ: Προσθήκη του match στον καθολικό πίνακα στην ακριβή μορφή που θέλεις
+        allMatches.push({
+            "jelly_pattern": jellyPattern,
+            "gasket_jsname": bestMatch["jsname"],
+            "cfunc": bestMatch["cfunc"],
+            "confidence": Number(highestSimilarity.toFixed(2))
+        });
+
         console.log(JSON.stringify({
             "jelly_pattern": jellyPattern,
             "gasket_jsname": bestMatch["jsname"],
