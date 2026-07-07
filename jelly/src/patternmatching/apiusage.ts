@@ -1,7 +1,7 @@
 import logger from "../misc/logger";
 import {mapGetSet, locationToStringWithFileAndEnd, Location, SimpleLocation} from "../misc/util";
 import {
-   // AbbreviatedPathPattern,
+    AbbreviatedPathPattern,
     AccessPathPattern,
     CallResultAccessPathPattern,
     ComponentAccessPathPattern,
@@ -45,8 +45,10 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
 
     function add(t: PatternType, p: AccessPathPattern, ap: AccessPath, n: Node) {
         //
+        console.log('PATTERN:', p.toString());
+        console.log('--------------------------------------')
         
-       /* function sub(p: AccessPathPattern): AccessPathPattern | undefined {
+        function sub(p: AccessPathPattern): AccessPathPattern | undefined {
             return p instanceof PropertyAccessPathPattern ? p.base :
                     p instanceof CallResultAccessPathPattern ? p.fun :
                         p instanceof ComponentAccessPathPattern ? p.component :
@@ -62,101 +64,44 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
                 return new ComponentAccessPathPattern(sub);
             else
                 return as;
-        }*/
+        }
         
         // abbreviate long patterns shortening του Jelly
+        
+        const p1 = sub(p); //ελέγχει πόσο μεγάλο είναι το path με την χρήση της sub, και το μικραίνει όπου χρειάζεται με την χρήση της copyWithSub
+        if (p1) {
+            const p2 = sub(p1);
+            if (p2) {
+                if (p2 instanceof AbbreviatedPathPattern && p1 instanceof CallResultAccessPathPattern && !(p instanceof CallResultAccessPathPattern)) // m…()d --> m…d
+                    p = copyWithSub(p, p2);
+                else {
+                    const p3 = sub(p2);
+                    if (p3) {
+                        if (p3 instanceof AbbreviatedPathPattern) {
+                            if (p1 instanceof CallResultAccessPathPattern) // m…b()d --> m…d
+                                p = copyWithSub(p, p3);
+                            else // m…bcd --> m…cd
+                                p = copyWithSub(p, copyWithSub(p1, p3));
+                        } else {
+                            const p4 = sub(p3);
+                            if (p4)
+                                if (p1 instanceof CallResultAccessPathPattern) // mab()d --> ma…d
+                                    p = copyWithSub(p, new AbbreviatedPathPattern(p3));
+                                else // mabcd --> ma…cd
+                                    p = copyWithSub(p, copyWithSub(p1, new AbbreviatedPathPattern(p3)));
 
-
-
-        // ------
-        let finalPathStr = p.toString();
-
-        // Αν το path έρχεται ελλιπές από το Jelly (δηλαδή έχει μόνο το binding και τη μέθοδο)
-        if ((finalPathStr.includes("binding") || finalPathStr.includes("bindings")) && 
-            !finalPathStr.toLowerCase().includes("statement") && 
-            !finalPathStr.toLowerCase().includes("database")) {
-            
-            // Εξετάζουμε τον AST Node για να βρούμε το όνομα της μεταβλητής (π.χ. stmt.finalize)
-            if (n && (n.type === "CallExpression" || n.type === "OptionalCallExpression" || n.type === "MemberExpression")) {
-                const callee = (n as any).callee || (n as any).object;
-                
-                if (callee && callee.type === "MemberExpression") {
-                    const objName = callee.object?.name?.toLowerCase() || "";
-                    const propName = callee.property?.name || "";
-
-                    // Αν η μεταβλητή παραπέμπει σε Statement (π.χ. stmt, statement)
-                    if (objName.includes("stmt") || objName.includes("statement")) {
-                        const rootImport = new ImportAccessPathPattern("sqlite3-binding");
-                        // Αναδομούμε το αντικείμενο p ΕΞΑΡΧΗΣ με τη σωστή δομή: Import -> Statement -> Μέθοδος
-                        p = new PropertyAccessPathPattern(rootImport, ["Statement", propName || "finalize"]);
-                    }
-                    // Αν η μεταβλητή παραπέμπει σε Database (π.χ. db, database)
-                    else if (objName.includes("db") || objName.includes("database")) {
-                        const rootImport = new ImportAccessPathPattern("sqlite3-binding");
-                        p = new PropertyAccessPathPattern(rootImport, ["Database", propName || "finalize"]);
+                        }
                     }
                 }
             }
         }
-        // ------
-
-
-        console.log('PATTERN BEFORE SHORTENING:', p.toString());
-        console.log('ACCESS PATH:', ap.toString());
-
-        // --- CUSTOM SHORTENING ΣΤΗΝ add (ΚΛΑΣΗ...ΜΕΘΟΔΟΣ) ---
-        let currentPattern: AccessPathPattern = p;
-        let depth = 0;
-        let lastProp: string[] | undefined = undefined;
-        let baseClassName: string | undefined = undefined;
-        let rootImportPattern: AccessPathPattern | undefined = undefined;
-
-        while (currentPattern) {
-            console.log(`CURRENTPATTERN: currentPattern: ${currentPattern}, depth: ${depth}`);
-            if (currentPattern instanceof PropertyAccessPathPattern) { //;
-                if (depth === 0) {
-                    lastProp = currentPattern.props;
-                    //console.log(`LASTPROP: Found lastProp at depth 0: ${lastProp}`);
-                }
-                if (depth === 1 && currentPattern.props && currentPattern.props.length > 0) {
-                    baseClassName = currentPattern.props[0];
-                    //console.log(`BASECLASS: Found baseClassName at depth 1: ${baseClassName}`);
-                }
-                depth++;
-                currentPattern = currentPattern.base;
-                //console.log(`DEPTH: ${depth}, currentPattern: ${currentPattern}`);
-            } else if (currentPattern instanceof CallResultAccessPathPattern) {
-                depth++;
-                currentPattern = currentPattern.fun;
-            } else if (currentPattern instanceof ComponentAccessPathPattern) {
-                depth++;
-                currentPattern = currentPattern.component;
-            } else if (currentPattern instanceof ImportAccessPathPattern) {
-                rootImportPattern = currentPattern; 
-                break;
-            } else {
-                break;
-            }
-        }
-
-        if (depth >= 4 && rootImportPattern && lastProp) {
-            if (baseClassName && baseClassName !== "prototype" && baseClassName !== "constructor") {
-                // rootImportPatter = πχ sqlite3
-                // Κρατάμε εσωτερικά το rootImportPattern για να μην κρασάρει ο αναλυτής,
-                // αλλά στο flatProps βάζουμε ΜΟΝΟ την Κλάση (π.χ. Statement) και το Τέλος (π.χ. finalize)
-                const flatProps = [baseClassName, ...lastProp];
-                p = new PropertyAccessPathPattern(rootImportPattern, flatProps);
-            } else {
-                p = new PropertyAccessPathPattern(rootImportPattern, lastProp);
-            }
-        }
-        // --- ΤΕΛΟΣ SHORTENING ---
         
         //
 
         // Καθαρισμός του pattern μέσω του canonicalizer (χωρίς abbreviations)
         p = c.canonicalize(p);
         
+        //για αυτό είναι λιγότερα τα matches;;;;
         const aps = mapGetSet(reached[t], p);
         if (!aps.has(n)) {
             if (logger.isDebugEnabled())
@@ -269,62 +214,87 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
     const seenGlobalNodes = new Set<string>();
 
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
-    const t: Record<string, any> = {};
-    for (const [p, nodes] of r[type]) {
-        const a: Array<any> = [];
+        const t: Record<string, any> = {};
+        for (const [p, nodes] of r[type]) {
+            const a: Array<any> = [];
 
-        for (const n of nodes) {
-            if (n.loc) {
-                const loc = n.loc as Location;
-                const locKey = locationToStringWithFileAndEnd(n.loc);
-                const filename = loc.module?.getPath() || "";
-                
-                const dedupeKey = `${filename}:${loc.start.line}:${loc.start.column}:${type}`;
+            for (const n of nodes) {
+                if (n.loc) {
+                    const loc = n.loc as Location;
+                    const locKey = locationToStringWithFileAndEnd(n.loc);
+                    const filename = loc.module?.getPath() || "";
+                    
+                    const dedupeKey = `${filename}:${loc.start.line}:${loc.start.column}:${type}`;
 
-                let resolvedBaseStr = p.toString();
-                
-                // Καθαρίζουμε τα < >
-                let cleanPath = resolvedBaseStr.replace(/[<>]/g, "");
+                    let resolvedBaseStr = p.toString();  //resolvedBaseStr--> accesspathpattern
+                    if (p instanceof PropertyAccessPathPattern || p instanceof CallResultAccessPathPattern) {
+                        let current: any = p;
+                        let steps: string[] = []; //πίνακας που θα μαζεύει όλα τα κομμάτια του path
+                        while (current) { //ΚΑΤΑΛΑΒΑΙΝΩ WHILE
+                            if (current instanceof PropertyAccessPathPattern) {
+                                steps.unshift(current.props.join("."));
+                                current = current.base;
+                            } else if (current instanceof CallResultAccessPathPattern) {
+                                steps.unshift("()");
+                                current = current.fun;
+                            } else if (current instanceof AbbreviatedPathPattern) {
+                                const internalPattern = (current as any).pattern;
+                                if (internalPattern) {
+                                    resolvedBaseStr = internalPattern.toString() + "…";
+                                }
+                                break;
+                            } else {
+                                break;
+                            }
+                        }
+                        if (steps.length > 0) {
+                            resolvedBaseStr = resolvedBaseStr + "." + steps.join(".");
+                            resolvedBaseStr = resolvedBaseStr.replace(/\.{2,}/g, "….");
+                        }
+                    }
 
-                // Αν το module-part περιέχει slashes (λόγω του filename), απομονώνουμε το base name
-                if (cleanPath.includes("/")) {
-                    let pathParts = cleanPath.split(".");
-                    if (pathParts[0].includes("/")) {
-                    const slashParts = pathParts[0].split("/");
-                    pathParts[0] = slashParts[slashParts.length - 1];
-                }
-                cleanPath = pathParts.join(".");
-            }
+                    let originalFullPath = resolvedBaseStr;
+                    let patternName = `${type} ${originalFullPath}`; //παίρνει τύπο του pattern πχ call και το path
+                    //console.log('!DEBUG1 PATTERNANAME:', patternName);
 
-            //  ΑΦΑΙΡΕΣΗ ΤΟΥ NATIVE/IMPORT ROOT (π.χ. sqlite3-binding, bindings)
-            let pathTokens = cleanPath.split(".").map(s => s.trim()).filter(s => s.length > 0);
-            if (pathTokens.length >= 2 && (pathTokens[0].includes("binding") || pathTokens[0] === "bindings" || pathTokens[0] === "sqlite3")) {
-                pathTokens.shift(); // Αφαιρεί το πρώτο στοιχείο, αφήνοντας την κλάση/μέθοδο ως ρίζα
-                }
-            cleanPath = pathTokens.join(".");
+                    //(Πρώτο και Τελευταίο στοιχείο
+                    if (originalFullPath.includes("<") || originalFullPath.includes("…")) { //έλεγχος αν το path χρειάζεται επεξεργασία
+                        //χρειάζεται επεξεραγσία αν περιέχει <> (όωομα βιβλιοθήκης) ή ...
+
+                        const spaceIndex = patternName.indexOf(" "); //ψάνει το πρώτο κεν΄ο διάστημα για να χωρίσει τον τύπο από το path
+
+                        if (spaceIndex !== -1) { //;;
+                            const typePrefix = patternName.substring(0, spaceIndex); //παίρνει κείμενο πριν το κενό (πχ call)
+                            let fullPath = patternName.substring(spaceIndex + 1); //παίρνει κείμενο μετά το κενό (πχ path)
+
+                            let cleanPath = fullPath //καθαρίζει path
+                                .replace(/<[^>]+>/g, "")               
+                                .replace(/\.prototype/g, ".")          
+                                .replace(/\.constructor/g, ".")        
+                                .replace(/\(\)/g, "");                 
+
+                            const parts = cleanPath.split(/[…\.]+/).map(s => s.trim()).filter(s => s.length > 0 && s !== "prototype"); //παίρνει το Path Και το χωρίζει όπου βρει .
+
+
+                            if (parts.length >= 2) {
+                                const firstElement = parts[0];   //πχ statement             
+                                const lastElement = parts[parts.length - 1]; //πχ get
             
-            cleanPath = cleanPath
-                .replace(/\.apply/g, "")
-                .replace(/\.call/g, "")
-                .replace(/\(\)/g, "")
-                .replace(/\{([^}]+)\}/g, "$1") // Μετατρέπει το {map,apply} σε map,apply
-                .replace(/\.{2,}/g, ".");
+                                patternName = `${typePrefix} ${firstElement}...${lastElement}`; 
+                                //console.log('!DEBUG5 PATTERNANAME:', patternName);
+                            } else if (parts.length === 1) {
+                                patternName = `${typePrefix} ${parts[0]}`;
+                                //console.log('!DEBUG6 PATTERNANAME:', patternName);
+                            }
+                            //console.log('!DEBUG7 PATTERNANAME:', patternName); 
+                        }
+                    }
 
-            // Αν περιέχει κόμμα από το destructing, κρατάμε μόνο την ουσιαστική μέθοδο
-            if (cleanPath.includes(",")) {
-                cleanPath = cleanPath.split(",")[0].trim();
-            }
+                    const callersList = f ? (f.nodeToCallers.get(locKey as any) || []) : [];
+                    const deduplicatedCallers = deduplicateCallers(callersList);
 
-                // Το patternName που θα πάει στο Gasket Matching για να κάνει matching με bridges
-                let patternName = `${type} ${cleanPath}`; 
-
-                console.log('!DEBUG2 PATTERNANAME:', patternName);
-                const callersList = f ? (f.nodeToCallers.get(locKey as any) || []) : [];
-                const deduplicatedCallers = deduplicateCallers(callersList);
-
-                const calleeName = `${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
-                const calleeLoc = `${filename}:${calleeName}`;
-                
+                    const calleeName = `${loc.start.line}:${loc.start.column}:${loc.end.line}:${loc.end.column}`;
+                    const calleeLoc = `${filename}:${calleeName}`;
 
                     //Καταγραφή στο JSON output chunk
                     if (deduplicatedCallers.length === 0) {
@@ -541,17 +511,19 @@ function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[], allMat
         //ΓΙΑ  ΧΑΜΕΝΑ PATTERNS
         if (isDegeneratePattern) {
             const lastGasketToken = gTokens[gTokens.length - 1];
+            // Αν η γυμνή μέθοδος του Jelly (get) ταιριάζει ακριβώς με τη μέθοδο της γέφυρας
             if (lastGasketToken === degenerateMethod) {
-                
+                // Σιγουρευόμαστε ότι η γέφυρα ανήκει σε Statement ή Database για να μην πιάνουμε άσχετα πακέτα
+               // if (bridge.jsname.toLowerCase().includes("statement") || bridge.jsname.toLowerCase().includes("database")) {
                     bestMatch = bridge;
                     highestSimilarity = 1.0;
                     break; 
-              
+              //  }
             }
             continue; // Πάμε στην επόμενη γέφυρα αν δεν ταιριάζει
         }
 
-        // Κλασικός έλεγχος Levenshtein για  patterns
+        // έλεγχος Levenshtein για  patterns
         const jCleanStr = jTokens.join("");
         const gCleanStr = gTokens.join("");
 
@@ -575,8 +547,7 @@ function findGasketCfuncMatch(jellyPattern: string, gasketBridges: any[], allMat
     if (bestMatch) {
         console.log(` [MATCH DETECTED]`);
         
-        // Προσθήκη στο allMatches για το matches.json
-        allMatches.push({
+       allMatches.push({
             "jelly_pattern": jellyPattern,
             "gasket_jsname": bestMatch["jsname"],
             "cfunc": bestMatch["cfunc"],
