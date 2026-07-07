@@ -322,48 +322,35 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                         if (targetModule) {
                             console.log(patternName);
 
-                            // Δυναμική φόρτωση του gasket json ΜΕΣΩ ENVIRONMENT VARIABLES
+                            // ===  ΕΝΗΜΕΡΩΜΕΝΗ ΛΟΓΙΚΗ ΦΟΡΤΩΣΗΣ gasket file ΜΕΣΩ CLI FLAG ===
                             let gasketBridges: any[] = [];
                             try {
                                 const fs = require("fs");
-                                const path = require("path");
                                 
-                                // Διαβάζουμε τις μεταβλητές από το περιβάλλον (Environment)
-                                const targetPackageFromCLI = process.env.PNAME; // π.χ. sharp
-                                const targetVersionFromCLI = process.env.PVER;  // π.χ. 0.35.0
+                                // Διαβάζουμε το flag από το process.env
+                                const customBridgesPath = process.env.BPATH; 
                                 
-                                // Καθαρό όνομα του τρέχοντος πακέτου που αναλύει η add αυτή τη στιγμή
-                                const currentPackage = targetModule.getOfficialName().split('/')[0];
-                                
-                                if (!targetPackageFromCLI || !targetVersionFromCLI || currentPackage.toLowerCase() !== targetPackageFromCLI.toLowerCase()) {
-                                    gasketBridges = [];
-                                } else {
-                                    const staticDir = "/home/eva/Ptuxiakh/web/static/";
-                                    
-                                    // Σχηματίζουμε το ακριβές όνομα του φακέλου
-                                    const exactFolderName = `gasket_analysis_${targetPackageFromCLI.toLowerCase()}_${targetVersionFromCLI}`;
-                                    const jsonPath = path.join(staticDir, exactFolderName, `bridges_${targetPackageFromCLI.toLowerCase()}.json`);
-                                    
-                                    if (fs.existsSync(jsonPath)) {
-                                        const raw = fs.readFileSync(jsonPath, "utf-8");
-                                        const parsed = JSON.parse(raw);
-                                        gasketBridges = parsed.bridges || [];
-                                    } else {
-                                        // Fallback σε latest
-                                        const latestFolderName = `gasket_analysis_${targetPackageFromCLI.toLowerCase()}_latest`;
-                                        const fallbackPath = path.join(staticDir, latestFolderName, `bridges_${targetPackageFromCLI.toLowerCase()}.json`);
-                                        if (fs.existsSync(fallbackPath)) {
-                                            const raw = fs.readFileSync(fallbackPath, "utf-8");
-                                            const parsed = JSON.parse(raw);
-                                            gasketBridges = parsed.bridges || [];
-                                        } else {
-                                            logger.warn(`[GASKET CLI] Could not find bridges file at: ${jsonPath}`);
-                                        }
-                                    }
+                                // ΑΝ ΔΕΝ ΥΠΑΡΧΕΙ ΤΟ FLAG --> ERROR 
+                                if (!customBridgesPath) {
+                                    logger.error(" CRITICAL ERROR: The '--bridges' flag is required but was not provided!");
+                                    process.exit(-1); // Τερματίζει αμέσως το Jelly με κωδικό σφάλματος
                                 }
+
+                                // Αν υπάρχει το flag αλλά το αρχείο δεν υπάρχει στον δίσκο
+                                if (!fs.existsSync(customBridgesPath)) {
+                                    logger.error(` CRITICAL ERROR: The specified bridges file does not exist: ${customBridgesPath}`);
+                                    process.exit(-1);
+                                }
+
+                                // φορτώνουμε το αρχείο
+                                const raw = fs.readFileSync(customBridgesPath, "utf-8");
+                                gasketBridges = JSON.parse(raw).bridges || [];
+                                
                             } catch (e: any) {
-                                logger.warn(`[GASKET CLI] Failed to load bridges using Env Vars: ${e.message}`);
+                                logger.error(`[GASKET CLI] Failed to load or parse bridges file: ${e.message}`);
+                                process.exit(-1);
                             }
+                            // === ΤΕΛΟΣ ΕΝΗΜΕΡΩΣΗΣ ===
 
                             // Δίνουμε το p.toString() (ολόκληρο) για να κουμπώνουν οι ακμές στα full paths των αποτελεσμάτων
                             const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, p.toString());

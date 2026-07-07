@@ -119,6 +119,9 @@ program
     .option("--vulnerabilities-full", "full report of vulnerabilities")
     .option("--eager-propagation", "perform propagation after each module")
     .option("--no-interops", "disable models of common module interop helper functions")
+    //DEBUG
+    .option("--bridges <file>", "path to custom gasket bridges JSON file for matching")
+
     .usage("[options] [files]")
     .addHelpText("after",
         "\nAll modules reachable by require/import from the given files are included in the analysis\n" +
@@ -134,6 +137,14 @@ program
 async function main() {
     options.tty = true;
     setOptions(program.opts());
+
+    //DEBUG
+    const customBridges = program.opts().bridges;
+    if (customBridges) {
+        process.env.BPATH = customBridges;
+    }
+
+
     if (options.logfile)
         logToFile(options.logfile);
     setLogLevel(options.loglevel);
