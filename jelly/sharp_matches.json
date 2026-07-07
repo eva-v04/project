@@ -1,0 +1,176 @@
+[
+  {
+    "jelly_pattern": "call sharp.metadata",
+    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "cfunc": "metadata(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.metadata",
+    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "cfunc": "metadata(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.metadata",
+    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "cfunc": "metadata(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.metadata",
+    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "cfunc": "metadata(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.stats",
+    "gasket_jsname": "sharp/lib/sharp.stats",
+    "cfunc": "stats(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.stats",
+    "gasket_jsname": "sharp/lib/sharp.stats",
+    "cfunc": "stats(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.stats",
+    "gasket_jsname": "sharp/lib/sharp.stats",
+    "cfunc": "stats(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.stats",
+    "gasket_jsname": "sharp/lib/sharp.stats",
+    "cfunc": "stats(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.pipeline",
+    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "cfunc": "pipeline(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.pipeline",
+    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "cfunc": "pipeline(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.pipeline",
+    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "cfunc": "pipeline(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.pipeline",
+    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "cfunc": "pipeline(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.pipeline",
+    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "cfunc": "pipeline(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.pipeline",
+    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "cfunc": "pipeline(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.libvipsVersion",
+    "gasket_jsname": "sharp/lib/sharp.libvipsVersion",
+    "cfunc": "libvipsVersion(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.format",
+    "gasket_jsname": "sharp/lib/sharp.format",
+    "cfunc": "format(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.cache",
+    "gasket_jsname": "sharp/lib/sharp.cache",
+    "cfunc": "cache(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.cache",
+    "gasket_jsname": "sharp/lib/sharp.cache",
+    "cfunc": "cache(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.cache",
+    "gasket_jsname": "sharp/lib/sharp.cache",
+    "cfunc": "cache(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.cache",
+    "gasket_jsname": "sharp/lib/sharp.cache",
+    "cfunc": "cache(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.concurrency",
+    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "cfunc": "concurrency(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.concurrency",
+    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "cfunc": "concurrency(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.concurrency",
+    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "cfunc": "concurrency(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.concurrency",
+    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "cfunc": "concurrency(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp._isUsingJemalloc",
+    "gasket_jsname": "sharp/lib/sharp._isUsingJemalloc",
+    "cfunc": "_isUsingJemalloc(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.counters",
+    "gasket_jsname": "sharp/lib/sharp.counters",
+    "cfunc": "counters(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.simd",
+    "gasket_jsname": "sharp/lib/sharp.simd",
+    "cfunc": "simd(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.block",
+    "gasket_jsname": "sharp/lib/sharp.block",
+    "cfunc": "block(Napi::CallbackInfo const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sharp.block",
+    "gasket_jsname": "sharp/lib/sharp.block",
+    "cfunc": "block(Napi::CallbackInfo const&)",
+    "confidence": 1
+  }
+]

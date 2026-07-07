@@ -1,0 +1,44 @@
+[
+  {
+    "jelly_pattern": "import re2",
+    "gasket_jsname": "re2/build/Release/re2",
+    "cfunc": "WrappedRE2::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call re2",
+    "gasket_jsname": "re2/build/Release/re2",
+    "cfunc": "WrappedRE2::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call re2",
+    "gasket_jsname": "re2/build/Release/re2",
+    "cfunc": "WrappedRE2::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call re2",
+    "gasket_jsname": "re2/build/Release/re2",
+    "cfunc": "WrappedRE2::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call re2.test",
+    "gasket_jsname": "re2/build/Release/re2.prototype.test",
+    "cfunc": "WrappedRE2::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call re2.test",
+    "gasket_jsname": "re2/build/Release/re2.prototype.test",
+    "cfunc": "WrappedRE2::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call re2.test",
+    "gasket_jsname": "re2/build/Release/re2.prototype.test",
+    "cfunc": "WrappedRE2::Test(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  }
+]
