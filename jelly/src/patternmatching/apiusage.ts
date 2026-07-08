@@ -213,6 +213,8 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
     
     const seenGlobalNodes = new Set<string>();
 
+    
+
     for (const type of Object.getOwnPropertyNames(r) as Array<PatternType>) {
         const t: Record<string, any> = {};
         for (const [p, nodes] of r[type]) {
@@ -414,6 +416,9 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
         }
         res[type] = t;
     }
+
+
+    
     //για matches.json
     try {
         const fs = require("fs");

@@ -1,27 +1,32 @@
 import json
 import os
-import cxxfilt
+import cxxfilt #Pip install cxxfilt
+import sys 
 
 def safe_demangle(mangled_name):
-    if mangled_name and mangled_name.startswith("_Z"):  #;;;;
-        try:
-            return cxxfilt.demangle(mangled_name)
-        except Exception:
-            return mangled_name
-    return mangled_name
-
+    try:
+        return cxxfilt.demangle(mangled_name)
+    except Exception:
+        return mangled_name
 
 def run_demangling():
-    input_path = "/home/eva/Ptuxiakh/web/static/ghidra_sqlite3.json"
-    output_path = "/home/eva/Ptuxiakh/demangled.json"
+    # Έλεγχος αν δόθηκαν τα σωστά ορίσματα από το Jelly
+    if len(sys.argv) < 3:
+        print("Σφάλμα: Λείπουν ορίσματα.")
+        print("Χρήση: python3 demangle.py <input_ghidra_json> <output_demangled_json>")
+        sys.exit(1)
+
+    input_path = sys.argv[1]   # Το αρχικό αρχείο της Ghidra
+    output_path = sys.argv[2]  # Πού θα αποθηκευτεί το demangled
+
+    if not os.path.exists(input_path):
+        print(f"Σφάλμα: Το αρχείο {input_path} δεν υπάρχει.")
+        sys.exit(1)
 
     with open(input_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     demangle_count = 0
-
-    # Τρόπος Α: Αν οι συναρτήσεις είναι κλειδωμένες μέσα σε κάποιο key (π.χ. 'functions' ή 'nodes')
-    # Ψάχνουμε σε όλα τα επίπεδα του αρχείου για dictionaries που έχουν το πεδίο 'name'
     
     def demangle(obj):
         nonlocal demangle_count
@@ -38,16 +43,12 @@ def run_demangling():
             for item in obj:
                 demangle(item)
 
-    #  ψάξιμο σε όλο το JSON
     demangle(data)
 
-    #Αποθήκευση νέουjson
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-    print(f" demangling ολοκληρώθηκε!")
-    print(f" Έγινε demangle σε {demangle_count} ονόματα συναρτήσεων.")
-    print(f"Τοjson αρχείο αποθηκεύτηκε στο: {output_path}")
+    print(f" [PYTHON] Demangling ολοκληρώθηκε! Έγιναν {demangle_count} αντικαταστάσεις.")
 
 if __name__ == "__main__":
     run_demangling()

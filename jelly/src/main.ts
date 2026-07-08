@@ -121,7 +121,10 @@ program
     .option("--no-interops", "disable models of common module interop helper functions")
     //DEBUG
     .option("--bridges <file>", "path to custom gasket bridges JSON file for matching")
+    .option("--ghidra <file>", "path to the demangled Ghidra JSON file for matching")
 
+
+    
     .usage("[options] [files]")
     .addHelpText("after",
         "\nAll modules reachable by require/import from the given files are included in the analysis\n" +
@@ -143,6 +146,37 @@ async function main() {
     if (customBridges) {
         process.env.BPATH = customBridges;
     }
+
+
+    const ghidraPath = program.opts().ghidra;
+    //τρέχει το Python script για demangling αν δοθεί το --ghidra <file>
+    if (ghidraPath) {
+        //const fs = require("fs");
+        const path = require("path");
+
+        // Ορίζουμε πού θέλουμε να αποθηκευτεί το καθαρό αρχείο (π.χ. στον ίδιο φάκελο με κατάληξη _demangled.json)
+        const parsedPath = path.parse(ghidraPath);
+        const demangledOutputPath = path.join(parsedPath.dir, `${parsedPath.name}_demangled.json`);
+
+        logger.info(`[JELLY PIPELINE] Triggering automatic demangling for: ${ghidraPath}`);
+
+        // Καλούμε το Python script χρησιμοποιώντας τη spawnSync που είναι ήδη imported στην κορυφή
+        const pythonScriptPath = path.join(__dirname, "../demangle.py"); // Προσάρμοσε το path αν το έχεις σε άλλο φάκελο
+        
+        const pythonProcess = spawnSync("python3", [pythonScriptPath, ghidraPath, demangledOutputPath], {
+            stdio: "inherit" // Τυπώνει τα print της Python απευθείας στο τερματικό του Jelly
+        });
+
+        if (pythonProcess.status !== 0) {
+            logger.error(" CRITICAL ERROR: The Python demangling script failed to execute properly.");
+            process.exit(-1);
+        }
+
+        // Αφού το python script πέτυχε, αποθηκεύουμε το ΜΟΝΟΠΑΤΙ ΤΟΥ ΚΑΘΑΡΟΥ αρχείου στο process.env
+        process.env.GHIDRAPATH = demangledOutputPath;
+    }
+    // ============================================================
+
 
 
     if (options.logfile)
