@@ -324,36 +324,43 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                         if (targetModule) {
                             console.log(patternName);
 
-                            // ===  ΕΝΗΜΕΡΩΜΕΝΗ ΛΟΓΙΚΗ ΦΟΡΤΩΣΗΣ gasket file ΜΕΣΩ CLI FLAG ===
+                            //  ΦΟΡΤΩΣΗ GASKET & GHIDRA
                             let gasketBridges: any[] = [];
+                            let ghidraSymbols: any = {}; // Εδώ αποθηκεύονται demangled ονόματα των συναρτήσεων
+                            
+                            
                             try {
                                 const fs = require("fs");
                                 
-                                // Διαβάζουμε το flag από το process.env
+                                //  Φόρτωση Gasket Bridges
                                 const customBridgesPath = process.env.BPATH; 
                                 
-                                // ΑΝ ΔΕΝ ΥΠΑΡΧΕΙ ΤΟ FLAG --> ERROR 
                                 if (!customBridgesPath) {
                                     logger.error(" CRITICAL ERROR: The '--bridges' flag is required but was not provided!");
-                                    process.exit(-1); // Τερματίζει αμέσως το Jelly με κωδικό σφάλματος
+                                    process.exit(-1);
                                 }
-
-                                // Αν υπάρχει το flag αλλά το αρχείο δεν υπάρχει στον δίσκο
                                 if (!fs.existsSync(customBridgesPath)) {
                                     logger.error(` CRITICAL ERROR: The specified bridges file does not exist: ${customBridgesPath}`);
                                     process.exit(-1);
                                 }
-
-                                // φορτώνουμε το αρχείο
-                                const raw = fs.readFileSync(customBridgesPath, "utf-8");
-                                gasketBridges = JSON.parse(raw).bridges || [];
+                                const rawGasket = fs.readFileSync(customBridgesPath, "utf-8");
+                                gasketBridges = JSON.parse(rawGasket).bridges || [];
                                 
-                            } catch (e: any) {
-                                logger.error(`[GASKET CLI] Failed to load or parse bridges file: ${e.message}`);
-                                process.exit(-1);
-                            }
-                            // === ΤΕΛΟΣ ΕΝΗΜΕΡΩΣΗΣ ===
+                                // Φόρτωση Ghidra Demangled 
+                                const ghidraPath = process.env.GHIDRAPATH;
+                                
+                                if (ghidraPath && fs.existsSync(ghidraPath)) {
+                                    // logger.info(`[GHIDRA PIPELINE] Loading demangled symbols from: ${ghidraPath}`);
+                                    const rawGhidra = fs.readFileSync(ghidraPath, "utf-8");
+                                    ghidraSymbols = JSON.parse(rawGhidra); // Υποθέτοντας ότι είναι JSON object ή array
+                                    }
+                                } catch (e: any) {
+                                    logger.error(`[PIPELINE] Failed to load files: ${e.message}`);
+                                    process.exit(-1);
+                                }
+                            // ======
 
+                            //cfunc jelly-gasket
                             // Δίνουμε το p.toString() (ολόκληρο) για να κουμπώνουν οι ακμές στα full paths των αποτελεσμάτων
                             const nativeCalleeInfo = f.a.registerNativeFunctionInfo(targetModule, n, p.toString());
                             
@@ -376,13 +383,87 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
 
                             // C-BRIDGE MATCHING ΛΟΓΙΚΗ
                             console.log(`[DEBUG GASKET] Checking ${patternName} against ${gasketBridges.length} bridges`);
+                            
                             // Περνάμε και το allMatches ως 3ο όρισμα
                             const matchedCfunc = findGasketCfuncMatch(patternName, gasketBridges, allMatches);
                             if (matchedCfunc) {
-                                (nativeCalleeInfo as any).cfunc = matchedCfunc;
-                                (nativeCalleeInfo as any).hasCBridge = true;
+                                // === MATCHING ΜΕ GHIDRA ΜΕΣΩ LEVENSHTEIN DISTANCE ===
+                                let demangledName = matchedCfunc;
+                                const nodesList = ghidraSymbols.nodes || [];
+                                
+                                let bestGhidraMatch: any = null;
+                                let highestGhidraSimilarity = 0;
+                                const ghidraThreshold = 0.70; // 70% confidence
 
-                                const cFuncName = `[C Function] ${matchedCfunc}`;
+                                // Καθαρίζουμε και μετατρέπουμε σε πεζά το bridge string για τη σύγκριση
+                                const cleanTarget = matchedCfunc.toLowerCase().trim();
+
+                                if (Array.isArray(nodesList)) {
+                                    // Περίπτωση Α: Το nodes είναι Array από Objects
+                                    for (const node of nodesList) {
+                                        const nodeName = String(node.name || node.label || node.demangled || "").toLowerCase().trim();
+                                        if (!nodeName) continue;
+
+                                        // Υπολογισμός Levenshtein Similarity
+                                        const maxLen = Math.max(cleanTarget.length, nodeName.length);
+                                        if (maxLen === 0) continue;
+                                        const distance = levenshteinDistance(cleanTarget, nodeName);
+                                        const similarity = 1 - distance / maxLen;
+
+                                        if (similarity > highestGhidraSimilarity) {
+                                            highestGhidraSimilarity = similarity;
+                                            bestGhidraMatch = node.name || node.label || node.demangled;
+                                        }
+                                    }
+                                } else {
+                                    // Περίπτωση Β: Το nodes είναι Object (Key-Value)
+                                    for (const key of Object.keys(nodesList)) {
+                                        const node = nodesList[key];
+                                        const nodeName = typeof node === "object" 
+                                            ? String(node.name || node.label || node.demangled || "").toLowerCase().trim()
+                                            : String(node).toLowerCase().trim();
+                                            
+                                        if (!nodeName) continue;
+
+                                        // Υπολογισμός Levenshtein Similarity (έλεγχος τόσο με το nodeName όσο και με το key)
+                                        const maxLen = Math.max(cleanTarget.length, nodeName.length);
+                                        if (maxLen === 0) continue;
+                                        const distance = levenshteinDistance(cleanTarget, nodeName);
+                                        const similarity = 1 - distance / maxLen;
+
+                                        if (similarity > highestGhidraSimilarity) {
+                                            highestGhidraSimilarity = similarity;
+                                            bestGhidraMatch = typeof node === "object" ? (node.name || node.label || node.demangled || key) : node;
+                                        }
+                                    }
+                                }
+
+                                let foundGhidraMatch = false;
+                                // Έλεγχος αν η καλύτερη Levenshtein επιλογή ξεπερνά το threshold
+                                if (bestGhidraMatch && highestGhidraSimilarity >= ghidraThreshold) {
+                                    demangledName = bestGhidraMatch;
+                                    foundGhidraMatch = true;
+                                    console.log(`[GHIDRA LEVENSHTEIN MATCH] Mapped ${matchedCfunc} -> Ghidra node: ${demangledName} (Similarity: ${(highestGhidraSimilarity * 100).toFixed(1)}%)`);
+                                }
+
+                                if (!foundGhidraMatch) {
+                                    console.log(`[GHIDRA WARNING] No strong Levenshtein match found for ${matchedCfunc} (Best was ${(highestGhidraSimilarity * 100).toFixed(1)}%). Falling back to default.`);
+                                }
+                                // ====================================================================
+
+                                (nativeCalleeInfo as any).cfunc = demangledName;
+                                (nativeCalleeInfo as any).hasCBridge = true;
+                                (nativeCalleeInfo as any).isCFunction = true;
+                                (nativeCalleeInfo as any).isNative = true;
+                                
+                                // χωρίζω c func του gasket με τα c func του Ghidra
+                                let cFuncName = "";
+                                if (foundGhidraMatch) {
+                                    cFuncName = `[C Function Ghidra] ${demangledName}`;
+                                } else {
+                                    cFuncName = `[C Function Gasket] ${demangledName}`;
+                                }
+                                
                                 
                                 // Αναζήτηση αν υπάρχει ήδη η C συνάρτηση καταγεγραμμένη καθολικά
                                 const artificialStrKey = `CFunctionNode:${matchedCfunc}`;
@@ -391,7 +472,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                                 if (!cFuncInfo) {
                                     cFuncInfo = new FunctionInfo(cFuncName, n.loc!, targetModule, false, true);
                                     
-                                    // Ανάθεση σταθερού, μοναδικού ID που δεν επηρεάζεται από το μέγεθος των maps
+                                    // Ανάθεση σταθερού, μοναδικού ID
                                     (cFuncInfo as any).id = String(cFunctionIdCounter++);
                                     
                                     targetModule.functions.add(cFuncInfo);
