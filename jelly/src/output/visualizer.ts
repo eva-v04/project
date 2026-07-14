@@ -200,6 +200,25 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
         addFunction(fun, n);
 }
 
+    //  ΔΗΜΙΟΥΡΓΙΑ ΕΝΟΣ ΞΕΧΩΡΙΣΤΟΥ ΤΕΧΝΗΤΟΥ MODULE ΓΙΑ GHIDRA
+    // Δημιουργούμε ένα μοναδικό string/αντικείμενο που θα αντιπροσωπεύει το κουτάκι Του Ghidra
+    const ghidraModuleKey = "GhidraBinaryModule";
+    const maxModuleCallCount_updated = maxModuleCallCount;
+    
+    // Προσθέτουμε το κουτί "Ghidra Binary" στο Overview. 
+    // Χρησιμοποιούμε το id(p) του πρώτου package ή null ως parent
+    const firstPackage = f.a.packageInfos.values().next().value;
+    e.add({
+        id: id(ghidraModuleKey as any),
+        kind: "module",
+        parent: firstPackage ? id(firstPackage) : undefined,
+        name: "Ghidra Binary",
+        fullName: "Ghidra Demangled Binary Sub-graph",
+        callWeight: 10,
+        callCount: 0,
+        isReachable: "true"
+    });
+
     for (const m of f.a.moduleInfos.values()) {
         const moduleCallCount = moduleCallCounts.get(m) ?? 0;
         e.add({
@@ -208,14 +227,31 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
             parent: id(m.packageInfo),
             name: m.relativePath,
             fullName: m.toString(),
-            callWeight: Math.round(100 * moduleCallCount / maxModuleCallCount),
+            callWeight: Math.round(100 * moduleCallCount / maxModuleCallCount_updated),
             callCount: moduleCallCount,
             isEntry: m.isEntry ? "true" : undefined,
             isReachable: reachable.has(m) ? "true" : undefined
         });
         
-        for (const fun of m.functions)
-            addFunction(fun, m);
+        for (const fun of m.functions) {
+            // ΦΙΛΤΡΑΡΙΣΜΑ & ΤΟΠΟΘΕΤΗΣΗ ΣΤΟ ΣΩΣΤΟ ΚΟΥΤΑΚΙ
+            // Αν η συνάρτηση είναι αναδρομική Ghidra (έχει το πρόθεμα που βάλαμε στο name)
+            if (fun.name && fun.name.startsWith("[C Function Ghidra]")) {
+                e.add({
+                    id: id(fun),
+                    kind: "function",
+                    parent: id(ghidraModuleKey as any), // Την βάζουμε μέσα στο κουτάκι Ghidra Binary!
+                    name: fun.name,
+                    fullName: `Ghidra Sub-call: ${fun.name}`,
+                    callWeight: 10,
+                    callCount: 0,
+                    isReachable: "true"
+                });
+            } else {
+                // Αλλιώς, αν είναι κανονική JS ή Gasket C Function, μπαίνει στο κανονικό της Module
+                addFunction(fun, m);
+            }
+        }
     }
 
     let numEdges = 0;
@@ -244,7 +280,7 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
         graphs: [{
             kind: "callgraph",
             elements: e.elements,
-            info: `Packages: ${f.a.packageInfos.size}\nModules: ${f.a.moduleInfos.size}\nFunctions: ${f.a.functionInfos.size}\nCall edges: ${numEdges}\nMax number of calls for packages: ${maxPackageCallCount}, modules: ${maxModuleCallCount}, functions: ${maxFunctionCallCount}`,
+            info: `Packages: ${f.a.packageInfos.size}\nModules: ${f.a.moduleInfos.size}\nFunctions: ${f.a.functionInfos.size}\nCall edges: ${numEdges}\nMax number of calls for packages: ${maxPackageCallCount}, modules: ${maxModuleCallCount_updated}, functions: ${maxFunctionCallCount}`,
             vulnerabilities: undefined
         }]
     };
