@@ -387,36 +387,38 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                             // Περνάμε και το allMatches ως 3ο όρισμα
                             const matchedCfunc = findGasketCfuncMatch(patternName, gasketBridges, allMatches);
                             if (matchedCfunc) {
+
                                 // === MATCHING ΜΕ GHIDRA ΜΕΣΩ LEVENSHTEIN DISTANCE ===
                                 let demangledName = matchedCfunc;
                                 const nodesList = ghidraSymbols.nodes || [];
+                                const edgesList = ghidraSymbols.edges || [];
                                 
-                                let bestGhidraMatch: any = null;
+                                let bestGhidraMatchName: string | null = null;
+                                let bestGhidraMatchKey: string | null = null; // Κρατάει το ID ή Key του κόμβου Ghidra
                                 let highestGhidraSimilarity = 0;
-                                const ghidraThreshold = 0.70; // 70% confidence
+                                const ghidraThreshold = 0.70; 
 
-                                // Καθαρίζουμε και μετατρέπουμε σε πεζά το bridge string για τη σύγκριση
                                 const cleanTarget = matchedCfunc.toLowerCase().trim();
 
                                 if (Array.isArray(nodesList)) {
-                                    // Περίπτωση Α: Το nodes είναι Array από Objects
-                                    for (const node of nodesList) {
+                                    // Περίπτωση Α: Το node είναι Array από Objects (συνήθως έχουν πεδίο id ή index)
+                                    nodesList.forEach((node: any, index: number) => {
                                         const nodeName = String(node.name || node.label || node.demangled || "").toLowerCase().trim();
-                                        if (!nodeName) continue;
+                                        if (!nodeName) return;
 
-                                        // Υπολογισμός Levenshtein Similarity
                                         const maxLen = Math.max(cleanTarget.length, nodeName.length);
-                                        if (maxLen === 0) continue;
+                                        if (maxLen === 0) return;
                                         const distance = levenshteinDistance(cleanTarget, nodeName);
                                         const similarity = 1 - distance / maxLen;
 
                                         if (similarity > highestGhidraSimilarity) {
                                             highestGhidraSimilarity = similarity;
-                                            bestGhidraMatch = node.name || node.label || node.demangled;
+                                            bestGhidraMatchName = node.name || node.label || node.demangled;
+                                            bestGhidraMatchKey = node.id !== undefined ? String(node.id) : String(index);
                                         }
-                                    }
+                                    });
                                 } else {
-                                    // Περίπτωση Β: Το nodes είναι Object (Key-Value)
+                                    // Περίπτωση Β: Το node είναι Object (Key-Value, όπου Key = το ID Ghidra)
                                     for (const key of Object.keys(nodesList)) {
                                         const node = nodesList[key];
                                         const nodeName = typeof node === "object" 
@@ -425,7 +427,6 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                                             
                                         if (!nodeName) continue;
 
-                                        // Υπολογισμός Levenshtein Similarity (έλεγχος τόσο με το nodeName όσο και με το key)
                                         const maxLen = Math.max(cleanTarget.length, nodeName.length);
                                         if (maxLen === 0) continue;
                                         const distance = levenshteinDistance(cleanTarget, nodeName);
@@ -433,60 +434,142 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
 
                                         if (similarity > highestGhidraSimilarity) {
                                             highestGhidraSimilarity = similarity;
-                                            bestGhidraMatch = typeof node === "object" ? (node.name || node.label || node.demangled || key) : node;
+                                            bestGhidraMatchName = typeof node === "object" ? (node.name || node.label || node.demangled || key) : node;
+                                            bestGhidraMatchKey = key; // Το key είναι το ID (π.χ. "754")
                                         }
                                     }
                                 }
 
                                 let foundGhidraMatch = false;
-                                // Έλεγχος αν η καλύτερη Levenshtein επιλογή ξεπερνά το threshold
-                                if (bestGhidraMatch && highestGhidraSimilarity >= ghidraThreshold) {
-                                    demangledName = bestGhidraMatch;
+                                if (bestGhidraMatchName && highestGhidraSimilarity >= ghidraThreshold) {
+                                    demangledName = bestGhidraMatchName;
                                     foundGhidraMatch = true;
-                                    console.log(`[GHIDRA LEVENSHTEIN MATCH] Mapped ${matchedCfunc} -> Ghidra node: ${demangledName} (Similarity: ${(highestGhidraSimilarity * 100).toFixed(1)}%)`);
+                                    console.log(`[GHIDRA LEVENSHTEIN MATCH] Mapped ${matchedCfunc} -> Ghidra node ID: ${bestGhidraMatchKey} (${demangledName})`);
                                 }
 
-                                if (!foundGhidraMatch) {
-                                    console.log(`[GHIDRA WARNING] No strong Levenshtein match found for ${matchedCfunc} (Best was ${(highestGhidraSimilarity * 100).toFixed(1)}%). Falling back to default.`);
-                                }
                                 // ====================================================================
-
+                                // ΔΗΜΙΟΥΡΓΙΑ ΚΑΙ ΚΑΤΑΓΡΑΦΗ ΤΟΥ ΑΡΧΙΚΟΥ MATCHED C FUNCTION ΚΟΜΒΟΥ (GASKET)
+                                // ====================================================================
                                 (nativeCalleeInfo as any).cfunc = demangledName;
                                 (nativeCalleeInfo as any).hasCBridge = true;
                                 (nativeCalleeInfo as any).isCFunction = true;
                                 (nativeCalleeInfo as any).isNative = true;
-                                
-                                // χωρίζω c func του gasket με τα c func του Ghidra
-                                let cFuncName = "";
-                                if (foundGhidraMatch) {
-                                    cFuncName = `[C Function Ghidra] ${demangledName}`;
-                                } else {
-                                    cFuncName = `[C Function Gasket] ${demangledName}`;
-                                }
-                                
-                                
-                                // Αναζήτηση αν υπάρχει ήδη η C συνάρτηση καταγεγραμμένη καθολικά
+
+                                // Ονομάζουμε την αρχική συνάρτηση ως Gasket αφού προέκυψε από το Bridge matching
+                                const cFuncName = `[C Function Gasket] ${demangledName}`;
                                 const artificialStrKey = `CFunctionNode:${matchedCfunc}`;
                                 let cFuncInfo = f.a.functionInfos.get(artificialStrKey);
 
                                 if (!cFuncInfo) {
                                     cFuncInfo = new FunctionInfo(cFuncName, n.loc!, targetModule, false, true);
-                                    
-                                    // Ανάθεση σταθερού, μοναδικού ID
                                     (cFuncInfo as any).id = String(cFunctionIdCounter++);
-                                    
+                                    (cFuncInfo as any).cfunc = demangledName;
+                                    (cFuncInfo as any).isCFunction = true;
+                                    (cFuncInfo as any).isNative = true;
+
                                     targetModule.functions.add(cFuncInfo);
                                     f.a.functionInfos.set(artificialStrKey, cFuncInfo);
-                                    
                                     if (f.functions) f.functions.add(cFuncInfo);
+                                } else {
+                                    // Αν υπήρχε ήδη, διασφαλίζουμε ότι έχει το σωστό Gasket πρόθεμα
+                                    cFuncInfo.name = cFuncName;
                                 }
 
-                                // Διασφάλιση σύνδεσης της Native JS με τη C Function
+                                // Καταγραφή της αρχικής ακμής: JS/Native Edge -> Αρχική C Function (Gasket)
                                 f.registerRealNativeCallEdge(n, nativeCalleeInfo, cFuncInfo);
-
-                                // Εξαναγκασμός του exporter να συμπεριλάβει την ακμή
                                 const callEdges = mapGetSet(f.callToFunction, n);
                                 callEdges.add(cFuncInfo);
+
+                                // ====================================================================
+                                // ΑΝΑΔΡΟΜΙΚΗ ΑΝΤΙΓΡΑΦΗ ΟΛΟΥ ΤΟΥ ΠΡΟΣΒΑΣΙΜΟΥ ΓΡΑΦΟΥ GHIDRA (DFS)
+                                // ====================================================================
+                                if (foundGhidraMatch && bestGhidraMatchKey) {
+                                    console.log(`[GHIDRA RECURSIVE EXPANSION] Starting recursive stitching from Node ID: ${bestGhidraMatchKey}...`);
+
+                                    // Set για να παρακολουθούμε ποιους Ghidra κόμβους έχουμε ήδη επεξεργαστεί 
+                                    const visitedGhidraNodes = new Set<string>();
+
+                                    // Βοηθητική συνάρτηση για εύρεση του demangled ονόματος από ένα Ghidra ID
+                                    const getGhidraNodeName = (id: string): string => {
+                                        if (Array.isArray(nodesList)) {
+                                            const foundNode = nodesList.find((nd: any, idx: number) => 
+                                                String(nd.id !== undefined ? nd.id : idx) === id
+                                            );
+                                            return foundNode ? (foundNode.name || foundNode.label || foundNode.demangled || "") : "";
+                                        } else if (nodesList && typeof nodesList === "object") {
+                                            const foundNode = nodesList[id];
+                                            if (foundNode) {
+                                                return typeof foundNode === "object" 
+                                                    ? (foundNode.name || foundNode.label || foundNode.demangled || "") 
+                                                    : String(foundNode);
+                                            }
+                                        }
+                                        return "";
+                                    };
+
+                                    // αναδρομική συνάρτηση εξερεύνησης του γράφου
+                                    const traverseGhidraGraph = (currentGhidraId: string, currentJellyFunctionNode: FunctionInfo) => {
+                                        if (visitedGhidraNodes.has(currentGhidraId)) return;
+                                        visitedGhidraNodes.add(currentGhidraId);
+
+                                        // σκανάρουμε όλα τα edges Ghidra για να βρούμε εξερχόμενες κλήσεις από τον τρέχοντα κόμβο
+                                        for (const edge of edgesList) {
+                                            let sourceId = "";
+                                            let targetId = "";
+
+                                            if (edge && typeof edge === "object" && !Array.isArray(edge)) {
+                                                sourceId = String(edge.source || edge.from || "");
+                                                targetId = String(edge.target || edge.to || "");
+                                            } else if (Array.isArray(edge) && edge.length >= 2) {
+                                                sourceId = String(edge[0]);
+                                                targetId = String(edge[1]);
+                                            }
+
+                                            // αν βρούμε ακμή κλήσης
+                                            if (sourceId === currentGhidraId && targetId) {
+                                                const childGhidraName = getGhidraNodeName(targetId);
+
+                                                if (childGhidraName) {
+                                                    const childFuncName = `[C Function Ghidra] ${childGhidraName}`;
+                                                    const childStrKey = `CFunctionNode:SubCall:${childGhidraName}`;
+                                                    let childFuncInfo = f.a.functionInfos.get(childStrKey);
+
+                                                    // Δημιουργία του εσωτερικού C++ κόμβου αν δεν υπάρχει ήδη στο Jelly
+                                                    if (!childFuncInfo) {
+                                                        childFuncInfo = new FunctionInfo(childFuncName, n.loc!, targetModule, false, true);
+                                                        (childFuncInfo as any).id = String(cFunctionIdCounter++);
+                                                        (childFuncInfo as any).cfunc = childGhidraName;
+                                                        (childFuncInfo as any).isCFunction = true;
+                                                        (childFuncInfo as any).isNative = true;
+
+                                                        targetModule.functions.add(childFuncInfo);
+                                                        f.a.functionInfos.set(childStrKey, childFuncInfo);
+                                                        if (f.functions) f.functions.add(childFuncInfo);
+                                                    } else {
+                                                        childFuncInfo.name = childFuncName;
+                                                    }
+
+                                                    // ΑΝΤΙΓΡΑΦΗ ΤΗΣ ΑΚΜΗΣ: Σύνδεση του τρέχοντος πατέρα με το ανακαλυφθέν παιδί
+                                                    f.registerRealNativeCallEdge(n, currentJellyFunctionNode, childFuncInfo);
+                                                    
+
+                                                    // Διασφάλιση καταγραφής της ακμής στο callgraph export chunk
+                                                    const currentCallEdges = mapGetSet(f.callToFunction, n);
+                                                    currentCallEdges.add(childFuncInfo);
+
+
+                                                    // ΑΝΑΔΡΟΜΙΚΟ ΒΗΜΑ: Συνεχίζουμε την εξερεύνηση βαθύτερα για το παιδί
+                                                    traverseGhidraGraph(targetId, childFuncInfo);
+                                                }
+                                            }
+                                        }
+                                    };
+
+                                    // Εκκίνηση της αναδρομής από τον αρχικό matched Gasket/Ghidra κόμβο
+                                    traverseGhidraGraph(bestGhidraMatchKey, cFuncInfo);
+                                    console.log(`[GHIDRA RECURSIVE EXPANSION] Completed successfully. Stitched ${visitedGhidraNodes.size} native sub-nodes.`);
+                                }
+                                // ====================================================================
                             }
                         }
                     }
