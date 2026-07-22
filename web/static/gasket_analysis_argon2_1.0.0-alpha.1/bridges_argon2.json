@@ -1,0 +1,14 @@
+{
+  "objects_examined": 0,
+  "callable_objects": 0,
+  "foreign_callable_objects": 0,
+  "duration_sec": 0.019,
+  "count": 0,
+  "modules": [
+    "/home/gasket/node_modules/argon2/argon2.js"
+  ],
+  "jump_libs": [],
+  "bridges": [],
+  "ambiguous": [],
+  "unresolved": []
+}

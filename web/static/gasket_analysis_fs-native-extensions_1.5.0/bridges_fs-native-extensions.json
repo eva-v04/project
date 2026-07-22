@@ -1,0 +1,316 @@
+{
+  "objects_examined": 4563,
+  "callable_objects": 3555,
+  "foreign_callable_objects": 48,
+  "duration_sec": 9.937,
+  "count": 48,
+  "modules": [
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/android-arm/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/android-arm64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/android-ia32/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/android-x64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/darwin-arm64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/darwin-x64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-arm64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/win32-arm64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/win32-x64/fs-native-extensions.node",
+    "/home/gasket/node_modules/fs-native-extensions/binding.js",
+    "/home/gasket/node_modules/fs-native-extensions/index.js"
+  ],
+  "jump_libs": [
+    "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.tryLock",
+      "cfunc": "fs_ext_js_try_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForLock",
+      "cfunc": "fs_ext_js_wait_for_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForLockSync",
+      "cfunc": "fs_ext_js_wait_for_lock_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.tryDowngradeLock",
+      "cfunc": "fs_ext_js_try_downgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForDowngradeLock",
+      "cfunc": "fs_ext_js_wait_for_downgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForDowngradeLockSync",
+      "cfunc": "fs_ext_js_wait_for_downgrade_lock_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.tryUpgradeLock",
+      "cfunc": "fs_ext_js_try_upgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForUpgradeLock",
+      "cfunc": "fs_ext_js_wait_for_upgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForUpgradeLockSync",
+      "cfunc": "fs_ext_js_wait_for_upgrade_lock_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.unlock",
+      "cfunc": "fs_ext_js_unlock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.trim",
+      "cfunc": "fs_ext_js_trim",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.trimSync",
+      "cfunc": "fs_ext_js_trim_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.sparse",
+      "cfunc": "fs_ext_js_sparse",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.sparseSync",
+      "cfunc": "fs_ext_js_sparse_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.swap",
+      "cfunc": "fs_ext_js_swap",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.swapSync",
+      "cfunc": "fs_ext_js_swap_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.getAttr",
+      "cfunc": "fs_ext_js_get_attr",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.getAttrSync",
+      "cfunc": "fs_ext_js_get_attr_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.setAttr",
+      "cfunc": "fs_ext_js_set_attr",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.setAttrSync",
+      "cfunc": "fs_ext_js_set_attr_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.removeAttr",
+      "cfunc": "fs_ext_js_remove_attr",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.removeAttrSync",
+      "cfunc": "fs_ext_js_remove_attr_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.listAttrs",
+      "cfunc": "fs_ext_js_list_attrs",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.listAttrsSync",
+      "cfunc": "fs_ext_js_list_attrs_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.tryLock",
+      "cfunc": "fs_ext_js_try_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.waitForLock",
+      "cfunc": "fs_ext_js_wait_for_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.waitForLockSync",
+      "cfunc": "fs_ext_js_wait_for_lock_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.tryDowngradeLock",
+      "cfunc": "fs_ext_js_try_downgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.waitForDowngradeLock",
+      "cfunc": "fs_ext_js_wait_for_downgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.waitForDowngradeLockSync",
+      "cfunc": "fs_ext_js_wait_for_downgrade_lock_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.tryUpgradeLock",
+      "cfunc": "fs_ext_js_try_upgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.waitForUpgradeLock",
+      "cfunc": "fs_ext_js_wait_for_upgrade_lock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.waitForUpgradeLockSync",
+      "cfunc": "fs_ext_js_wait_for_upgrade_lock_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.unlock",
+      "cfunc": "fs_ext_js_unlock",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.trim",
+      "cfunc": "fs_ext_js_trim",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.trimSync",
+      "cfunc": "fs_ext_js_trim_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.sparse",
+      "cfunc": "fs_ext_js_sparse",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.sparseSync",
+      "cfunc": "fs_ext_js_sparse_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.swap",
+      "cfunc": "fs_ext_js_swap",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.swapSync",
+      "cfunc": "fs_ext_js_swap_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.getAttr",
+      "cfunc": "fs_ext_js_get_attr",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.getAttrSync",
+      "cfunc": "fs_ext_js_get_attr_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.setAttr",
+      "cfunc": "fs_ext_js_set_attr",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.setAttrSync",
+      "cfunc": "fs_ext_js_set_attr_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.removeAttr",
+      "cfunc": "fs_ext_js_remove_attr",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.removeAttrSync",
+      "cfunc": "fs_ext_js_remove_attr_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.listAttrs",
+      "cfunc": "fs_ext_js_list_attrs",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "fs-native-extensions/binding.listAttrsSync",
+      "cfunc": "fs_ext_js_list_attrs_sync",
+      "library": "/home/gasket/node_modules/fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.node"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}

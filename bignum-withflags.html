@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="utf8">
+<head>
+  <title>Jelly</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.23.0/dist/cytoscape.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/webcola@3.4.0/WebCola/cola.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.5.1/cytoscape-cola.min.js"></script>
+  <!-- Extra dependencies for fcose layout
+  <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+  <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+  <script src="https://unpkg.com/cytoscape-fcose/cytoscape-fcose.js"></script>
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-expand-collapse@4.1.0/cytoscape-expand-collapse.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cytoscape-panzoom@2.5.3/cytoscape.js-panzoom.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-panzoom@2.5.3/cytoscape-panzoom.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    #cy {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 900;
+    }
+    #info {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      z-index: 800;
+      opacity: 0.8;
+      font-size: 15px;
+    }
+    #control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      text-align: right;
+      max-width: calc(100% - 250px);
+    }
+    .group {
+      background: rgba(255, 255, 255, .7);
+      padding: 2px 4px 2px 4px;
+      text-align: left;
+      display: inline-block;
+      z-index: 999;
+      position: relative;
+    }
+    #fields {
+      z-index: 999;
+      position: relative;
+    }
+    #fields label {
+      background: rgba(255, 255, 255, .7);
+      padding: 5px;
+    }
+    #dataset {
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      z-index: 999;
+    }
+    #msg {
+      position: absolute;
+      margin-top: 10px;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background: rgba(255, 255, 255, .7);
+      padding: 4px;
+    }
+    h1 {
+      font-variant: small-caps;
+      opacity: 0.5;
+      font-size: 25px;
+    }
+    button {
+      height: 25px;
+      background-color: white;
+      border-radius: 1px;
+      cursor: pointer;
+    }
+    .cy-panzoom {
+      position: absolute;
+      top: 100px;
+      left: 20px;
+    }
+    .shadow {
+      box-shadow: inset 1px 1px 4px #aaa;
+      background-color: #eee;
+    }
+    body.callgraphModeHidden .callgraphMode {
+      display: none;
+    }
+    body.dataflowModeHidden .dataflowMode {
+      display: none;
+    }
+    input[type=number] {
+      width: 60px;
+      height: 30px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      cytoscape.warnings(false);
+      const cy = window.cy = cytoscape({
+        container: document.getElementById('cy'),
+        layout: null,
+        wheelSensitivity: 0.3,
+        maxZoom: 3,
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'min-zoomed-font-size': '3px',
+              'background-color': '#aaaaaa'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node',
+            style: {
+              'border-width': '1px',
+              'border-style': 'solid',
+              'border-color': '#000000'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node.callWeight',
+            style: {
+              'background-color': 'mapData(callWeight, 0, 100, lightgray, purple)'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node.tokenWeight',
+            style: {
+              'background-color': 'mapData(tokenWeight, 0, 100, lightgray, purple)'
+            }
+          },
+          {
+            selector: 'node[isEntry]',
+            style: {
+              'border-width': '3px',
+              'border-style': 'solid',
+              'border-color': '#000000'
+            }
+          },
+          {
+            selector: 'node:selected',
+            style: {
+              'border-width': '4px',
+              'border-style': 'solid',
+              'border-color': '#3050c0'
+            }
+          },
+          {
+            selector: 'node[isReachable].highlight',
+            style: {
+              'border-width': '2px',
+              'border-style': 'solid',
+              'border-color': '#ffff00'
+            }
+          },
+          {
+            selector: 'node:selected[isReachable].highlight',
+            style: {
+              'border-width': '4px',
+              'border-color': '#50c050'
+            }
+          },
+          {
+            selector: 'node:selected[isEntry]',
+            style: {
+              'border-width': '5px',
+            }
+          },
+          {
+            selector: 'node[isEntry].highlight',
+            style: {
+              'border-width': '5px',
+            }
+          },
+          {
+            selector: 'node[kind="package"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '10px',
+              'shape': 'rectangle'
+            }
+          },
+          {
+            selector: 'node[kind="package"].callWeight',
+            style: {
+              'width': function (node) {
+                return (30 + Math.sqrt(node.data('callWeight'))*2) + 'px';
+              },
+              'height': function (node) {
+                return (30 + Math.sqrt(node.data('callWeight'))*2) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="package"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (30 + Math.sqrt(node.data('tokenWeight'))*2) + 'px';
+              },
+              'height': function (node) {
+                return (30 + Math.sqrt(node.data('tokenWeight'))*2) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="module"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '8px',
+              'shape': 'rectangle'
+            }
+          },
+          {
+            selector: 'node[kind="module"].callWeight',
+            style: {
+              'width': function (node) {
+                return (20 + Math.sqrt(node.data('callWeight'))) + 'px';
+              },
+              'height': function (node) {
+                return (20 + Math.sqrt(node.data('callWeight'))) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="module"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (20 + Math.sqrt(node.data('tokenWeight'))) + 'px';
+              },
+              'height': function (node) {
+                return (20 + Math.sqrt(node.data('tokenWeight'))) + 'px';
+              },
+              'background-color': 'mapData(tokenWeight, 0, 100, gray, red)'
+            }
+          },
+          {
+            selector: 'node[kind="function"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '6px',
+              'shape': 'ellipse'
+            }
+          },
+          {
+            selector: 'node[kind="function"].callWeight',
+            style: {
+              'width': function (node) {
+                return (10 + node.data('callWeight')/3) + 'px';
+              },
+              'height': function (node) {
+                return (10 + node.data('callWeight')/3) + 'px';
+              },
+              'background-color': 'mapData(callWeight, 0, 100, gray, purple)'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node',
+            style: {
+              'shape': 'rectangle',
+            },
+          },
+          {
+            selector: ':parent',
+            style: {
+              'background-opacity': 0.333
+            }
+          },
+          {
+            selector: 'node[isSource]',
+            style: {
+              'background-color': '#aa0000',
+              'background-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[isTarget]',
+            style: {
+              'background-color': '#ff0000',
+              'background-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[kind="variable"]',
+            style: {
+              'shape': 'ellipse',
+              'width': '8px',
+              'height': '8px',
+              'background-color': 'gray'
+            }
+          },
+          {
+            selector: 'node[kind="variable"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (8 + Math.sqrt(node.data('tokenWeight'))/2) + 'px';
+              },
+              'height': function (node) {
+                return (8 + Math.sqrt(node.data('tokenWeight'))/2) + 'px';
+              },
+              'background-color': 'mapData(tokenWeight, 0, 100, gray, red)'
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'width': 1,
+              'line-color': '#888',
+              'target-arrow-color': '#888',
+              'target-arrow-shape': 'triangle',
+              'curve-style': 'bezier'
+            }
+          },
+          {
+            selector: 'edge.cy-expand-collapse-collapsed-edge',
+            style: {
+              'width': function (edge) {
+                return (2 + Math.log2(edge.data('collapsedEdges').length)/2) + 'px';
+              },
+              'curve-style': 'unbundled-bezier'
+            }
+          },
+          {
+            selector: 'edge[kind="require"]',
+            style: {
+              'line-color': '#bbb',
+              'target-arrow-color': '#bbb',
+            }
+          },
+          {
+            selector: '.hidden',
+            css: {
+              'display': 'none'
+            }
+          },
+          {
+            selector: 'edge[sourceTarget]',
+            style: {
+              'line-color': '#aa0000',
+              'target-arrow-color': '#aa0000',
+              'width': '3px'
+            }
+          },
+          {
+            selector: 'edge[kind="data"]',
+            style: {
+              'width': function (edge) {
+                return 1 + Math.log2((edge.data('weight') ?? 0) + 1);
+              }
+            }
+          }
+        ]
+      });
+      cy.panzoom({
+        panSpeed: 5,
+        panDistance: 15
+      });
+
+      cy.on("layoutstart", e => {
+        document.getElementById("layout").classList.add("shadow");
+      });
+      cy.on("layoutstop", e => {
+        document.getElementById("layout").classList.remove("shadow");
+      });
+      cy.on('select', e => {
+        document.getElementById("msg").textContent = e.target?.data()?.fullName ?? '';
+      });
+      cy.on('unselect', () => {
+        document.getElementById("msg").textContent = '';
+      });
+
+      let layout;
+      const stopLayout = () => layout?.stop();
+      function newLayout(fit = false) {
+        layout = cy.layout({
+          name: 'cola',
+          padding: 20,
+          animate: true,
+          randomize: false,
+          fit,
+          centerGraph: false,
+          avoidOverlap: true,
+          maxSimulationTime: 3000,
+        });
+
+        // layout = cy.layout({
+        //   name: 'fcose',
+        //   quality: "proof",
+        //   padding: 20,
+        //   animate: true,
+        //   randomize: false,
+        //   fit,
+        //   nodeDimensionsIncludeLabels: true,
+        // });
+        layout.start();
+      }
+
+      let removed;
+      function hide() {
+        stopLayout();
+        if (removed) {
+          removed.filter("node").restore();
+          removed.filter("edge").forEach(e => {
+            if (e.source().inside() && e.target().inside())
+              e.restore();
+          });
+          removed = removed.filter(":removed");
+        }
+        const threshold = document.getElementById("threshold").value;
+        const count = graph.kind === "callgraph" ? "callCount" : graph.kind === "dataflow" ? "tokenCount" : undefined;
+        const queries = [];
+        if (count && threshold > 0)
+          queries.push(`node[${count} < ${threshold}]`);
+        if (document.getElementById("hideUnreachable").checked)
+          queries.push("node[!isReachable]");
+        if (queries.length > 0) {
+          const nodes = cy.elements(queries.join(","));
+          ec.expandAllEdges();
+          ec.collapseRecursively(nodes);
+          ec.collapseAllEdges();
+          const r = nodes.remove();
+          removed = removed ? removed.union(r) : r;
+        }
+      }
+
+      const ec = cy.expandCollapse({
+        fisheye: false,
+        randomize: false,
+        animate: true,
+        undoable: false,
+        cueEnabled: false,
+        allowNestedEdgeCollapse: false,
+        groupEdgesOfSameTypeOnCollapse: true
+      });
+      cy.on("expandcollapse.afterexpand", node => {
+        cy.batch(() => {
+          const desc = cy.nodes(node.target).descendants();
+          if (document.getElementById("showCallDensity").checked)
+            desc.addClass("callWeight");
+          else
+            desc.removeClass("callWeight");
+          if (document.getElementById("showValueDensity").checked)
+            desc.addClass("tokenWeight");
+          else
+            desc.removeClass("tokenWeight");
+          if (document.getElementById("highlightReachable").checked)
+            desc.addClass("highlight");
+          else
+            desc.removeClass("highlight");
+        });
+      });
+
+      document.getElementById("collapseAll").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.collapseAll();
+        ec.collapseAllEdges();
+        showVulnerabilities();
+        newLayout();
+      });
+      document.getElementById("collapseSelected").addEventListener("click", () => {
+        stopLayout();
+        const ns = cy.$(":selected:compound:visible");
+        if (ns.size() > 0) {
+          ec.expandAllEdges();
+          ec.collapseRecursively(ns);
+          ec.collapseAllEdges();
+          showVulnerabilities();
+          newLayout();
+        }
+      });
+      document.getElementById("expandSelected").addEventListener("click", () => {
+        stopLayout();
+        const es = cy.$(":selected:visible.cy-expand-collapse-collapsed-node,:selected:visible:compound");
+        if (es.size() > 0) {
+          ec.expandAllEdges();
+          ec.expand(es.union(es.children(":visible")));
+          ec.collapseAllEdges();
+          showVulnerabilities();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("expandAllPackages").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.expand(cy.$('node[kind="package"]:visible.cy-expand-collapse-collapsed-node'));
+        ec.collapseAllEdges();
+        showVulnerabilities();
+        hide();
+        newLayout();
+      });
+      document.getElementById("expandAll").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.expandRecursively(cy.nodes(":visible"));
+        hide();
+        newLayout();
+      });
+      document.getElementById("showPredecessors").addEventListener("click", () => {
+        const es = cy.$("node:selected");
+        if (es.size() > 0) {
+          stopLayout();
+          const collapsed = cy.$("node.cy-expand-collapse-collapsed-node");
+          ec.expandAllEdges();
+          ec.expandAll();
+          const sources = es.union(es.descendants());
+          const pred = sources.predecessors().union(sources);
+          const keep = pred.union(pred.ancestors())
+          cy.nodes().difference(keep).remove();
+          ec.collapseRecursively(collapsed.intersection(keep));
+          ec.collapseAllEdges();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("removeSelected").addEventListener("click", () => {
+        const es = cy.$(":selected");
+        if (es.size() > 0) {
+          stopLayout();
+          ec.expandAllEdges();
+          cy.$(":selected").remove();
+          ec.collapseAllEdges();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("removeNonSelected").addEventListener("click", () => {
+        const es = cy.$(":selected");
+        if (es.size() > 0) {
+          stopLayout();
+          ec.expandAllEdges();
+          cy.nodes().difference(es.union(es.descendants()).union(es.ancestors())).remove();
+          ec.collapseAllEdges();
+          removed = undefined;
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("layout").addEventListener("click", () => {
+        stopLayout();
+        if (!document.getElementById("layout").classList.contains("shadow"))
+          newLayout();
+      });
+      document.getElementById("hideUnreachable").addEventListener("change", () => {
+        stopLayout();
+        hide();
+        newLayout();
+      });
+      document.getElementById("threshold").addEventListener("change", () => {
+        stopLayout();
+        hide();
+        newLayout();
+      });
+      document.getElementById("threshold").addEventListener("focus", e => {
+        e.target.select();
+      });
+      document.getElementById("highlightReachable").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("highlightReachable").checked)
+          cy.nodes().addClass("highlight");
+        else
+          cy.nodes().removeClass("highlight");
+        newLayout();
+      });
+      document.getElementById("showCallDensity").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("showCallDensity").checked)
+          cy.nodes().addClass("callWeight");
+        else
+          cy.nodes().removeClass("callWeight");
+        newLayout();
+      });
+      document.getElementById("showValueDensity").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("showValueDensity").checked)
+          cy.nodes().addClass("tokenWeight");
+        else
+          cy.nodes().removeClass("tokenWeight");
+        newLayout();
+      });
+
+      const data = {"graphs":[{"kind":"callgraph","elements":[{"data":{"id":1,"kind":"package","name":"bignum","fullName":"bignum@0.13.1","callWeight":100,"callCount":344,"isEntry":"true","isReachable":"true"}},{"data":{"id":2,"kind":"package","name":"bindings","fullName":"bindings@1.5.0","callWeight":3,"callCount":11,"isReachable":"true"}},{"data":{"id":3,"kind":"package","name":"safe-buffer","fullName":"safe-buffer@5.2.1","callWeight":1,"callCount":3,"isReachable":"true"}},{"data":{"id":4,"kind":"package","name":"file-uri-to-path","fullName":"file-uri-to-path@1.0.0","callWeight":1,"callCount":4,"isReachable":"true"}},{"data":{"id":5,"kind":"module","parent":1,"name":"Ghidra Functions","fullName":"Ghidra Demangled Binary Sub-graph","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":6,"kind":"module","parent":1,"name":"index.js","fullName":"bignum@0.13.1:index.js","callWeight":100,"callCount":344,"isEntry":"true","isReachable":"true"}},{"data":{"id":7,"kind":"function","parent":6,"name":"<anon> 7:24:40:2","fullName":"'function (num, base)...$ase: base || 10 } }}'bignum@0.13.1:index.js:7:24:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":8,"kind":"function","parent":6,"name":"<anon> 44:19:54:2","fullName":"'function (num) { if ...$lse } } return true}'bignum@0.13.1:index.js:44:19:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":9,"kind":"function","parent":6,"name":"<anon> 56:28:58:2","fullName":"'function () { return...$.toString(10) + '>'}'bignum@0.13.1:index.js:56:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":10,"kind":"function","parent":6,"name":"<anon> 60:29:71:2","fullName":"'function (base) { va...$se() } return value}'bignum@0.13.1:index.js:60:29:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":11,"kind":"function","parent":6,"name":"<anon> 73:29:75:2","fullName":"'function () { return...$his.toString(), 10)}'bignum@0.13.1:index.js:73:29:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":12,"kind":"function","parent":6,"name":"<anon> 77:46:101:2","fullName":"'function (op) { BigN...$+ ' for ' + op) } }}'bignum@0.13.1:index.js:77:46:<anonymous>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":13,"kind":"function","parent":12,"name":"<anon> 78:26:100:4","fullName":"'function (num) { var...$ + ' for ' + op) } }'bignum@0.13.1:index.js:78:26:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":14,"kind":"function","parent":6,"name":"<anon> 103:24:105:2","fullName":"'function () { return this.babs()}'bignum@0.13.1:index.js:103:24:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":15,"kind":"function","parent":6,"name":"<anon> 107:24:109:2","fullName":"'function () { return this.bneg()}'bignum@0.13.1:index.js:107:24:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":16,"kind":"function","parent":6,"name":"<anon> 111:25:128:2","fullName":"'function (num, mod) ...$his.bpowm(num, m) }}'bignum@0.13.1:index.js:111:25:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":17,"kind":"function","parent":6,"name":"<anon> 130:24:147:2","fullName":"'function (num, mod) ...$this.bmod(num, m) }}'bignum@0.13.1:index.js:130:24:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":18,"kind":"function","parent":6,"name":"<anon> 149:24:160:2","fullName":"'function (num) { if ...$pow.call(this, x) }}'bignum@0.13.1:index.js:149:24:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":19,"kind":"function","parent":6,"name":"<anon> 162:30:173:2","fullName":"'function (num) { if ...$eft.call(this, x) }}'bignum@0.13.1:index.js:162:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":20,"kind":"function","parent":6,"name":"<anon> 175:31:186:2","fullName":"'function (num) { if ...$ght.call(this, x) }}'bignum@0.13.1:index.js:175:31:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":21,"kind":"function","parent":6,"name":"<anon> 188:24:201:2","fullName":"'function (num) { if ...$ this.bcompare(x) }}'bignum@0.13.1:index.js:188:24:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":22,"kind":"function","parent":6,"name":"<anon> 203:23:205:2","fullName":"'function (num) { return this.cmp(num) > 0}'bignum@0.13.1:index.js:203:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":23,"kind":"function","parent":6,"name":"<anon> 207:23:209:2","fullName":"'function (num) { return this.cmp(num) >= 0}'bignum@0.13.1:index.js:207:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":24,"kind":"function","parent":6,"name":"<anon> 211:23:213:2","fullName":"'function (num) { return this.cmp(num) === 0}'bignum@0.13.1:index.js:211:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":25,"kind":"function","parent":6,"name":"<anon> 215:23:217:2","fullName":"'function (num) { return this.cmp(num) !== 0}'bignum@0.13.1:index.js:215:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":26,"kind":"function","parent":6,"name":"<anon> 219:23:221:2","fullName":"'function (num) { return this.cmp(num) < 0}'bignum@0.13.1:index.js:219:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":27,"kind":"function","parent":6,"name":"<anon> 223:23:225:2","fullName":"'function (num) { return this.cmp(num) <= 0}'bignum@0.13.1:index.js:223:23:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":28,"kind":"function","parent":6,"name":"<anon> 227:33:236:2","fullName":"'function (name) { Bi...$['b' + name](x) } }}'bignum@0.13.1:index.js:227:33:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":29,"kind":"function","parent":28,"name":"<anon> 228:28:235:4","fullName":"'function (num) { if ...$s['b' + name](x) } }'bignum@0.13.1:index.js:228:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":30,"kind":"function","parent":6,"name":"<anon> 238:25:240:2","fullName":"'function () { return this.bsqrt()}'bignum@0.13.1:index.js:238:25:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":31,"kind":"function","parent":6,"name":"<anon> 242:25:248:2","fullName":"'function (num) { if ...$n this.broot(num) }}'bignum@0.13.1:index.js:242:25:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":32,"kind":"function","parent":6,"name":"<anon> 250:25:261:2","fullName":"'function (to) { if (...$rand0().add(this) }}'bignum@0.13.1:index.js:250:25:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":33,"kind":"function","parent":6,"name":"<anon> 263:28:270:2","fullName":"'function (mod) { if ...$ this.binvertm(x) }}'bignum@0.13.1:index.js:263:28:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":34,"kind":"function","parent":6,"name":"<anon> 272:16:281:2","fullName":"'function (bits, safe...$rime0(bits, !!safe)}'bignum@0.13.1:index.js:272:16:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":35,"kind":"function","parent":6,"name":"<anon> 283:30:286:2","fullName":"'function (reps) { va...$true, 0: false }[n]}'bignum@0.13.1:index.js:283:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":36,"kind":"function","parent":6,"name":"<anon> 288:30:294:2","fullName":"'function () { var nu...$Prime()) return num}'bignum@0.13.1:index.js:288:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":37,"kind":"function","parent":6,"name":"<anon> 296:29:298:2","fullName":"'function (n) { return this.isbitset(n) === 1}'bignum@0.13.1:index.js:296:29:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":38,"kind":"function","parent":6,"name":"<anon> 300:21:330:2","fullName":"'function (buf, opts)...$m(hex.join(''), 16)}'bignum@0.13.1:index.js:300:21:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":39,"kind":"function","parent":38,"name":"<anon> 322:12:324:8","fullName":"'function (c) { retur...$) + c.toString(16) }'bignum@0.13.1:index.js:322:12:<anonymous>","callWeight":3,"callCount":1}},{"data":{"id":40,"kind":"function","parent":6,"name":"<anon> 332:29:393:2","fullName":"'function (opts) { if...$16) } }) return buf}'bignum@0.13.1:index.js:332:29:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":41,"kind":"function","parent":40,"name":"<anon> 383:13:383:49","fullName":"'function (s) { return s.length > 0 }'bignum@0.13.1:index.js:383:13:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":42,"kind":"function","parent":40,"name":"<anon> 385:14:390:4","fullName":"'function (chunk, i) ...$ j * 2 + 2), 16) } }'bignum@0.13.1:index.js:385:14:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":43,"kind":"function","parent":6,"name":"<anon> 395:39:408:2","fullName":"'function (name) { if...$ply(bigi, args) } }}'bignum@0.13.1:index.js:395:39:<anonymous>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":44,"kind":"function","parent":43,"name":"<anon> 398:18:407:4","fullName":"'function (num) { var...$pply(bigi, args) } }'bignum@0.13.1:index.js:398:18:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":45,"kind":"function","parent":6,"name":"[Native API] <bindings>","fullName":"Native Call: <bindings>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":46,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>","fullName":"Native Call: <safe-buffer>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":47,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer","fullName":"Native Call: <safe-buffer>.Buffer","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":48,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum","fullName":"Native Call: <bindings>().BigNum","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":49,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":10,"callCount":3}},{"data":{"id":50,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105fd0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105fd0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":51,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::ToObject(v8::Local<v8::Context>) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::ToObject(v8::Local<v8::Context>) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":52,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105b60","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105b60","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":53,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::HandleScope::HandleScope(v8::Isolate*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::HandleScope::HandleScope(v8::Isolate*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":54,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e30","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e30","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":55,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::TryCatch::TryCatch(v8::Isolate*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::TryCatch::TryCatch(v8::Isolate*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":56,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001058a0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001058a0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":57,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::api_internal::ToLocalEmpty()","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::api_internal::ToLocalEmpty()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":58,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105c80","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105c80","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":59,"kind":"function","parent":5,"name":"[C Function Ghidra] __stack_chk_fail","fullName":"Ghidra Sub-call: [C Function Ghidra] __stack_chk_fail","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":60,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001059a0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001059a0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":61,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Isolate::GetCurrent()","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Isolate::GetCurrent()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":62,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e00","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e00","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":63,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::api_internal::MakeWeak(unsigned long*, void*, void (*)(v8::WeakCallbackInfo<void> const&), v8::WeakCallbackType)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::api_internal::MakeWeak(unsigned long*, void*, void (*)(v8::WeakCallbackInfo<void> const&), v8::WeakCallbackType)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":64,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105ec0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105ec0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":65,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::ToString(v8::Local<v8::Context>) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::ToString(v8::Local<v8::Context>) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":66,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105d80","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105d80","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":67,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::TryCatch::HasCaught() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::TryCatch::HasCaught() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":68,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105bb0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105bb0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":69,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::HandleScope::CreateHandle(v8::internal::Isolate*, unsigned long)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::HandleScope::CreateHandle(v8::internal::Isolate*, unsigned long)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":70,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e20","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e20","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":71,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::TryCatch::ReThrow()","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::TryCatch::ReThrow()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":72,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105b90","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105b90","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":73,"kind":"function","parent":5,"name":"[C Function Ghidra] BigNum::BigNum(Nan::Utf8String const&, unsigned long)","fullName":"Ghidra Sub-call: [C Function Ghidra] BigNum::BigNum(Nan::Utf8String const&, unsigned long)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":74,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001058b0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001058b0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":75,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Isolate::ThrowException(v8::Local<v8::Value>)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Isolate::ThrowException(v8::Local<v8::Value>)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":76,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001059d0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001059d0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":77,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_zero_ex","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_zero_ex","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":78,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105a80","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105a80","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":79,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_new","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_new","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":80,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001058e0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001058e0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":81,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_dec2bn","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_dec2bn","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":82,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105f10","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105f10","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":83,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_set_bit","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_set_bit","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":84,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105fa0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105fa0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":85,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Exception::Error(v8::Local<v8::String>, v8::Local<v8::Value>)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Exception::Error(v8::Local<v8::String>, v8::Local<v8::Value>)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":86,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105860","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105860","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":87,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::String::NewFromUtf8(v8::Isolate*, char const*, v8::NewStringType, int)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::String::NewFromUtf8(v8::Isolate*, char const*, v8::NewStringType, int)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":88,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105aa0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105aa0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":89,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_hex2bn","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_hex2bn","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":90,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105fb0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105fb0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":91,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::HandleScope::~HandleScope()","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::HandleScope::~HandleScope()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":92,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105d50","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105d50","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":93,"kind":"function","parent":5,"name":"[C Function Ghidra] operator delete[](void*)","fullName":"Ghidra Sub-call: [C Function Ghidra] operator delete[](void*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":94,"kind":"function","parent":5,"name":"[C Function Ghidra] Nan::ObjectWrap::WeakCallback(v8::WeakCallbackInfo<Nan::ObjectWrap> const&)","fullName":"Ghidra Sub-call: [C Function Ghidra] Nan::ObjectWrap::WeakCallback(v8::WeakCallbackInfo<Nan::ObjectWrap> const&)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":95,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105a30","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105a30","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":96,"kind":"function","parent":5,"name":"[C Function Ghidra] __assert_fail","fullName":"Ghidra Sub-call: [C Function Ghidra] __assert_fail","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":97,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105a00","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105a00","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":98,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::api_internal::DisposeGlobal(unsigned long*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::api_internal::DisposeGlobal(unsigned long*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":99,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105d70","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105d70","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":100,"kind":"function","parent":5,"name":"[C Function Ghidra] malloc","fullName":"Ghidra Sub-call: [C Function Ghidra] malloc","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":101,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105cd0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105cd0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":102,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Object::New(v8::Isolate*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Object::New(v8::Isolate*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":103,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105eb0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105eb0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":104,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Object::InternalFieldCount() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Object::InternalFieldCount() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":105,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105d00","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105d00","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":106,"kind":"function","parent":5,"name":"[C Function Ghidra] free","fullName":"Ghidra Sub-call: [C Function Ghidra] free","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":107,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105ae0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105ae0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":108,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::TryCatch::~TryCatch()","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::TryCatch::~TryCatch()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":109,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105fc0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105fc0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":110,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Isolate::GetCurrentContext()","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Isolate::GetCurrentContext()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":111,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105b30","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105b30","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":112,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::api_internal::GlobalizeReference(v8::internal::Isolate*, unsigned long)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::api_internal::GlobalizeReference(v8::internal::Isolate*, unsigned long)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":113,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105d20","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105d20","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":114,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Object::SetAlignedPointerInInternalField(int, void*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Object::SetAlignedPointerInInternalField(int, void*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":115,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e10","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e10","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":116,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::FunctionTemplate::GetFunction(v8::Local<v8::Context>)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::FunctionTemplate::GetFunction(v8::Local<v8::Context>)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":117,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e60","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e60","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":118,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::External::Value() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::External::Value() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":119,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e90","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e90","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":120,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::String::Length() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::String::Length() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":121,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105f60","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105f60","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":122,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Function::Call(v8::Local<v8::Context>, v8::Local<v8::Value>, int, v8::Local<v8::Value>*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Function::Call(v8::Local<v8::Context>, v8::Local<v8::Value>, int, v8::Local<v8::Value>*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":123,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105a70","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105a70","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":124,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105f80","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105f80","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":125,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::IsExternal() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::IsExternal() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":126,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00106020","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00106020","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":127,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::EscapableHandleScopeBase::EscapeSlot(unsigned long*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::EscapableHandleScopeBase::EscapeSlot(unsigned long*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":128,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105bd0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105bd0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":129,"kind":"function","parent":5,"name":"[C Function Ghidra] operator new(unsigned long)","fullName":"Ghidra Sub-call: [C Function Ghidra] operator new(unsigned long)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":130,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105db0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105db0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":131,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::EscapableHandleScopeBase::EscapableHandleScopeBase(v8::Isolate*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::EscapableHandleScopeBase::EscapableHandleScopeBase(v8::Isolate*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":132,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105ef0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105ef0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":133,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Function::NewInstance(v8::Local<v8::Context>, int, v8::Local<v8::Value>*) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Function::NewInstance(v8::Local<v8::Context>, int, v8::Local<v8::Value>*) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":134,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00106030","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00106030","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":135,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Object::Get(v8::Local<v8::Context>, v8::Local<v8::Value>)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Object::Get(v8::Local<v8::Context>, v8::Local<v8::Value>)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":136,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105840","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105840","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":137,"kind":"function","parent":5,"name":"[C Function Ghidra] operator new[](unsigned long)","fullName":"Ghidra Sub-call: [C Function Ghidra] operator new[](unsigned long)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":138,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001059e0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001059e0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":139,"kind":"function","parent":5,"name":"[C Function Ghidra] memset","fullName":"Ghidra Sub-call: [C Function Ghidra] memset","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":140,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105d90","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105d90","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":141,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::String::WriteUtf8(v8::Isolate*, char*, int, int*, int) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::String::WriteUtf8(v8::Isolate*, char*, int, int*, int) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":142,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105da0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105da0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":143,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::IntegerValue(v8::Local<v8::Context>) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::IntegerValue(v8::Local<v8::Context>) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":144,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum.conditionArgs","fullName":"Native Call: <bindings>().BigNum.conditionArgs","callWeight":7,"callCount":2,"isReachable":"true"}},{"data":{"id":145,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum.prototype","fullName":"Native Call: <bindings>().BigNum.prototype","callWeight":100,"callCount":29,"isReachable":"true"}},{"data":{"id":146,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….length","fullName":"Native Call: <safe-buffer>.Buffer….length","callWeight":3,"callCount":1}},{"data":{"id":147,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….4","fullName":"Native Call: <safe-buffer>.Buffer….4","callWeight":3,"callCount":1}},{"data":{"id":148,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….0","fullName":"Native Call: <safe-buffer>.Buffer….0","callWeight":3,"callCount":1}},{"data":{"id":149,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum.isBigNum","fullName":"Native Call: <bindings>().BigNum.isBigNum","callWeight":3,"callCount":1}},{"data":{"id":150,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum.prime","fullName":"Native Call: <bindings>().BigNum.prime","callWeight":3,"callCount":1}},{"data":{"id":151,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum.fromBuffer","fullName":"Native Call: <bindings>().BigNum.fromBuffer","callWeight":3,"callCount":1}},{"data":{"id":152,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.inspect","fullName":"Native Call: <bindings>()….prototype.inspect","callWeight":3,"callCount":1}},{"data":{"id":153,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.toString","fullName":"Native Call: <bindings>()….prototype.toString","callWeight":3,"callCount":1}},{"data":{"id":154,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] BigNum::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] BigNum::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":3,"callCount":1}},{"data":{"id":155,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105dd0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105dd0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":156,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_bn2hex","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_bn2hex","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":157,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105ba0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105ba0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":158,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Integer::Value() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Integer::Value() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":159,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105870","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105870","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":160,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::ToInteger(v8::Local<v8::Context>) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::ToInteger(v8::Local<v8::Context>) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":161,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001059c0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001059c0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":162,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Exception::TypeError(v8::Local<v8::String>, v8::Local<v8::Value>)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Exception::TypeError(v8::Local<v8::String>, v8::Local<v8::Value>)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":163,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105900","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105900","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":164,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_bn2dec","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_bn2dec","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":165,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105ac0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105ac0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":166,"kind":"function","parent":5,"name":"[C Function Ghidra] CRYPTO_free","fullName":"Ghidra Sub-call: [C Function Ghidra] CRYPTO_free","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":167,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105fe0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105fe0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":168,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::IsNumber() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::IsNumber() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":169,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105f00","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105f00","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":170,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Object::SlowGetAlignedPointerFromInternalField(int)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Object::SlowGetAlignedPointerFromInternalField(int)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":171,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.toNumber","fullName":"Native Call: <bindings>()….prototype.toNumber","callWeight":3,"callCount":1}},{"data":{"id":172,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.abs","fullName":"Native Call: <bindings>()….prototype.abs","callWeight":3,"callCount":1}},{"data":{"id":173,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.neg","fullName":"Native Call: <bindings>()….prototype.neg","callWeight":3,"callCount":1}},{"data":{"id":174,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.powm","fullName":"Native Call: <bindings>()….prototype.powm","callWeight":3,"callCount":1}},{"data":{"id":175,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.mod","fullName":"Native Call: <bindings>()….prototype.mod","callWeight":3,"callCount":1}},{"data":{"id":176,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.pow","fullName":"Native Call: <bindings>()….prototype.pow","callWeight":3,"callCount":1}},{"data":{"id":177,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.shiftLeft","fullName":"Native Call: <bindings>()….prototype.shiftLeft","callWeight":3,"callCount":1}},{"data":{"id":178,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.shiftRight","fullName":"Native Call: <bindings>()….prototype.shiftRight","callWeight":3,"callCount":1}},{"data":{"id":179,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.cmp","fullName":"Native Call: <bindings>()….prototype.cmp","callWeight":3,"callCount":1}},{"data":{"id":180,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.gt","fullName":"Native Call: <bindings>()….prototype.gt","callWeight":3,"callCount":1}},{"data":{"id":181,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.ge","fullName":"Native Call: <bindings>()….prototype.ge","callWeight":3,"callCount":1}},{"data":{"id":182,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.eq","fullName":"Native Call: <bindings>()….prototype.eq","callWeight":3,"callCount":1}},{"data":{"id":183,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.ne","fullName":"Native Call: <bindings>()….prototype.ne","callWeight":3,"callCount":1}},{"data":{"id":184,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.lt","fullName":"Native Call: <bindings>()….prototype.lt","callWeight":3,"callCount":1}},{"data":{"id":185,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.le","fullName":"Native Call: <bindings>()….prototype.le","callWeight":3,"callCount":1}},{"data":{"id":186,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.sqrt","fullName":"Native Call: <bindings>()….prototype.sqrt","callWeight":3,"callCount":1}},{"data":{"id":187,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.root","fullName":"Native Call: <bindings>()….prototype.root","callWeight":3,"callCount":1}},{"data":{"id":188,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.rand","fullName":"Native Call: <bindings>()….prototype.rand","callWeight":3,"callCount":1}},{"data":{"id":189,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.invertm","fullName":"Native Call: <bindings>()….prototype.invertm","callWeight":3,"callCount":1}},{"data":{"id":190,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.probPrime","fullName":"Native Call: <bindings>()….prototype.probPrime","callWeight":3,"callCount":1}},{"data":{"id":191,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] BigNum::Probprime(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] BigNum::Probprime(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":3,"callCount":1}},{"data":{"id":192,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105ce0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105ce0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":193,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::Int32Value(v8::Local<v8::Context>) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::Int32Value(v8::Local<v8::Context>) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":194,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105c70","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105c70","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":195,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Number::New(v8::Isolate*, double)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Number::New(v8::Isolate*, double)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":196,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105f50","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105f50","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":197,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::IsUint32() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::IsUint32() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":198,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105850","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105850","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":199,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_is_prime_ex","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_is_prime_ex","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":200,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105980","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105980","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":201,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_CTX_new","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_CTX_new","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":202,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105930","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105930","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":203,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_CTX_free","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_CTX_free","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":204,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.nextPrime","fullName":"Native Call: <bindings>()….prototype.nextPrime","callWeight":3,"callCount":1}},{"data":{"id":205,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.isBitSet","fullName":"Native Call: <bindings>()….prototype.isBitSet","callWeight":3,"callCount":1}},{"data":{"id":206,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] BigNum::IsBitSet(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] BigNum::IsBitSet(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":3,"callCount":1}},{"data":{"id":207,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105cc0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105cc0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":208,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_is_bit_set","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_is_bit_set","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":209,"kind":"function","parent":6,"name":"[Native API] <bindings>()….prototype.toBuffer","fullName":"Native Call: <bindings>()….prototype.toBuffer","callWeight":3,"callCount":1}},{"data":{"id":210,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….1","fullName":"Native Call: <safe-buffer>.Buffer….1","callWeight":3,"callCount":1}},{"data":{"id":211,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….2","fullName":"Native Call: <safe-buffer>.Buffer….2","callWeight":3,"callCount":1}},{"data":{"id":212,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….3","fullName":"Native Call: <safe-buffer>.Buffer….3","callWeight":3,"callCount":1}},{"data":{"id":213,"kind":"function","parent":6,"name":"[Native API] <bindings>()","fullName":"Native Call: <bindings>()","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":214,"kind":"function","parent":6,"name":"[Native API] <bindings>().BigNum()","fullName":"Native Call: <bindings>().BigNum()","callWeight":31,"callCount":9,"isReachable":"true"}},{"data":{"id":215,"kind":"function","parent":6,"name":"[Native API] <bindings>().setJSConditioner()","fullName":"Native Call: <bindings>().setJSConditioner()","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":216,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] SetJSConditioner(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] SetJSConditioner(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":3,"callCount":1}},{"data":{"id":217,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105990","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105990","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":218,"kind":"function","parent":5,"name":"[C Function Ghidra] BigNum::SetJSConditioner(v8::Local<v8::Function>)","fullName":"Ghidra Sub-call: [C Function Ghidra] BigNum::SetJSConditioner(v8::Local<v8::Function>)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":219,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer.alloc()","fullName":"Native Call: <safe-buffer>.Buffer.alloc()","callWeight":3,"callCount":1}},{"data":{"id":220,"kind":"function","parent":6,"name":"[Native API] <bindings>()….isBigNum()","fullName":"Native Call: <bindings>()….isBigNum()","callWeight":31,"callCount":9,"isReachable":"true"}},{"data":{"id":221,"kind":"function","parent":6,"name":"[Native API] <bindings>()….uprime0()","fullName":"Native Call: <bindings>()….uprime0()","callWeight":3,"callCount":1}},{"data":{"id":222,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] BigNum::Uprime0(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] BigNum::Uprime0(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":3,"callCount":1}},{"data":{"id":223,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105f70","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105f70","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":224,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::ToBoolean(v8::Isolate*) const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::ToBoolean(v8::Isolate*) const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":225,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_001059f0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_001059f0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":226,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Boolean::Value() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Boolean::Value() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":227,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105bc0","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105bc0","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":228,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::Value::IsBoolean() const","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::Value::IsBoolean() const","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":229,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105e50","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105e50","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":230,"kind":"function","parent":5,"name":"[C Function Ghidra] v8::External::New(v8::Isolate*, void*)","fullName":"Ghidra Sub-call: [C Function Ghidra] v8::External::New(v8::Isolate*, void*)","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":231,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105a10","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105a10","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":232,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_generate_prime_ex","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_generate_prime_ex","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":233,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105c00","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105c00","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":234,"kind":"function","parent":5,"name":"[C Function Ghidra] BigNum::BigNum()","fullName":"Ghidra Sub-call: [C Function Ghidra] BigNum::BigNum()","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":235,"kind":"function","parent":6,"name":"[Native API] <bindings>()….powm()","fullName":"Native Call: <bindings>()….powm()","callWeight":3,"callCount":1}},{"data":{"id":236,"kind":"function","parent":6,"name":"[Native API] <bindings>()….pow()","fullName":"Native Call: <bindings>()….pow()","callWeight":3,"callCount":1}},{"data":{"id":237,"kind":"function","parent":6,"name":"[Native API] <bindings>()….shiftLeft()","fullName":"Native Call: <bindings>()….shiftLeft()","callWeight":3,"callCount":1}},{"data":{"id":238,"kind":"function","parent":6,"name":"[Native API] <bindings>()….shiftRight()","fullName":"Native Call: <bindings>()….shiftRight()","callWeight":3,"callCount":1}},{"data":{"id":239,"kind":"function","parent":6,"name":"[Native API] <safe-buffer>.Buffer….copy()","fullName":"Native Call: <safe-buffer>.Buffer….copy()","callWeight":3,"callCount":1}},{"data":{"id":240,"kind":"function","parent":6,"name":"[Native API] <bindings>()….brand0()","fullName":"Native Call: <bindings>()….brand0()","callWeight":3,"callCount":1}},{"data":{"id":241,"kind":"function","parent":6,"name":"[Native API] [C Function Gasket] BigNum::Brand0(Nan::FunctionCallbackInfo<v8::Value> const&)","fullName":"Native Call: [C Function Gasket] BigNum::Brand0(Nan::FunctionCallbackInfo<v8::Value> const&)","callWeight":3,"callCount":1}},{"data":{"id":242,"kind":"function","parent":5,"name":"[C Function Ghidra] FUN_00105b80","fullName":"Ghidra Sub-call: [C Function Ghidra] FUN_00105b80","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":243,"kind":"function","parent":5,"name":"[C Function Ghidra] BN_rand_range","fullName":"Ghidra Sub-call: [C Function Ghidra] BN_rand_range","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":244,"kind":"module","parent":2,"name":"bindings.js","fullName":"bindings@1.5.0:bindings.js","callWeight":3,"callCount":11,"isReachable":"true"}},{"data":{"id":245,"kind":"function","parent":244,"name":"<anon> 12:7:19:8","fullName":"'function(path) { try...$se; } return true; }'bindings@1.5.0:bindings.js:12:7:<anonymous>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":246,"kind":"function","parent":244,"name":"bindings 67:1:136:2","fullName":"'function bindings(op...$= tries; throw err;}'bindings@1.5.0:bindings.js:67:1:bindings","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":247,"kind":"function","parent":246,"name":"<anon> 76:29:78:4","fullName":"'function(i) { if (!(...$[i] = defaults[i]; }'bindings@1.5.0:bindings.js:76:29:<anonymous>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":248,"kind":"function","parent":246,"name":"<anon> 106:23:108:8","fullName":"'function(p) { return opts[p] || p; }'bindings@1.5.0:bindings.js:106:23:<anonymous>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":249,"kind":"function","parent":246,"name":"<anon> 129:14:131:10","fullName":"'function(a) { return opts.arrow + a; }'bindings@1.5.0:bindings.js:129:14:<anonymous>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":250,"kind":"function","parent":244,"name":"getFileName 145:23:183:2","fullName":"'function getFileName...$ } return fileName;}'bindings@1.5.0:bindings.js:145:23:getFileName","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":251,"kind":"function","parent":250,"name":"<anon> 153:29:166:4","fullName":"'function(e, st) { fo...$se { return; } } } }'bindings@1.5.0:bindings.js:153:29:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":252,"kind":"function","parent":244,"name":"getRoot 194:19:221:2","fullName":"'function getRoot(fil...$ join(dir, '..'); }}'bindings@1.5.0:bindings.js:194:19:getRoot","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":253,"kind":"function","parent":244,"name":"[Native API] <file-uri-to-path>","fullName":"Native Call: <file-uri-to-path>","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":254,"kind":"function","parent":244,"name":"[Native API] <file-uri-to-path>()","fullName":"Native Call: <file-uri-to-path>()","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":255,"kind":"function","parent":244,"name":"[Native API] <file-uri-to-path>().indexOf()","fullName":"Native Call: <file-uri-to-path>().indexOf()","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":256,"kind":"module","parent":3,"name":"index.js","fullName":"safe-buffer@5.2.1:index.js","callWeight":1,"callCount":3,"isReachable":"true"}},{"data":{"id":257,"kind":"function","parent":256,"name":"copyProps 7:1:11:2","fullName":"'function copyProps (...$t[key] = src[key] }}'safe-buffer@5.2.1:index.js:7:1:copyProps","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":258,"kind":"function","parent":256,"name":"SafeBuffer 20:1:22:2","fullName":"'function SafeBuffer ...$ngOrOffset, length)}'safe-buffer@5.2.1:index.js:20:1:SafeBuffer","callWeight":0,"callCount":0}},{"data":{"id":259,"kind":"function","parent":256,"name":"<anon> 29:19:34:2","fullName":"'function (arg, encod...$ngOrOffset, length)}'safe-buffer@5.2.1:index.js:29:19:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":260,"kind":"function","parent":256,"name":"<anon> 36:20:51:2","fullName":"'function (size, fill...$ill(0) } return buf}'safe-buffer@5.2.1:index.js:36:20:<anonymous>","callWeight":3,"callCount":1}},{"data":{"id":261,"kind":"function","parent":256,"name":"<anon> 53:26:58:2","fullName":"'function (size) { if...$return Buffer(size)}'safe-buffer@5.2.1:index.js:53:26:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":262,"kind":"function","parent":256,"name":"<anon> 60:30:65:2","fullName":"'function (size) { if...$er.SlowBuffer(size)}'safe-buffer@5.2.1:index.js:60:30:<anonymous>","callWeight":0,"callCount":0}},{"data":{"id":263,"kind":"module","parent":4,"name":"index.js","fullName":"file-uri-to-path@1.0.0:index.js","callWeight":1,"callCount":4,"isReachable":"true"}},{"data":{"id":264,"kind":"function","parent":263,"name":"fileUriToPath 22:1:66:2","fullName":"'function fileUriToPa...$return host + path;}'file-uri-to-path@1.0.0:index.js:22:1:fileUriToPath","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":265,"kind":"function","parent":263,"name":"[Native API] <file-uri-to-path>().length","fullName":"Native Call: <file-uri-to-path>().length","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"id":266,"kind":"function","parent":263,"name":"[Native API] <file-uri-to-path>().substring()","fullName":"Native Call: <file-uri-to-path>().substring()","callWeight":3,"callCount":1,"isReachable":"true"}},{"data":{"kind":"call","source":252,"target":245}},{"data":{"kind":"call","source":256,"target":257}},{"data":{"kind":"call","source":246,"target":250}},{"data":{"kind":"call","source":246,"target":252}},{"data":{"kind":"call","source":246,"target":249}},{"data":{"kind":"call","source":246,"target":248}},{"data":{"kind":"call","source":246,"target":247}},{"data":{"kind":"call","source":250,"target":264}},{"data":{"kind":"call","source":250,"target":254}},{"data":{"kind":"call","source":250,"target":255}},{"data":{"kind":"call","source":6,"target":246}},{"data":{"kind":"call","source":6,"target":12}},{"data":{"kind":"call","source":6,"target":43}},{"data":{"kind":"call","source":6,"target":45}},{"data":{"kind":"call","source":6,"target":46}},{"data":{"kind":"call","source":6,"target":47}},{"data":{"kind":"call","source":6,"target":48}},{"data":{"kind":"call","source":6,"target":144}},{"data":{"kind":"call","source":6,"target":213}},{"data":{"kind":"call","source":6,"target":215}},{"data":{"kind":"call","source":40,"target":260}},{"data":{"kind":"call","source":40,"target":145}},{"data":{"kind":"call","source":40,"target":146}},{"data":{"kind":"call","source":40,"target":147}},{"data":{"kind":"call","source":40,"target":148}},{"data":{"kind":"call","source":40,"target":209}},{"data":{"kind":"call","source":40,"target":210}},{"data":{"kind":"call","source":40,"target":211}},{"data":{"kind":"call","source":40,"target":212}},{"data":{"kind":"call","source":40,"target":219}},{"data":{"kind":"call","source":40,"target":239}},{"data":{"kind":"call","source":38,"target":39}},{"data":{"kind":"call","source":38,"target":151}},{"data":{"kind":"call","source":38,"target":214}},{"data":{"kind":"call","source":244,"target":253}},{"data":{"kind":"call","source":48,"target":49}},{"data":{"kind":"call","source":49,"target":50}},{"data":{"kind":"call","source":49,"target":52}},{"data":{"kind":"call","source":49,"target":54}},{"data":{"kind":"call","source":49,"target":56}},{"data":{"kind":"call","source":49,"target":58}},{"data":{"kind":"call","source":49,"target":60}},{"data":{"kind":"call","source":49,"target":62}},{"data":{"kind":"call","source":49,"target":64}},{"data":{"kind":"call","source":49,"target":66}},{"data":{"kind":"call","source":49,"target":68}},{"data":{"kind":"call","source":49,"target":70}},{"data":{"kind":"call","source":49,"target":72}},{"data":{"kind":"call","source":49,"target":92}},{"data":{"kind":"call","source":49,"target":94}},{"data":{"kind":"call","source":49,"target":99}},{"data":{"kind":"call","source":49,"target":101}},{"data":{"kind":"call","source":49,"target":103}},{"data":{"kind":"call","source":49,"target":105}},{"data":{"kind":"call","source":49,"target":107}},{"data":{"kind":"call","source":49,"target":90}},{"data":{"kind":"call","source":49,"target":74}},{"data":{"kind":"call","source":49,"target":109}},{"data":{"kind":"call","source":49,"target":111}},{"data":{"kind":"call","source":49,"target":113}},{"data":{"kind":"call","source":49,"target":95}},{"data":{"kind":"call","source":49,"target":115}},{"data":{"kind":"call","source":49,"target":117}},{"data":{"kind":"call","source":49,"target":119}},{"data":{"kind":"call","source":49,"target":121}},{"data":{"kind":"call","source":49,"target":123}},{"data":{"kind":"call","source":49,"target":124}},{"data":{"kind":"call","source":49,"target":126}},{"data":{"kind":"call","source":49,"target":84}},{"data":{"kind":"call","source":49,"target":128}},{"data":{"kind":"call","source":49,"target":97}},{"data":{"kind":"call","source":49,"target":130}},{"data":{"kind":"call","source":49,"target":132}},{"data":{"kind":"call","source":49,"target":134}},{"data":{"kind":"call","source":49,"target":86}},{"data":{"kind":"call","source":49,"target":136}},{"data":{"kind":"call","source":49,"target":138}},{"data":{"kind":"call","source":49,"target":140}},{"data":{"kind":"call","source":49,"target":142}},{"data":{"kind":"call","source":50,"target":51}},{"data":{"kind":"call","source":52,"target":53}},{"data":{"kind":"call","source":54,"target":55}},{"data":{"kind":"call","source":56,"target":57}},{"data":{"kind":"call","source":58,"target":59}},{"data":{"kind":"call","source":60,"target":61}},{"data":{"kind":"call","source":62,"target":63}},{"data":{"kind":"call","source":64,"target":65}},{"data":{"kind":"call","source":66,"target":67}},{"data":{"kind":"call","source":68,"target":69}},{"data":{"kind":"call","source":70,"target":71}},{"data":{"kind":"call","source":72,"target":73}},{"data":{"kind":"call","source":73,"target":74}},{"data":{"kind":"call","source":73,"target":52}},{"data":{"kind":"call","source":73,"target":76}},{"data":{"kind":"call","source":73,"target":78}},{"data":{"kind":"call","source":73,"target":80}},{"data":{"kind":"call","source":73,"target":56}},{"data":{"kind":"call","source":73,"target":82}},{"data":{"kind":"call","source":73,"target":58}},{"data":{"kind":"call","source":73,"target":84}},{"data":{"kind":"call","source":73,"target":60}},{"data":{"kind":"call","source":73,"target":86}},{"data":{"kind":"call","source":73,"target":88}},{"data":{"kind":"call","source":73,"target":90}},{"data":{"kind":"call","source":74,"target":75}},{"data":{"kind":"call","source":76,"target":77}},{"data":{"kind":"call","source":78,"target":79}},{"data":{"kind":"call","source":80,"target":81}},{"data":{"kind":"call","source":82,"target":83}},{"data":{"kind":"call","source":84,"target":85}},{"data":{"kind":"call","source":86,"target":87}},{"data":{"kind":"call","source":88,"target":89}},{"data":{"kind":"call","source":90,"target":91}},{"data":{"kind":"call","source":92,"target":93}},{"data":{"kind":"call","source":94,"target":95}},{"data":{"kind":"call","source":94,"target":97}},{"data":{"kind":"call","source":95,"target":96}},{"data":{"kind":"call","source":97,"target":98}},{"data":{"kind":"call","source":99,"target":100}},{"data":{"kind":"call","source":101,"target":102}},{"data":{"kind":"call","source":103,"target":104}},{"data":{"kind":"call","source":105,"target":106}},{"data":{"kind":"call","source":107,"target":108}},{"data":{"kind":"call","source":109,"target":110}},{"data":{"kind":"call","source":111,"target":112}},{"data":{"kind":"call","source":113,"target":114}},{"data":{"kind":"call","source":115,"target":116}},{"data":{"kind":"call","source":117,"target":118}},{"data":{"kind":"call","source":119,"target":120}},{"data":{"kind":"call","source":121,"target":122}},{"data":{"kind":"call","source":123,"target":91}},{"data":{"kind":"call","source":124,"target":125}},{"data":{"kind":"call","source":126,"target":127}},{"data":{"kind":"call","source":128,"target":129}},{"data":{"kind":"call","source":130,"target":131}},{"data":{"kind":"call","source":132,"target":133}},{"data":{"kind":"call","source":134,"target":135}},{"data":{"kind":"call","source":136,"target":137}},{"data":{"kind":"call","source":138,"target":139}},{"data":{"kind":"call","source":140,"target":141}},{"data":{"kind":"call","source":142,"target":143}},{"data":{"kind":"call","source":264,"target":265}},{"data":{"kind":"call","source":264,"target":266}},{"data":{"kind":"call","source":8,"target":145}},{"data":{"kind":"call","source":8,"target":149}},{"data":{"kind":"call","source":145,"target":49}},{"data":{"kind":"call","source":9,"target":145}},{"data":{"kind":"call","source":9,"target":152}},{"data":{"kind":"call","source":10,"target":145}},{"data":{"kind":"call","source":10,"target":153}},{"data":{"kind":"call","source":11,"target":145}},{"data":{"kind":"call","source":11,"target":171}},{"data":{"kind":"call","source":12,"target":145}},{"data":{"kind":"call","source":12,"target":214}},{"data":{"kind":"call","source":12,"target":220}},{"data":{"kind":"call","source":14,"target":145}},{"data":{"kind":"call","source":14,"target":172}},{"data":{"kind":"call","source":15,"target":145}},{"data":{"kind":"call","source":15,"target":173}},{"data":{"kind":"call","source":16,"target":145}},{"data":{"kind":"call","source":16,"target":174}},{"data":{"kind":"call","source":16,"target":214}},{"data":{"kind":"call","source":16,"target":220}},{"data":{"kind":"call","source":17,"target":145}},{"data":{"kind":"call","source":17,"target":175}},{"data":{"kind":"call","source":17,"target":214}},{"data":{"kind":"call","source":17,"target":220}},{"data":{"kind":"call","source":18,"target":145}},{"data":{"kind":"call","source":18,"target":176}},{"data":{"kind":"call","source":18,"target":235}},{"data":{"kind":"call","source":18,"target":236}},{"data":{"kind":"call","source":19,"target":145}},{"data":{"kind":"call","source":19,"target":177}},{"data":{"kind":"call","source":19,"target":237}},{"data":{"kind":"call","source":20,"target":145}},{"data":{"kind":"call","source":20,"target":178}},{"data":{"kind":"call","source":20,"target":238}},{"data":{"kind":"call","source":21,"target":145}},{"data":{"kind":"call","source":21,"target":179}},{"data":{"kind":"call","source":21,"target":214}},{"data":{"kind":"call","source":21,"target":220}},{"data":{"kind":"call","source":22,"target":145}},{"data":{"kind":"call","source":22,"target":180}},{"data":{"kind":"call","source":23,"target":145}},{"data":{"kind":"call","source":23,"target":181}},{"data":{"kind":"call","source":24,"target":145}},{"data":{"kind":"call","source":24,"target":182}},{"data":{"kind":"call","source":25,"target":145}},{"data":{"kind":"call","source":25,"target":183}},{"data":{"kind":"call","source":26,"target":145}},{"data":{"kind":"call","source":26,"target":184}},{"data":{"kind":"call","source":27,"target":145}},{"data":{"kind":"call","source":27,"target":185}},{"data":{"kind":"call","source":28,"target":145}},{"data":{"kind":"call","source":28,"target":214}},{"data":{"kind":"call","source":28,"target":220}},{"data":{"kind":"call","source":30,"target":145}},{"data":{"kind":"call","source":30,"target":186}},{"data":{"kind":"call","source":31,"target":145}},{"data":{"kind":"call","source":31,"target":187}},{"data":{"kind":"call","source":31,"target":220}},{"data":{"kind":"call","source":32,"target":145}},{"data":{"kind":"call","source":32,"target":188}},{"data":{"kind":"call","source":32,"target":214}},{"data":{"kind":"call","source":32,"target":220}},{"data":{"kind":"call","source":32,"target":240}},{"data":{"kind":"call","source":33,"target":145}},{"data":{"kind":"call","source":33,"target":189}},{"data":{"kind":"call","source":33,"target":214}},{"data":{"kind":"call","source":33,"target":220}},{"data":{"kind":"call","source":35,"target":145}},{"data":{"kind":"call","source":35,"target":190}},{"data":{"kind":"call","source":36,"target":145}},{"data":{"kind":"call","source":36,"target":204}},{"data":{"kind":"call","source":37,"target":145}},{"data":{"kind":"call","source":37,"target":205}},{"data":{"kind":"call","source":43,"target":145}},{"data":{"kind":"call","source":43,"target":214}},{"data":{"kind":"call","source":43,"target":220}},{"data":{"kind":"call","source":7,"target":144}},{"data":{"kind":"call","source":34,"target":150}},{"data":{"kind":"call","source":34,"target":221}},{"data":{"kind":"call","source":153,"target":154}},{"data":{"kind":"call","source":154,"target":109}},{"data":{"kind":"call","source":154,"target":74}},{"data":{"kind":"call","source":154,"target":155}},{"data":{"kind":"call","source":154,"target":52}},{"data":{"kind":"call","source":154,"target":157}},{"data":{"kind":"call","source":154,"target":95}},{"data":{"kind":"call","source":154,"target":123}},{"data":{"kind":"call","source":154,"target":56}},{"data":{"kind":"call","source":154,"target":159}},{"data":{"kind":"call","source":154,"target":126}},{"data":{"kind":"call","source":154,"target":161}},{"data":{"kind":"call","source":154,"target":58}},{"data":{"kind":"call","source":154,"target":60}},{"data":{"kind":"call","source":154,"target":84}},{"data":{"kind":"call","source":154,"target":163}},{"data":{"kind":"call","source":154,"target":130}},{"data":{"kind":"call","source":154,"target":165}},{"data":{"kind":"call","source":154,"target":86}},{"data":{"kind":"call","source":154,"target":167}},{"data":{"kind":"call","source":154,"target":103}},{"data":{"kind":"call","source":154,"target":90}},{"data":{"kind":"call","source":154,"target":169}},{"data":{"kind":"call","source":155,"target":156}},{"data":{"kind":"call","source":157,"target":158}},{"data":{"kind":"call","source":159,"target":160}},{"data":{"kind":"call","source":161,"target":162}},{"data":{"kind":"call","source":163,"target":164}},{"data":{"kind":"call","source":165,"target":166}},{"data":{"kind":"call","source":167,"target":168}},{"data":{"kind":"call","source":169,"target":170}},{"data":{"kind":"call","source":190,"target":191}},{"data":{"kind":"call","source":191,"target":74}},{"data":{"kind":"call","source":191,"target":109}},{"data":{"kind":"call","source":191,"target":52}},{"data":{"kind":"call","source":191,"target":192}},{"data":{"kind":"call","source":191,"target":95}},{"data":{"kind":"call","source":191,"target":194}},{"data":{"kind":"call","source":191,"target":196}},{"data":{"kind":"call","source":191,"target":56}},{"data":{"kind":"call","source":191,"target":161}},{"data":{"kind":"call","source":191,"target":58}},{"data":{"kind":"call","source":191,"target":60}},{"data":{"kind":"call","source":191,"target":198}},{"data":{"kind":"call","source":191,"target":86}},{"data":{"kind":"call","source":191,"target":103}},{"data":{"kind":"call","source":191,"target":200}},{"data":{"kind":"call","source":191,"target":202}},{"data":{"kind":"call","source":191,"target":90}},{"data":{"kind":"call","source":191,"target":169}},{"data":{"kind":"call","source":192,"target":193}},{"data":{"kind":"call","source":194,"target":195}},{"data":{"kind":"call","source":196,"target":197}},{"data":{"kind":"call","source":198,"target":199}},{"data":{"kind":"call","source":200,"target":201}},{"data":{"kind":"call","source":202,"target":203}},{"data":{"kind":"call","source":205,"target":206}},{"data":{"kind":"call","source":206,"target":74}},{"data":{"kind":"call","source":206,"target":109}},{"data":{"kind":"call","source":206,"target":52}},{"data":{"kind":"call","source":206,"target":192}},{"data":{"kind":"call","source":206,"target":95}},{"data":{"kind":"call","source":206,"target":194}},{"data":{"kind":"call","source":206,"target":196}},{"data":{"kind":"call","source":206,"target":207}},{"data":{"kind":"call","source":206,"target":56}},{"data":{"kind":"call","source":206,"target":58}},{"data":{"kind":"call","source":206,"target":161}},{"data":{"kind":"call","source":206,"target":60}},{"data":{"kind":"call","source":206,"target":86}},{"data":{"kind":"call","source":206,"target":103}},{"data":{"kind":"call","source":206,"target":90}},{"data":{"kind":"call","source":206,"target":169}},{"data":{"kind":"call","source":207,"target":208}},{"data":{"kind":"call","source":214,"target":49}},{"data":{"kind":"call","source":215,"target":216}},{"data":{"kind":"call","source":216,"target":52}},{"data":{"kind":"call","source":216,"target":217}},{"data":{"kind":"call","source":216,"target":58}},{"data":{"kind":"call","source":216,"target":60}},{"data":{"kind":"call","source":216,"target":90}},{"data":{"kind":"call","source":217,"target":218}},{"data":{"kind":"call","source":218,"target":111}},{"data":{"kind":"call","source":218,"target":60}},{"data":{"kind":"call","source":218,"target":97}},{"data":{"kind":"call","source":221,"target":222}},{"data":{"kind":"call","source":222,"target":74}},{"data":{"kind":"call","source":222,"target":109}},{"data":{"kind":"call","source":222,"target":52}},{"data":{"kind":"call","source":222,"target":223}},{"data":{"kind":"call","source":222,"target":192}},{"data":{"kind":"call","source":222,"target":115}},{"data":{"kind":"call","source":222,"target":123}},{"data":{"kind":"call","source":222,"target":196}},{"data":{"kind":"call","source":222,"target":56}},{"data":{"kind":"call","source":222,"target":58}},{"data":{"kind":"call","source":222,"target":161}},{"data":{"kind":"call","source":222,"target":126}},{"data":{"kind":"call","source":222,"target":60}},{"data":{"kind":"call","source":222,"target":225}},{"data":{"kind":"call","source":222,"target":128}},{"data":{"kind":"call","source":222,"target":227}},{"data":{"kind":"call","source":222,"target":130}},{"data":{"kind":"call","source":222,"target":68}},{"data":{"kind":"call","source":222,"target":132}},{"data":{"kind":"call","source":222,"target":229}},{"data":{"kind":"call","source":222,"target":231}},{"data":{"kind":"call","source":222,"target":233}},{"data":{"kind":"call","source":222,"target":86}},{"data":{"kind":"call","source":222,"target":90}},{"data":{"kind":"call","source":223,"target":224}},{"data":{"kind":"call","source":225,"target":226}},{"data":{"kind":"call","source":227,"target":228}},{"data":{"kind":"call","source":229,"target":230}},{"data":{"kind":"call","source":231,"target":232}},{"data":{"kind":"call","source":233,"target":234}},{"data":{"kind":"call","source":234,"target":76}},{"data":{"kind":"call","source":234,"target":78}},{"data":{"kind":"call","source":240,"target":241}},{"data":{"kind":"call","source":241,"target":109}},{"data":{"kind":"call","source":241,"target":242}},{"data":{"kind":"call","source":241,"target":95}},{"data":{"kind":"call","source":241,"target":115}},{"data":{"kind":"call","source":241,"target":123}},{"data":{"kind":"call","source":241,"target":56}},{"data":{"kind":"call","source":241,"target":58}},{"data":{"kind":"call","source":241,"target":126}},{"data":{"kind":"call","source":241,"target":60}},{"data":{"kind":"call","source":241,"target":128}},{"data":{"kind":"call","source":241,"target":132}},{"data":{"kind":"call","source":241,"target":68}},{"data":{"kind":"call","source":241,"target":130}},{"data":{"kind":"call","source":241,"target":229}},{"data":{"kind":"call","source":241,"target":233}},{"data":{"kind":"call","source":241,"target":103}},{"data":{"kind":"call","source":241,"target":169}},{"data":{"kind":"call","source":242,"target":243}},{"data":{"kind":"require","source":6,"target":244}},{"data":{"kind":"require","source":6,"target":256}},{"data":{"kind":"require","source":244,"target":263}}],"info":"Packages: 4\nModules: 4\nFunctions: 257\nCall edges: 362\nMax number of calls for packages: 344, modules: 344, functions: 29"}]};
+      let graph;
+
+      function showVulnerabilities() {
+        if (!graph.vulnerabilities)
+          return;
+
+        stopLayout();
+        const vulnerabilityTitle = document.getElementById("vulnerabilities").value;
+        const e = document.getElementsByName("vulnerabilityLevel");
+        let level = "package";
+        for (let i = 0; i < e.length; i++)
+          if (e[i].checked) {
+            level = e[i].value;
+            break;
+          }
+        const sources = new Set(), targets = new Set();
+        for (const v of graph.vulnerabilities)
+          if (v.title === vulnerabilityTitle) {
+            for (const s of v[level].sources)
+              sources.add(String(s));
+            for (const s of v[level].targets)
+              targets.add(String(s));
+          }
+        function has(collection, node) {
+          return collection.has(node.data("id")) || (ec.isExpandable(node) && ec.getCollapsedChildrenRecursively(node).some(n => collection.has(n.data("id"))));
+        }
+        cy.batch(() => {
+          cy.nodes().forEach(node => {
+            node.removeData("isSource isTarget");
+            if (has(sources, node))
+              node.data("isSource", true);
+            if (has(targets, node))
+              node.data("isTarget", true);
+          });
+          cy.edges().forEach(edge => {
+            edge.removeData("sourceTarget");
+            const source = edge.source();
+            const target = edge.target();
+            if (has(sources, source) && (has(targets, target) || has(sources, target)))
+              edge.data("sourceTarget", true);
+          });
+         cy.elements().removeClass("workaround");
+       });
+      }
+      document.getElementById("vulnerabilities").addEventListener("change", showVulnerabilities);
+      document.getElementById("vulnerabilityLevel").addEventListener("change", showVulnerabilities);
+
+      function setGraph(i) {
+        stopLayout();
+        removed = undefined;
+        cy.elements().remove();
+        graph = data.graphs[i];
+        cy.add(structuredClone(graph.elements));
+        ec.collapseAll();
+        ec.collapseAllEdges();
+        if (graph.kind === "callgraph")
+          document.body.classList.remove("callgraphModeHidden");
+        if (graph.kind === "dataflow")
+          document.body.classList.remove("dataflowModeHidden");
+        document.getElementById("showValueDensity").checked = false;
+        if (graph.info)
+          document.getElementById("info").innerText = graph.info;
+        document.getElementById("threshold").value = 0;
+        if (graph.vulnerabilities) {
+          const vulnerabilities = document.getElementById("vulnerabilities");
+          const vulnerabilityLevel = document.getElementById("vulnerabilityLevel");
+          vulnerabilities.hidden = false;
+          vulnerabilityLevel.hidden = false;
+          for (let i = 0; i < graph.vulnerabilities.length; i++) {
+            const opt = document.createElement("option");
+            opt.value = opt.innerText = graph.vulnerabilities[i].title;
+            vulnerabilities.appendChild(opt);
+          }
+          showVulnerabilities();
+        }
+        newLayout(true);
+      }
+
+      if (data.graphs.length >= 1) {
+        setGraph(0);
+        if (data.graphs.length > 1) {
+          const dataset = document.getElementById('dataset');
+          dataset.hidden = false;
+          for (let i = 0; i < data.graphs.length; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = data.graphs[i].title ?? "";
+            dataset.appendChild(opt);
+          }
+          document.getElementById("dataset").addEventListener("change", e => {
+            setGraph(e.target.value);
+          });
+        }
+      }
+    });
+  </script>
+</head>
+<body class="callgraphModeHidden dataflowModeHidden">
+<header>
+<h1>Jelly visualizer</h1>
+<div id="info"></div>
+<div id="control">
+<div class="group">
+<button id="collapseAll">Collapse all</button>
+<button id="collapseSelected">Collapse selected</button>
+<button id="expandSelected">Expand selected</button>
+<span class="callgraphMode"><button id="expandAllPackages">Expand all packages</button></span>
+<button id="expandAll">Expand all</button>
+</div>
+<br/>
+<div class="group">
+<button id="showPredecessors">Show predecessors</button>
+<button id="removeSelected">Remove selected</button>
+<button id="removeNonSelected">Remove non-selected</button>
+</div>
+<br/>
+<div class="group">
+<button id="layout">Layout</button>
+</div>
+<br/>
+<div class="group">
+<span class="callgraphMode">
+<input type="checkbox" id="showCallDensity"><label for="showCallDensity"> Show call density</label>
+<br/>
+<input type="checkbox" id="highlightReachable"><label for="highlightReachable"> Highlight reachable</label>
+<br/>
+<input type="checkbox" id="hideUnreachable"><label for="hideUnreachable"> Hide unreachable</label>
+</span>
+<span class="dataflowMode">
+<input type="checkbox" id="showValueDensity"><label for="showValueDensity"> Show value density</label>
+</span>
+</div>
+<span id="fields">
+<br/>
+<label for="threshold">Threshold: </label><input type="number" id="threshold" value="0" min="0">
+<br/>
+</span>
+<div class="group">
+<span id="vulnerabilityLevel" hidden>
+Vulnerabilities:<br/>
+<select id="vulnerabilities" hidden><option></option></select>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelPackage" value="package" checked><label for="vulnerabilityLevelPackage">Package dependency</label>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelModule" value="module"><label for="vulnerabilityLevelModule">Module dependency</label>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelFunction" value="function"><label for="vulnerabilityLevelFunction">Function reachability</label>
+</span>
+</div>
+</div>
+<select id="dataset" hidden></select>
+<div id="msg"></div>
+</header>
+<div id="cy"></div>
+</body>
+</html>

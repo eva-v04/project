@@ -1,0 +1,146 @@
+[
+  {
+    "jelly_pattern": "call tryLock...tryLock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.tryLock",
+    "cfunc": "fs_ext_js_try_lock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call waitForLock...waitForLock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForLock",
+    "cfunc": "fs_ext_js_wait_for_lock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call waitForLockSync...waitForLockSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForLockSync",
+    "cfunc": "fs_ext_js_wait_for_lock_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call tryDowngradeLock...tryDowngradeLock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.tryDowngradeLock",
+    "cfunc": "fs_ext_js_try_downgrade_lock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call waitForDowngradeLock...waitForDowngradeLock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForDowngradeLock",
+    "cfunc": "fs_ext_js_wait_for_downgrade_lock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call waitForDowngradeLockSync...waitForDowngradeLockSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForDowngradeLockSync",
+    "cfunc": "fs_ext_js_wait_for_downgrade_lock_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call tryUpgradeLock...tryUpgradeLock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.tryUpgradeLock",
+    "cfunc": "fs_ext_js_try_upgrade_lock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call waitForUpgradeLock...waitForUpgradeLock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForUpgradeLock",
+    "cfunc": "fs_ext_js_wait_for_upgrade_lock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call waitForUpgradeLockSync...waitForUpgradeLockSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.waitForUpgradeLockSync",
+    "cfunc": "fs_ext_js_wait_for_upgrade_lock_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call unlock...unlock",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.unlock",
+    "cfunc": "fs_ext_js_unlock",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call trim...trim",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.trim",
+    "cfunc": "fs_ext_js_trim",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call trimSync...trimSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.trimSync",
+    "cfunc": "fs_ext_js_trim_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sparse...sparse",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.sparse",
+    "cfunc": "fs_ext_js_sparse",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call sparseSync...sparseSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.sparseSync",
+    "cfunc": "fs_ext_js_sparse_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call swap...swap",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.swap",
+    "cfunc": "fs_ext_js_swap",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call swapSync...swapSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.swapSync",
+    "cfunc": "fs_ext_js_swap_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call getAttr...getAttr",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.getAttr",
+    "cfunc": "fs_ext_js_get_attr",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call getAttrSync...getAttrSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.getAttrSync",
+    "cfunc": "fs_ext_js_get_attr_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call setAttr...setAttr",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.setAttr",
+    "cfunc": "fs_ext_js_set_attr",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call setAttrSync...setAttrSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.setAttrSync",
+    "cfunc": "fs_ext_js_set_attr_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call removeAttr...removeAttr",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.removeAttr",
+    "cfunc": "fs_ext_js_remove_attr",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call removeAttrSync...removeAttrSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.removeAttrSync",
+    "cfunc": "fs_ext_js_remove_attr_sync",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call listAttrs...listAttrs",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.listAttrs",
+    "cfunc": "fs_ext_js_list_attrs",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call listAttrsSync...listAttrsSync",
+    "gasket_jsname": "fs-native-extensions/prebuilds/linux-x64/fs-native-extensions.listAttrsSync",
+    "cfunc": "fs_ext_js_list_attrs_sync",
+    "confidence": 1
+  }
+]

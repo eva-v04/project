@@ -1,0 +1,457 @@
+{
+  "objects_examined": 7153,
+  "callable_objects": 4940,
+  "foreign_callable_objects": 73,
+  "duration_sec": 5.676,
+  "count": 73,
+  "modules": [
+    "/home/gasket/node_modules/bignum/build/Release/bignum.node",
+    "/home/gasket/node_modules/bignum/build/Release/obj.target/bignum.node",
+    "/home/gasket/node_modules/bignum/index.js"
+  ],
+  "jump_libs": [
+    "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum",
+      "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.setJSConditioner",
+      "cfunc": "SetJSConditioner(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.uprime0",
+      "cfunc": "BigNum::Uprime0(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.tostring",
+      "cfunc": "BigNum::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.badd",
+      "cfunc": "BigNum::Badd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bsub",
+      "cfunc": "BigNum::Bsub(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bmul",
+      "cfunc": "BigNum::Bmul(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bdiv",
+      "cfunc": "BigNum::Bdiv(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.uadd",
+      "cfunc": "BigNum::Uadd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.usub",
+      "cfunc": "BigNum::Usub(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.umul",
+      "cfunc": "BigNum::Umul(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.udiv",
+      "cfunc": "BigNum::Udiv(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.umul2exp",
+      "cfunc": "BigNum::Umul_2exp(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.udiv2exp",
+      "cfunc": "BigNum::Udiv_2exp(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.babs",
+      "cfunc": "BigNum::Babs(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bneg",
+      "cfunc": "BigNum::Bneg(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bmod",
+      "cfunc": "BigNum::Bmod(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.umod",
+      "cfunc": "BigNum::Umod(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bpowm",
+      "cfunc": "BigNum::Bpowm(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.upowm",
+      "cfunc": "BigNum::Upowm(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.upow",
+      "cfunc": "BigNum::Upow(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.brand0",
+      "cfunc": "BigNum::Brand0(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.probprime",
+      "cfunc": "BigNum::Probprime(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bcompare",
+      "cfunc": "BigNum::Bcompare(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.scompare",
+      "cfunc": "BigNum::Scompare(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.ucompare",
+      "cfunc": "BigNum::Ucompare(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.band",
+      "cfunc": "BigNum::Band(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bor",
+      "cfunc": "BigNum::Bor(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bxor",
+      "cfunc": "BigNum::Bxor(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.binvertm",
+      "cfunc": "BigNum::Binvertm(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bsqrt",
+      "cfunc": "BigNum::Bsqrt(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.broot",
+      "cfunc": "BigNum::Broot(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.bitLength",
+      "cfunc": "BigNum::BitLength(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.gcd",
+      "cfunc": "BigNum::Bgcd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.jacobi",
+      "cfunc": "BigNum::Bjacobi(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.setCompact",
+      "cfunc": "BigNum::Bsetcompact(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/build/Release/bignum.BigNum.prototype.isbitset",
+      "cfunc": "BigNum::IsBitSet(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index",
+      "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.uprime0",
+      "cfunc": "BigNum::Uprime0(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.tostring",
+      "cfunc": "BigNum::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.badd",
+      "cfunc": "BigNum::Badd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bsub",
+      "cfunc": "BigNum::Bsub(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bmul",
+      "cfunc": "BigNum::Bmul(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bdiv",
+      "cfunc": "BigNum::Bdiv(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.uadd",
+      "cfunc": "BigNum::Uadd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.usub",
+      "cfunc": "BigNum::Usub(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.umul",
+      "cfunc": "BigNum::Umul(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.udiv",
+      "cfunc": "BigNum::Udiv(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.umul2exp",
+      "cfunc": "BigNum::Umul_2exp(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.udiv2exp",
+      "cfunc": "BigNum::Udiv_2exp(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.babs",
+      "cfunc": "BigNum::Babs(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bneg",
+      "cfunc": "BigNum::Bneg(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bmod",
+      "cfunc": "BigNum::Bmod(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.umod",
+      "cfunc": "BigNum::Umod(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bpowm",
+      "cfunc": "BigNum::Bpowm(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.upowm",
+      "cfunc": "BigNum::Upowm(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.upow",
+      "cfunc": "BigNum::Upow(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.brand0",
+      "cfunc": "BigNum::Brand0(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.probprime",
+      "cfunc": "BigNum::Probprime(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bcompare",
+      "cfunc": "BigNum::Bcompare(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.scompare",
+      "cfunc": "BigNum::Scompare(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.ucompare",
+      "cfunc": "BigNum::Ucompare(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.band",
+      "cfunc": "BigNum::Band(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bor",
+      "cfunc": "BigNum::Bor(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bxor",
+      "cfunc": "BigNum::Bxor(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.binvertm",
+      "cfunc": "BigNum::Binvertm(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bsqrt",
+      "cfunc": "BigNum::Bsqrt(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.broot",
+      "cfunc": "BigNum::Broot(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.bitLength",
+      "cfunc": "BigNum::BitLength(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.gcd",
+      "cfunc": "BigNum::Bgcd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.jacobi",
+      "cfunc": "BigNum::Bjacobi(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.setCompact",
+      "cfunc": "BigNum::Bsetcompact(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "bignum/index.prototype.isbitset",
+      "cfunc": "BigNum::IsBitSet(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/bignum/build/Release/bignum.node"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}

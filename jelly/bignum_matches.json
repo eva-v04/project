@@ -1,0 +1,320 @@
+[
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "read BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "write toString...toString",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum.prototype.tostring",
+    "cfunc": "BigNum::ToString(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "write probPrime...probPrime",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum.prototype.probprime",
+    "cfunc": "BigNum::Probprime(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "write isBitSet...isBitSet",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum.prototype.isbitset",
+    "cfunc": "BigNum::IsBitSet(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call BigNum...BigNum",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum",
+    "cfunc": "BigNum::New(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call setJSConditioner...setJSConditioner",
+    "gasket_jsname": "bignum/build/Release/bignum.setJSConditioner",
+    "cfunc": "SetJSConditioner(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call uprime0...uprime0",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum.uprime0",
+    "cfunc": "BigNum::Uprime0(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  },
+  {
+    "jelly_pattern": "call brand0...brand0",
+    "gasket_jsname": "bignum/build/Release/bignum.BigNum.prototype.brand0",
+    "cfunc": "BigNum::Brand0(Nan::FunctionCallbackInfo<v8::Value> const&)",
+    "confidence": 1
+  }
+]

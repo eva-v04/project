@@ -1,0 +1,17 @@
+{
+  "objects_examined": 0,
+  "callable_objects": 0,
+  "foreign_callable_objects": 0,
+  "duration_sec": 0.023,
+  "count": 0,
+  "modules": [
+    "/home/gasket/node_modules/venbind/prebuilds/linux-aarch64/venbind-linux-aarch64.node",
+    "/home/gasket/node_modules/venbind/prebuilds/linux-x86_64/venbind-linux-x86_64.node",
+    "/home/gasket/node_modules/venbind/prebuilds/windows-aarch64/venbind-windows-aarch64.node",
+    "/home/gasket/node_modules/venbind/prebuilds/windows-x86_64/venbind-windows-x86_64.node"
+  ],
+  "jump_libs": [],
+  "bridges": [],
+  "ambiguous": [],
+  "unresolved": []
+}

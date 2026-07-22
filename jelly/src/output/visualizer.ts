@@ -205,14 +205,14 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
     const ghidraModuleKey = "GhidraBinaryModule";
     const maxModuleCallCount_updated = maxModuleCallCount;
     
-    // Προσθέτουμε το κουτί "Ghidra Binary" στο Overview. 
+    // Προσθέτουμε το κουτί "Ghidra Functions" στο Overview. 
     // Χρησιμοποιούμε το id(p) του πρώτου package ή null ως parent
     const firstPackage = f.a.packageInfos.values().next().value;
     e.add({
         id: id(ghidraModuleKey as any),
         kind: "module",
         parent: firstPackage ? id(firstPackage) : undefined,
-        name: "Ghidra Binary",
+        name: "Ghidra Functions",
         fullName: "Ghidra Demangled Binary Sub-graph",
         callWeight: 10,
         callCount: 0,
@@ -240,7 +240,7 @@ export function getVisualizerCallGraph(f: FragmentState, vulnerabilities: Vulner
                 e.add({
                     id: id(fun),
                     kind: "function",
-                    parent: id(ghidraModuleKey as any), // Την βάζουμε μέσα στο κουτάκι Ghidra Binary!
+                    parent: id(ghidraModuleKey as any), // Την βάζουμε μέσα στο κουτάκι Ghidra Functions!
                     name: fun.name,
                     fullName: `Ghidra Sub-call: ${fun.name}`,
                     callWeight: 10,

@@ -587,9 +587,19 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
     try {
         const fs = require("fs");
         const path = require("path");
-        const targetPackage = (process.env.PNAME || "unknown").toLowerCase();
         
-        // Το αρχείο θα αποθηκεύεται στον φάκελο jelly
+        // Παίρνουμε το full path από το process.env.BPATH (flag --bridges)
+        const bridgesPath = process.env.BPATH;
+        let targetPackage = "unknown";
+        
+        if (bridgesPath) {
+            // Παίρνουμε μόνο το όνομα του αρχείου (π.χ. bridges_sqlite3.json)
+            const filename = path.basename(bridgesPath); 
+            // αφαιρούμε το "bridges_" και το ".json" για να μείνει το "sqlite3"
+            targetPackage = filename.replace(/^bridges_/, "").replace(/\.json$/, "").toLowerCase();
+        }
+        
+        // το αρχείο θα αποθηκεύεται στον φάκελο jelly
         const outputPath = path.join(__dirname, `../../${targetPackage}_matches.json`);
         
         fs.writeFileSync(outputPath, JSON.stringify(allMatches, null, 2), "utf-8");
@@ -638,6 +648,8 @@ function extractStructuralTokens(fqnString: string): string[] {
     let tokens = s.split(".").map(t => t.trim().toLowerCase()).filter(t => t.length > 0);
 
     const garbageTokens = new Set(["apply", "node_sqlite3"]);
+    //const garbageTokens = new Set([ "node_sqlite3"]);
+    //APPLY
     tokens = tokens.filter(t => !garbageTokens.has(t));
 
     return tokens;

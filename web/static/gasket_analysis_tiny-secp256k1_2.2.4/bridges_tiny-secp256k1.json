@@ -1,0 +1,199 @@
+{
+  "objects_examined": 7639,
+  "callable_objects": 6701,
+  "foreign_callable_objects": 7,
+  "duration_sec": 3.708,
+  "count": 29,
+  "modules": [
+    "/home/gasket/node_modules/tiny-secp256k1/lib/index.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/rand.browser.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/rand.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/validate.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/validate_error.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/wasm_loader.browser.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/wasm_loader.js",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/wasm_path.js"
+  ],
+  "jump_libs": [
+    "/usr/local/bin/node",
+    "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.memory.constructor",
+      "cfunc": "v8::internal::wasm::WebAssemblyMemory(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.memory.grow",
+      "cfunc": "v8::internal::wasm::WebAssemblyMemoryGrow(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.memory.__proto__.buffer.GET",
+      "cfunc": "v8::internal::wasm::WebAssemblyMemoryGetBuffer(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.PUBLIC_KEY_INPUT.constructor",
+      "cfunc": "v8::internal::wasm::WebAssemblyGlobal(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.PUBLIC_KEY_INPUT.valueOf",
+      "cfunc": "v8::internal::wasm::WebAssemblyGlobalValueOf(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.PUBLIC_KEY_INPUT.__proto__.value.GET",
+      "cfunc": "v8::internal::wasm::WebAssemblyGlobalGetValue(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.PUBLIC_KEY_INPUT.__proto__.value.SET",
+      "cfunc": "v8::internal::wasm::WebAssemblyGlobalSetValue(v8::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/usr/local/bin/node"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.initializeContext",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.isPoint",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.pointAdd",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.pointAddScalar",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.xOnlyPointAddTweak",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.xOnlyPointAddTweakCheck",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.pointCompress",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.pointFromScalar",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.xOnlyPointFromScalar",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.xOnlyPointFromPoint",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.pointMultiply",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.privateAdd",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.privateSub",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.privateNegate",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.sign",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.signRecoverable",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.signSchnorr",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.verify",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.recover",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.verifySchnorr",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.rustsecp256k1_v0_8_1_default_error_callback_fn",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    },
+    {
+      "type": "js-to-wasm",
+      "jsname": "tiny-secp256k1/lib/wasm_loader.default.rustsecp256k1_v0_8_1_default_illegal_callback_fn",
+      "cfunc": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/lib/secp256k1.wasm"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}

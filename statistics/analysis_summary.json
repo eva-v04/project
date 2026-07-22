@@ -1,0 +1,537 @@
+[
+  {
+    "package": "leveldown",
+    "call_graph_metrics": {
+      "fun2fun_edges": 687,
+      "call2fun_edges": 1206,
+      "total_call_sites": 316,
+      "zero_or_one_callee": {
+        "count": 251,
+        "pct": 79.43
+      },
+      "multiple_callees": {
+        "count": 65,
+        "pct": 20.57
+      },
+      "native_or_external_callees": {
+        "count": 62,
+        "pct": 19.62
+      },
+      "zero_caller_functions": {
+        "count": 70,
+        "pct": 17.99
+      }
+    },
+    "packages": {
+      "ground_truth_total": 6,
+      "reachable": 6,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "abstract-leveldown",
+        "catering",
+        "is-buffer",
+        "level-supports",
+        "leveldown",
+        "node-gyp-build"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 16,
+      "reachable": 16,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 322,
+        "reachable": 255,
+        "coverage_pct": 79.19
+      },
+      "js_functions": {
+        "ground_truth_total": 136,
+        "reachable": 69,
+        "coverage_pct": 50.74
+      },
+      "native_summary": {
+        "total": 186,
+        "reachable": 186,
+        "coverage_pct": 100.0
+      },
+      "native_gasket": {
+        "total": 23,
+        "reachable": 23,
+        "coverage_pct": 100.0
+      },
+      "native_ghidra": {
+        "total": 163,
+        "reachable": 163,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  {
+    "package": "bcrypt",
+    "call_graph_metrics": {
+      "fun2fun_edges": 674,
+      "call2fun_edges": 752,
+      "total_call_sites": 757,
+      "zero_or_one_callee": {
+        "count": 580,
+        "pct": 76.62
+      },
+      "multiple_callees": {
+        "count": 177,
+        "pct": 23.38
+      },
+      "native_or_external_callees": {
+        "count": 180,
+        "pct": 23.78
+      },
+      "zero_caller_functions": {
+        "count": 21,
+        "pct": 8.4
+      }
+    },
+    "packages": {
+      "ground_truth_total": 2,
+      "reachable": 2,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "bcrypt",
+        "node-gyp-build"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 11,
+      "reachable": 11,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 193,
+        "reachable": 193,
+        "coverage_pct": 100.0
+      },
+      "js_functions": {
+        "ground_truth_total": 193,
+        "reachable": 193,
+        "coverage_pct": 100.0
+      },
+      "native_summary": {
+        "total": 0,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      },
+      "native_gasket": {
+        "total": 0,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      },
+      "native_ghidra": {
+        "total": 0,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      }
+    }
+  },
+  {
+    "package": "lz4",
+    "call_graph_metrics": {
+      "fun2fun_edges": 101,
+      "call2fun_edges": 63,
+      "total_call_sites": 199,
+      "zero_or_one_callee": {
+        "count": 199,
+        "pct": 100.0
+      },
+      "multiple_callees": {
+        "count": 0,
+        "pct": 0.0
+      },
+      "native_or_external_callees": {
+        "count": 53,
+        "pct": 26.63
+      },
+      "zero_caller_functions": {
+        "count": 2,
+        "pct": 1.94
+      }
+    },
+    "packages": {
+      "ground_truth_total": 0,
+      "reachable": 0,
+      "coverage_pct": 0.0,
+      "list_reachable": []
+    },
+    "files": {
+      "ground_truth_total": 1,
+      "reachable": 0,
+      "coverage_pct": 0.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 16,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      },
+      "js_functions": {
+        "ground_truth_total": 8,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      },
+      "native_summary": {
+        "total": 8,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      },
+      "native_gasket": {
+        "total": 8,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      },
+      "native_ghidra": {
+        "total": 0,
+        "reachable": 0,
+        "coverage_pct": 0.0
+      }
+    }
+  },
+  {
+    "package": "re2",
+    "call_graph_metrics": {
+      "fun2fun_edges": 1934,
+      "call2fun_edges": 3129,
+      "total_call_sites": 19,
+      "zero_or_one_callee": {
+        "count": 15,
+        "pct": 78.95
+      },
+      "multiple_callees": {
+        "count": 4,
+        "pct": 21.05
+      },
+      "native_or_external_callees": {
+        "count": 7,
+        "pct": 36.84
+      },
+      "zero_caller_functions": {
+        "count": 2,
+        "pct": 0.19
+      }
+    },
+    "packages": {
+      "ground_truth_total": 1,
+      "reachable": 1,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "re2"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 2,
+      "reachable": 2,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 1044,
+        "reachable": 1044,
+        "coverage_pct": 100.0
+      },
+      "js_functions": {
+        "ground_truth_total": 4,
+        "reachable": 4,
+        "coverage_pct": 100.0
+      },
+      "native_summary": {
+        "total": 1040,
+        "reachable": 1040,
+        "coverage_pct": 100.0
+      },
+      "native_gasket": {
+        "total": 1,
+        "reachable": 1,
+        "coverage_pct": 100.0
+      },
+      "native_ghidra": {
+        "total": 1039,
+        "reachable": 1039,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  {
+    "package": "sharp",
+    "call_graph_metrics": {
+      "fun2fun_edges": 2076,
+      "call2fun_edges": 6305,
+      "total_call_sites": 2331,
+      "zero_or_one_callee": {
+        "count": 1273,
+        "pct": 54.61
+      },
+      "multiple_callees": {
+        "count": 1058,
+        "pct": 45.39
+      },
+      "native_or_external_callees": {
+        "count": 1119,
+        "pct": 48.01
+      },
+      "zero_caller_functions": {
+        "count": 211,
+        "pct": 16.02
+      }
+    },
+    "packages": {
+      "ground_truth_total": 9,
+      "reachable": 9,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "@img/colour",
+        "abbrev",
+        "detect-libc",
+        "node-addon-api",
+        "node-gyp",
+        "nopt",
+        "proc-log",
+        "semver",
+        "sharp"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 50,
+      "reachable": 50,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 843,
+        "reachable": 614,
+        "coverage_pct": 72.84
+      },
+      "js_functions": {
+        "ground_truth_total": 550,
+        "reachable": 321,
+        "coverage_pct": 58.36
+      },
+      "native_summary": {
+        "total": 293,
+        "reachable": 293,
+        "coverage_pct": 100.0
+      },
+      "native_gasket": {
+        "total": 11,
+        "reachable": 11,
+        "coverage_pct": 100.0
+      },
+      "native_ghidra": {
+        "total": 282,
+        "reachable": 282,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  {
+    "package": "sqlite3",
+    "call_graph_metrics": {
+      "fun2fun_edges": 3196,
+      "call2fun_edges": 5211,
+      "total_call_sites": 2348,
+      "zero_or_one_callee": {
+        "count": 2174,
+        "pct": 92.59
+      },
+      "multiple_callees": {
+        "count": 174,
+        "pct": 7.41
+      },
+      "native_or_external_callees": {
+        "count": 25,
+        "pct": 1.06
+      },
+      "zero_caller_functions": {
+        "count": 261,
+        "pct": 18.26
+      }
+    },
+    "packages": {
+      "ground_truth_total": 4,
+      "reachable": 4,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "bindings",
+        "file-uri-to-path",
+        "sqlite3",
+        "tar"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 7,
+      "reachable": 7,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 1377,
+        "reachable": 959,
+        "coverage_pct": 69.64
+      },
+      "js_functions": {
+        "ground_truth_total": 754,
+        "reachable": 336,
+        "coverage_pct": 44.56
+      },
+      "native_summary": {
+        "total": 623,
+        "reachable": 623,
+        "coverage_pct": 100.0
+      },
+      "native_gasket": {
+        "total": 10,
+        "reachable": 10,
+        "coverage_pct": 100.0
+      },
+      "native_ghidra": {
+        "total": 613,
+        "reachable": 613,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  {
+    "package": "fs-native-extensions",
+    "call_graph_metrics": {
+      "fun2fun_edges": 844,
+      "call2fun_edges": 1294,
+      "total_call_sites": 390,
+      "zero_or_one_callee": {
+        "count": 311,
+        "pct": 79.74
+      },
+      "multiple_callees": {
+        "count": 79,
+        "pct": 20.26
+      },
+      "native_or_external_callees": {
+        "count": 83,
+        "pct": 21.28
+      },
+      "zero_caller_functions": {
+        "count": 37,
+        "pct": 8.49
+      }
+    },
+    "packages": {
+      "ground_truth_total": 6,
+      "reachable": 6,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "bare-addon-resolve",
+        "bare-module-resolve",
+        "bare-semver",
+        "fs-native-extensions",
+        "require-addon",
+        "which-runtime"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 14,
+      "reachable": 14,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 335,
+        "reachable": 261,
+        "coverage_pct": 77.91
+      },
+      "js_functions": {
+        "ground_truth_total": 129,
+        "reachable": 55,
+        "coverage_pct": 42.64
+      },
+      "native_summary": {
+        "total": 206,
+        "reachable": 206,
+        "coverage_pct": 100.0
+      },
+      "native_gasket": {
+        "total": 24,
+        "reachable": 24,
+        "coverage_pct": 100.0
+      },
+      "native_ghidra": {
+        "total": 182,
+        "reachable": 182,
+        "coverage_pct": 100.0
+      }
+    }
+  },
+  {
+    "package": "bignum",
+    "call_graph_metrics": {
+      "fun2fun_edges": 362,
+      "call2fun_edges": 1402,
+      "total_call_sites": 202,
+      "zero_or_one_callee": {
+        "count": 179,
+        "pct": 88.61
+      },
+      "multiple_callees": {
+        "count": 23,
+        "pct": 11.39
+      },
+      "native_or_external_callees": {
+        "count": 42,
+        "pct": 20.79
+      },
+      "zero_caller_functions": {
+        "count": 41,
+        "pct": 15.71
+      }
+    },
+    "packages": {
+      "ground_truth_total": 4,
+      "reachable": 4,
+      "coverage_pct": 100.0,
+      "list_reachable": [
+        "bignum",
+        "bindings",
+        "file-uri-to-path",
+        "safe-buffer"
+      ]
+    },
+    "files": {
+      "ground_truth_total": 4,
+      "reachable": 4,
+      "coverage_pct": 100.0
+    },
+    "functions": {
+      "combined_total": {
+        "total": 204,
+        "reachable": 199,
+        "coverage_pct": 97.55
+      },
+      "js_functions": {
+        "ground_truth_total": 57,
+        "reachable": 52,
+        "coverage_pct": 91.23
+      },
+      "native_summary": {
+        "total": 147,
+        "reachable": 147,
+        "coverage_pct": 100.0
+      },
+      "native_gasket": {
+        "total": 7,
+        "reachable": 7,
+        "coverage_pct": 100.0
+      },
+      "native_ghidra": {
+        "total": 140,
+        "reachable": 140,
+        "coverage_pct": 100.0
+      }
+    }
+  }
+]
