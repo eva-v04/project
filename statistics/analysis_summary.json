@@ -42,9 +42,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 322,
+        "total": 1401,
         "reachable": 255,
-        "coverage_pct": 79.19
+        "coverage_pct": 18.2
       },
       "js_functions": {
         "ground_truth_total": 136,
@@ -52,9 +52,9 @@
         "coverage_pct": 50.74
       },
       "native_summary": {
-        "total": 186,
+        "total": 1265,
         "reachable": 186,
-        "coverage_pct": 100.0
+        "coverage_pct": 14.7
       },
       "native_gasket": {
         "total": 23,
@@ -62,9 +62,9 @@
         "coverage_pct": 100.0
       },
       "native_ghidra": {
-        "total": 163,
+        "total": 1242,
         "reachable": 163,
-        "coverage_pct": 100.0
+        "coverage_pct": 13.12
       }
     }
   },
@@ -107,9 +107,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 193,
+        "total": 559,
         "reachable": 193,
-        "coverage_pct": 100.0
+        "coverage_pct": 34.53
       },
       "js_functions": {
         "ground_truth_total": 193,
@@ -117,7 +117,7 @@
         "coverage_pct": 100.0
       },
       "native_summary": {
-        "total": 0,
+        "total": 366,
         "reachable": 0,
         "coverage_pct": 0.0
       },
@@ -127,7 +127,7 @@
         "coverage_pct": 0.0
       },
       "native_ghidra": {
-        "total": 0,
+        "total": 366,
         "reachable": 0,
         "coverage_pct": 0.0
       }
@@ -169,7 +169,7 @@
     },
     "functions": {
       "combined_total": {
-        "total": 16,
+        "total": 1146,
         "reachable": 0,
         "coverage_pct": 0.0
       },
@@ -179,7 +179,7 @@
         "coverage_pct": 0.0
       },
       "native_summary": {
-        "total": 8,
+        "total": 1138,
         "reachable": 0,
         "coverage_pct": 0.0
       },
@@ -189,7 +189,7 @@
         "coverage_pct": 0.0
       },
       "native_ghidra": {
-        "total": 0,
+        "total": 1130,
         "reachable": 0,
         "coverage_pct": 0.0
       }
@@ -233,9 +233,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 1044,
+        "total": 3146,
         "reachable": 1044,
-        "coverage_pct": 100.0
+        "coverage_pct": 33.18
       },
       "js_functions": {
         "ground_truth_total": 4,
@@ -243,9 +243,9 @@
         "coverage_pct": 100.0
       },
       "native_summary": {
-        "total": 1040,
+        "total": 3142,
         "reachable": 1040,
-        "coverage_pct": 100.0
+        "coverage_pct": 33.1
       },
       "native_gasket": {
         "total": 1,
@@ -253,9 +253,9 @@
         "coverage_pct": 100.0
       },
       "native_ghidra": {
-        "total": 1039,
+        "total": 3141,
         "reachable": 1039,
-        "coverage_pct": 100.0
+        "coverage_pct": 33.08
       }
     }
   },
@@ -305,9 +305,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 843,
+        "total": 2015,
         "reachable": 614,
-        "coverage_pct": 72.84
+        "coverage_pct": 30.47
       },
       "js_functions": {
         "ground_truth_total": 550,
@@ -315,9 +315,9 @@
         "coverage_pct": 58.36
       },
       "native_summary": {
-        "total": 293,
+        "total": 1465,
         "reachable": 293,
-        "coverage_pct": 100.0
+        "coverage_pct": 20.0
       },
       "native_gasket": {
         "total": 11,
@@ -325,9 +325,9 @@
         "coverage_pct": 100.0
       },
       "native_ghidra": {
-        "total": 282,
+        "total": 1454,
         "reachable": 282,
-        "coverage_pct": 100.0
+        "coverage_pct": 19.39
       }
     }
   },
@@ -372,9 +372,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 1377,
+        "total": 3932,
         "reachable": 959,
-        "coverage_pct": 69.64
+        "coverage_pct": 24.39
       },
       "js_functions": {
         "ground_truth_total": 754,
@@ -382,9 +382,9 @@
         "coverage_pct": 44.56
       },
       "native_summary": {
-        "total": 623,
+        "total": 3178,
         "reachable": 623,
-        "coverage_pct": 100.0
+        "coverage_pct": 19.6
       },
       "native_gasket": {
         "total": 10,
@@ -392,9 +392,9 @@
         "coverage_pct": 100.0
       },
       "native_ghidra": {
-        "total": 613,
+        "total": 3168,
         "reachable": 613,
-        "coverage_pct": 100.0
+        "coverage_pct": 19.35
       }
     }
   },
@@ -441,9 +441,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 335,
+        "total": 353,
         "reachable": 261,
-        "coverage_pct": 77.91
+        "coverage_pct": 73.94
       },
       "js_functions": {
         "ground_truth_total": 129,
@@ -451,9 +451,9 @@
         "coverage_pct": 42.64
       },
       "native_summary": {
-        "total": 206,
+        "total": 224,
         "reachable": 206,
-        "coverage_pct": 100.0
+        "coverage_pct": 91.96
       },
       "native_gasket": {
         "total": 24,
@@ -461,9 +461,9 @@
         "coverage_pct": 100.0
       },
       "native_ghidra": {
-        "total": 182,
+        "total": 200,
         "reachable": 182,
-        "coverage_pct": 100.0
+        "coverage_pct": 91.0
       }
     }
   },
@@ -508,9 +508,9 @@
     },
     "functions": {
       "combined_total": {
-        "total": 204,
+        "total": 375,
         "reachable": 199,
-        "coverage_pct": 97.55
+        "coverage_pct": 53.07
       },
       "js_functions": {
         "ground_truth_total": 57,
@@ -518,9 +518,9 @@
         "coverage_pct": 91.23
       },
       "native_summary": {
-        "total": 147,
+        "total": 318,
         "reachable": 147,
-        "coverage_pct": 100.0
+        "coverage_pct": 46.23
       },
       "native_gasket": {
         "total": 7,
@@ -528,9 +528,9 @@
         "coverage_pct": 100.0
       },
       "native_ghidra": {
-        "total": 140,
+        "total": 311,
         "reachable": 140,
-        "coverage_pct": 100.0
+        "coverage_pct": 45.02
       }
     }
   }

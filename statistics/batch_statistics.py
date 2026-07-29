@@ -42,6 +42,26 @@ def find_reachable_from_root(jelly_json, root_package_name):
     return reachable
 
 
+def get_ground_truth_native_functions(ghidra_json_path):
+    """
+    Διαβάζει το πλήρες αρχείο Ghidra Symbol Export για να βρει
+    ΟΛΕΣ τις C/C++ συναρτήσεις που υπάρχουν στο compiled binary.
+    """
+    if not os.path.exists(ghidra_json_path):
+        return 0
+    try:
+        with open(ghidra_json_path, 'r', encoding='utf-8') as f:
+            ghidra_data = json.load(f)
+            nodes = ghidra_data.get("nodes", [])
+            if isinstance(nodes, list):
+                return len(nodes)
+            elif isinstance(nodes, dict):
+                return len(nodes.keys())
+    except Exception as e:
+        print(f"φάλμα κατά την ανάγνωση του Ghidra file: {e}")
+    return 0 #νέα δυνάρτηση για να περιέχονται συναρτήσεις των dependencies
+
+
 def get_ground_truth_packages(package_lock_path):
     installed_packages = set()
     if not os.path.exists(package_lock_path):
@@ -191,10 +211,24 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
     reachable_files_cnt = len(matched_reachable_files) if all_disk_files else len(reachable_file_indices)
     total_js_functions_gt = total_disk_functions if total_disk_functions > 0 else len([f for f in functions.values() if not str(f).startswith("[Native]")])
 
-    total_native = len(gasket_total) + len(ghidra_total)
+
+
+
+    ghidra_dir = os.path.join("..", "web", "static")
+    pkg_ghidra_name = "lz4-napi" if root_pkg_name == "lz4" else root_pkg_name
+    ghidra_file = os.path.join(ghidra_dir, f"ghidra_{pkg_ghidra_name}.json")
+    
+    native_gt_from_file = get_ground_truth_native_functions(ghidra_file)
+
+    if native_gt_from_file > 0:
+        total_native = native_gt_from_file
+        total_ghidra_gt = native_gt_from_file - len(gasket_total) 
+    else:
+        total_native = len(gasket_total) + len(ghidra_total)
+        total_ghidra_gt = len(ghidra_total)
+
     reachable_native = len(gasket_reachable) + len(ghidra_reachable)
 
-    # --- COMBINED FUNCTIONS (JS Ground Truth + Native Total) ---
     combined_total_functions = total_js_functions_gt + total_native
     combined_reachable_functions = len(js_reachable) + reachable_native
 
@@ -257,9 +291,9 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
                 "coverage_pct": calc_cov(len(gasket_reachable), len(gasket_total))
             },
             "native_ghidra": {
-                "total": len(ghidra_total),
+                "total": total_ghidra_gt,
                 "reachable": len(ghidra_reachable),
-                "coverage_pct": calc_cov(len(ghidra_reachable), len(ghidra_total))
+                "coverage_pct": calc_cov(len(ghidra_reachable), total_ghidra_gt)
             }
         }
     }
