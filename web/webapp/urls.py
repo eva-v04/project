@@ -42,4 +42,5 @@ urlpatterns = [
     #path('mark-notifications-read/', views.mark_notifications_as_read, name='mark_notifications_read'),
     path('check-notifications/', views.check_notifications, name='check_notifications'),
     path('download/<int:analysis_id>/', views.download_results, name='download_analysis'),
+    path('cross_language/', views.cross_language, name='cross_language'),
 ]

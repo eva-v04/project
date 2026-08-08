@@ -6,7 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
-    <title>Gasket Bridge Analysis</title>
+    <title>Cross-Language Analysis (Gasket + Jelly)</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
@@ -28,7 +28,7 @@
                     <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cross_language' %}">Cross-Language</a>
+                    <a class="nav-link active" href="{% url 'cross_language' %}">Cross-Language</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/analyses">My History</a>
@@ -40,17 +40,17 @@
                     <i class="fa-solid fa-moon"></i>
                 </button>
                 
-                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
-                            {{ user.username }} <i class="fa-regular fa-circle-user"></i>
-                        </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </a>
-                        </i>
+                <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
+                    {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+                </a>
+                <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
+                    <a href="{% url 'notifications' %}" 
+                       id="notification-badge" 
+                       class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                       style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                       {{ unread_count }}
+                    </a>
+                </i>
                 
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
@@ -60,10 +60,22 @@
 
     <div class="container-centered">
         <div class="glass-card">
-            <h1 style="margin-top: 15px;">Gasket Analysis</h1>
-            <p>Identify and map the interfaces between JavaScript and Native C++ modules.</p>
+            <h1 style="margin-top: 15px;">Cross-Language Analysis</h1>
             
-            <form action="/gasket/" method="post" class="form-group" id="gasketForm">
+            <!-- Τεκμηρίωση  -->
+            <div class="alert alert-info text-start mt-3 mb-4" style="background: rgba(13, 202, 240, 0.1); border-color: rgba(13, 202, 240, 0.3); color: inherit;">
+                <h5><i class="fa-solid fa-circle-info me-2"></i>Τεκμηρίωση Ανάλυσης</h5>
+                <p class="small mb-2">
+                    Αυτή η επιλογή συνδυάζει τα εργαλεία <strong>Gasket</strong> και <strong>Jelly</strong> για την παραγωγή ενός ενοποιημένου <strong>Cross-Language Call Graph</strong>:
+                </p>
+                <ul class="small mb-0">
+                    <li><strong>Jelly:</strong> Χαρτογραφεί τη ροή εκτέλεσης και τις κλήσεις συναρτήσεων στο επίπεδο της JavaScript.</li>
+                    <li><strong>Gasket:</strong> Εντοπίζει τις γέφυρες επικοινωνίας (Native Bridges) μεταξύ JavaScript και Native C/C++ modules.</li>
+                    <li><strong>Cross-Language Call Graph:</strong> Ενώνει τα δύο επίπεδα, απεικονίζοντας τις κλήσεις που διασχίζουν το όριο από την JavaScript στον Native κώδικα.</li>
+                </ul>
+            </div>
+            
+            <form action="/start-cross-language-ajax/" method="post" class="form-group" id="crossForm">
                 {% csrf_token %}
                 <label for="package_name" class="fw-bold mt-3" style="color: var(--primary);">NPM Package to Analyze</label>
                 <input type="text" name="package_name" class="form-control" placeholder="e.g. sqlite3" required>
@@ -73,7 +85,30 @@
                     <option value="" style="color: #333;">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
                 </select>
 
-                <script>
+                <p style="font-size: 0.85rem; color: #636e72; margin-top: 15px;">
+                    This process will execute both Jelly & Gasket scanners to generate the polyglot call graph.
+                </p>
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" id="submitBtn" class="btn-main" style="width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg, #0d6efd, #0dcaf0);">
+                        Generate Cross-Language Call Graph
+                    </button>
+                </div>
+            </form>
+            
+            <div id="loading" style="display: none; margin-top: 20px; text-align: center;">
+                <p class="text-info">⚙️ Generating Cross-Language Call Graph... This may take a moment.</p>
+                <div class="spinner-border text-info" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'notifications.js' %}"></script>
+
+    <script>
                 const packageInput = document.querySelector('input[name="package_name"]');
                 const versionSelect = document.getElementById('version_select');
                 let timeout = null;
@@ -103,26 +138,11 @@
                         .catch(err => {
                             versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
                         });
-                }, 500); // Περιμένει μισό δευτερόλεπτο αφού σταματήσεις να γράφεις
+                }, 500); // Περιμένει μισό δευτερόλεπτο αφού σταματήσει να γράφεις
             }
         });
     </script>
-                <p style="font-size: 0.85rem; color: #636e72; margin-top: 15px;">
-                    This process will download the package and scan for <strong>Native Bindings</strong>.
-                </p>
-                
-                <div style="margin-top: 30px;">
-                    <button type="submit" class="btn-main" style="width: 100%; border: none; cursor: pointer; background: linear-gradient(135deg, #4834d4, #00d2ff);">
-                        Analyze Native Bridges
-                    </button>
-                </div>
-            </form>
             
-            <div id="loading" style="display: none; margin-top: 20px;">
-                <p>⚙️ Analyzing Bridges... This may take a moment.</p>
-            </div>
-        </div>
-    </div>
 
     <script>
         document.getElementById('gasketForm').onsubmit = function() {

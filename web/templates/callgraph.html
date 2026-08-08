@@ -19,11 +19,22 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="{% url 'workspace' %}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'callgraph' %}">Jelly Analysis</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/analyses">My History</a></li>
-                </ul>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'workspace' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cross_language' %}">Cross-Language</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analyses">My History</a>
+                </li>
+            </ul>
                 
                 <div class="d-flex align-items-center">
                     <button id="theme-toggle" class="btn btn-link text-info me-3">

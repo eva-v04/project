@@ -42,24 +42,41 @@
         <h5 class="mb-4">SELECT ANALYSIS TYPE:</h5>
         
         <div class="row g-4 mb-5">
+            <!-- 1. Gasket Analysis -->
             <div class="col-md-4">
                 <a href="{% url 'gasket' %}" class="analysis-card-link">
-                <div class="analysis-card">
-                    <i class="fa-solid fa-eye card-icon"></i>
-                    <h6>BRIDGES ANALYSIS (GASKET)</h6>
-                    <p class="small text-secondary">Map all native bridges in memory.</p>
-                    <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
-                </div>
-            </a></div>
+                    <div class="analysis-card h-100">
+                        <i class="fa-solid fa-eye card-icon"></i>
+                        <h6>BRIDGES ANALYSIS (GASKET)</h6>
+                        <p class="small text-secondary">Map all native bridges in memory.</p>
+                        <button class="btn btn-outline-secondary btn-sm w-100 mt-auto">SELECT</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 2. Jelly Analysis -->
             <div class="col-md-4">
                 <a href="{% url 'callgraph' %}" class="analysis-card-link">
-                <div class="analysis-card">
-                    <i class="fa-solid fa-circle-nodes card-icon"></i>
-                    <h6>CALL GRAPH (JELLY)</h6>
-                    <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
-                    <button class="btn btn-outline-secondary btn-sm w-100 mt-3">SELECT</button>
-                </div>
-            </a></div>
+                    <div class="analysis-card h-100">
+                        <i class="fa-solid fa-circle-nodes card-icon"></i>
+                        <h6>CALL GRAPH (JELLY)</h6>
+                        <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
+                        <button class="btn btn-outline-secondary btn-sm w-100 mt-auto">SELECT</button>
+                    </div>
+                </a>
+            </div>
+
+            <!-- 3. Cross-Language Analysis (Gasket + Jelly) -->
+            <div class="col-md-4">
+                <a href="{% url 'cross_language' %}" class="analysis-card-link">
+                    <div class="analysis-card h-100">
+                        <i class="fa-solid fa-diagram-project card-icon"></i>
+                        <h6>CROSS-LANGUAGE (GASKET + JELLY)</h6>
+                        <p class="small text-secondary">Generate polyglot call graphs bridging JS & Native C++.</p>
+                        <button class="btn btn-outline-secondary btn-sm w-100 mt-auto">SELECT</button>
+                    </div>
+                </a>
+            </div>
         </div>
 
         <h5 class="mt-5 mb-3">Click here to see your analyses</h5>

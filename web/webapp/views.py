@@ -490,3 +490,7 @@ def statistics(request, analysis_id):
     }
     
     return render(request, 'statistics.html', context)
+
+
+def cross_language(request):
+    return render(request, 'cross_language.html')
