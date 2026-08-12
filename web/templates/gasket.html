@@ -177,7 +177,7 @@ document.getElementById('gasketForm').onsubmit = function(e) {
     .then(data => {
         if (data.status === 'success') {
             // Αντί για redirect, ενημερώνουμε τον χρήστη
-            loadingDiv.innerHTML = "<p>✅ Η ανάλυση ξεκίνησε! Μπορείτε να δείτε την πρόοδο στο <a href='/analyses'>History</a>.</p>";
+            loadingDiv.innerHTML = "<p>✅ Η ανάλυση ολοκληρώθηκε! Μπορείτε να δείτε την πρόοδο στο <a href='/analyses'>History</a>.</p>";
             // Προαιρετικά: Μετά από 3 δευτερόλεπτα στείλε τον στο ιστορικό
             setTimeout(() => { window.location.href = '/analyses'; }, 3000);
         }

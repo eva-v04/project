@@ -43,4 +43,6 @@ urlpatterns = [
     path('check-notifications/', views.check_notifications, name='check_notifications'),
     path('download/<int:analysis_id>/', views.download_results, name='download_analysis'),
     path('cross_language/', views.cross_language, name='cross_language'),
+    path('start-cross-language-ajax/', views.start_cross_language_ajax, name='start_cross_language_ajax'),
+    path('results_cross/<int:analysis_id>/', views.cross_language_results, name='cross_language_results'),
 ]

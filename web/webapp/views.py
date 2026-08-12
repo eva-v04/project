@@ -13,7 +13,7 @@ from .models import User, Package, Analyses, Notification
 from .forms import AnalysisForm, LoginForm, SignupForm
 from django.contrib.auth import authenticate, login
 
-from .tasks import run_gasket_analysis, run_jelly_analysis
+from .tasks import run_gasket_analysis, run_jelly_analysis, run_cross_language_analysis
 from django.tasks import task
 
 import json
@@ -43,7 +43,7 @@ def start_jelly_ajax(request):
         user_id = request.session.get('user_id')
         current_user = User.objects.filter(id=user_id).first() if user_id else None
 
-        # 1. ΕΛΕΓΧΟΣ CACHE: Ψάχνουμε αν οποιοσδήποτε χρήστης έχει ολοκληρώσει αυτή την ανάλυση
+        #  ΕΛΕΓΧΟΣ CACHE: Ψάχνουμε αν οποιοσδήποτε χρήστης έχει ολοκληρώσει αυτή την ανάλυση
         existing_analysis = Analyses.objects.filter(
             package_name=package,
             package_version=version,
@@ -493,4 +493,112 @@ def statistics(request, analysis_id):
 
 
 def cross_language(request):
-    return render(request, 'cross_language.html')
+    form = AnalysisForm()
+    user_id = request.session.get('user_id')
+    current_user = User.objects.get(id=user_id) if user_id else {'username': 'Guest'}
+    
+    return render(request, 'cross_language.html', {
+        'form': form,
+        'user': current_user
+    })
+
+
+def start_cross_language_ajax(request):
+    if request.method == 'POST':
+        package = request.POST.get('package_name')
+        version = request.POST.get('version', 'latest')
+        
+        # Λήψη τρέχοντος χρήστη από το session
+        user_id = request.session.get('user_id')
+        current_user = User.objects.filter(id=user_id).first() if user_id else None
+
+        # 1. ΕΛΕΓΧΟΣ CACHE: Ψάχνουμε αν υπάρχει ήδη ολοκληρωμένη cross_language ανάλυση
+        existing_analysis = Analyses.objects.filter(
+            package_name=package,
+            package_version=version,
+            analysis_type='cross_language',
+            status='completed'
+        ).first()
+
+        if existing_analysis:
+            new_analysis = Analyses.objects.create(
+                package_name=package,
+                package_version=version,
+                user=current_user,
+                analysis_type='cross_language',
+                status='completed'
+            )
+
+            if not current_user:
+                guest_history = request.session.get('guest_analyses', [])
+                guest_history.append(new_analysis.id)
+                request.session['guest_analyses'] = guest_history
+                request.session.modified = True
+
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Cross-Language analysis found in cache!',
+                'redirect': True
+            })
+
+        # 2. Δημιουργία νέας ανάλυσης στη βάση δεδομένων
+        new_analysis = Analyses.objects.create(
+            package_name=package,
+            package_version=version,
+            user=current_user,
+            analysis_type='cross_language',
+            status='running'
+        )
+
+        if not current_user:
+            guest_history = request.session.get('guest_analyses', [])
+            guest_history.append(new_analysis.id)
+            request.session['guest_analyses'] = guest_history
+            request.session.modified = True
+
+        # 3. Εκκίνηση του Background Task
+        run_cross_language_analysis.enqueue(package, version, analysis_id=new_analysis.id)
+
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Cross-Language Analysis started!',
+            'analysis_id': new_analysis.id
+        })
+        
+    return JsonResponse({'status': 'error'}, status=400)
+
+
+def cross_language_results(request, analysis_id):
+    analysis = Analyses.objects.get(id=analysis_id)
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    package_name = analysis.package_name
+    version = analysis.package_version
+
+    # Σύνδεση με το τελικό ενοποιημένο HTML γράφημα
+    graph_url = f"/static/cross_analysis_{package_name}_{version}/{package_name}.html"
+    
+    context = {
+        'package_name': package_name,
+        'package_version': version,
+        'graph_url': graph_url,
+        'date': analysis.date,
+        'analysis_id': analysis.id
+    }
+    return render(request, 'results.html', context)
+
+
+def analysis_detail(request, analysis_id):
+    analysis = Analyses.objects.get(id=analysis_id)
+    
+    if analysis.analysis_type == 'gasket':
+        return redirect('gasket_results', analysis_id=analysis.id)
+
+    if analysis.analysis_type == 'jelly':
+        return redirect('results', analysis_id=analysis.id)
+
+    if analysis.analysis_type == 'cross_language':
+        return redirect('cross_language_results', analysis_id=analysis.id)
+
+    return redirect('analyses')

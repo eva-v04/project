@@ -2,7 +2,7 @@
   "objects_examined": 7153,
   "callable_objects": 4940,
   "foreign_callable_objects": 73,
-  "duration_sec": 5.676,
+  "duration_sec": 10.197,
   "count": 73,
   "modules": [
     "/home/gasket/node_modules/bignum/build/Release/bignum.node",

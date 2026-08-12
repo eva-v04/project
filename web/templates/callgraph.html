@@ -147,7 +147,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ξεκίνησε! Μεταφέρεστε στο ιστορικό...</p>";
+                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ολοκληρώθηκε! Μεταφέρεστε στο ιστορικό...</p>";
                     setTimeout(() => { window.location.href = '/analyses'; }, 2000);
                 } else {
                     alert('Σφάλμα: ' + (data.message || 'Αποτυχία εκκίνησης'));
