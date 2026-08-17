@@ -19,7 +19,9 @@ class Analyses(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     analysis_type = models.CharField(max_length=20, choices=[('callgraph', 'Call Graph'), ('gasket', 'Gasket')], default='callgraph')
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('completed', 'Completed')], default='pending')
-   # task_id = models.CharField(max_length=50, blank=True, null=True)  # Προσθήκη πεδίου για το task ID
+    # task_id = models.CharField(max_length=50, blank=True, null=True)  # Προσθήκη πεδίου για το task ID
+    progress = models.IntegerField(default=0)  # Προσθήκη πεδίου για την πρόοδο της ανάλυσης (0-100)
+    current_step = models.CharField(max_length=255, default="Starting...")  # Περιγραφή σταδίου
 
 
 class Notification(models.Model):

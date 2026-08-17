@@ -45,4 +45,5 @@ urlpatterns = [
     path('cross_language/', views.cross_language, name='cross_language'),
     path('start-cross-language-ajax/', views.start_cross_language_ajax, name='start_cross_language_ajax'),
     path('results_cross/<int:analysis_id>/', views.cross_language_results, name='cross_language_results'),
+    path('ajax/active-analyses/', views.get_active_analyses_status, name='active_analyses_status')
 ]

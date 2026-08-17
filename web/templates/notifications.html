@@ -4,37 +4,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications & Progress | Project</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{% static 'base.css' %}">
-    <title>Notifications</title>
+    
+    <style>
+        .notif-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 1.25rem;
+            transition: all 0.2s ease;
+            box-shadow: var(--card-shadow);
+        }
+
+        body.light-mode .notif-card {
+            background: #ffffff;
+            border-color: #cbd5e1;
+        }
+
+        .notif-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .notif-msg {
+            color: var(--text-main);
+            font-size: 0.95rem;
+        }
+
+        body.light-mode .notif-msg {
+            color: #334155 !important;
+        }
+
+        .notif-badge-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+    </style>
 </head>
 <body>
+
+    <!-- Unified Navbar -->
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <h2 class="text-white m-0">Project</h2>
+            <h2 class="m-0">Project</h2>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'workspace' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cross_language' %}">Cross-Language</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/analyses">My History</a>
-                </li>
-            </ul>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'workspace' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cross_language' %}">Cross-Language</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/analyses">My History</a></li>
+                </ul>
                 
                 <div class="d-flex align-items-center">
                     <button id="theme-toggle" class="btn btn-link text-info me-3">
@@ -42,16 +75,16 @@
                     </button>
                     
                     <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
-                            {{ user.username }} <i class="fa-regular fa-circle-user"></i>
-                        </a>
-                        <a href="{% url 'notifications' %}" class="text-decoration-none position-relative me-3" style="color: inherit;">
-                            <i class="fa-solid fa-bell" style="cursor: pointer; font-size: 1.2rem;"></i>
-                            <span id="notification-badge" 
-                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                                style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                        {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+                    </a>
+                    <a href="{% url 'notifications' %}" class="text-decoration-none position-relative me-3" style="color: inherit;">
+                        <i class="fa-solid fa-bell" style="cursor: pointer; font-size: 1.2rem;"></i>
+                        <span id="notification-badge" 
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
                             {{ unread_count }}
-                            </span>
-                        </a>
+                        </span>
+                    </a>
 
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
                 </div>
@@ -59,65 +92,151 @@
         </div>
     </nav>
 
-    <div class="container-centered">
-        <div class="glass-card">
-        <h1>Notifications</h1>
-        <p>Δείτε την πρόοδο των αναλύσεών σας.</p>
-        <ul class="list-group">
-            {% for notification in notifications %}
-            <a href="{{ notification.link }}" class="text-decoration-none">
-                <div class="list-group-item {% if not notification.is_read %}list-group-item-info{% else %}list-group-item-secondary{% endif %} mb-2 notification-hover" 
-                style="border-radius: 10px; background: rgba(255,255,255,0.05); color: white; transition: 0.3s;">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1 text-info">{{ notification.title }}</h5>
-                    <small class="text-secondary">{{ notification.created_at|timesince }} ago</small>
+    <!-- Main Container -->
+    <div class="container my-5">
+        <div class="hero-banner mb-4">
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="fw-bold mb-1">Notifications & Activity</h1>
+                    <p class="text-muted m-0">Παρακολουθήστε την εξέλιξη των εργασιών και δείτε αναλυτικά τα αποτελέσματα των αναλύσεων.</p>
                 </div>
-                <p class="mb-1">{{ notification.message }}</p>
+                <a href="/analyses" class="btn btn-outline-info rounded-pill px-3 py-2 fw-semibold">
+                    <i class="fa-solid fa-layer-group me-1"></i> Όλες οι Αναλύσεις
+                </a>
+            </div>
+
+            <!--LIVE ACTIVE ANALYSES SECTION (Εμφανίζεται μονο αν υπάρχουν ενεργές εργασίες) -->
+            <div id="active-analyses-wrapper" style="display: none;" class="mb-4">
+                <h5 class="fw-bold mb-3 text-info d-flex align-items-center">
+                    <i class="fa-solid fa-spinner fa-spin me-2"></i>Ενεργές Αναλύσεις σε Εξέλιξη
+                </h5>
+                <div id="active-analyses-container"></div>
+                <hr class="border-secondary opacity-25 my-4">
+            </div>
+
+            <!--  NOTIFICATIONS HISTORY SECTION -->
+            <h5 class="fw-bold mb-3 d-flex align-items-center">
+                <i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Ιστορικό Ειδοποιήσεων
+            </h5>
+
+            {% if notifications %}
+                <div class="d-flex flex-column gap-3">
+                    {% for notification in notifications %}
+                        <a href="{% if notification.link %}{{ notification.link }}{% else %}#{% endif %}" class="text-decoration-none">
+                            <div class="notif-card d-flex align-items-start gap-3">
+                                
+                                <!-- Icon Status -->
+                                {% if "Failed" in notification.title or "Error" in notification.title or "απέτυχε" in notification.message %}
+                                    <div class="notif-badge-icon bg-danger bg-opacity-10 text-danger flex-shrink-0">
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </div>
+                                {% else %}
+                                    <div class="notif-badge-icon bg-success bg-opacity-10 text-success flex-shrink-0">
+                                        <i class="fa-solid fa-circle-check"></i>
+                                    </div>
+                                {% endif %}
+
+                                <!-- Notification Content -->
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <h6 class="fw-bold m-0 {% if 'Failed' in notification.title %}text-danger{% else %}text-info{% endif %}">
+                                                {{ notification.title }}
+                                            </h6>
+                                            {% if "Failed" in notification.title %}
+                                                <span class="badge bg-danger text-light rounded-pill" style="font-size: 0.65rem;">FAILED</span>
+                                            {% else %}
+                                                <span class="badge bg-success text-light rounded-pill" style="font-size: 0.65rem;">COMPLETED</span>
+                                            {% endif %}
+                                        </div>
+                                        <small class="text-muted">{{ notification.created_at|timesince }} ago</small>
+                                    </div>
+                                    
+                                    <p class="notif-msg mb-0 mt-1">{{ notification.message }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
                 </div>
-            </a>
-            {% endfor %}
-        </ul>
+            {% else %}
+                <div class="alert alert-secondary text-center rounded-3 p-4 mb-0">
+                    <i class="fa-regular fa-bell-slash fs-4 d-block mb-2 text-muted"></i>
+                    Δεν υπάρχουν παλαιότερες ειδοποιήσεις.
+                </div>
+            {% endif %}
+
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Theme Toggle Script -->
     <script>
-    const btn = document.getElementById('theme-toggle');
-    const icon = btn.querySelector('i');
-    const body = document.body;
+        const btn = document.getElementById('theme-toggle');
+        const icon = btn.querySelector('i');
+        const body = document.body;
 
-    // Έλεγχος αποθηκευμένης προτίμησης
-    if (localStorage.getItem('theme') === 'light') {
-        body.classList.add('light-mode');
-        if(icon) icon.classList.replace('fa-moon', 'fa-sun');
-    }
-
-    if (btn) {
-        btn.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            if (body.classList.contains('light-mode')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.setItem('theme', 'light');
-            } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-    }
-    </script>
-    <script>function checkNotifications() {
-    fetch('/api/unread-notifications-count/')
-    .then(response => response.json())
-    .then(data => {
-        const badge = document.querySelector('.badge.bg-danger');
-        if (data.count > 0) {
-            badge.innerText = data.count;
-            badge.style.display = 'block';
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            if(icon) icon.classList.replace('fa-moon', 'fa-sun');
         }
-    });
-}
-setInterval(checkNotifications, 10000); // Έλεγχος κάθε 10 δευτερόλεπτα
-</script>
-<script src="{% static 'notifications.js' %}"></script>
+
+        if (btn) {
+            btn.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                if (body.classList.contains('light-mode')) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+        }
+    </script>
+
+    <!-- Polling Script: Εμφανίζει το Active Analysis ΜΟΝΟ όταν υπάρχει ενεργό task -->
+    <script>
+        function checkActiveAnalyses() {
+            fetch('/ajax/active-analyses/')
+            .then(response => response.json())
+            .then(data => {
+                const wrapper = document.getElementById('active-analyses-wrapper');
+                const container = document.getElementById('active-analyses-container');
+                
+                if (data.active_analyses && data.active_analyses.length > 0) {
+                    wrapper.style.display = 'block'; // Εμφάνιση του section
+                    let html = '';
+                    data.active_analyses.forEach(item => {
+                        html += `
+                            <div class="notif-card mb-3 p-3 border-info border-opacity-50">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="fw-bold text-info"><i class="fa-solid fa-box-open me-2"></i>${item.package_name} <span class="badge bg-secondary ms-1">${item.version}</span></span>
+                                    <span class="badge bg-primary px-3 py-2 fs-6 rounded-pill">${item.progress}%</span>
+                                </div>
+                                <p class="small text-muted mb-2 mt-1">${item.current_step}</p>
+                                <div class="progress" style="height: 10px; border-radius: 6px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" 
+                                         role="progressbar" 
+                                         style="width: ${item.progress}%;">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                } else {
+                    wrapper.style.display = 'none'; // Πλήρης απόκρυψη όταν δεν τρέχει τίποτα
+                    container.innerHTML = '';
+                }
+            })
+            .catch(err => console.error("Error fetching active analyses:", err));
+        }
+
+        setInterval(checkActiveAnalyses, 3000);
+        checkActiveAnalyses();
+    </script>
+    <script src="{% static 'notifications.js' %}"></script>
 </body>
-</html> 
+</html>

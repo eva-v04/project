@@ -8,78 +8,118 @@ from .models import Analyses, User, Notification
 
 @task
 def run_gasket_analysis(package_name, package_version=None, analysis_id=None):
-    # Εκτέλεση του script για Gasket
-    if package_version:
-        subprocess.run(["./analyze_gasket.sh", package_name, package_version])
-    else:
-        subprocess.run(["./analyze_gasket.sh", package_name])
-        
     analysis = Analyses.objects.filter(id=analysis_id).first()
+    version_param = package_version if (package_version and package_version.strip()) else "latest"
 
-    if analysis:
+    if not analysis:
+        return "Analysis record not found."
+
+    try:
+        # Βήμα 1: Εκκίνηση Gasket
+        analysis.progress = 25
+        analysis.current_step = f"Initializing Gasket environment for {package_name}@{version_param}..."
+        analysis.save()
+
+        analysis.progress = 50
+        analysis.current_step = "Extracting Native C/C++ memory bridges..."
+        analysis.save()
+
+        # Εκτέλεση του script
+        if package_version:
+            subprocess.run(["./analyze_gasket.sh", package_name, package_version], check=True)
+        else:
+            subprocess.run(["./analyze_gasket.sh", package_name], check=True)
+
+        # Βήμα 2: Ολοκλήρωση
+        analysis.progress = 100
+        analysis.current_step = "Completed!"
         analysis.status = 'completed'
         analysis.save()
 
-        # Δημιουργία ειδοποίησης για τον χρήστη
-        if analysis.user:
-            Notification.objects.create(
-                user=analysis.user,
-                analysis=analysis,
-                message=f"Your gasket analysis for {package_name} is complete!",
-                title="Gasket Analysis Complete",
-                link=f"/analysis/{analysis.id}/"  
-            )
-        else:
-            Notification.objects.create(
-                user=None,
-                analysis=analysis,
-                message=f"Your gasket analysis for {package_name} is complete!",
-                title="Gasket Analysis Complete",
-                link=f"/analysis/{analysis.id}/"  
-            )
+        Notification.objects.create(
+            user=analysis.user,
+            analysis=analysis,
+            message=f"Your gasket analysis for {package_name} ({version_param}) is complete!",
+            title="Gasket Analysis Complete",
+            link=f"/results_gasket/{analysis.id}/"
+        )
         return f"Analysis for {package_name} completed."
-    else:
-        return "Analysis record not found."
+
+    except Exception as e:
+        analysis.status = 'failed'
+        analysis.progress = 0
+        analysis.current_step = f"Gasket Failed: {str(e)}"
+        analysis.save()
+
+        Notification.objects.create(
+            user=analysis.user,
+            analysis=analysis,
+            title="Gasket Analysis Failed",
+            message=f"Η ανάλυση Gasket για το πακέτο {package_name} ({version_param}) απέτυχε.",
+            link="/analyses/"
+        )
+        return f"Gasket failed: {e}"
 
 
 @task
 def run_jelly_analysis(package_name, package_version=None, analysis_id=None):
-    # Εκτέλεση του script για Jelly
-    if package_version:
-        subprocess.run(["./analyze_jelly.sh", package_name, package_version])
-    else:
-        subprocess.run(["./analyze_jelly.sh", package_name])
-    
     analysis = Analyses.objects.filter(id=analysis_id).first()
+    version_param = package_version if (package_version and package_version.strip()) else "latest"
 
-    if analysis:
+    if not analysis:
+        return "Analysis record not found."
+
+    try:
+        # Βήμα 1: Προετοιμασία Jelly
+        analysis.progress = 20
+        analysis.current_step = f"Preparing JavaScript files for {package_name}@{version_param}..."
+        analysis.save()
+
+        # Βήμα 2: Κατασκευή Call Graph & Reachability
+        analysis.progress = 60
+        analysis.current_step = "Building JavaScript Call Graph & Reachability Matrix..."
+        analysis.save()
+
+        # Εκτέλεση script
+        if package_version:
+            subprocess.run(["./analyze_jelly.sh", package_name, package_version], check=True)
+        else:
+            subprocess.run(["./analyze_jelly.sh", package_name], check=True)
+
+        # Βήμα 3: Ολοκλήρωση
+        analysis.progress = 100
+        analysis.current_step = "Completed!"
         analysis.status = 'completed'
         analysis.save()
 
-        if analysis.user:
-            Notification.objects.create(
-                user=analysis.user,
-                analysis=analysis,
-                message=f"Your jelly analysis for {package_name} is complete!",
-                title="Jelly Analysis Complete",
-                link=f"/analysis/{analysis.id}/" 
-            )
-        else:
-            Notification.objects.create(
-                user=None,
-                analysis=analysis,
-                message=f"Your jelly analysis for {package_name} is complete!",
-                title="Jelly Analysis Complete",
-                link=f"/analysis/{analysis.id}/" 
-            )
+        Notification.objects.create(
+            user=analysis.user,
+            analysis=analysis,
+            message=f"Your jelly analysis for {package_name} ({version_param}) is complete!",
+            title="Jelly Analysis Complete",
+            link=f"/results/{analysis.id}/"
+        )
         return f"Analysis for {package_name} completed."
-    else:
-        return "Analysis record not found."
+
+    except Exception as e:
+        analysis.status = 'failed'
+        analysis.progress = 0
+        analysis.current_step = f"Jelly Failed: {str(e)}"
+        analysis.save()
+
+        Notification.objects.create(
+            user=analysis.user,
+            analysis=analysis,
+            title="Jelly Analysis Failed",
+            message=f"Η ανάλυση Jelly για το πακέτο {package_name} ({version_param}) απέτυχε.",
+            link="/analyses/"
+        )
+        return f"Jelly failed: {e}"
 
 
 
 
-@task
+@task #Ε
 def run_cross_language_analysis(package_name, package_version=None, analysis_id=None):
     analysis = Analyses.objects.filter(id=analysis_id).first()
     
@@ -95,6 +135,7 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
             'static', 
             f'gasket_analysis_{package_name}_{version_param}'
         )
+
         expected_bridges_file = os.path.join(gasket_folder, f'bridges_{package_name}.json')
         expected_ghidra_file = os.path.join(settings.BASE_DIR, 'static', f'ghidra_{package_name}.json')
 
@@ -102,7 +143,12 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
         cross_script = os.path.join(settings.BASE_DIR, "analyze_cross.sh")
         ghidra_script = "/home/eva/ghidra-callgraph/ghidra.sh"
 
-        #
+        ##Πρόοδος ΒΗΜΑ 1: Gasket Analysis (25%)
+        analysis.progress = 10
+        analysis.current_step = "Running Gasket Analysis (Extracting Bridges)..."
+        analysis.save()
+
+
         if os.path.exists(expected_bridges_file) and os.path.getsize(expected_bridges_file) > 0:
             print(f" [GASKET CACHE HIT] Βρέθηκαν έτοιμα τα bridges: {expected_bridges_file}")
         else:
@@ -127,8 +173,19 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
                 )
                 return f"Gasket execution failed: {e}"
 
+
+        #πρόοδος
+        analysis.progress = 35
+        analysis.current_step = "Searching for Native .node binary..."
+        analysis.save()    
+
+        analysis.progress = 50
+        analysis.current_step = "Running Ghidra Decompiler & Callgraph Analysis..."
+        analysis.save()
+
+
         # -------------------------------------------------------------
-        # ΝΤΟΠΙΣΜΟΣ ΚΑΤΑΛΛΗΛΟΥ .NODE ΑΡΧΕΙΟΥ (Προτίμηση x64/linux-x64)!!!!!!!!!
+        # ΝΤΟΠΙΣΜΟΣ ΚΑΤΑΛΛΗΛΟΥ .NODE ΑΡΧΕΙΟΥ (Προτίμηση x64/linux-x64)!!!!
         # -------------------------------------------------------------
         jelly_folder = os.path.join(
             settings.BASE_DIR, 
@@ -143,7 +200,6 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
         if not all_node_files:
             raise FileNotFoundError(f"Δεν βρέθηκε αρχείο .node για το πακέτο {package_name}")
 
-        # Δίνουμε προτεραιότητα σε x64 binaries για να μην διαλέγει τυχαία armv7
         x64_nodes = [f for f in all_node_files if 'x64' in f or 'x86_64' in f or 'linux' in f]
         native_binary_path = x64_nodes[0] if x64_nodes else all_node_files[0]
         
@@ -160,6 +216,12 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
                 check=True
             )
 
+        # πρόοδος ΒΗΜΑ 3: Cross-Language Jelly Analysis (85%)
+        analysis.progress = 75
+        analysis.current_step = "Generating Cross-Language Polyglot Call Graph (Jelly)..."
+        analysis.save()
+
+
         # -------------------------------------------------------------
         # 4. ΕΚΤΕΛΕΣΗ CROSS-LANGUAGE JELLY SCRIPT
         # -------------------------------------------------------------
@@ -171,6 +233,9 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
         )
 
         
+        # ΒΗΜΑ 4: Ολοκλήρωση (100%)
+        analysis.progress = 100
+        analysis.current_step = "Completed!"
         analysis.status = 'completed'
         analysis.save()
 
@@ -187,6 +252,19 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
 
     except Exception as e:
         analysis.status = 'failed'
+        analysis.progress = 0
+        analysis.current_step = "Analysis Failed"
         analysis.save()
         print(f"Error running cross-language analysis for {package_name}: {e}")
+
+        # Δημιουργία ειδοποίησης αποτυχίας για να εμφανιστεί στο UI
+        notification_user = analysis.user if analysis.user else None
+        Notification.objects.create(
+            user=notification_user,
+            analysis=analysis,
+            title="Analysis Failed",
+            message=f"Η ανάλυση για το πακέτο {package_name} ({version_param}) απέτυχε: {str(e)}",
+            link="/analyses/"
+        )
+
         return f"Analysis failed: {str(e)}"

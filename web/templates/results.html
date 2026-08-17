@@ -62,8 +62,8 @@
     </div>
 
     <div class="mt-3 mt-md-0">
-        <a href="{% static 'analysis_' %}{{ package_name }}_{{ package_version }}/{{ package_name }}.json" 
-           download="{{ package_name }}_analysis.json" 
+        <a href="{{ json_url }}" 
+       download="{{ package_name }}_{% if analysis_type == 'cross_language' %}cross_{% endif %}analysis.json" 
            class="btn btn-download-custom">
             <i class="fa-solid fa-file-export me-2"></i>Export JSON
         </a>

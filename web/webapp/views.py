@@ -22,6 +22,7 @@ from django.http import JsonResponse
 from .statistics import generate_full_stats
 from .statistics import generate_full_stats, get_matplotlib_graph, get_matplotlib_bar_graph
 
+from django.utils import timezone
 
 def homepage(request):
     return render(request, 'homepage.html')
@@ -36,14 +37,12 @@ def callgraph(request):
 
 def start_jelly_ajax(request):
     if request.method == 'POST':
-        package = request.POST.get('package_name')
-        version = request.POST.get('version', 'latest')
+        package = request.POST.get('package_name', '').strip()
+        version = request.POST.get('version', '').strip() or 'latest'
         
-        # Λήψη τρέχοντος χρήστη
         user_id = request.session.get('user_id')
         current_user = User.objects.filter(id=user_id).first() if user_id else None
 
-        #  ΕΛΕΓΧΟΣ CACHE: Ψάχνουμε αν οποιοσδήποτε χρήστης έχει ολοκληρώσει αυτή την ανάλυση
         existing_analysis = Analyses.objects.filter(
             package_name=package,
             package_version=version,
@@ -52,59 +51,51 @@ def start_jelly_ajax(request):
         ).first()
 
         if existing_analysis:
-            # Δημιουργούμε νέα εγγραφή για το ιστορικό του τρέχοντος χρήστη, ήδη ολοκληρωμένη
             new_analysis = Analyses.objects.create(
                 package_name=package,
                 package_version=version,
                 user=current_user,
                 analysis_type='jelly',
                 status='completed',
-              # task_id=existing_analysis.task_id  # Χρησιμοποιούμε το ID του υπάρχοντος task/αποτελέσματος
+                progress=100,
+                current_step='Completed (from cache)'
             )
-
-            # Ενημέρωση session για Guests
             if not current_user:
+                if not request.session.session_key:
+                    request.session.create()
                 guest_history = request.session.get('guest_analyses', [])
                 guest_history.append(new_analysis.id)
                 request.session['guest_analyses'] = guest_history
                 request.session.modified = True
+                request.session.save()
 
-            return JsonResponse({
-                'status': 'success',
-                'message': 'Call Graph found in cache!',
-                'redirect': True  # Ειδοποιούμε τη JS για άμεση ανακατεύθυνση
-            })
+            return JsonResponse({'status': 'success', 'message': 'Found in cache!', 'redirect': True})
 
-        # Δημιουργία ανάλυσης
         new_analysis = Analyses.objects.create(
             package_name=package,
             package_version=version,
             user=current_user,
             analysis_type='jelly',
-            status='running'
+            status='running',
+            progress=5,
+            current_step='Starting Jelly Analysis...'
         )
 
-        # Session logic για guests
         if not current_user:
+            if not request.session.session_key:
+                request.session.create()
             guest_history = request.session.get('guest_analyses', [])
             guest_history.append(new_analysis.id)
             request.session['guest_analyses'] = guest_history
             request.session.modified = True
+            request.session.save()
 
-        # Εκκίνηση Task
         run_jelly_analysis.enqueue(package, version, analysis_id=new_analysis.id)
-
-        return JsonResponse({
-            'status': 'success',
-            'analysis_id': new_analysis.id
-        })
-    return JsonResponse({'status': 'error'}, status=400)
+        return JsonResponse({'status': 'success', 'analysis_id': new_analysis.id})
 
 
 def results(request, analysis_id):
-    #url αρχείου που δημιούργησε το jelly
     analysis = Analyses.objects.get(id=analysis_id)
-
     if not analysis:
         return HttpResponse("Analysis not found.", status=404)
 
@@ -112,13 +103,16 @@ def results(request, analysis_id):
     version = analysis.package_version
 
     graph_url = f"/static/analysis_{package_name}_{version}/{package_name}.html"
+    json_url = f"/static/analysis_{package_name}_{version}/{package_name}.json"  #Jelly JSON path
     
     context = {
         'package_name': package_name,
         'package_version': version,
         'graph_url': graph_url,
+        'json_url': json_url,
         'date': analysis.date,
-        'analysis_id': analysis.id
+        'analysis_id': analysis.id,
+        'analysis_type': analysis.analysis_type
     }
     return render(request, 'results.html', context)
 
@@ -141,14 +135,12 @@ def gasket(request):
 
 def start_gasket_ajax(request):
     if request.method == 'POST':
-        package = request.POST.get('package_name')
-        version = request.POST.get('version', 'latest')
+        package = request.POST.get('package_name', '').strip()
+        version = request.POST.get('version', '').strip() or 'latest'
         
-        # Λήψη τρέχοντος χρήστη από το session
         user_id = request.session.get('user_id')
         current_user = User.objects.filter(id=user_id).first() if user_id else None
 
-        #Αναζήτηση αν υπάρχει ήδη ολοκληρωμένη ανάλυση (από οποιονδήποτε)
         existing_analysis = Analyses.objects.filter(
             package_name=package,
             package_version=version,
@@ -157,58 +149,52 @@ def start_gasket_ajax(request):
         ).first()
 
         if existing_analysis:
-            # Δημιουργούμε νέα εγγραφή για τον τρέχοντα χρήστη, αλλά με status 'completed'
             new_analysis = Analyses.objects.create(
                 package_name=package,
                 package_version=version,
                 user=current_user,
                 analysis_type='gasket',
-                status='completed', # Άμεση ολοκλήρωση
-               # task_id=existing_analysis.task_id # Χρήση του υπάρχοντος αποτελέσματος
+                status='completed',
+                progress=100,
+                current_step='Completed (from cache)'
             )
-
-            # Αν είναι Guest, αποθηκεύουμε το ID στο session του
             if not current_user:
+                if not request.session.session_key:
+                    request.session.create()
                 guest_history = request.session.get('guest_analyses', [])
                 guest_history.append(new_analysis.id)
                 request.session['guest_analyses'] = guest_history
                 request.session.modified = True
+                request.session.save()
 
-            return JsonResponse({
-                'status': 'success',
-                'message': 'Results found in cache!',
-                'redirect': True  # Η JavaScript θα ξέρει να κάνει άμεσο redirect
-            })
+            return JsonResponse({'status': 'success', 'message': 'Found in cache!', 'redirect': True})
 
-        # Δημιουργία ανάλυσης
         new_analysis = Analyses.objects.create(
             package_name=package,
             package_version=version,
             user=current_user,
             analysis_type='gasket',
-            status='running'
+            status='running',
+            progress=5,
+            current_step='Starting Gasket Analysis...'
         )
 
-        # Session logic για guests
         if not current_user:
+            if not request.session.session_key:
+                request.session.create()
             guest_history = request.session.get('guest_analyses', [])
             guest_history.append(new_analysis.id)
             request.session['guest_analyses'] = guest_history
             request.session.modified = True
+            request.session.save()
 
-        # Εκκίνηση Task
         run_gasket_analysis.enqueue(package, version, analysis_id=new_analysis.id)
-
-        return JsonResponse({
-            'status': 'success',
-            'message': 'Analysis started!',
-            'analysis_id': new_analysis.id
-        })
-    return JsonResponse({'status': 'error'}, status=400)
+        return JsonResponse({'status': 'success', 'analysis_id': new_analysis.id})
 
     
 def gasket_results(request, analysis_id):
-    analysis = Analyses.objects.get(id=analysis_id)
+    #  ανάκτηση της ανάλυσης
+    analysis = Analyses.objects.filter(id=analysis_id).first()
     if not analysis:
         return HttpResponse("Analysis not found.", status=404)
 
@@ -219,24 +205,29 @@ def gasket_results(request, analysis_id):
         settings.BASE_DIR, 
         'static', 
         f'gasket_analysis_{package_name}_{package_version}', 
-        f'bridges_{package_name}.json')
+        f'bridges_{package_name}.json'
+    )
+    
+    # Διαδρομή static για το Export JSON κουμπί
+    json_url = f"/static/gasket_analysis_{package_name}_{package_version}/bridges_{package_name}.json"
+
     try:
-        with open(file_path, 'r') as f: #ανοίγει αρχείο
-            fulldata = json.load(f) #διαβάζει το json και το αποθηκεύει σε μεταβλητή
-            bridges = fulldata.get('bridges', []) #παίρνει τη λίστα των bridges από το json, αν δεν υπάρχει επιστρέφει κενή λίστα
-            #library είναι το πλήρες path του αρχείου, display_lib είναι μόνο το όνομα του αρχείου για εμφάνιση στο template
+        with open(file_path, 'r') as f:
+            fulldata = json.load(f)
+            bridges = fulldata.get('bridges', [])
+            
             for bridge in bridges:
-                lib = bridge.get('library', 'Unknown') 
-                # Κρατάμε μόνο το όνομα του αρχείου (π.χ. node_sqlite3.node)
+                lib = bridge.get('library', 'Unknown')
                 bridge['display_lib'] = lib.split('/')[-1]
-            objects_examined = fulldata.get('objects_examined', 0) 
-            callable_objects = fulldata.get('callable_objects', 0) 
-            foreign_callable_objects = fulldata.get('foreign_callable_objects', 0) 
-            duration_sec = fulldata.get('duration_sec', 0) 
+
+            objects_examined = fulldata.get('objects_examined', 0)
+            callable_objects = fulldata.get('callable_objects', 0)
+            foreign_callable_objects = fulldata.get('foreign_callable_objects', 0)
+            duration_sec = fulldata.get('duration_sec', 0)
             count = fulldata.get('count', 0)
-            modules = fulldata.get('modules', []) 
-            jump_libs = fulldata.get('jump_libs', []) 
-    except FileNotFoundError:
+            modules = fulldata.get('modules', [])
+            jump_libs = fulldata.get('jump_libs', [])
+    except (FileNotFoundError, json.JSONDecodeError):
         bridges = None
         objects_examined = 0
         callable_objects = 0
@@ -256,7 +247,10 @@ def gasket_results(request, analysis_id):
         'duration_sec': duration_sec,
         'count': count,
         'modules': modules,
-        'jump_libs': jump_libs
+        'jump_libs': jump_libs,
+        'json_url': json_url,
+        'analysis_id': analysis.id,
+        'date': analysis.date
     })
 
 
@@ -505,14 +499,17 @@ def cross_language(request):
 
 def start_cross_language_ajax(request):
     if request.method == 'POST':
-        package = request.POST.get('package_name')
-        version = request.POST.get('version', 'latest')
+        package = request.POST.get('package_name', '').strip()
+        version = request.POST.get('version', '').strip() or 'latest'
         
+        if not package:
+            return JsonResponse({'status': 'error', 'message': 'Package name is required.'}, status=400)
+
         # Λήψη τρέχοντος χρήστη από το session
         user_id = request.session.get('user_id')
         current_user = User.objects.filter(id=user_id).first() if user_id else None
 
-        # 1. ΕΛΕΓΧΟΣ CACHE: Ψάχνουμε αν υπάρχει ήδη ολοκληρωμένη cross_language ανάλυση
+        # ΕΛΕΓΧΟΣ CACHE
         existing_analysis = Analyses.objects.filter(
             package_name=package,
             package_version=version,
@@ -526,14 +523,20 @@ def start_cross_language_ajax(request):
                 package_version=version,
                 user=current_user,
                 analysis_type='cross_language',
-                status='completed'
+                status='completed',
+                progress=100,
+                current_step='Completed (from cache)'
             )
 
+            # Αποθήκευση στο Session για Guests
             if not current_user:
+                if not request.session.session_key:
+                    request.session.create()
                 guest_history = request.session.get('guest_analyses', [])
                 guest_history.append(new_analysis.id)
                 request.session['guest_analyses'] = guest_history
                 request.session.modified = True
+                request.session.save()
 
             return JsonResponse({
                 'status': 'success',
@@ -541,22 +544,28 @@ def start_cross_language_ajax(request):
                 'redirect': True
             })
 
-        # 2. Δημιουργία νέας ανάλυσης στη βάση δεδομένων
+        #  Δημιουργία νέας ανάλυσης στη βάση δεδομένων
         new_analysis = Analyses.objects.create(
             package_name=package,
             package_version=version,
             user=current_user,
             analysis_type='cross_language',
-            status='running'
+            status='running',
+            progress=5,
+            current_step='Starting Cross-Language Analysis...'
         )
 
+        # Άμεση κατοχύρωση Session για Guests
         if not current_user:
+            if not request.session.session_key:
+                request.session.create()
             guest_history = request.session.get('guest_analyses', [])
             guest_history.append(new_analysis.id)
             request.session['guest_analyses'] = guest_history
             request.session.modified = True
+            request.session.save()  # Εξασφαλίζει άμεση εγγραφή του cookie
 
-        # 3. Εκκίνηση του Background Task
+        
         run_cross_language_analysis.enqueue(package, version, analysis_id=new_analysis.id)
 
         return JsonResponse({
@@ -568,6 +577,7 @@ def start_cross_language_ajax(request):
     return JsonResponse({'status': 'error'}, status=400)
 
 
+
 def cross_language_results(request, analysis_id):
     analysis = Analyses.objects.get(id=analysis_id)
     if not analysis:
@@ -576,15 +586,18 @@ def cross_language_results(request, analysis_id):
     package_name = analysis.package_name
     version = analysis.package_version
 
-    # Σύνδεση με το τελικό ενοποιημένο HTML γράφημα
+    # Σύνδεση με το τελικό ενοποιημένο HTML & JSON
     graph_url = f"/static/cross_analysis_{package_name}_{version}/{package_name}.html"
+    json_url = f"/static/cross_analysis_{package_name}_{version}/{package_name}.json"  # Cross-Language JSON path
     
     context = {
         'package_name': package_name,
         'package_version': version,
         'graph_url': graph_url,
+        'json_url': json_url,
         'date': analysis.date,
-        'analysis_id': analysis.id
+        'analysis_id': analysis.id,
+        'analysis_type': analysis.analysis_type
     }
     return render(request, 'results.html', context)
 
@@ -602,3 +615,30 @@ def analysis_detail(request, analysis_id):
         return redirect('cross_language_results', analysis_id=analysis.id)
 
     return redirect('analyses')
+
+
+
+def get_active_analyses_status(request):
+    user_id = request.session.get('user_id')
+    guest_ids = request.session.get('guest_analyses', [])
+
+    if user_id:
+        running_analyses = Analyses.objects.filter(user_id=user_id, status='running')
+    elif guest_ids:
+        running_analyses = Analyses.objects.filter(id__in=guest_ids, status='running')
+    else:
+        recent_cutoff = timezone.now() - timedelta(minutes=10)
+        running_analyses = Analyses.objects.filter(user__isnull=True, status='running', date__gte=recent_cutoff)
+
+    data = []
+    for a in running_analyses:
+        data.append({
+            'id': a.id,
+            'package_name': a.package_name,
+            'version': a.package_version,
+            'analysis_type': a.analysis_type.upper(),
+            'progress': a.progress,
+            'current_step': a.current_step
+        })
+
+    return JsonResponse({'active_analyses': data})
