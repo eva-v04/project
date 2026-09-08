@@ -45,5 +45,9 @@ urlpatterns = [
     path('cross_language/', views.cross_language, name='cross_language'),
     path('start-cross-language-ajax/', views.start_cross_language_ajax, name='start_cross_language_ajax'),
     path('results_cross/<int:analysis_id>/', views.cross_language_results, name='cross_language_results'),
-    path('ajax/active-analyses/', views.get_active_analyses_status, name='active_analyses_status')
+    path('ajax/active-analyses/', views.get_active_analyses_status, name='active_analyses_status'),
+    path('statistics_cross/<int:analysis_id>/', views.cross_statistics, name='cross_statistics'),
+    path('download_cross_stats/<int:analysis_id>/', views.download_cross_statistics_json, name='download_cross_stats'),
+    path('ajax/cancel-analysis/', views.cancel_analysis_ajax, name='cancel_analysis_ajax'),
+    path('ajax/get-notifications/', views.get_user_notifications_ajax, name='get_user_notifications_ajax'),
 ]

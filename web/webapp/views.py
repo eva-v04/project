@@ -22,7 +22,10 @@ from django.http import JsonResponse
 from .statistics import generate_full_stats
 from .statistics import generate_full_stats, get_matplotlib_graph, get_matplotlib_bar_graph
 
+
 from django.utils import timezone
+
+from .cross_statistics import generate_cross_language_stats, get_cross_reachability_barchart
 
 def homepage(request):
     return render(request, 'homepage.html')
@@ -255,21 +258,35 @@ def gasket_results(request, analysis_id):
 
 
 def signup(request):
+    error_message = None
+
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            # Δημιουργία νέου χρήστη με τα δεδομένα από τη φόρμα
-            new_user = User.objects.create(
-                username=form.cleaned_data['username'],
-                email=form.cleaned_data['email'],
-                password=form.cleaned_data['password']
-            )
-            #αποθηκεύουμε id στο session 
-            request.session['user_id'] = new_user.id
-            return redirect('workspace')
+            username = form.cleaned_data['username'].strip()
+            email = form.cleaned_data['email'].strip()
+            password = form.cleaned_data['password']
+
+            # Έλεγχος αν το όνομα χρήστη υπάρχει ήδη
+            if User.objects.filter(username=username).exists():
+                error_message = f"Το όνομα χρήστη '{username}' χρησιμοποιείται ήδη. Παρακαλώ επιλέξτε κάποιο άλλο."
+            else:
+                # Δημιουργία νέου χρήστη
+                new_user = User.objects.create(
+                    username=username,
+                    email=email,
+                    password=password
+                )
+                # Αποθήκευση στο session και σύνδεση
+                request.session['user_id'] = new_user.id
+                return redirect('workspace')
     else:
-        form = SignupForm()  # Επαναφορά της φόρμας σε περίπτωση μη έγκυρων δεδομένων
-    return render(request, 'signup.html', {'form': form})
+        form = SignupForm()
+
+    return render(request, 'signup.html', {
+        'form': form,
+        'error_message': error_message
+    })
 
 
 def login_view(request):
@@ -453,12 +470,18 @@ def download_results(request, analysis_id):
 
 
 def statistics(request, analysis_id):
-    analysis = Analyses.objects.get(id=analysis_id)
+    analysis = Analyses.objects.filter(id=analysis_id).first()
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    # Αν πρόκειται για Cross-Language ανάλυση γίνεται ανακατεύθυνση στο σωστό view
+    if analysis.analysis_type == 'cross_language':
+        return redirect('cross_statistics', analysis_id=analysis.id)
+
     pkg = analysis.package_name
     version = analysis.package_version
 
     stats_data = generate_full_stats(pkg, version)
-
     if stats_data is None:
         stats_data = {}
 
@@ -471,13 +494,9 @@ def statistics(request, analysis_id):
         'package_name': pkg,
         'package_version': version,
         'analysis_id': analysis_id,
-        
-        # Pie Charts
         'chart_functions': get_matplotlib_graph(stats_f.get('reachable_functions', 0), stats_f.get('total_functions', 0)),
         'chart_files': get_matplotlib_graph(stats_fi.get('reachable_files', 0), stats_fi.get('total_files', 0)),
         'chart_packages': get_matplotlib_graph(stats_p.get('reachable_packages', 0), stats_p.get('total_packages', 0)),
-        
-        # Bar Charts (Αν έχεις υλοποιήσει τη συνάρτηση get_matplotlib_bar_graph)
         'bar_functions': get_matplotlib_bar_graph(stats_f.get('reachable_functions', 0), stats_f.get('total_functions', 0)),
         'bar_files': get_matplotlib_bar_graph(stats_fi.get('reachable_files', 0), stats_fi.get('total_files', 0)),
         'bar_packages': get_matplotlib_bar_graph(stats_p.get('reachable_packages', 0), stats_p.get('total_packages', 0)),
@@ -642,3 +661,105 @@ def get_active_analyses_status(request):
         })
 
     return JsonResponse({'active_analyses': data})
+
+
+def cross_statistics(request, analysis_id):
+    analysis = Analyses.objects.filter(id=analysis_id).first()
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    pkg = analysis.package_name
+    version = analysis.package_version
+
+    stats_data = generate_cross_language_stats(pkg, version) or {}
+    chart_cross = get_cross_reachability_barchart(stats_data) if stats_data else ""
+
+    return render(request, 'statistics_cross.html', {
+        'stats': stats_data,
+        'package_name': pkg,
+        'package_version': version,
+        'analysis_id': analysis_id,
+        'chart_cross': chart_cross,
+        'date': analysis.date
+    })
+
+def download_cross_statistics_json(request, analysis_id):
+    analysis = Analyses.objects.filter(id=analysis_id).first()
+    if not analysis:
+        return HttpResponse("Analysis not found.", status=404)
+
+    pkg = analysis.package_name
+    version = analysis.package_version
+
+    stats_data = generate_cross_language_stats(pkg, version)
+    if not stats_data:
+        return HttpResponse("Statistics data not found.", status=404)
+
+    response = HttpResponse(
+        json.dumps(stats_data, indent=2, ensure_ascii=False),
+        content_type='application/json; charset=utf-8'
+    )
+    response['Content-Disposition'] = f'attachment; filename="{pkg}_{version}_statistics.json"'
+    return response
+
+
+def cancel_analysis_ajax(request):
+    if request.method == 'POST':
+        analysis_id = request.POST.get('analysis_id')
+        user_id = request.session.get('user_id')
+        guest_ids = request.session.get('guest_analyses', [])
+
+        # Εύρεση ανάλυσης
+        analysis = Analyses.objects.filter(id=analysis_id, status='running').first()
+        if not analysis:
+            return JsonResponse({'status': 'error', 'message': 'Active analysis not found.'}, status=404)
+
+        # Έλεγχος δικαιώματος ακύρωσης (είτε ο συνδεδεμένος χρήστης είτε guest του session)
+        if (user_id and analysis.user_id == user_id) or (not user_id and analysis.id in guest_ids) or analysis.user is None:
+            analysis.status = 'cancelled'
+            analysis.current_step = 'Cancelled by user'
+            analysis.save()
+
+            # Δημιουργία σχετικής ειδοποίησης
+            Notification.objects.create(
+                user=analysis.user,
+                analysis=analysis,
+                title="Analysis Cancelled",
+                message=f"Η ανάλυση για το πακέτο {analysis.package_name} ({analysis.package_version}) ακυρώθηκε από τον χρήστη.",
+                link="/analyses/"
+            )
+
+            return JsonResponse({'status': 'success', 'message': 'Analysis cancelled successfully.'})
+        else:
+            return JsonResponse({'status': 'error', 'message': 'Permission denied.'}, status=403)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=400)
+
+
+
+def get_user_notifications_ajax(request):
+    user_id = request.session.get('user_id')
+    guest_analysis_ids = request.session.get('guest_analyses', [])
+
+    if user_id:
+        notifs = Notification.objects.filter(user_id=user_id).order_by('-created_at')
+    elif guest_analysis_ids:
+        notifs = Notification.objects.filter(analysis_id__in=guest_analysis_ids).order_by('-created_at')
+    else:
+        notifs = Notification.objects.none()
+
+    data = []
+    for n in notifs:
+        data.append({
+            'id': n.id,
+            'title': n.title,
+            'message': n.message,
+            'link': n.link if hasattr(n, 'link') and n.link else '#',
+            'created_at': n.created_at.strftime("%d/%m/%Y %H:%M") if hasattr(n, 'created_at') and n.created_at else "",
+            'is_read': n.is_read
+        })
+
+    # Μαρκάρουμε ως διαβασμένες αφού ο χρήστης βρίσκεται στη σελίδα notifications
+    notifs.filter(is_read=False).update(is_read=True)
+
+    return JsonResponse({'notifications': data})

@@ -1,0 +1,2289 @@
+{
+  "objects_examined": 38024,
+  "callable_objects": 27141,
+  "foreign_callable_objects": 376,
+  "duration_sec": 17.464,
+  "count": 376,
+  "modules": [
+    "/home/gasket/node_modules/skia-canvas/lib/skia.node",
+    "/home/gasket/node_modules/skia-canvas/lib/browser.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/canvas.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/context.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/css.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/geometry.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/imagery.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/path.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js",
+    "/home/gasket/node_modules/skia-canvas/lib/index.js",
+    "/home/gasket/node_modules/skia-canvas/lib/urls.js"
+  ],
+  "jump_libs": [
+    "/home/gasket/node_modules/skia-canvas/lib/skia.node",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js",
+    "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js",
+    "/home/gasket/node_modules/skia-canvas/lib/index.js"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_new",
+      "cfunc": "skia_canvas::image::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_get_src",
+      "cfunc": "skia_canvas::image::get_src",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_set_src",
+      "cfunc": "skia_canvas::image::set_src",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_set_data",
+      "cfunc": "skia_canvas::image::set_data",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_get_width",
+      "cfunc": "skia_canvas::image::get_width",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_get_height",
+      "cfunc": "skia_canvas::image::get_height",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_get_complete",
+      "cfunc": "skia_canvas::image::get_complete",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Image_pixels",
+      "cfunc": "skia_canvas::image::pixels",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_new",
+      "cfunc": "skia_canvas::path::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_from_path",
+      "cfunc": "skia_canvas::path::from_path",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_from_svg",
+      "cfunc": "skia_canvas::path::from_svg",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_addPath",
+      "cfunc": "skia_canvas::path::addPath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_closePath",
+      "cfunc": "skia_canvas::path::closePath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_moveTo",
+      "cfunc": "skia_canvas::path::moveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_lineTo",
+      "cfunc": "skia_canvas::path::lineTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_bezierCurveTo",
+      "cfunc": "skia_canvas::path::bezierCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_quadraticCurveTo",
+      "cfunc": "skia_canvas::path::quadraticCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_conicCurveTo",
+      "cfunc": "skia_canvas::path::conicCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_arc",
+      "cfunc": "skia_canvas::path::arc",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_arcTo",
+      "cfunc": "skia_canvas::path::arcTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_ellipse",
+      "cfunc": "skia_canvas::path::ellipse",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_rect",
+      "cfunc": "skia_canvas::path::rect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_roundRect",
+      "cfunc": "skia_canvas::path::roundRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_op",
+      "cfunc": "skia_canvas::path::op",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_interpolate",
+      "cfunc": "skia_canvas::path::interpolate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_simplify",
+      "cfunc": "skia_canvas::path::simplify",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_unwind",
+      "cfunc": "skia_canvas::path::unwind",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_round",
+      "cfunc": "skia_canvas::path::round",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_trim",
+      "cfunc": "skia_canvas::path::trim",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_jitter",
+      "cfunc": "skia_canvas::path::jitter",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_offset",
+      "cfunc": "skia_canvas::path::offset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_transform",
+      "cfunc": "skia_canvas::path::transform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_bounds",
+      "cfunc": "skia_canvas::path::bounds",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_contains",
+      "cfunc": "skia_canvas::path::contains",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_edges",
+      "cfunc": "skia_canvas::path::edges",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_get_d",
+      "cfunc": "skia_canvas::path::get_d",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Path2D_set_d",
+      "cfunc": "skia_canvas::path::set_d",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasGradient_linear",
+      "cfunc": "skia_canvas::gradient::linear",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasGradient_radial",
+      "cfunc": "skia_canvas::gradient::radial",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasGradient_conic",
+      "cfunc": "skia_canvas::gradient::conic",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasGradient_addColorStop",
+      "cfunc": "skia_canvas::gradient::addColorStop",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasGradient_repr",
+      "cfunc": "skia_canvas::gradient::repr",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasPattern_from_image",
+      "cfunc": "skia_canvas::pattern::from_image",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasPattern_from_image_data",
+      "cfunc": "skia_canvas::pattern::from_image_data",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasPattern_from_canvas",
+      "cfunc": "skia_canvas::pattern::from_canvas",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasPattern_setTransform",
+      "cfunc": "skia_canvas::pattern::setTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasPattern_repr",
+      "cfunc": "skia_canvas::pattern::repr",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasTexture_new",
+      "cfunc": "skia_canvas::texture::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasTexture_repr",
+      "cfunc": "skia_canvas::texture::repr",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.FontLibrary_get_families",
+      "cfunc": "skia_canvas::font_library::get_families",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.FontLibrary_has",
+      "cfunc": "skia_canvas::font_library::has",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.FontLibrary_family",
+      "cfunc": "skia_canvas::font_library::family",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.FontLibrary_addFamily",
+      "cfunc": "skia_canvas::font_library::addFamily",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.FontLibrary_reset",
+      "cfunc": "skia_canvas::font_library::reset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_new",
+      "cfunc": "skia_canvas::canvas::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_get_engine",
+      "cfunc": "skia_canvas::canvas::get_engine",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_set_engine",
+      "cfunc": "skia_canvas::canvas::set_engine",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_get_engine_status",
+      "cfunc": "skia_canvas::canvas::get_engine_status",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_get_width",
+      "cfunc": "skia_canvas::canvas::get_width",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_set_width",
+      "cfunc": "skia_canvas::canvas::set_width",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_get_height",
+      "cfunc": "skia_canvas::canvas::get_height",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_set_height",
+      "cfunc": "skia_canvas::canvas::set_height",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_save",
+      "cfunc": "skia_canvas::canvas::save",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_saveSync",
+      "cfunc": "skia_canvas::canvas::saveSync",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_toBuffer",
+      "cfunc": "skia_canvas::canvas::toBuffer",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.Canvas_toBufferSync",
+      "cfunc": "skia_canvas::canvas::toBufferSync",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_new",
+      "cfunc": "skia_canvas::context::api::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_resetSize",
+      "cfunc": "skia_canvas::context::api::resetSize",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_size",
+      "cfunc": "skia_canvas::context::api::get_size",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_size",
+      "cfunc": "skia_canvas::context::api::set_size",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_reset",
+      "cfunc": "skia_canvas::context::api::reset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_save",
+      "cfunc": "skia_canvas::context::api::save",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_restore",
+      "cfunc": "skia_canvas::context::api::restore",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_transform",
+      "cfunc": "skia_canvas::context::api::transform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_translate",
+      "cfunc": "skia_canvas::context::api::translate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_scale",
+      "cfunc": "skia_canvas::context::api::scale",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_rotate",
+      "cfunc": "skia_canvas::context::api::rotate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_resetTransform",
+      "cfunc": "skia_canvas::context::api::resetTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_currentTransform",
+      "cfunc": "skia_canvas::context::api::get_currentTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_currentTransform",
+      "cfunc": "skia_canvas::context::api::set_currentTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_createProjection",
+      "cfunc": "skia_canvas::context::api::createProjection",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_beginPath",
+      "cfunc": "skia_canvas::context::api::beginPath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_rect",
+      "cfunc": "skia_canvas::context::api::rect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_roundRect",
+      "cfunc": "skia_canvas::context::api::roundRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_arc",
+      "cfunc": "skia_canvas::context::api::arc",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_ellipse",
+      "cfunc": "skia_canvas::context::api::ellipse",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_moveTo",
+      "cfunc": "skia_canvas::context::api::moveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_lineTo",
+      "cfunc": "skia_canvas::context::api::lineTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_arcTo",
+      "cfunc": "skia_canvas::context::api::arcTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_bezierCurveTo",
+      "cfunc": "skia_canvas::context::api::bezierCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_quadraticCurveTo",
+      "cfunc": "skia_canvas::context::api::quadraticCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_conicCurveTo",
+      "cfunc": "skia_canvas::context::api::conicCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_closePath",
+      "cfunc": "skia_canvas::context::api::closePath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_isPointInPath",
+      "cfunc": "skia_canvas::context::api::isPointInPath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_isPointInStroke",
+      "cfunc": "skia_canvas::context::api::isPointInStroke",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_clip",
+      "cfunc": "skia_canvas::context::api::clip",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_fill",
+      "cfunc": "skia_canvas::context::api::fill",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_stroke",
+      "cfunc": "skia_canvas::context::api::stroke",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_fillRect",
+      "cfunc": "skia_canvas::context::api::fillRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_strokeRect",
+      "cfunc": "skia_canvas::context::api::strokeRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_clearRect",
+      "cfunc": "skia_canvas::context::api::clearRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_fillStyle",
+      "cfunc": "skia_canvas::context::api::get_fillStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_fillStyle",
+      "cfunc": "skia_canvas::context::api::set_fillStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_strokeStyle",
+      "cfunc": "skia_canvas::context::api::get_strokeStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_strokeStyle",
+      "cfunc": "skia_canvas::context::api::set_strokeStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_getLineDash",
+      "cfunc": "skia_canvas::context::api::getLineDash",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_setLineDash",
+      "cfunc": "skia_canvas::context::api::setLineDash",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_lineCap",
+      "cfunc": "skia_canvas::context::api::get_lineCap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_lineCap",
+      "cfunc": "skia_canvas::context::api::set_lineCap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_lineDashFit",
+      "cfunc": "skia_canvas::context::api::get_lineDashFit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_lineDashFit",
+      "cfunc": "skia_canvas::context::api::set_lineDashFit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_lineDashMarker",
+      "cfunc": "skia_canvas::context::api::get_lineDashMarker",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_lineDashMarker",
+      "cfunc": "skia_canvas::context::api::set_lineDashMarker",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_lineDashOffset",
+      "cfunc": "skia_canvas::context::api::get_lineDashOffset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_lineDashOffset",
+      "cfunc": "skia_canvas::context::api::set_lineDashOffset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_lineJoin",
+      "cfunc": "skia_canvas::context::api::get_lineJoin",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_lineJoin",
+      "cfunc": "skia_canvas::context::api::set_lineJoin",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_lineWidth",
+      "cfunc": "skia_canvas::context::api::get_lineWidth",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_lineWidth",
+      "cfunc": "skia_canvas::context::api::set_lineWidth",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_miterLimit",
+      "cfunc": "skia_canvas::context::api::get_miterLimit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_miterLimit",
+      "cfunc": "skia_canvas::context::api::set_miterLimit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_drawImage",
+      "cfunc": "skia_canvas::context::api::drawImage",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_drawCanvas",
+      "cfunc": "skia_canvas::context::api::drawCanvas",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_getImageData",
+      "cfunc": "skia_canvas::context::api::getImageData",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_putImageData",
+      "cfunc": "skia_canvas::context::api::putImageData",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_imageSmoothingEnabled",
+      "cfunc": "skia_canvas::context::api::get_imageSmoothingEnabled",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_imageSmoothingEnabled",
+      "cfunc": "skia_canvas::context::api::set_imageSmoothingEnabled",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_imageSmoothingQuality",
+      "cfunc": "skia_canvas::context::api::get_imageSmoothingQuality",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_imageSmoothingQuality",
+      "cfunc": "skia_canvas::context::api::set_imageSmoothingQuality",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_fillText",
+      "cfunc": "skia_canvas::context::api::fillText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_strokeText",
+      "cfunc": "skia_canvas::context::api::strokeText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_measureText",
+      "cfunc": "skia_canvas::context::api::measureText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_outlineText",
+      "cfunc": "skia_canvas::context::api::outlineText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_font",
+      "cfunc": "skia_canvas::context::api::get_font",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_font",
+      "cfunc": "skia_canvas::context::api::set_font",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_textAlign",
+      "cfunc": "skia_canvas::context::api::get_textAlign",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_textAlign",
+      "cfunc": "skia_canvas::context::api::set_textAlign",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_textBaseline",
+      "cfunc": "skia_canvas::context::api::get_textBaseline",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_textBaseline",
+      "cfunc": "skia_canvas::context::api::set_textBaseline",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_direction",
+      "cfunc": "skia_canvas::context::api::get_direction",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_direction",
+      "cfunc": "skia_canvas::context::api::set_direction",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_letterSpacing",
+      "cfunc": "skia_canvas::context::api::get_letterSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_letterSpacing",
+      "cfunc": "skia_canvas::context::api::set_letterSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_wordSpacing",
+      "cfunc": "skia_canvas::context::api::get_wordSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_wordSpacing",
+      "cfunc": "skia_canvas::context::api::set_wordSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_fontHinting",
+      "cfunc": "skia_canvas::context::api::get_fontHinting",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_fontHinting",
+      "cfunc": "skia_canvas::context::api::set_fontHinting",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_fontVariant",
+      "cfunc": "skia_canvas::context::api::get_fontVariant",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_fontVariant",
+      "cfunc": "skia_canvas::context::api::set_fontVariant",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_fontStretch",
+      "cfunc": "skia_canvas::context::api::get_fontStretch",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_fontStretch",
+      "cfunc": "skia_canvas::context::api::set_fontStretch",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_textWrap",
+      "cfunc": "skia_canvas::context::api::get_textWrap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_textWrap",
+      "cfunc": "skia_canvas::context::api::set_textWrap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_textDecoration",
+      "cfunc": "skia_canvas::context::api::get_textDecoration",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_textDecoration",
+      "cfunc": "skia_canvas::context::api::set_textDecoration",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_globalAlpha",
+      "cfunc": "skia_canvas::context::api::get_globalAlpha",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_globalAlpha",
+      "cfunc": "skia_canvas::context::api::set_globalAlpha",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_globalCompositeOperation",
+      "cfunc": "skia_canvas::context::api::get_globalCompositeOperation",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_globalCompositeOperation",
+      "cfunc": "skia_canvas::context::api::set_globalCompositeOperation",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_filter",
+      "cfunc": "skia_canvas::context::api::get_filter",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_filter",
+      "cfunc": "skia_canvas::context::api::set_filter",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_shadowBlur",
+      "cfunc": "skia_canvas::context::api::get_shadowBlur",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_shadowBlur",
+      "cfunc": "skia_canvas::context::api::set_shadowBlur",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_shadowColor",
+      "cfunc": "skia_canvas::context::api::get_shadowColor",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_shadowColor",
+      "cfunc": "skia_canvas::context::api::set_shadowColor",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_shadowOffsetX",
+      "cfunc": "skia_canvas::context::api::get_shadowOffsetX",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_get_shadowOffsetY",
+      "cfunc": "skia_canvas::context::api::get_shadowOffsetY",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_shadowOffsetX",
+      "cfunc": "skia_canvas::context::api::set_shadowOffsetX",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.CanvasRenderingContext2D_set_shadowOffsetY",
+      "cfunc": "skia_canvas::context::api::set_shadowOffsetY",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_register",
+      "cfunc": "skia_canvas::gui::register",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_activate",
+      "cfunc": "skia_canvas::gui::activate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_quit",
+      "cfunc": "skia_canvas::gui::quit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_closeWindow",
+      "cfunc": "skia_canvas::gui::close",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_openWindow",
+      "cfunc": "skia_canvas::gui::open",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_setRate",
+      "cfunc": "skia_canvas::gui::set_rate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/skia.App_setMode",
+      "cfunc": "skia_canvas::gui::set_mode",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/skia.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.register",
+      "cfunc": "skia_canvas::gui::register",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.activate",
+      "cfunc": "skia_canvas::gui::activate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.quit",
+      "cfunc": "skia_canvas::gui::quit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.closeWindow",
+      "cfunc": "skia_canvas::gui::close",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.openWindow",
+      "cfunc": "skia_canvas::gui::open",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.setRate",
+      "cfunc": "skia_canvas::gui::set_rate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/gui.App.native.setMode",
+      "cfunc": "skia_canvas::gui::set_mode",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/gui.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.new",
+      "cfunc": "skia_canvas::image::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.pixels",
+      "cfunc": "skia_canvas::image::pixels",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.new",
+      "cfunc": "skia_canvas::path::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.from_path",
+      "cfunc": "skia_canvas::path::from_path",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.from_svg",
+      "cfunc": "skia_canvas::path::from_svg",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.addPath",
+      "cfunc": "skia_canvas::path::addPath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.closePath",
+      "cfunc": "skia_canvas::path::closePath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.moveTo",
+      "cfunc": "skia_canvas::path::moveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.lineTo",
+      "cfunc": "skia_canvas::path::lineTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.bezierCurveTo",
+      "cfunc": "skia_canvas::path::bezierCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.quadraticCurveTo",
+      "cfunc": "skia_canvas::path::quadraticCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.conicCurveTo",
+      "cfunc": "skia_canvas::path::conicCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.arc",
+      "cfunc": "skia_canvas::path::arc",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.arcTo",
+      "cfunc": "skia_canvas::path::arcTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.ellipse",
+      "cfunc": "skia_canvas::path::ellipse",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.rect",
+      "cfunc": "skia_canvas::path::rect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.roundRect",
+      "cfunc": "skia_canvas::path::roundRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.op",
+      "cfunc": "skia_canvas::path::op",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.interpolate",
+      "cfunc": "skia_canvas::path::interpolate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.simplify",
+      "cfunc": "skia_canvas::path::simplify",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.unwind",
+      "cfunc": "skia_canvas::path::unwind",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.round",
+      "cfunc": "skia_canvas::path::round",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.trim",
+      "cfunc": "skia_canvas::path::trim",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.jitter",
+      "cfunc": "skia_canvas::path::jitter",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.offset",
+      "cfunc": "skia_canvas::path::offset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.transform",
+      "cfunc": "skia_canvas::path::transform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.bounds",
+      "cfunc": "skia_canvas::path::bounds",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.contains",
+      "cfunc": "skia_canvas::path::contains",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.edges",
+      "cfunc": "skia_canvas::path::edges",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasGradient.linear",
+      "cfunc": "skia_canvas::gradient::linear",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasGradient.radial",
+      "cfunc": "skia_canvas::gradient::radial",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasGradient.conic",
+      "cfunc": "skia_canvas::gradient::conic",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasGradient.addColorStop",
+      "cfunc": "skia_canvas::gradient::addColorStop",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasGradient.repr",
+      "cfunc": "skia_canvas::gradient::repr",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasPattern.from_image",
+      "cfunc": "skia_canvas::pattern::from_image",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasPattern.from_image_data",
+      "cfunc": "skia_canvas::pattern::from_image_data",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasPattern.from_canvas",
+      "cfunc": "skia_canvas::pattern::from_canvas",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasPattern.setTransform",
+      "cfunc": "skia_canvas::pattern::setTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasPattern.repr",
+      "cfunc": "skia_canvas::pattern::repr",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasTexture.new",
+      "cfunc": "skia_canvas::texture::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasTexture.repr",
+      "cfunc": "skia_canvas::texture::repr",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.FontLibrary.has",
+      "cfunc": "skia_canvas::font_library::has",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.FontLibrary.family",
+      "cfunc": "skia_canvas::font_library::family",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.FontLibrary.addFamily",
+      "cfunc": "skia_canvas::font_library::addFamily",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.FontLibrary.reset",
+      "cfunc": "skia_canvas::font_library::reset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.new",
+      "cfunc": "skia_canvas::canvas::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.save",
+      "cfunc": "skia_canvas::canvas::save",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.saveSync",
+      "cfunc": "skia_canvas::canvas::saveSync",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.toBuffer",
+      "cfunc": "skia_canvas::canvas::toBuffer",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.toBufferSync",
+      "cfunc": "skia_canvas::canvas::toBufferSync",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.new",
+      "cfunc": "skia_canvas::context::api::new",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.resetSize",
+      "cfunc": "skia_canvas::context::api::resetSize",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.reset",
+      "cfunc": "skia_canvas::context::api::reset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.save",
+      "cfunc": "skia_canvas::context::api::save",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.restore",
+      "cfunc": "skia_canvas::context::api::restore",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.transform",
+      "cfunc": "skia_canvas::context::api::transform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.translate",
+      "cfunc": "skia_canvas::context::api::translate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.scale",
+      "cfunc": "skia_canvas::context::api::scale",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.rotate",
+      "cfunc": "skia_canvas::context::api::rotate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.resetTransform",
+      "cfunc": "skia_canvas::context::api::resetTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.createProjection",
+      "cfunc": "skia_canvas::context::api::createProjection",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.beginPath",
+      "cfunc": "skia_canvas::context::api::beginPath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.rect",
+      "cfunc": "skia_canvas::context::api::rect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.roundRect",
+      "cfunc": "skia_canvas::context::api::roundRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.arc",
+      "cfunc": "skia_canvas::context::api::arc",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.ellipse",
+      "cfunc": "skia_canvas::context::api::ellipse",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.moveTo",
+      "cfunc": "skia_canvas::context::api::moveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineTo",
+      "cfunc": "skia_canvas::context::api::lineTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.arcTo",
+      "cfunc": "skia_canvas::context::api::arcTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.bezierCurveTo",
+      "cfunc": "skia_canvas::context::api::bezierCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.quadraticCurveTo",
+      "cfunc": "skia_canvas::context::api::quadraticCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.conicCurveTo",
+      "cfunc": "skia_canvas::context::api::conicCurveTo",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.closePath",
+      "cfunc": "skia_canvas::context::api::closePath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.isPointInPath",
+      "cfunc": "skia_canvas::context::api::isPointInPath",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.isPointInStroke",
+      "cfunc": "skia_canvas::context::api::isPointInStroke",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.clip",
+      "cfunc": "skia_canvas::context::api::clip",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fill",
+      "cfunc": "skia_canvas::context::api::fill",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.stroke",
+      "cfunc": "skia_canvas::context::api::stroke",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fillRect",
+      "cfunc": "skia_canvas::context::api::fillRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.strokeRect",
+      "cfunc": "skia_canvas::context::api::strokeRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.clearRect",
+      "cfunc": "skia_canvas::context::api::clearRect",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.getLineDash",
+      "cfunc": "skia_canvas::context::api::getLineDash",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.setLineDash",
+      "cfunc": "skia_canvas::context::api::setLineDash",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.drawImage",
+      "cfunc": "skia_canvas::context::api::drawImage",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.drawCanvas",
+      "cfunc": "skia_canvas::context::api::drawCanvas",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.getImageData",
+      "cfunc": "skia_canvas::context::api::getImageData",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.putImageData",
+      "cfunc": "skia_canvas::context::api::putImageData",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fillText",
+      "cfunc": "skia_canvas::context::api::fillText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.strokeText",
+      "cfunc": "skia_canvas::context::api::strokeText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.measureText",
+      "cfunc": "skia_canvas::context::api::measureText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.outlineText",
+      "cfunc": "skia_canvas::context::api::outlineText",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.register",
+      "cfunc": "skia_canvas::gui::register",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.activate",
+      "cfunc": "skia_canvas::gui::activate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.quit",
+      "cfunc": "skia_canvas::gui::quit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.closeWindow",
+      "cfunc": "skia_canvas::gui::close",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.openWindow",
+      "cfunc": "skia_canvas::gui::open",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.setRate",
+      "cfunc": "skia_canvas::gui::set_rate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.App.setMode",
+      "cfunc": "skia_canvas::gui::set_mode",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.src.get",
+      "cfunc": "skia_canvas::image::get_src",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.src.set",
+      "cfunc": "skia_canvas::image::set_src",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.data.set",
+      "cfunc": "skia_canvas::image::set_data",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.width.get",
+      "cfunc": "skia_canvas::image::get_width",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.height.get",
+      "cfunc": "skia_canvas::image::get_height",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Image.complete.get",
+      "cfunc": "skia_canvas::image::get_complete",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.d.get",
+      "cfunc": "skia_canvas::path::get_d",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Path2D.d.set",
+      "cfunc": "skia_canvas::path::set_d",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.FontLibrary.families.get",
+      "cfunc": "skia_canvas::font_library::get_families",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.engine.get",
+      "cfunc": "skia_canvas::canvas::get_engine",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.engine.set",
+      "cfunc": "skia_canvas::canvas::set_engine",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.engine_status.get",
+      "cfunc": "skia_canvas::canvas::get_engine_status",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.width.get",
+      "cfunc": "skia_canvas::canvas::get_width",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.width.set",
+      "cfunc": "skia_canvas::canvas::set_width",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.height.get",
+      "cfunc": "skia_canvas::canvas::get_height",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.Canvas.height.set",
+      "cfunc": "skia_canvas::canvas::set_height",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.size.get",
+      "cfunc": "skia_canvas::context::api::get_size",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.size.set",
+      "cfunc": "skia_canvas::context::api::set_size",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.currentTransform.get",
+      "cfunc": "skia_canvas::context::api::get_currentTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.currentTransform.set",
+      "cfunc": "skia_canvas::context::api::set_currentTransform",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fillStyle.get",
+      "cfunc": "skia_canvas::context::api::get_fillStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fillStyle.set",
+      "cfunc": "skia_canvas::context::api::set_fillStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.strokeStyle.get",
+      "cfunc": "skia_canvas::context::api::get_strokeStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.strokeStyle.set",
+      "cfunc": "skia_canvas::context::api::set_strokeStyle",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineCap.get",
+      "cfunc": "skia_canvas::context::api::get_lineCap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineCap.set",
+      "cfunc": "skia_canvas::context::api::set_lineCap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineDashFit.get",
+      "cfunc": "skia_canvas::context::api::get_lineDashFit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineDashFit.set",
+      "cfunc": "skia_canvas::context::api::set_lineDashFit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineDashMarker.get",
+      "cfunc": "skia_canvas::context::api::get_lineDashMarker",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineDashMarker.set",
+      "cfunc": "skia_canvas::context::api::set_lineDashMarker",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineDashOffset.get",
+      "cfunc": "skia_canvas::context::api::get_lineDashOffset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineDashOffset.set",
+      "cfunc": "skia_canvas::context::api::set_lineDashOffset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineJoin.get",
+      "cfunc": "skia_canvas::context::api::get_lineJoin",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineJoin.set",
+      "cfunc": "skia_canvas::context::api::set_lineJoin",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineWidth.get",
+      "cfunc": "skia_canvas::context::api::get_lineWidth",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.lineWidth.set",
+      "cfunc": "skia_canvas::context::api::set_lineWidth",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.miterLimit.get",
+      "cfunc": "skia_canvas::context::api::get_miterLimit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.miterLimit.set",
+      "cfunc": "skia_canvas::context::api::set_miterLimit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.imageSmoothingEnabled.get",
+      "cfunc": "skia_canvas::context::api::get_imageSmoothingEnabled",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.imageSmoothingEnabled.set",
+      "cfunc": "skia_canvas::context::api::set_imageSmoothingEnabled",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.imageSmoothingQuality.get",
+      "cfunc": "skia_canvas::context::api::get_imageSmoothingQuality",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.imageSmoothingQuality.set",
+      "cfunc": "skia_canvas::context::api::set_imageSmoothingQuality",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.font.get",
+      "cfunc": "skia_canvas::context::api::get_font",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.font.set",
+      "cfunc": "skia_canvas::context::api::set_font",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textAlign.get",
+      "cfunc": "skia_canvas::context::api::get_textAlign",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textAlign.set",
+      "cfunc": "skia_canvas::context::api::set_textAlign",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textBaseline.get",
+      "cfunc": "skia_canvas::context::api::get_textBaseline",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textBaseline.set",
+      "cfunc": "skia_canvas::context::api::set_textBaseline",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.direction.get",
+      "cfunc": "skia_canvas::context::api::get_direction",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.direction.set",
+      "cfunc": "skia_canvas::context::api::set_direction",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.letterSpacing.get",
+      "cfunc": "skia_canvas::context::api::get_letterSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.letterSpacing.set",
+      "cfunc": "skia_canvas::context::api::set_letterSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.wordSpacing.get",
+      "cfunc": "skia_canvas::context::api::get_wordSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.wordSpacing.set",
+      "cfunc": "skia_canvas::context::api::set_wordSpacing",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fontHinting.get",
+      "cfunc": "skia_canvas::context::api::get_fontHinting",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fontHinting.set",
+      "cfunc": "skia_canvas::context::api::set_fontHinting",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fontVariant.get",
+      "cfunc": "skia_canvas::context::api::get_fontVariant",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fontVariant.set",
+      "cfunc": "skia_canvas::context::api::set_fontVariant",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fontStretch.get",
+      "cfunc": "skia_canvas::context::api::get_fontStretch",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.fontStretch.set",
+      "cfunc": "skia_canvas::context::api::set_fontStretch",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textWrap.get",
+      "cfunc": "skia_canvas::context::api::get_textWrap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textWrap.set",
+      "cfunc": "skia_canvas::context::api::set_textWrap",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textDecoration.get",
+      "cfunc": "skia_canvas::context::api::get_textDecoration",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.textDecoration.set",
+      "cfunc": "skia_canvas::context::api::set_textDecoration",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.globalAlpha.get",
+      "cfunc": "skia_canvas::context::api::get_globalAlpha",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.globalAlpha.set",
+      "cfunc": "skia_canvas::context::api::set_globalAlpha",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.globalCompositeOperation.get",
+      "cfunc": "skia_canvas::context::api::get_globalCompositeOperation",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.globalCompositeOperation.set",
+      "cfunc": "skia_canvas::context::api::set_globalCompositeOperation",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.filter.get",
+      "cfunc": "skia_canvas::context::api::get_filter",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.filter.set",
+      "cfunc": "skia_canvas::context::api::set_filter",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowBlur.get",
+      "cfunc": "skia_canvas::context::api::get_shadowBlur",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowBlur.set",
+      "cfunc": "skia_canvas::context::api::set_shadowBlur",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowColor.get",
+      "cfunc": "skia_canvas::context::api::get_shadowColor",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowColor.set",
+      "cfunc": "skia_canvas::context::api::set_shadowColor",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowOffsetX.get",
+      "cfunc": "skia_canvas::context::api::get_shadowOffsetX",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowOffsetX.set",
+      "cfunc": "skia_canvas::context::api::set_shadowOffsetX",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowOffsetY.get",
+      "cfunc": "skia_canvas::context::api::get_shadowOffsetY",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/neon.neon.CanvasRenderingContext2D.shadowOffsetY.set",
+      "cfunc": "skia_canvas::context::api::set_shadowOffsetY",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/neon.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/typography.FontLibrary.native.has",
+      "cfunc": "skia_canvas::font_library::has",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/typography.FontLibrary.native.family",
+      "cfunc": "skia_canvas::font_library::family",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/typography.FontLibrary.native.addFamily",
+      "cfunc": "skia_canvas::font_library::addFamily",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/typography.FontLibrary.native.reset",
+      "cfunc": "skia_canvas::font_library::reset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/classes/typography.FontLibrary.native.families.get",
+      "cfunc": "skia_canvas::font_library::get_families",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/classes/typography.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.FontLibrary.native.has",
+      "cfunc": "skia_canvas::font_library::has",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.FontLibrary.native.family",
+      "cfunc": "skia_canvas::font_library::family",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.FontLibrary.native.addFamily",
+      "cfunc": "skia_canvas::font_library::addFamily",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.FontLibrary.native.reset",
+      "cfunc": "skia_canvas::font_library::reset",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.register",
+      "cfunc": "skia_canvas::gui::register",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.activate",
+      "cfunc": "skia_canvas::gui::activate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.quit",
+      "cfunc": "skia_canvas::gui::quit",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.closeWindow",
+      "cfunc": "skia_canvas::gui::close",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.openWindow",
+      "cfunc": "skia_canvas::gui::open",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.setRate",
+      "cfunc": "skia_canvas::gui::set_rate",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.App.native.setMode",
+      "cfunc": "skia_canvas::gui::set_mode",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "skia-canvas/lib/index.FontLibrary.native.families.get",
+      "cfunc": "skia_canvas::font_library::get_families",
+      "library": "/home/gasket/node_modules/skia-canvas/lib/index.js"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}

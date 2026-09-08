@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="utf8">
+<head>
+  <title>Jelly</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape@3.23.0/dist/cytoscape.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/webcola@3.4.0/WebCola/cola.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-cola@2.5.1/cytoscape-cola.min.js"></script>
+  <!-- Extra dependencies for fcose layout
+  <script src="https://unpkg.com/layout-base/layout-base.js"></script>
+  <script src="https://unpkg.com/cose-base/cose-base.js"></script>
+  <script src="https://unpkg.com/cytoscape-fcose/cytoscape-fcose.js"></script>
+  -->
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-expand-collapse@4.1.0/cytoscape-expand-collapse.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cytoscape-panzoom@2.5.3/cytoscape.js-panzoom.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/cytoscape-panzoom@2.5.3/cytoscape-panzoom.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    #cy {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 900;
+    }
+    #info {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      z-index: 800;
+      opacity: 0.8;
+      font-size: 15px;
+    }
+    #control {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      text-align: right;
+      max-width: calc(100% - 250px);
+    }
+    .group {
+      background: rgba(255, 255, 255, .7);
+      padding: 2px 4px 2px 4px;
+      text-align: left;
+      display: inline-block;
+      z-index: 999;
+      position: relative;
+    }
+    #fields {
+      z-index: 999;
+      position: relative;
+    }
+    #fields label {
+      background: rgba(255, 255, 255, .7);
+      padding: 5px;
+    }
+    #dataset {
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      z-index: 999;
+    }
+    #msg {
+      position: absolute;
+      margin-top: 10px;
+      bottom: 20px;
+      right: 20px;
+      z-index: 999;
+      background: rgba(255, 255, 255, .7);
+      padding: 4px;
+    }
+    h1 {
+      font-variant: small-caps;
+      opacity: 0.5;
+      font-size: 25px;
+    }
+    button {
+      height: 25px;
+      background-color: white;
+      border-radius: 1px;
+      cursor: pointer;
+    }
+    .cy-panzoom {
+      position: absolute;
+      top: 100px;
+      left: 20px;
+    }
+    .shadow {
+      box-shadow: inset 1px 1px 4px #aaa;
+      background-color: #eee;
+    }
+    body.callgraphModeHidden .callgraphMode {
+      display: none;
+    }
+    body.dataflowModeHidden .dataflowMode {
+      display: none;
+    }
+    input[type=number] {
+      width: 60px;
+      height: 30px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      cytoscape.warnings(false);
+      const cy = window.cy = cytoscape({
+        container: document.getElementById('cy'),
+        layout: null,
+        wheelSensitivity: 0.3,
+        maxZoom: 3,
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'min-zoomed-font-size': '3px',
+              'background-color': '#aaaaaa'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node',
+            style: {
+              'border-width': '1px',
+              'border-style': 'solid',
+              'border-color': '#000000'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node.callWeight',
+            style: {
+              'background-color': 'mapData(callWeight, 0, 100, lightgray, purple)'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node.tokenWeight',
+            style: {
+              'background-color': 'mapData(tokenWeight, 0, 100, lightgray, purple)'
+            }
+          },
+          {
+            selector: 'node[isEntry]',
+            style: {
+              'border-width': '3px',
+              'border-style': 'solid',
+              'border-color': '#000000'
+            }
+          },
+          {
+            selector: 'node:selected',
+            style: {
+              'border-width': '4px',
+              'border-style': 'solid',
+              'border-color': '#3050c0'
+            }
+          },
+          {
+            selector: 'node[isReachable].highlight',
+            style: {
+              'border-width': '2px',
+              'border-style': 'solid',
+              'border-color': '#ffff00'
+            }
+          },
+          {
+            selector: 'node:selected[isReachable].highlight',
+            style: {
+              'border-width': '4px',
+              'border-color': '#50c050'
+            }
+          },
+          {
+            selector: 'node:selected[isEntry]',
+            style: {
+              'border-width': '5px',
+            }
+          },
+          {
+            selector: 'node[isEntry].highlight',
+            style: {
+              'border-width': '5px',
+            }
+          },
+          {
+            selector: 'node[kind="package"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '10px',
+              'shape': 'rectangle'
+            }
+          },
+          {
+            selector: 'node[kind="package"].callWeight',
+            style: {
+              'width': function (node) {
+                return (30 + Math.sqrt(node.data('callWeight'))*2) + 'px';
+              },
+              'height': function (node) {
+                return (30 + Math.sqrt(node.data('callWeight'))*2) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="package"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (30 + Math.sqrt(node.data('tokenWeight'))*2) + 'px';
+              },
+              'height': function (node) {
+                return (30 + Math.sqrt(node.data('tokenWeight'))*2) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="module"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '8px',
+              'shape': 'rectangle'
+            }
+          },
+          {
+            selector: 'node[kind="module"].callWeight',
+            style: {
+              'width': function (node) {
+                return (20 + Math.sqrt(node.data('callWeight'))) + 'px';
+              },
+              'height': function (node) {
+                return (20 + Math.sqrt(node.data('callWeight'))) + 'px';
+              }
+            }
+          },
+          {
+            selector: 'node[kind="module"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (20 + Math.sqrt(node.data('tokenWeight'))) + 'px';
+              },
+              'height': function (node) {
+                return (20 + Math.sqrt(node.data('tokenWeight'))) + 'px';
+              },
+              'background-color': 'mapData(tokenWeight, 0, 100, gray, red)'
+            }
+          },
+          {
+            selector: 'node[kind="function"]',
+            style: {
+              'label': 'data(name)',
+              'font-size': '6px',
+              'shape': 'ellipse'
+            }
+          },
+          {
+            selector: 'node[kind="function"].callWeight',
+            style: {
+              'width': function (node) {
+                return (10 + node.data('callWeight')/3) + 'px';
+              },
+              'height': function (node) {
+                return (10 + node.data('callWeight')/3) + 'px';
+              },
+              'background-color': 'mapData(callWeight, 0, 100, gray, purple)'
+            }
+          },
+          {
+            selector: 'node.cy-expand-collapse-collapsed-node',
+            style: {
+              'shape': 'rectangle',
+            },
+          },
+          {
+            selector: ':parent',
+            style: {
+              'background-opacity': 0.333
+            }
+          },
+          {
+            selector: 'node[isSource]',
+            style: {
+              'background-color': '#aa0000',
+              'background-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[isTarget]',
+            style: {
+              'background-color': '#ff0000',
+              'background-opacity': 0.8
+            }
+          },
+          {
+            selector: 'node[kind="variable"]',
+            style: {
+              'shape': 'ellipse',
+              'width': '8px',
+              'height': '8px',
+              'background-color': 'gray'
+            }
+          },
+          {
+            selector: 'node[kind="variable"].tokenWeight',
+            style: {
+              'width': function (node) {
+                return (8 + Math.sqrt(node.data('tokenWeight'))/2) + 'px';
+              },
+              'height': function (node) {
+                return (8 + Math.sqrt(node.data('tokenWeight'))/2) + 'px';
+              },
+              'background-color': 'mapData(tokenWeight, 0, 100, gray, red)'
+            }
+          },
+          {
+            selector: 'edge',
+            style: {
+              'width': 1,
+              'line-color': '#888',
+              'target-arrow-color': '#888',
+              'target-arrow-shape': 'triangle',
+              'curve-style': 'bezier'
+            }
+          },
+          {
+            selector: 'edge.cy-expand-collapse-collapsed-edge',
+            style: {
+              'width': function (edge) {
+                return (2 + Math.log2(edge.data('collapsedEdges').length)/2) + 'px';
+              },
+              'curve-style': 'unbundled-bezier'
+            }
+          },
+          {
+            selector: 'edge[kind="require"]',
+            style: {
+              'line-color': '#bbb',
+              'target-arrow-color': '#bbb',
+            }
+          },
+          {
+            selector: '.hidden',
+            css: {
+              'display': 'none'
+            }
+          },
+          {
+            selector: 'edge[sourceTarget]',
+            style: {
+              'line-color': '#aa0000',
+              'target-arrow-color': '#aa0000',
+              'width': '3px'
+            }
+          },
+          {
+            selector: 'edge[kind="data"]',
+            style: {
+              'width': function (edge) {
+                return 1 + Math.log2((edge.data('weight') ?? 0) + 1);
+              }
+            }
+          }
+        ]
+      });
+      cy.panzoom({
+        panSpeed: 5,
+        panDistance: 15
+      });
+
+      cy.on("layoutstart", e => {
+        document.getElementById("layout").classList.add("shadow");
+      });
+      cy.on("layoutstop", e => {
+        document.getElementById("layout").classList.remove("shadow");
+      });
+      cy.on('select', e => {
+        document.getElementById("msg").textContent = e.target?.data()?.fullName ?? '';
+      });
+      cy.on('unselect', () => {
+        document.getElementById("msg").textContent = '';
+      });
+
+      let layout;
+      const stopLayout = () => layout?.stop();
+      function newLayout(fit = false) {
+        layout = cy.layout({
+          name: 'cola',
+          padding: 20,
+          animate: true,
+          randomize: false,
+          fit,
+          centerGraph: false,
+          avoidOverlap: true,
+          maxSimulationTime: 3000,
+        });
+
+        // layout = cy.layout({
+        //   name: 'fcose',
+        //   quality: "proof",
+        //   padding: 20,
+        //   animate: true,
+        //   randomize: false,
+        //   fit,
+        //   nodeDimensionsIncludeLabels: true,
+        // });
+        layout.start();
+      }
+
+      let removed;
+      function hide() {
+        stopLayout();
+        if (removed) {
+          removed.filter("node").restore();
+          removed.filter("edge").forEach(e => {
+            if (e.source().inside() && e.target().inside())
+              e.restore();
+          });
+          removed = removed.filter(":removed");
+        }
+        const threshold = document.getElementById("threshold").value;
+        const count = graph.kind === "callgraph" ? "callCount" : graph.kind === "dataflow" ? "tokenCount" : undefined;
+        const queries = [];
+        if (count && threshold > 0)
+          queries.push(`node[${count} < ${threshold}]`);
+        if (document.getElementById("hideUnreachable").checked)
+          queries.push("node[!isReachable]");
+        if (queries.length > 0) {
+          const nodes = cy.elements(queries.join(","));
+          ec.expandAllEdges();
+          ec.collapseRecursively(nodes);
+          ec.collapseAllEdges();
+          const r = nodes.remove();
+          removed = removed ? removed.union(r) : r;
+        }
+      }
+
+      const ec = cy.expandCollapse({
+        fisheye: false,
+        randomize: false,
+        animate: true,
+        undoable: false,
+        cueEnabled: false,
+        allowNestedEdgeCollapse: false,
+        groupEdgesOfSameTypeOnCollapse: true
+      });
+      cy.on("expandcollapse.afterexpand", node => {
+        cy.batch(() => {
+          const desc = cy.nodes(node.target).descendants();
+          if (document.getElementById("showCallDensity").checked)
+            desc.addClass("callWeight");
+          else
+            desc.removeClass("callWeight");
+          if (document.getElementById("showValueDensity").checked)
+            desc.addClass("tokenWeight");
+          else
+            desc.removeClass("tokenWeight");
+          if (document.getElementById("highlightReachable").checked)
+            desc.addClass("highlight");
+          else
+            desc.removeClass("highlight");
+        });
+      });
+
+      document.getElementById("collapseAll").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.collapseAll();
+        ec.collapseAllEdges();
+        showVulnerabilities();
+        newLayout();
+      });
+      document.getElementById("collapseSelected").addEventListener("click", () => {
+        stopLayout();
+        const ns = cy.$(":selected:compound:visible");
+        if (ns.size() > 0) {
+          ec.expandAllEdges();
+          ec.collapseRecursively(ns);
+          ec.collapseAllEdges();
+          showVulnerabilities();
+          newLayout();
+        }
+      });
+      document.getElementById("expandSelected").addEventListener("click", () => {
+        stopLayout();
+        const es = cy.$(":selected:visible.cy-expand-collapse-collapsed-node,:selected:visible:compound");
+        if (es.size() > 0) {
+          ec.expandAllEdges();
+          ec.expand(es.union(es.children(":visible")));
+          ec.collapseAllEdges();
+          showVulnerabilities();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("expandAllPackages").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.expand(cy.$('node[kind="package"]:visible.cy-expand-collapse-collapsed-node'));
+        ec.collapseAllEdges();
+        showVulnerabilities();
+        hide();
+        newLayout();
+      });
+      document.getElementById("expandAll").addEventListener("click", () => {
+        stopLayout();
+        ec.expandAllEdges();
+        ec.expandRecursively(cy.nodes(":visible"));
+        hide();
+        newLayout();
+      });
+      document.getElementById("showPredecessors").addEventListener("click", () => {
+        const es = cy.$("node:selected");
+        if (es.size() > 0) {
+          stopLayout();
+          const collapsed = cy.$("node.cy-expand-collapse-collapsed-node");
+          ec.expandAllEdges();
+          ec.expandAll();
+          const sources = es.union(es.descendants());
+          const pred = sources.predecessors().union(sources);
+          const keep = pred.union(pred.ancestors())
+          cy.nodes().difference(keep).remove();
+          ec.collapseRecursively(collapsed.intersection(keep));
+          ec.collapseAllEdges();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("removeSelected").addEventListener("click", () => {
+        const es = cy.$(":selected");
+        if (es.size() > 0) {
+          stopLayout();
+          ec.expandAllEdges();
+          cy.$(":selected").remove();
+          ec.collapseAllEdges();
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("removeNonSelected").addEventListener("click", () => {
+        const es = cy.$(":selected");
+        if (es.size() > 0) {
+          stopLayout();
+          ec.expandAllEdges();
+          cy.nodes().difference(es.union(es.descendants()).union(es.ancestors())).remove();
+          ec.collapseAllEdges();
+          removed = undefined;
+          hide();
+          newLayout();
+        }
+      });
+      document.getElementById("layout").addEventListener("click", () => {
+        stopLayout();
+        if (!document.getElementById("layout").classList.contains("shadow"))
+          newLayout();
+      });
+      document.getElementById("hideUnreachable").addEventListener("change", () => {
+        stopLayout();
+        hide();
+        newLayout();
+      });
+      document.getElementById("threshold").addEventListener("change", () => {
+        stopLayout();
+        hide();
+        newLayout();
+      });
+      document.getElementById("threshold").addEventListener("focus", e => {
+        e.target.select();
+      });
+      document.getElementById("highlightReachable").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("highlightReachable").checked)
+          cy.nodes().addClass("highlight");
+        else
+          cy.nodes().removeClass("highlight");
+        newLayout();
+      });
+      document.getElementById("showCallDensity").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("showCallDensity").checked)
+          cy.nodes().addClass("callWeight");
+        else
+          cy.nodes().removeClass("callWeight");
+        newLayout();
+      });
+      document.getElementById("showValueDensity").addEventListener("change", () => {
+        stopLayout();
+        if (document.getElementById("showValueDensity").checked)
+          cy.nodes().addClass("tokenWeight");
+        else
+          cy.nodes().removeClass("tokenWeight");
+        newLayout();
+      });
+
+      const data = {"graphs":[{"kind":"callgraph","elements":[{"data":{"id":1,"kind":"package","name":"argon2","fullName":"argon2@0.44.0","callWeight":71,"callCount":17,"isEntry":"true","isReachable":"true"}},{"data":{"id":2,"kind":"package","name":"@phc/format","fullName":"@phc/format@1.0.0","callWeight":100,"callCount":24,"isReachable":"true"}},{"data":{"id":3,"kind":"package","name":"node-gyp-build","fullName":"node-gyp-build@4.8.4","callWeight":96,"callCount":23,"isReachable":"true"}},{"data":{"id":4,"kind":"module","parent":1,"name":"Ghidra Functions","fullName":"Ghidra Demangled Binary Sub-graph","callWeight":10,"callCount":0,"isReachable":"true"}},{"data":{"id":5,"kind":"module","parent":1,"name":"argon2.cjs","fullName":"argon2@0.44.0:argon2.cjs","callWeight":71,"callCount":17,"isEntry":"true","isReachable":"true"}},{"data":{"id":6,"kind":"function","parent":5,"name":"hash 71:1:126:2","fullName":"'async function hash(...$ }, salt, hash, });}'argon2@0.44.0:argon2.cjs:71:1:hash","callWeight":0,"callCount":0}},{"data":{"id":7,"kind":"function","parent":5,"name":"needsRehash 138:1:155:2","fullName":"'function needsRehash...$!== +parallelism );}'argon2@0.44.0:argon2.cjs:138:1:needsRehash","callWeight":0,"callCount":0}},{"data":{"id":8,"kind":"function","parent":5,"name":"verify 165:1:195:2","fullName":"'async function verif...$s[id], }), hash, );}'argon2@0.44.0:argon2.cjs:165:1:verify","callWeight":0,"callCount":0}},{"data":{"id":9,"kind":"function","parent":5,"name":"[Native API] <@phc/format>","fullName":"Native Call: <@phc/format>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":10,"kind":"function","parent":5,"name":"[Native API] <node-gyp-build>","fullName":"Native Call: <node-gyp-build>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":11,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize","fullName":"Native Call: <@phc/format>.deserialize","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":12,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.serialize","fullName":"Native Call: <@phc/format>.serialize","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":13,"kind":"function","parent":5,"name":"[Native API] <node-gyp-build>().hash","fullName":"Native Call: <node-gyp-build>().hash","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":14,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize().version","fullName":"Native Call: <@phc/format>.deserialize().version","callWeight":25,"callCount":1}},{"data":{"id":15,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize().params","fullName":"Native Call: <@phc/format>.deserialize().params","callWeight":25,"callCount":1}},{"data":{"id":16,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize().id","fullName":"Native Call: <@phc/format>.deserialize().id","callWeight":25,"callCount":1}},{"data":{"id":17,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize….params.m","fullName":"Native Call: <@phc/format>.deserialize….params.m","callWeight":25,"callCount":1}},{"data":{"id":18,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize….params.t","fullName":"Native Call: <@phc/format>.deserialize….params.t","callWeight":25,"callCount":1}},{"data":{"id":19,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize….params.p","fullName":"Native Call: <@phc/format>.deserialize….params.p","callWeight":25,"callCount":1}},{"data":{"id":20,"kind":"function","parent":5,"name":"[Native API] <node-gyp-build>()","fullName":"Native Call: <node-gyp-build>()","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":21,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.deserialize()","fullName":"Native Call: <@phc/format>.deserialize()","callWeight":50,"callCount":2}},{"data":{"id":22,"kind":"function","parent":5,"name":"[Native API] <@phc/format>.serialize()","fullName":"Native Call: <@phc/format>.serialize()","callWeight":25,"callCount":1}},{"data":{"id":23,"kind":"function","parent":5,"name":"[Native API] <node-gyp-build>().hash()","fullName":"Native Call: <node-gyp-build>().hash()","callWeight":50,"callCount":2}},{"data":{"id":24,"kind":"module","parent":2,"name":"index.js","fullName":"@phc/format@1.0.0:index.js","callWeight":100,"callCount":24,"isReachable":"true"}},{"data":{"id":25,"kind":"function","parent":24,"name":"objToKeyVal 8:1:12:2","fullName":"'function objToKeyVal...$n('=')) .join(',');}'@phc/format@1.0.0:index.js:8:1:objToKeyVal","callWeight":25,"callCount":1}},{"data":{"id":26,"kind":"function","parent":25,"name":"<anon> 10:10:10:36","fullName":"'k => [k, obj[k]].join('=')'@phc/format@1.0.0:index.js:10:10:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":27,"kind":"function","parent":24,"name":"keyValtoObj 14:1:25:2","fullName":"'function keyValtoObj...$'); }); return obj;}'@phc/format@1.0.0:index.js:14:1:keyValtoObj","callWeight":25,"callCount":1}},{"data":{"id":28,"kind":"function","parent":27,"name":"<anon> 16:26:23:4","fullName":"'ps => { const pss = ...$] = pss.join('='); }'@phc/format@1.0.0:index.js:16:26:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":29,"kind":"function","parent":24,"name":"objectKeys 27:1:30:2","fullName":"'function objectKeys(...$bject.keys(object);}'@phc/format@1.0.0:index.js:27:1:objectKeys","callWeight":100,"callCount":4}},{"data":{"id":30,"kind":"function","parent":24,"name":"objectValues 32:1:37:2","fullName":"'function objectValue...$ap(k => object[k]);}'@phc/format@1.0.0:index.js:32:1:objectValues","callWeight":50,"callCount":2}},{"data":{"id":31,"kind":"function","parent":30,"name":"<anon> 36:33:36:47","fullName":"'k => object[k]'@phc/format@1.0.0:index.js:36:33:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":32,"kind":"function","parent":24,"name":"serialize 50:1:134:2","fullName":"'function serialize(o...$$'); return phcstr;}'@phc/format@1.0.0:index.js:50:1:serialize","callWeight":25,"callCount":1}},{"data":{"id":33,"kind":"function","parent":32,"name":"<anon> 87:19:87:41","fullName":"'p => nameRegex.test(p)'@phc/format@1.0.0:index.js:87:19:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":34,"kind":"function","parent":32,"name":"<anon> 92:16:98:6","fullName":"'k => { if (typeof op...$).split('=')[0]; } }'@phc/format@1.0.0:index.js:92:16:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":35,"kind":"function","parent":32,"name":"<anon> 100:19:100:45","fullName":"'v => typeof v === 'string''@phc/format@1.0.0:index.js:100:19:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":36,"kind":"function","parent":32,"name":"<anon> 104:19:104:42","fullName":"'v => valueRegex.test(v)'@phc/format@1.0.0:index.js:104:19:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":37,"kind":"function","parent":24,"name":"deserialize 141:1:224:2","fullName":"'function deserialize...$ash; return phcobj;}'@phc/format@1.0.0:index.js:141:1:deserialize","callWeight":50,"callCount":2}},{"data":{"id":38,"kind":"function","parent":37,"name":"<anon> 194:35:194:57","fullName":"'p => nameRegex.test(p)'@phc/format@1.0.0:index.js:194:35:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":39,"kind":"function","parent":37,"name":"<anon> 199:19:199:42","fullName":"'v => valueRegex.test(v)'@phc/format@1.0.0:index.js:199:19:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":40,"kind":"function","parent":37,"name":"<anon> 205:16:209:6","fullName":"'k => { params[k] = d...$, 10) : params[k]; }'@phc/format@1.0.0:index.js:205:16:<anonymous>","callWeight":25,"callCount":1}},{"data":{"id":41,"kind":"function","parent":24,"name":"[Native API] <node-gyp-build>()….0","fullName":"Native Call: <node-gyp-build>()….0","callWeight":25,"callCount":1}},{"data":{"id":42,"kind":"function","parent":24,"name":"[Native API] <node-gyp-build>()….toString()","fullName":"Native Call: <node-gyp-build>()….toString()","callWeight":25,"callCount":1}},{"data":{"id":43,"kind":"module","parent":3,"name":"index.js","fullName":"node-gyp-build@4.8.4:index.js","callWeight":8,"callCount":2,"isReachable":"true"}},{"data":{"id":44,"kind":"function","parent":43,"name":"[Native API] <node-gyp-build/node-gyp-build>","fullName":"Native Call: <node-gyp-build/node-gyp-build>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":45,"kind":"module","parent":3,"name":"node-gyp-build.js","fullName":"node-gyp-build@4.8.4:node-gyp-build.js","callWeight":88,"callCount":21,"isReachable":"true"}},{"data":{"id":46,"kind":"function","parent":45,"name":"load 21:1:23:2","fullName":"'function load (dir) ...$(load.resolve(dir))}'node-gyp-build@4.8.4:node-gyp-build.js:21:1:load","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":47,"kind":"function","parent":45,"name":"<anon> 25:28:75:2","fullName":"'function (dir) { dir...$lds, winner.file) }}'node-gyp-build@4.8.4:node-gyp-build.js:25:28:<anonymous>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":48,"kind":"function","parent":47,"name":"resolve 62:3:74:4","fullName":"'function resolve (di...$ilds, winner.file) }'node-gyp-build@4.8.4:node-gyp-build.js:62:3:resolve","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":49,"kind":"function","parent":45,"name":"readdirSync 77:1:83:2","fullName":"'function readdirSync...$(err) { return [] }}'node-gyp-build@4.8.4:node-gyp-build.js:77:1:readdirSync","callWeight":50,"callCount":2,"isReachable":"true"}},{"data":{"id":50,"kind":"function","parent":45,"name":"getFirst 85:1:88:2","fullName":"'function getFirst (d...$join(dir, files[0])}'node-gyp-build@4.8.4:node-gyp-build.js:85:1:getFirst","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":51,"kind":"function","parent":45,"name":"matchBuild 90:1:92:2","fullName":"'function matchBuild ...$\\.node$/.test(name)}'node-gyp-build@4.8.4:node-gyp-build.js:90:1:matchBuild","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":52,"kind":"function","parent":45,"name":"parseTuple 94:1:107:2","fullName":"'function parseTuple ...$rm, architectures }}'node-gyp-build@4.8.4:node-gyp-build.js:94:1:parseTuple","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":53,"kind":"function","parent":45,"name":"matchTuple 109:1:115:2","fullName":"'function matchTuple ...$es.includes(arch) }}'node-gyp-build@4.8.4:node-gyp-build.js:109:1:matchTuple","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":54,"kind":"function","parent":53,"name":"<anon> 110:10:114:4","fullName":"'function (tuple) { i...$res.includes(arch) }'node-gyp-build@4.8.4:node-gyp-build.js:110:10:<anonymous>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":55,"kind":"function","parent":45,"name":"compareTuples 117:1:120:2","fullName":"'function compareTupl...$rchitectures.length}'node-gyp-build@4.8.4:node-gyp-build.js:117:1:compareTuples","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":56,"kind":"function","parent":45,"name":"parseTags 122:1:152:2","fullName":"'function parseTags (...$ity++ } return tags}'node-gyp-build@4.8.4:node-gyp-build.js:122:1:parseTags","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":57,"kind":"function","parent":45,"name":"matchTags 154:1:165:2","fullName":"'function matchTags (...$false return true }}'node-gyp-build@4.8.4:node-gyp-build.js:154:1:matchTags","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":58,"kind":"function","parent":57,"name":"<anon> 155:10:164:4","fullName":"'function (tags) { if...$ false return true }'node-gyp-build@4.8.4:node-gyp-build.js:155:10:<anonymous>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":59,"kind":"function","parent":45,"name":"runtimeAgnostic 167:1:169:2","fullName":"'function runtimeAgno...$'node' && tags.napi}'node-gyp-build@4.8.4:node-gyp-build.js:167:1:runtimeAgnostic","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":60,"kind":"function","parent":45,"name":"compareTags 171:1:184:2","fullName":"'function compareTags...$else { return 0 } }}'node-gyp-build@4.8.4:node-gyp-build.js:171:1:compareTags","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":61,"kind":"function","parent":60,"name":"<anon> 173:10:183:4","fullName":"'function (a, b) { if...$ else { return 0 } }'node-gyp-build@4.8.4:node-gyp-build.js:173:10:<anonymous>","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":62,"kind":"function","parent":45,"name":"isNwjs 186:1:188:2","fullName":"'function isNwjs () {...$rocess.versions.nw)}'node-gyp-build@4.8.4:node-gyp-build.js:186:1:isNwjs","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":63,"kind":"function","parent":45,"name":"isElectron 190:1:194:2","fullName":"'function isElectron ...$type === 'renderer'}'node-gyp-build@4.8.4:node-gyp-build.js:190:1:isElectron","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"id":64,"kind":"function","parent":45,"name":"isAlpine 196:1:198:2","fullName":"'function isAlpine (p...$tc/alpine-release')}'node-gyp-build@4.8.4:node-gyp-build.js:196:1:isAlpine","callWeight":25,"callCount":1,"isReachable":"true"}},{"data":{"kind":"call","source":30,"target":29}},{"data":{"kind":"call","source":30,"target":31}},{"data":{"kind":"call","source":32,"target":29}},{"data":{"kind":"call","source":32,"target":30}},{"data":{"kind":"call","source":32,"target":25}},{"data":{"kind":"call","source":32,"target":33}},{"data":{"kind":"call","source":32,"target":34}},{"data":{"kind":"call","source":32,"target":35}},{"data":{"kind":"call","source":32,"target":36}},{"data":{"kind":"call","source":32,"target":41}},{"data":{"kind":"call","source":32,"target":42}},{"data":{"kind":"call","source":37,"target":27}},{"data":{"kind":"call","source":37,"target":29}},{"data":{"kind":"call","source":37,"target":30}},{"data":{"kind":"call","source":37,"target":38}},{"data":{"kind":"call","source":37,"target":40}},{"data":{"kind":"call","source":37,"target":39}},{"data":{"kind":"call","source":50,"target":49}},{"data":{"kind":"call","source":50,"target":51}},{"data":{"kind":"call","source":25,"target":29}},{"data":{"kind":"call","source":25,"target":26}},{"data":{"kind":"call","source":47,"target":48}},{"data":{"kind":"call","source":47,"target":50}},{"data":{"kind":"call","source":48,"target":49}},{"data":{"kind":"call","source":48,"target":53}},{"data":{"kind":"call","source":48,"target":57}},{"data":{"kind":"call","source":48,"target":60}},{"data":{"kind":"call","source":48,"target":56}},{"data":{"kind":"call","source":48,"target":52}},{"data":{"kind":"call","source":48,"target":54}},{"data":{"kind":"call","source":48,"target":58}},{"data":{"kind":"call","source":48,"target":55}},{"data":{"kind":"call","source":48,"target":61}},{"data":{"kind":"call","source":58,"target":59}},{"data":{"kind":"call","source":45,"target":62}},{"data":{"kind":"call","source":45,"target":63}},{"data":{"kind":"call","source":45,"target":64}},{"data":{"kind":"call","source":46,"target":47}},{"data":{"kind":"call","source":5,"target":46}},{"data":{"kind":"call","source":5,"target":9}},{"data":{"kind":"call","source":5,"target":10}},{"data":{"kind":"call","source":5,"target":11}},{"data":{"kind":"call","source":5,"target":12}},{"data":{"kind":"call","source":5,"target":13}},{"data":{"kind":"call","source":5,"target":20}},{"data":{"kind":"call","source":7,"target":37}},{"data":{"kind":"call","source":7,"target":14}},{"data":{"kind":"call","source":7,"target":15}},{"data":{"kind":"call","source":7,"target":17}},{"data":{"kind":"call","source":7,"target":18}},{"data":{"kind":"call","source":7,"target":19}},{"data":{"kind":"call","source":7,"target":21}},{"data":{"kind":"call","source":8,"target":37}},{"data":{"kind":"call","source":8,"target":16}},{"data":{"kind":"call","source":8,"target":21}},{"data":{"kind":"call","source":8,"target":23}},{"data":{"kind":"call","source":6,"target":32}},{"data":{"kind":"call","source":6,"target":22}},{"data":{"kind":"call","source":6,"target":23}},{"data":{"kind":"call","source":27,"target":28}},{"data":{"kind":"call","source":43,"target":44}},{"data":{"kind":"require","source":5,"target":24}},{"data":{"kind":"require","source":5,"target":43}},{"data":{"kind":"require","source":43,"target":45}}],"info":"Packages: 3\nModules: 4\nFunctions: 56\nCall edges: 64\nMax number of calls for packages: 24, modules: 24, functions: 4"}]};
+      let graph;
+
+      function showVulnerabilities() {
+        if (!graph.vulnerabilities)
+          return;
+
+        stopLayout();
+        const vulnerabilityTitle = document.getElementById("vulnerabilities").value;
+        const e = document.getElementsByName("vulnerabilityLevel");
+        let level = "package";
+        for (let i = 0; i < e.length; i++)
+          if (e[i].checked) {
+            level = e[i].value;
+            break;
+          }
+        const sources = new Set(), targets = new Set();
+        for (const v of graph.vulnerabilities)
+          if (v.title === vulnerabilityTitle) {
+            for (const s of v[level].sources)
+              sources.add(String(s));
+            for (const s of v[level].targets)
+              targets.add(String(s));
+          }
+        function has(collection, node) {
+          return collection.has(node.data("id")) || (ec.isExpandable(node) && ec.getCollapsedChildrenRecursively(node).some(n => collection.has(n.data("id"))));
+        }
+        cy.batch(() => {
+          cy.nodes().forEach(node => {
+            node.removeData("isSource isTarget");
+            if (has(sources, node))
+              node.data("isSource", true);
+            if (has(targets, node))
+              node.data("isTarget", true);
+          });
+          cy.edges().forEach(edge => {
+            edge.removeData("sourceTarget");
+            const source = edge.source();
+            const target = edge.target();
+            if (has(sources, source) && (has(targets, target) || has(sources, target)))
+              edge.data("sourceTarget", true);
+          });
+         cy.elements().removeClass("workaround");
+       });
+      }
+      document.getElementById("vulnerabilities").addEventListener("change", showVulnerabilities);
+      document.getElementById("vulnerabilityLevel").addEventListener("change", showVulnerabilities);
+
+      function setGraph(i) {
+        stopLayout();
+        removed = undefined;
+        cy.elements().remove();
+        graph = data.graphs[i];
+        cy.add(structuredClone(graph.elements));
+        ec.collapseAll();
+        ec.collapseAllEdges();
+        if (graph.kind === "callgraph")
+          document.body.classList.remove("callgraphModeHidden");
+        if (graph.kind === "dataflow")
+          document.body.classList.remove("dataflowModeHidden");
+        document.getElementById("showValueDensity").checked = false;
+        if (graph.info)
+          document.getElementById("info").innerText = graph.info;
+        document.getElementById("threshold").value = 0;
+        if (graph.vulnerabilities) {
+          const vulnerabilities = document.getElementById("vulnerabilities");
+          const vulnerabilityLevel = document.getElementById("vulnerabilityLevel");
+          vulnerabilities.hidden = false;
+          vulnerabilityLevel.hidden = false;
+          for (let i = 0; i < graph.vulnerabilities.length; i++) {
+            const opt = document.createElement("option");
+            opt.value = opt.innerText = graph.vulnerabilities[i].title;
+            vulnerabilities.appendChild(opt);
+          }
+          showVulnerabilities();
+        }
+        newLayout(true);
+      }
+
+      if (data.graphs.length >= 1) {
+        setGraph(0);
+        if (data.graphs.length > 1) {
+          const dataset = document.getElementById('dataset');
+          dataset.hidden = false;
+          for (let i = 0; i < data.graphs.length; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.innerText = data.graphs[i].title ?? "";
+            dataset.appendChild(opt);
+          }
+          document.getElementById("dataset").addEventListener("change", e => {
+            setGraph(e.target.value);
+          });
+        }
+      }
+    });
+  </script>
+</head>
+<body class="callgraphModeHidden dataflowModeHidden">
+<header>
+<h1>Jelly visualizer</h1>
+<div id="info"></div>
+<div id="control">
+<div class="group">
+<button id="collapseAll">Collapse all</button>
+<button id="collapseSelected">Collapse selected</button>
+<button id="expandSelected">Expand selected</button>
+<span class="callgraphMode"><button id="expandAllPackages">Expand all packages</button></span>
+<button id="expandAll">Expand all</button>
+</div>
+<br/>
+<div class="group">
+<button id="showPredecessors">Show predecessors</button>
+<button id="removeSelected">Remove selected</button>
+<button id="removeNonSelected">Remove non-selected</button>
+</div>
+<br/>
+<div class="group">
+<button id="layout">Layout</button>
+</div>
+<br/>
+<div class="group">
+<span class="callgraphMode">
+<input type="checkbox" id="showCallDensity"><label for="showCallDensity"> Show call density</label>
+<br/>
+<input type="checkbox" id="highlightReachable"><label for="highlightReachable"> Highlight reachable</label>
+<br/>
+<input type="checkbox" id="hideUnreachable"><label for="hideUnreachable"> Hide unreachable</label>
+</span>
+<span class="dataflowMode">
+<input type="checkbox" id="showValueDensity"><label for="showValueDensity"> Show value density</label>
+</span>
+</div>
+<span id="fields">
+<br/>
+<label for="threshold">Threshold: </label><input type="number" id="threshold" value="0" min="0">
+<br/>
+</span>
+<div class="group">
+<span id="vulnerabilityLevel" hidden>
+Vulnerabilities:<br/>
+<select id="vulnerabilities" hidden><option></option></select>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelPackage" value="package" checked><label for="vulnerabilityLevelPackage">Package dependency</label>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelModule" value="module"><label for="vulnerabilityLevelModule">Module dependency</label>
+<br/>
+<input type="radio" name="vulnerabilityLevel" id="vulnerabilityLevelFunction" value="function"><label for="vulnerabilityLevelFunction">Function reachability</label>
+</span>
+</div>
+</div>
+<select id="dataset" hidden></select>
+<div id="msg"></div>
+</header>
+<div id="cy"></div>
+</body>
+</html>

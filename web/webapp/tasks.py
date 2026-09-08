@@ -119,7 +119,7 @@ def run_jelly_analysis(package_name, package_version=None, analysis_id=None):
 
 
 
-@task #Ε
+@task 
 def run_cross_language_analysis(package_name, package_version=None, analysis_id=None):
     analysis = Analyses.objects.filter(id=analysis_id).first()
     

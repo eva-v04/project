@@ -1,0 +1,16 @@
+{
+  "objects_examined": 22506,
+  "callable_objects": 14635,
+  "foreign_callable_objects": 0,
+  "duration_sec": 2.349,
+  "count": 0,
+  "modules": [
+    "/home/gasket/node_modules/serialport/lib/index.js",
+    "/home/gasket/node_modules/serialport/lib/parsers.js",
+    "/home/gasket/node_modules/serialport/test.js"
+  ],
+  "jump_libs": [],
+  "bridges": [],
+  "ambiguous": [],
+  "unresolved": []
+}

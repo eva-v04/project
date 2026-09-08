@@ -47,6 +47,15 @@
                     </div>
 
                 <br><button type="submit" class="btn-main w-100 py-2">ΕΙΣΟΔΟΣ</button>
+            
+            
+                {% if error_message %}
+                </n div class="alert alert-danger d-flex align-items-center mb-3" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-2"></i>
+                <div>{{ error_message }}</div>
+            </div>
+            {% endif %}
+            
             </form> 
 
         <div class="mt-4 helper-text">
