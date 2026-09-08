@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "tiny-secp256k1": "^2.2.4"
+  }
+}

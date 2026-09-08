@@ -1,0 +1,100 @@
+{
+  "objects_examined": 4223,
+  "callable_objects": 3620,
+  "foreign_callable_objects": 13,
+  "duration_sec": 2.661,
+  "count": 13,
+  "modules": [
+    "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node",
+    "/home/gasket/node_modules/tiny-secp256k1/build/Release/secp256k1.node",
+    "/home/gasket/node_modules/tiny-secp256k1/index.js",
+    "/home/gasket/node_modules/tiny-secp256k1/js.js",
+    "/home/gasket/node_modules/tiny-secp256k1/native.js",
+    "/home/gasket/node_modules/tiny-secp256k1/rfc6979.js"
+  ],
+  "jump_libs": [
+    "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+  ],
+  "bridges": [
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.isPoint",
+      "cfunc": "eccIsPoint(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.isPointCompressed",
+      "cfunc": "eccIsPointCompressed(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.isPrivate",
+      "cfunc": "eccIsPrivate(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.pointAdd",
+      "cfunc": "eccPointAdd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.pointAddScalar",
+      "cfunc": "eccPointAddScalar(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.pointCompress",
+      "cfunc": "eccPointCompress(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.pointFromScalar",
+      "cfunc": "eccPointFromScalar(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.pointMultiply",
+      "cfunc": "eccPointMultiply(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.privateAdd",
+      "cfunc": "eccPrivateAdd(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.privateSub",
+      "cfunc": "eccPrivateSub(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.sign",
+      "cfunc": "ecdsaSign(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.signWithEntropy",
+      "cfunc": "ecdsaSignWithEntropy(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    },
+    {
+      "type": "js-to-native",
+      "jsname": "tiny-secp256k1/build/Release/obj.target/secp256k1.verify",
+      "cfunc": "ecdsaVerify(Nan::FunctionCallbackInfo<v8::Value> const&)",
+      "library": "/home/gasket/node_modules/tiny-secp256k1/build/Release/obj.target/secp256k1.node"
+    }
+  ],
+  "ambiguous": [],
+  "unresolved": []
+}

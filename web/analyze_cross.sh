@@ -34,12 +34,23 @@ OUTPUT_HTML="$OUTPUT_DIR/${package_name}.html"
 
 # Μετάβαση στον φάκελο του Jelly και Εκτέλεση
 cd /home/eva/Ptuxiakh/jelly
+# Χτίσιμο ορισμάτων δυναμικά
+EXTRA_ARGS=""
+
+if [ -f "$GASKET_BRIDGES" ] && [ -s "$GASKET_BRIDGES" ]; then
+    EXTRA_ARGS="$EXTRA_ARGS --bridges $GASKET_BRIDGES"
+fi
+
+if [ -f "$GHIDRA_MANGLED_JSON" ] && [ -s "$GHIDRA_MANGLED_JSON" ]; then
+    EXTRA_ARGS="$EXTRA_ARGS --ghidra $GHIDRA_MANGLED_JSON"
+fi
+
+echo "Running Jelly with args: $EXTRA_ARGS"
 
 node lib/main.js --api-usage --external-matches \
-  --bridges "$GASKET_BRIDGES" \
-  --ghidra "$GHIDRA_MANGLED_JSON" \
+  $EXTRA_ARGS \
   -j "$OUTPUT_JSON" \
   -m "$OUTPUT_HTML" \
   "/home/eva/node_modules/${package_name}"
-
+  
 echo "Η Cross-Language ανάλυση ολοκληρώθηκε! Τα αποτελέσματα σώθηκαν στο: $OUTPUT_DIR"

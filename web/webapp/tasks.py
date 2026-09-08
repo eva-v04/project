@@ -1,6 +1,7 @@
 import os
 import glob
 import subprocess
+from django.core.serializers import json
 from django.tasks import task
 from django.conf import settings
 from .models import Analyses, User, Notification
@@ -132,7 +133,7 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
         # Ορισμός διαδρομών
         gasket_folder = os.path.join(
             settings.BASE_DIR, 
-            'static', 
+            'static',
             f'gasket_analysis_{package_name}_{version_param}'
         )
 
@@ -141,16 +142,20 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
 
         gasket_script = os.path.join(settings.BASE_DIR, "analyze_gasket.sh")
         cross_script = os.path.join(settings.BASE_DIR, "analyze_cross.sh")
+        jelly_script = os.path.join(settings.BASE_DIR, "analyze_jelly.sh")
         ghidra_script = "/home/eva/ghidra-callgraph/ghidra.sh"
 
-        ##Πρόοδος ΒΗΜΑ 1: Gasket Analysis (25%)
+        ##Πρόοδος ΒΗΜΑ 1: Gasket Analysis 
         analysis.progress = 10
         analysis.current_step = "Running Gasket Analysis (Extracting Bridges)..."
         analysis.save()
 
+        has_bridges = False  
+
 
         if os.path.exists(expected_bridges_file) and os.path.getsize(expected_bridges_file) > 0:
             print(f" [GASKET CACHE HIT] Βρέθηκαν έτοιμα τα bridges: {expected_bridges_file}")
+            has_bridges = True
         else:
             print(f" [GASKET CACHE MISS] Εκτέλεση Gasket για {package_name}@{version_param}...")
             try:
@@ -159,34 +164,38 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
                     cwd=settings.BASE_DIR, 
                     check=True
                 )
-            except subprocess.CalledProcessError as e:
-                analysis.status = 'failed'
+                if os.path.exists(expected_bridges_file) and os.path.getsize(expected_bridges_file) > 0:
+                    print(f" [GASKET SUCCESS] Bridges extracted successfully: {expected_bridges_file}")
+                    has_bridges = True
+            except Exception as e:
+                # Παράλειψη χωρίς fail
+                print(f" [GASKET SKIPPED] Gasket failed or no native bindings: {e}")
+                has_bridges = False
+                analysis.current_step = "No Gasket bridges found, skipping native bridges step..."
                 analysis.save()
-                
-                notification_user = analysis.user if analysis.user else None
-                Notification.objects.create(
-                    user=notification_user,
-                    analysis=analysis,
-                    title="Cross-Language Analysis Failed",
-                    message=f"Η ανάλυση Gasket για το πακέτο {package_name} ({version_param}) απέτυχε.",
-                    link="/analyses/"
-                )
-                return f"Gasket execution failed: {e}"
+
+        # Επιβεβαίωση ότι υπάρχουν πραγματικά bridges μέσα στο αρχείο
+        if has_bridges and os.path.exists(expected_bridges_file):
+            try:
+                with open(expected_bridges_file, 'r', encoding='utf-8') as f:
+                    g_data = json.load(f)
+                    if not g_data.get('bridges') or len(g_data['bridges']) == 0:
+                        has_bridges = False
+            except Exception:
+                has_bridges = False
 
 
+# -------------------------------------------------------------
+        # ΒΗΜΑ 2: Εντοπισμός .node αρχείου & Ghidra 
+        # -------------------------------------------------------------
         #πρόοδος
         analysis.progress = 35
         analysis.current_step = "Searching for Native .node binary..."
         analysis.save()    
 
-        analysis.progress = 50
-        analysis.current_step = "Running Ghidra Decompiler & Callgraph Analysis..."
-        analysis.save()
 
+        has_node = False
 
-        # -------------------------------------------------------------
-        # ΝΤΟΠΙΣΜΟΣ ΚΑΤΑΛΛΗΛΟΥ .NODE ΑΡΧΕΙΟΥ (Προτίμηση x64/linux-x64)!!!!
-        # -------------------------------------------------------------
         jelly_folder = os.path.join(
             settings.BASE_DIR, 
             'static', 
@@ -197,40 +206,97 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
                          glob.glob(f"{jelly_folder}/**/*.node", recursive=True) + \
                          glob.glob(f"/home/eva/node_modules/{package_name}/**/*.node", recursive=True)
 
-        if not all_node_files:
-            raise FileNotFoundError(f"Δεν βρέθηκε αρχείο .node για το πακέτο {package_name}")
+        if all_node_files:
+            has_node = True
+            x64_nodes = [f for f in all_node_files if 'x64' in f or 'x86_64' in f or 'linux' in f]
+            native_binary_path = x64_nodes[0] if x64_nodes else all_node_files[0]
+            print(f"Native binary selected: {native_binary_path}")
 
-        x64_nodes = [f for f in all_node_files if 'x64' in f or 'x86_64' in f or 'linux' in f]
-        native_binary_path = x64_nodes[0] if x64_nodes else all_node_files[0]
-        
-        print(f"Native binary selected: {native_binary_path}")
+            analysis.progress = 50
+            analysis.current_step = "Running Ghidra Decompiler on Native Binary..."
+            analysis.save()
 
-        
-        if os.path.exists(expected_ghidra_file) and os.path.getsize(expected_ghidra_file) > 0:
-            print(f" [GHIDRA CACHE HIT] Βρέθηκε έτοιμη η ανάλυση Ghidra: {expected_ghidra_file}")
+            if os.path.exists(expected_ghidra_file) and os.path.getsize(expected_ghidra_file) > 0:
+                print(f" [GHIDRA CACHE HIT] Βρέθηκε έτοιμη η ανάλυση Ghidra: {expected_ghidra_file}")
+            else:
+                try:
+                    print(f" [GHIDRA RUN] Εκτέλεση Ghidra για {package_name}...")
+                    subprocess.run(
+                        [ghidra_script, native_binary_path, package_name], 
+                        cwd=settings.BASE_DIR, 
+                        check=True
+                    )
+                except Exception as e:
+                    # Παράλειψη χωρίς failure
+                    print(f" [GHIDRA SKIPPED] Ghidra failed: {e}")
+                    analysis.current_step = "Ghidra decompilation failed, proceeding without native symbols..."
+                    analysis.save()
         else:
-            print(f" [GHIDRA CACHE MISS] Εκτέλεση Ghidra για {package_name}...")
-            subprocess.run(
-                [ghidra_script, native_binary_path, package_name], 
-                cwd=settings.BASE_DIR, 
-                check=True
+            # Χωρίς .node  (π.χ. WebAssembly / pure JS)
+            print(f" [INFO] Δεν βρέθηκε .node binary για το {package_name}. Παράλειψη Ghidra.")
+            has_node = False #
+            analysis.progress = 50
+            analysis.current_step = "No native binary found. Proceeding with WebAssembly/JavaScript..."
+            analysis.save()
+
+
+        #  ΑΠΟΦΑΣΗ: CROSS-LANGUAGE Ή PURE JELLY 
+        # -------------------------------------------------------------
+        if not has_bridges and not has_node:
+            #  ΜΕΤΑΤΡΟΠΗ ΣΕ ΑΠΛΟ JELLY
+            print(f" Το πακέτο {package_name} δεν διαθέτει native dependencies. Μετατροπή σε Jelly ανάλυση.")
+            
+            analysis.analysis_type = 'jelly'
+            analysis.progress = 40
+            analysis.current_step = "No native dependencies found. Running standard JavaScript call graph..."
+            analysis.save()
+
+            # Εκτέλεση απλού Jelly
+            subprocess.run([jelly_script, package_name, version_param], cwd=settings.BASE_DIR, check=True)
+
+            analysis.progress = 100
+            analysis.current_step = "Completed!"
+            analysis.status = 'completed'
+            analysis.save()
+
+            Notification.objects.create(
+                user=analysis.user if analysis.user else None,
+                analysis=analysis,
+                title="Analysis Complete",
+                message=f"Η ανάλυση για το πακέτο {package_name} ({version_param}) ολοκληρώθηκε επιτυχώς!",
+                link=f"/analysis/{analysis.id}/"
             )
-
-        # πρόοδος ΒΗΜΑ 3: Cross-Language Jelly Analysis (85%)
-        analysis.progress = 75
-        analysis.current_step = "Generating Cross-Language Polyglot Call Graph (Jelly)..."
-        analysis.save()
-
+            return f"Analysis for {package_name} fell back silently to Jelly and completed."
 
         # -------------------------------------------------------------
         # 4. ΕΚΤΕΛΕΣΗ CROSS-LANGUAGE JELLY SCRIPT
         # -------------------------------------------------------------
+        analysis.progress = 75
+        analysis.current_step = "Generating Cross-Language Polyglot Call Graph (Jelly)..."
+        analysis.save()
+
         print(f"Εκτέλεση Cross-Language Jelly για {package_name}@{version_param}...")
-        subprocess.run(
-            [cross_script, package_name, version_param], 
-            cwd=settings.BASE_DIR, 
-            check=True
-        )
+        try:
+            subprocess.run(
+                [cross_script, package_name, version_param], 
+                cwd=settings.BASE_DIR, 
+                check=True
+            )
+        except subprocess.CalledProcessError as e:
+            analysis.status = 'failed'
+            analysis.progress = 0
+            analysis.current_step = "Cross-Language Jelly Analysis Failed"
+            analysis.save()
+
+            notification_user = analysis.user if analysis.user else None
+            Notification.objects.create(
+                user=notification_user,
+                analysis=analysis,
+                title="Cross-Language Analysis Failed",
+                message=f"Η ανάλυση Cross-Language για το πακέτο {package_name} ({version_param}) απέτυχε.",
+                link="/analyses/"
+            )
+            return f"Cross-Language Jelly execution failed: {e}"
 
         
         # ΒΗΜΑ 4: Ολοκλήρωση (100%)
