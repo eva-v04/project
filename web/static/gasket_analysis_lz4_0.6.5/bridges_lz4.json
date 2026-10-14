@@ -1,8 +1,8 @@
 {
-  "objects_examined": 37987,
-  "callable_objects": 27742,
+  "objects_examined": 37258,
+  "callable_objects": 27037,
   "foreign_callable_objects": 43,
-  "duration_sec": 15.781,
+  "duration_sec": 28.431,
   "count": 43,
   "modules": [
     "/home/gasket/node_modules/lz4/build/Release/lz4.node",
@@ -29,18 +29,7 @@
     "/home/gasket/node_modules/lz4/lib/lz4.js",
     "/home/gasket/node_modules/lz4/lib/static.js",
     "/home/gasket/node_modules/lz4/lib/utils-js.js",
-    "/home/gasket/node_modules/lz4/lib/utils.js",
-    "/home/gasket/node_modules/lz4/test/block-test.js",
-    "/home/gasket/node_modules/lz4/test/browser/block.js",
-    "/home/gasket/node_modules/lz4/test/browser/checksum.js",
-    "/home/gasket/node_modules/lz4/test/browser/decoder.js",
-    "/home/gasket/node_modules/lz4/test/browser/encoder.js",
-    "/home/gasket/node_modules/lz4/test/browser/helpers/download_data_file.js",
-    "/home/gasket/node_modules/lz4/test/browser/helpers/spec_helper.js",
-    "/home/gasket/node_modules/lz4/test/checksum-test.js",
-    "/home/gasket/node_modules/lz4/test/decode-test.js",
-    "/home/gasket/node_modules/lz4/test/encode-test.js",
-    "/home/gasket/node_modules/lz4/test/jsencode_decode-test.js"
+    "/home/gasket/node_modules/lz4/lib/utils.js"
   ],
   "jump_libs": [
     "/home/gasket/node_modules/lz4/build/Release/lz4.node",

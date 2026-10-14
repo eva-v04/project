@@ -43,14 +43,14 @@
                  <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                             {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                         </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </a>
-                        </i>
+                        <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
                 
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
@@ -68,9 +68,9 @@
                 <label for="package_name" class="fw-bold mt-3" style="color: var(--primary);">NPM Package to Analyze</label>
                 <input type="text" name="package_name" class="form-control" placeholder="e.g. sqlite3" required>
                 
-                <label for="version" class="fw-bold mt-3" style="color: var(--primary);">Επιλογή Έκδοσης</label>
+                <label for="version" class="fw-bold mt-3" style="color: var(--primary);">Select Version</label>
                 <select name="version" id="version_select" class="form-control">
-                    <option value="" style="color: #333;">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
+                    <option value="" style="color: #333;">Enter package name to see versions...</option>
                 </select>
 
                 <script>
@@ -84,7 +84,7 @@
                     
                     if (packageName.length > 2) { // Ξεκινάει μετά από 3 χαρακτήρες
                         timeout = setTimeout(() => {
-                            versionSelect.innerHTML = '<option value="">Φόρτωση εκδόσεων...</option>';
+                            versionSelect.innerHTML = '<option value="">Loading versions...</option>';
                             
                             fetch(`/ajax/get-versions/?package_name=${packageName}`)
                             .then(response => response.json())
@@ -101,7 +101,7 @@
                             }
                         })
                         .catch(err => {
-                            versionSelect.innerHTML = '<option value="latest">Σφάλμα σύνδεσης</option>';
+                            versionSelect.innerHTML = '<option value="latest">Connection Error</option>';
                         });
                 }, 500); // Περιμένει μισό δευτερόλεπτο αφού σταματήσεις να γράφεις
             }
@@ -177,14 +177,14 @@ document.getElementById('gasketForm').onsubmit = function(e) {
     .then(data => {
         if (data.status === 'success') {
             // Αντί για redirect, ενημερώνουμε τον χρήστη
-            loadingDiv.innerHTML = "<p>✅ Η ανάλυση ολοκληρώθηκε! Μπορείτε να δείτε την πρόοδο στο <a href='/analyses'>History</a>.</p>";
+            loadingDiv.innerHTML = "<p>✅ Analysis completed! You can view the progress in the <a href='/analyses'>History</a>.</p>";
             // Προαιρετικά: Μετά από 3 δευτερόλεπτα στείλε τον στο ιστορικό
             setTimeout(() => { window.location.href = '/analyses'; }, 3000);
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Κάτι πήγε λάθος στην εκκίνηση.');
+        alert('An error occurred while starting the analysis. Please try again.');
     });
 };
 </script>

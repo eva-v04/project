@@ -26,9 +26,34 @@ chmod 777 "$folder_name" #για να έχω δικαιώματα εγγραφή
 #gasket -r ./node_modules/$package_name -o bridges_$package_name.json
 
 docker run --rm --cap-add=SYS_PTRACE \
-	    -v "$folder_name:/results" \
-	        grgalex/gasket:0.1.0 \
-		    /bin/bash -c "    #για να τρέξουν οι εντολές μέσα στο Container
-		    npm install $package_name@$package_version && \
-		    gasket -r ./node_modules/$package_name -o /results/bridges_$package_name.json
-	    "
+    -v "$folder_name:/results" \
+    grgalex/gasket:0.1.0 \
+    /bin/bash -c "
+        npm install $package_name@$package_version && \
+        rm -rf ./node_modules/$package_name/test && \
+        gasket --root=./node_modules/$package_name -o=/results/bridges_$package_name.json
+    "
+
+
+    #docker run --rm --cap-add=SYS_PTRACE --user root \
+    #-v "$folder_name:/results" \
+    #grgalex/gasket:0.1.0 \
+    #/bin/bash -c "
+     #   npm init -y && \
+      #  npm install --unsafe-perm node-addon-api node-gyp $package_name@$package_version && \
+       # rm -rf ./node_modules/$package_name/test ./node_modules/$package_name/install ./node_modules/$package_name/src && \
+        #gasket --root=./node_modules/$package_name -o=/results/bridges_$package_name.json
+    #"
+
+    #node-addon-api για να μην έχω σφάλματα κατά την εκτέλεση του gasket
+    #node-gyp
+
+    #docker run --rm --cap-add=SYS_PTRACE --user root \
+    #-v "$folder_name:/results" \
+    #grgalex/gasket:0.1.0 \
+    #/bin/bash -c "
+     #   npm init -y && \
+      #  npm install --unsafe-perm node-addon-api node-gyp $package_name@$package_version && \
+       # rm -rf ./node_modules/$package_name/test && \
+        #gasket --root=./node_modules/$package_name -o=/results/bridges_$package_name.json
+    #"

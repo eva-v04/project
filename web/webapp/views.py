@@ -27,6 +27,9 @@ from django.utils import timezone
 
 from .cross_statistics import generate_cross_language_stats, get_cross_reachability_barchart
 
+import requests
+from django.http import JsonResponse
+from django.core.cache import cache
 def homepage(request):
     return render(request, 'homepage.html')
 
@@ -364,34 +367,48 @@ def analysis_detail(request, analysis_id):
     return redirect('analyses')
 
 
+
+
+import urllib.parse
+import requests
+from django.http import JsonResponse
+from django.core.cache import cache
+
 def get_package_versions(request):
-    package_name = request.GET.get('package_name')
+    package_name = request.GET.get('package_name', '').strip()
     if not package_name:
         return JsonResponse({'versions': []})
 
-    try:
-        # Εκτελούμε την εντολή npm show για να πάρουμε τις εκδόσεις σε JSON format
-        result = subprocess.check_output(
-            ["npm", "show", package_name, "versions", "--json"],
-            stderr=subprocess.STDOUT,
-            text=True
-        )
-        versions = json.loads(result)
+    # 1. Έλεγχος στην cache για άμεση απόκριση
+    cache_key = f"npm_versions_{package_name}"
+    cached_versions = cache.get(cache_key)
+    if cached_versions is not None:
+        return JsonResponse({'versions': cached_versions})
 
-        # Αν το npm επιστρέψει μόνο μία έκδοση (string), τη μετατρέπουμε σε λίστα
-        if isinstance(versions, str):
-            versions = [versions]
-
-        # Επιστρέφουμε τις εκδόσεις αντίστροφα (οι πιο πρόσφατες πρώτες)
-        return JsonResponse({'versions': versions[::-1]})
+    # 2. Ασφαλές URL encoding (ειδικά για scoped πακέτα όπως @angular/core -> @angular%2Fcore)
+    safe_pkg_name = urllib.parse.quote(package_name, safe='@')
+    url = f"https://registry.npmjs.org/{safe_pkg_name}"
     
-    except Exception as e:
-        # Αν υπάρξει σφάλμα (π.χ. δεν υπάρχει το πακέτο), επιστρέφουμε κενή λίστα
+    try:
+        response = requests.get(url, timeout=5)
+        if response.status_code == 200:
+            data = response.json()
+            versions = list(data.get('versions', {}).keys())
+            
+            # Αντιστροφή ώστε οι νεότερες να είναι πρώτες
+            result_versions = versions[::-1]
+            
+            # Αποθήκευση στην cache για 1 ώρα (3600 δευτερόλεπτα)
+            cache.set(cache_key, result_versions, timeout=3600)
+            
+            return JsonResponse({'versions': result_versions})
+        
+        # Πακέτο δεν βρέθηκε (404) ή άλλο HTTP σφάλμα
+        return JsonResponse({'versions': []})
+        
+    except requests.RequestException as e:
         print(f"Error fetching versions: {e}")
         return JsonResponse({'versions': []})
-
-
-
 def check_notifications(request):
     user_id = request.session.get('user_id')
 

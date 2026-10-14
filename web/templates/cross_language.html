@@ -43,14 +43,14 @@
                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                     {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                 </a>
-                <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                    <a href="{% url 'notifications' %}" 
-                       id="notification-badge" 
-                       class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                       style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                       {{ unread_count }}
-                    </a>
-                </i>
+                <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
                 
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
@@ -63,15 +63,17 @@
             <h1 style="margin-top: 15px;">Cross-Language Analysis</h1>
             
             <!-- !!!Τεκμηρίωση -->
-            <div class="alert alert-info text-start mt-3 mb-4" style="background: rgba(13, 202, 240, 0.1); border-color: rgba(13, 202, 240, 0.3); color: inherit;">
-                <h5><i class="fa-solid fa-circle-info me-2"></i>Τεκμηρίωση Ανάλυσης</h5>
-                <p class="small mb-2">
-                    Αυτή η επιλογή συνδυάζει τα εργαλεία <strong>Gasket</strong> και <strong>Jelly</strong> για την παραγωγή ενός ενοποιημένου <strong>Cross-Language Call Graph</strong>:
+            <div class="alert alert-info text-start mt-3 mb-4 shadow-sm" style="background: rgba(13, 202, 240, 0.08); border: 1px solid rgba(13, 202, 240, 0.25); border-radius: 8px; padding: 1.25rem;">
+                <h5 class="fw-bold mb-3" style="color: #0d6efd;">
+                    <i class="fa-solid fa-circle-info me-2"></i>Analysis Documentation
+                </h5>
+                <p class="small mb-2 text-muted">
+                    This feature combines the <strong>Gasket</strong> and <strong>Jelly</strong> tools to generate a unified Cross-Language Call Graph:
                 </p>
-                <ul class="small mb-0">
-                    <li><strong>Jelly:</strong> Χαρτογραφεί τη ροή εκτέλεσης και τις κλήσεις συναρτήσεων στο επίπεδο της JavaScript.</li>
-                    <li><strong>Gasket:</strong> Εντοπίζει τις γέφυρες επικοινωνίας (Native Bridges) μεταξύ JavaScript και Native C/C++ modules.</li>
-                    <li><strong>Cross-Language Call Graph:</strong> Ενώνει τα δύο επίπεδα, απεικονίζοντας τις κλήσεις που διασχίζουν το όριο από την JavaScript στον Native κώδικα.</li>
+                <ul class="small mb-0 ps-3">
+                    <li class="mb-1"><strong>Jelly:</strong> Maps execution flows and function calls at the JavaScript level.</li>
+                    <li class="mb-1"><strong>Gasket:</strong> Identifies the communication bridges (Native Bridges) between JavaScript and Native C/C++ modules.</li>
+                    <li><strong>Cross-Language Call Graph:</strong> Unifies the two levels, visualizing the calls that traverse the boundary from JavaScript to the Native code.</li>
                 </ul>
             </div>
             
@@ -80,9 +82,9 @@
                 <label for="package_name" class="fw-bold mt-3" style="color: var(--primary);">NPM Package to Analyze</label>
                 <input type="text" name="package_name" class="form-control" placeholder="e.g. sqlite3" required>
                 
-                <label for="version" class="fw-bold mt-3" style="color: var(--primary);">Επιλογή Έκδοσης</label>
+                <label for="version" class="fw-bold mt-3" style="color: var(--primary);">Select a Version</label>
                 <select name="version" id="version_select" class="form-control">
-                    <option value="" style="color: #333;">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
+                    <option value="" style="color: #333;">Enter a package to see available versions...</option>
                 </select>
 
                 <p style="font-size: 0.85rem; color: #636e72; margin-top: 15px;">
@@ -167,10 +169,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ολοκληρώθηκε! Μεταφέρεστε στο ιστορικό...</p>";
+                    loadingDiv.innerHTML = "<p class='text-success'>✅ Analysis completed! Redirecting to history...</p>";
                     setTimeout(() => { window.location.href = '/analyses'; }, 2000);
                 } else {
-                    alert('Σφάλμα: ' + (data.message || 'Αποτυχία εκκίνησης'));
+                    alert('Error: ' + (data.message || 'Failed to start analysis'));
                     if (submitBtn) submitBtn.disabled = false;
                     this.style.opacity = '1';
                 }

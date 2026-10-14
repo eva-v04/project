@@ -266,7 +266,7 @@ export class GlobalState {
         this.vulnerabilities?.reachedFunction(f); // TODO: move to FragmentState?
     }
 
-    //DEBUG
+    //DEBUG υπεύθυνο για την καταχώρηση των native συναρτήσεων στο module, ώστε να μην δημιουργούνται διπλές εγγραφές
     registerNativeFunctionInfo(m: ModuleInfo, n: Node, name: string | undefined): FunctionInfo {
         //  Έλεγχος αν η native συνάρτηση έχει ήδη καταχωρηθεί στο module
         for (const fun of m.functions) {

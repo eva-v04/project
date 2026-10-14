@@ -43,10 +43,7 @@ def find_reachable_from_root(jelly_json, root_package_name):
 
 
 def get_ground_truth_native_functions(ghidra_json_path):
-    """
-    Διαβάζει το πλήρες αρχείο Ghidra Symbol Export για να βρει
-    ΟΛΕΣ τις C/C++ συναρτήσεις που υπάρχουν στο compiled binary.
-    """
+    
     if not os.path.exists(ghidra_json_path):
         return 0
     try:

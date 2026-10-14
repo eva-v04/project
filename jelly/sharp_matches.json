@@ -1,211 +1,211 @@
 [
   {
     "jelly_pattern": "write cache...cache",
-    "gasket_jsname": "sharp/lib/sharp.cache",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.cache",
     "cfunc": "cache(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "write concurrency...concurrency",
-    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.concurrency",
     "cfunc": "concurrency(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "write counters...counters",
-    "gasket_jsname": "sharp/lib/sharp.counters",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.counters",
     "cfunc": "counters(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "write simd...simd",
-    "gasket_jsname": "sharp/lib/sharp.simd",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.simd",
     "cfunc": "simd(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "write format...format",
-    "gasket_jsname": "sharp/lib/sharp.format",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.format",
     "cfunc": "format(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "write block...block",
-    "gasket_jsname": "sharp/lib/sharp.block",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.block",
     "cfunc": "block(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call metadata...metadata",
-    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.metadata",
     "cfunc": "metadata(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call metadata...metadata",
-    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.metadata",
     "cfunc": "metadata(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call metadata...metadata",
-    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.metadata",
     "cfunc": "metadata(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call metadata...metadata",
-    "gasket_jsname": "sharp/lib/sharp.metadata",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.metadata",
     "cfunc": "metadata(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call stats...stats",
-    "gasket_jsname": "sharp/lib/sharp.stats",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.stats",
     "cfunc": "stats(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call stats...stats",
-    "gasket_jsname": "sharp/lib/sharp.stats",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.stats",
     "cfunc": "stats(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call stats...stats",
-    "gasket_jsname": "sharp/lib/sharp.stats",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.stats",
     "cfunc": "stats(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call stats...stats",
-    "gasket_jsname": "sharp/lib/sharp.stats",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.stats",
     "cfunc": "stats(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call pipeline...pipeline",
-    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.pipeline",
     "cfunc": "pipeline(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call pipeline...pipeline",
-    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.pipeline",
     "cfunc": "pipeline(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call pipeline...pipeline",
-    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.pipeline",
     "cfunc": "pipeline(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call pipeline...pipeline",
-    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.pipeline",
     "cfunc": "pipeline(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call pipeline...pipeline",
-    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.pipeline",
     "cfunc": "pipeline(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call pipeline...pipeline",
-    "gasket_jsname": "sharp/lib/sharp.pipeline",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.pipeline",
     "cfunc": "pipeline(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call libvipsVersion...libvipsVersion",
-    "gasket_jsname": "sharp/lib/sharp.libvipsVersion",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.libvipsVersion",
     "cfunc": "libvipsVersion(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call format...format",
-    "gasket_jsname": "sharp/lib/sharp.format",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.format",
     "cfunc": "format(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call cache...cache",
-    "gasket_jsname": "sharp/lib/sharp.cache",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.cache",
     "cfunc": "cache(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call cache...cache",
-    "gasket_jsname": "sharp/lib/sharp.cache",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.cache",
     "cfunc": "cache(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call cache...cache",
-    "gasket_jsname": "sharp/lib/sharp.cache",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.cache",
     "cfunc": "cache(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call cache...cache",
-    "gasket_jsname": "sharp/lib/sharp.cache",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.cache",
     "cfunc": "cache(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call concurrency...concurrency",
-    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.concurrency",
     "cfunc": "concurrency(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call concurrency...concurrency",
-    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.concurrency",
     "cfunc": "concurrency(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call concurrency...concurrency",
-    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.concurrency",
     "cfunc": "concurrency(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call concurrency...concurrency",
-    "gasket_jsname": "sharp/lib/sharp.concurrency",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.concurrency",
     "cfunc": "concurrency(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call _isUsingJemalloc..._isUsingJemalloc",
-    "gasket_jsname": "sharp/lib/sharp._isUsingJemalloc",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64._isUsingJemalloc",
     "cfunc": "_isUsingJemalloc(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call counters...counters",
-    "gasket_jsname": "sharp/lib/sharp.counters",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.counters",
     "cfunc": "counters(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call simd...simd",
-    "gasket_jsname": "sharp/lib/sharp.simd",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.simd",
     "cfunc": "simd(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call block...block",
-    "gasket_jsname": "sharp/lib/sharp.block",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.block",
     "cfunc": "block(Napi::CallbackInfo const&)",
     "confidence": 1
   },
   {
     "jelly_pattern": "call block...block",
-    "gasket_jsname": "sharp/lib/sharp.block",
+    "gasket_jsname": "sharp/build/Release/sharp-linux-x64.block",
     "cfunc": "block(Napi::CallbackInfo const&)",
     "confidence": 1
   }

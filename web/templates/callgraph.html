@@ -44,13 +44,14 @@
                         <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                             {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                         </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </a>
+                        <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
                         </i>
                     
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
@@ -71,9 +72,9 @@
                 {{ form.package_name }}
                 <br><span class="helper-text" style=" color: var(--primary);">💡 Example: <code>sqlite3</code>, <code>canvas</code>, or <code>re2</code></span><br><br>
 
-                <label for="version_select" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Επιλογή Έκδοσης</label>
+                <label for="version_select" style="font-weight: 700; color: var(--primary); margin-top: 15px;">Select a Version</label>
                 <select name="version" id="version_select" class="form-control" style="margin-top: 5px;">
-                    <option value="">Πληκτρολογήστε πακέτο για εκδόσεις...</option>
+                    <option value="">Enter a package to see available versions...</option>
                 </select>
 
                 <div id="loading" style="display: none; margin-top: 20px; text-align: center;">
@@ -105,7 +106,7 @@
             const packageName = this.value.trim();
             if (packageName.length > 2) {
                 timeout = setTimeout(() => {
-                    versionSelect.innerHTML = '<option value="">Φόρτωση εκδόσεων...</option>';
+                    versionSelect.innerHTML = '<option value="">Loading versions...</option>';
                     fetch(`/ajax/get-versions/?package_name=${packageName}`)
                     .then(response => response.json())
                     .then(data => {
@@ -119,7 +120,7 @@
                         }
                     })
                     .catch(() => {
-                        versionSelect.innerHTML = '<option value="latest" style="color: #333;">Σφάλμα σύνδεσης</option>';
+                        versionSelect.innerHTML = '<option value="latest" style="color: #333;">Connection Error</option>';
                     });
                 }, 500);
             }
@@ -147,10 +148,10 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    loadingDiv.innerHTML = "<p class='text-success'>✅ Η ανάλυση ολοκληρώθηκε! Μεταφέρεστε στο ιστορικό...</p>";
+                    loadingDiv.innerHTML = "<p class='text-success'>✅ Analysis completed! You are being redirected to the history...</p>";
                     setTimeout(() => { window.location.href = '/analyses'; }, 2000);
                 } else {
-                    alert('Σφάλμα: ' + (data.message || 'Αποτυχία εκκίνησης'));
+                    alert('Error: ' + (data.message || 'Failed to start analysis'));
                     submitBtn.disabled = false;
                     this.style.opacity = '1';
                 }

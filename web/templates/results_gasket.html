@@ -43,13 +43,14 @@
                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                             {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                         </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </a>
+                        <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
                         </i>
                 <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
             </div>
@@ -149,7 +150,7 @@
             </table>
         {% else %}
             <div class="p-5 text-center">
-                <p class="lead text-muted">⚠️ No bridges found or analysis is still running.</p>
+                <p class="lead text-muted">⚠️ No bridges found.</p>
             </div>
         {% endif %}
     </div>

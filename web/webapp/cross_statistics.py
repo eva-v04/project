@@ -1,6 +1,5 @@
 import json
 import os
-import re
 import io
 import base64
 import numpy as np
@@ -10,33 +9,53 @@ import matplotlib.pyplot as plt
 from django.conf import settings
 
 
-
-
 def find_reachable_from_root(jelly_json, root_package_name):
+    # Κατασκευή γράφου γειτνίασης (adj)
     adj = {}
+    
+    # 1. Fun2Fun Edges
     for caller, callee in jelly_json.get('fun2fun', []):
         caller, callee = str(caller), str(callee)
-        if caller not in adj:
-            adj[caller] = []
-        adj[caller].append(callee)
+        adj.setdefault(caller, []).append(callee)
+
+    # 2. Call2Fun Resolution
+    functions = jelly_json.get('functions', {})
+    calls = jelly_json.get('calls', {})
+    call2fun = jelly_json.get('call2fun', [])
+
+    call_to_caller_fn = {}
+    for fid, loc in functions.items():
+        if isinstance(loc, str) and ':' in loc and not loc.startswith("[Native]"):
+            f_parts = loc.split(':')
+            if len(f_parts) >= 5:
+                f_idx, f_sl, f_el = int(f_parts[0]), int(f_parts[1]), int(f_parts[3])
+                for cid, cloc in calls.items():
+                    c_parts = cloc.split(':')
+                    if len(c_parts) >= 4 and int(c_parts[0]) == f_idx:
+                        c_sl = int(c_parts[1])
+                        if f_sl <= c_sl <= f_el:
+                            call_to_caller_fn[str(cid)] = str(fid)
+
+    for cid, callee in call2fun:
+        caller_fn = call_to_caller_fn.get(str(cid))
+        if caller_fn:
+            adj.setdefault(caller_fn, []).append(str(callee))
 
     entry_files = set(jelly_json.get('entries', []))
     files = jelly_json.get('files', [])
-    functions = jelly_json.get('functions', {})
 
-    root_entries = {f for f in entry_files if f.startswith(f"{root_package_name}/") or f == root_package_name}
-
+    # Εύρεση ριζών ακριβώς όπως στο Jelly: όλες οι συναρτήσεις των entry files
     roots = []
     for fid, location in functions.items():
         if isinstance(location, str) and ':' in location and not location.startswith("[Native]"):
             file_idx_str = location.split(':')[0]
             if file_idx_str.isdigit():
                 file_idx = int(file_idx_str)
-                if file_idx < len(files) and files[file_idx] in root_entries:
+                if file_idx < len(files) and files[file_idx] in entry_files:
                     roots.append(str(fid))
 
     reachable = set()
-    stack = roots
+    stack = list(roots)
     while stack:
         current = stack.pop()
         if current not in reachable:
@@ -63,51 +82,7 @@ def get_ground_truth_native_functions(ghidra_json_path):
     return 0
 
 
-def get_ground_truth_packages(package_lock_path):
-    installed_packages = set()
-    if not os.path.exists(package_lock_path):
-        return installed_packages
-    try:
-        with open(package_lock_path, 'r', encoding='utf-8') as f:
-            lock_data = json.load(f)
-        if "packages" in lock_data:
-            for pkg_path in lock_data["packages"].keys():
-                if pkg_path:
-                    clean_name = pkg_path.replace("node_modules/", "")
-                    if clean_name:
-                        installed_packages.add(clean_name)
-        elif "dependencies" in lock_data:
-            installed_packages.update(lock_data["dependencies"].keys())
-    except Exception:
-        pass
-    return installed_packages
-
-
-def get_ground_truth_files_and_functions(node_modules_path):
-    all_disk_files = []
-    total_disk_functions = 0
-    func_pattern = re.compile(
-        r'(?:function\s*\w*\s*\(|(?:\b(?:const|let|var)\s+\w+\s*=\s*(?:async\s*)?\([^)]*\)\s*=>)|(?:\b\w+\s*\([^)]*\)\s*\{))'
-    )
-    if not os.path.exists(node_modules_path):
-        return all_disk_files, total_disk_functions
-
-    for root, _, files in os.walk(node_modules_path):
-        for file in files:
-            if file.endswith(('.js', '.cjs', '.mjs')):
-                full_path = os.path.join(root, file)
-                all_disk_files.append(full_path)
-                try:
-                    with open(full_path, 'r', encoding='utf-8', errors='ignore') as f:
-                        content = f.read()
-                        matches = func_pattern.findall(content)
-                        total_disk_functions += len(matches)
-                except Exception:
-                    pass
-    return all_disk_files, total_disk_functions
-
-
-def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="node_modules", package_lock_file="package-lock.json"):
+def analyze_package_reachability(jelly_json, root_pkg_name):
     jelly_files = jelly_json.get('files', [])
     functions = jelly_json.get('functions', {})
     calls = jelly_json.get('calls', {})
@@ -137,17 +112,55 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
         else:
             if fid_str in reachable_fids:
                 js_reachable.add(fid_str)
-                if ':' in loc_str:
-                    f_idx = loc_str.split(':')[0]
-                    if f_idx.isdigit():
-                        reachable_file_indices.add(int(f_idx))
+            if ':' in loc_str:
+                f_idx = loc_str.split(':')[0]
+                if f_idx.isdigit():
+                    f_int = int(f_idx)
+                    if fid_str in reachable_fids:
+                        reachable_file_indices.add(f_int)
 
+    # Υπολογισμός Πακέτων & Αρχείων ΑΠΟΚΛΕΙΣΤΙΚΑ από το Runtime Scope του Jelly
+    all_packages = set()
+    reachable_packages = set()
+
+    for idx, file_path in enumerate(jelly_files):
+        # Κανονικοποίηση πακέτου: αν είναι scoped (π.χ. @img/sharp) κρατάμε τα 2 μέρη
+        parts = file_path.split('/')
+        pkg_name = f"{parts[0]}/{parts[1]}" if parts[0].startswith('@') and len(parts) > 1 else parts[0]
+        
+        all_packages.add(pkg_name)
+        if idx in reachable_file_indices:
+            reachable_packages.add(pkg_name)
+
+    total_packages = len(all_packages)
+    reachable_packages_count = len(reachable_packages)
+
+    total_files = len(jelly_files)
+    reachable_files_count = len(reachable_file_indices)
+
+    # JS Functions
+    total_js_functions = len([f for f in functions.values() if not str(f).startswith("[Native]")])
+    reachable_js_functions = len(js_reachable)
+
+    # Native Functions από Ghidra JSON
+    ghidra_file = os.path.join(settings.BASE_DIR, "static", f"ghidra_{root_pkg_name}.json")
+    native_gt_from_file = get_ground_truth_native_functions(ghidra_file)
+
+    if native_gt_from_file > 0:
+        total_native = native_gt_from_file
+        total_ghidra_gt = max(0, native_gt_from_file - len(gasket_total))
+    else:
+        total_native = len(gasket_total) + len(ghidra_total)
+        total_ghidra_gt = len(ghidra_total)
+
+    reachable_native = len(gasket_reachable) + len(ghidra_reachable)
+    combined_total_functions = total_js_functions + total_native
+    combined_reachable_functions = reachable_js_functions + reachable_native
+
+    # Call metrics
     call_to_callees = {}
     for call_id, callee_id in call2fun:
-        call_id_str, callee_id_str = str(call_id), str(callee_id)
-        if call_id_str not in call_to_callees:
-            call_to_callees[call_id_str] = []
-        call_to_callees[call_id_str].append(callee_id_str)
+        call_to_callees.setdefault(str(call_id), []).append(str(callee_id))
 
     total_call_sites = len(calls)
     zero_or_one_callee = 0
@@ -155,65 +168,17 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
     native_or_ext_callees = 0
 
     for call_id in calls.keys():
-        call_id_str = str(call_id)
-        callees = call_to_callees.get(call_id_str, [])
-        num_callees = len(callees)
-
-        if num_callees <= 1:
+        callees = call_to_callees.get(str(call_id), [])
+        if len(callees) <= 1:
             zero_or_one_callee += 1
         else:
             multiple_callees += 1
 
-        has_native = any(str(functions.get(cid, '')).startswith("[Native]") for cid in callees)
-        if has_native:
+        if any(str(functions.get(cid, '')).startswith("[Native]") for cid in callees):
             native_or_ext_callees += 1
 
     all_callees_in_graph = {str(c) for _, c in fun2fun} | {str(c) for _, c in call2fun}
     zero_caller_functions = [fid for fid in functions.keys() if str(fid) not in all_callees_in_graph]
-
-    ground_truth_pkgs = get_ground_truth_packages(package_lock_file)
-    jelly_reachable_pkgs = set()
-
-    for idx in reachable_file_indices:
-        if idx < len(jelly_files):
-            fpath = jelly_files[idx]
-            parts = fpath.split('/')
-            pkg = f"{parts[0]}/{parts[1]}" if parts[0].startswith('@') and len(parts) > 1 else parts[0]
-            jelly_reachable_pkgs.add(pkg)
-
-    total_packages_gt = len(ground_truth_pkgs) if ground_truth_pkgs else len(jelly_reachable_pkgs)
-    all_disk_files, total_disk_functions = get_ground_truth_files_and_functions(node_modules_dir)
-    
-    reachable_jelly_filepaths = [jelly_files[i] for i in reachable_file_indices if i < len(jelly_files)]
-    matched_reachable_files = set()
-    for disk_file in all_disk_files:
-        normalized_disk_path = disk_file.replace('\\', '/')
-        for j_file in reachable_jelly_filepaths:
-            if normalized_disk_path.endswith(j_file):
-                matched_reachable_files.add(disk_file)
-                break
-
-    total_files_gt = len(all_disk_files) if all_disk_files else len(jelly_files)
-    reachable_files_cnt = len(matched_reachable_files) if all_disk_files else len(reachable_file_indices)
-    total_js_functions_gt = total_disk_functions if total_disk_functions > 0 else len([f for f in functions.values() if not str(f).startswith("[Native]")])
-
-    pkg_ghidra_name = "lz4-napi" if root_pkg_name == "lz4" else root_pkg_name
-    ghidra_file = os.path.join(settings.BASE_DIR, "static", f"ghidra_{pkg_ghidra_name}.json")
-    if not os.path.exists(ghidra_file):
-        ghidra_file = os.path.join(settings.BASE_DIR, "..", "web", "static", f"ghidra_{pkg_ghidra_name}.json")
-
-    native_gt_from_file = get_ground_truth_native_functions(ghidra_file)
-
-    if native_gt_from_file > 0:
-        total_native = native_gt_from_file
-        total_ghidra_gt = native_gt_from_file - len(gasket_total) 
-    else:
-        total_native = len(gasket_total) + len(ghidra_total)
-        total_ghidra_gt = len(ghidra_total)
-
-    reachable_native = len(gasket_reachable) + len(ghidra_reachable)
-    combined_total_functions = total_js_functions_gt + total_native
-    combined_reachable_functions = len(js_reachable) + reachable_native
 
     def calc_cov(reach, tot):
         return round((reach / tot * 100), 2) if tot > 0 else 0.0
@@ -230,15 +195,15 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
             "zero_caller_functions": {"count": len(zero_caller_functions), "pct": calc_cov(len(zero_caller_functions), len(functions))}
         },
         "packages": {
-            "ground_truth_total": total_packages_gt,
-            "reachable": len(jelly_reachable_pkgs),
-            "coverage_pct": calc_cov(len(jelly_reachable_pkgs), total_packages_gt),
-            "list_reachable": sorted(list(jelly_reachable_pkgs))
+            "ground_truth_total": total_packages,
+            "reachable": reachable_packages_count,
+            "coverage_pct": calc_cov(reachable_packages_count, total_packages),
+            "list_reachable": sorted(list(reachable_packages))
         },
         "files": {
-            "ground_truth_total": total_files_gt,
-            "reachable": reachable_files_cnt,
-            "coverage_pct": calc_cov(reachable_files_cnt, total_files_gt)
+            "ground_truth_total": total_files,
+            "reachable": reachable_files_count,
+            "coverage_pct": calc_cov(reachable_files_count, total_files)
         },
         "functions": {
             "combined_total": {
@@ -247,9 +212,9 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
                 "coverage_pct": calc_cov(combined_reachable_functions, combined_total_functions)
             },
             "js_functions": {
-                "ground_truth_total": total_js_functions_gt,
-                "reachable": len(js_reachable),
-                "coverage_pct": calc_cov(len(js_reachable), total_js_functions_gt)
+                "ground_truth_total": total_js_functions,
+                "reachable": reachable_js_functions,
+                "coverage_pct": calc_cov(reachable_js_functions, total_js_functions)
             },
             "native_summary": {
                 "total": total_native,
@@ -270,34 +235,11 @@ def analyze_package_reachability(jelly_json, root_pkg_name, node_modules_dir="no
     }
 
 
-
-
 def generate_cross_language_stats(pkg, ver):
-    # 1. Έλεγχος αν υπάρχει ήδη στο analysis_summary.json
-    summary_paths = [
-        os.path.join(settings.BASE_DIR, "analysis_summary.json"),
-        os.path.join(settings.BASE_DIR, "..", "analysis_summary.json"),
-        "/home/eva/Ptuxiakh/statistics/analysis_summary.json"
-    ]
-    
-    for sum_path in summary_paths:
-        if os.path.exists(sum_path):
-            try:
-                with open(sum_path, 'r', encoding='utf-8') as f:
-                    summary_data = json.load(f)
-                    for item in summary_data:
-                        if item.get("package") == pkg:
-                            return item
-            except Exception:
-                pass
-
-    # 2. Dynamic Υπολογισμός αν πρόκειται για νέο πακέτο
     version_param = ver if (ver and ver.strip()) else "latest"
     possible_json = [
         os.path.join(settings.BASE_DIR, 'static', f"cross_analysis_{pkg}_{version_param}", f"{pkg}.json"),
         os.path.join(settings.BASE_DIR, 'static', f"cross_analysis_{pkg}_{version_param}", f"{pkg}-withflags.json"),
-        os.path.join(settings.BASE_DIR, f"{pkg}-withflags.json"),
-        f"/home/eva/Ptuxiakh/{pkg}-withflags.json"
     ]
     
     jelly_path = next((p for p in possible_json if os.path.exists(p)), None)
@@ -307,10 +249,8 @@ def generate_cross_language_stats(pkg, ver):
     with open(jelly_path, 'r', encoding='utf-8') as f:
         jelly_data = json.load(f)
 
-    nm_dir = f"/home/eva/node_modules/{pkg}" if os.path.exists(f"/home/eva/node_modules/{pkg}") else "node_modules"
-    lock_f = f"/home/eva/node_modules/{pkg}/package-lock.json" if os.path.exists(f"/home/eva/node_modules/{pkg}/package-lock.json") else "package-lock.json"
-
-    return analyze_package_reachability(jelly_data, root_pkg_name=pkg, node_modules_dir=nm_dir, package_lock_file=lock_f)
+    # Υπολογισμός απευθείας πάνω στα δεδομένα του πραγματικού cross-language call graph
+    return analyze_package_reachability(jelly_data, root_pkg_name=pkg)
 
 
 def get_cross_reachability_barchart(stats):

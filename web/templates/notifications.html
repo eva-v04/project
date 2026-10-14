@@ -77,14 +77,14 @@
                     <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
                         {{ user.username }} <i class="fa-regular fa-circle-user"></i>
                     </a>
-                    <a href="{% url 'notifications' %}" class="text-decoration-none position-relative me-3" style="color: inherit;">
-                        <i class="fa-solid fa-bell" style="cursor: pointer; font-size: 1.2rem;"></i>
-                        <span id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </span>
-                    </a>
+                    <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
 
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
                 </div>
@@ -99,17 +99,17 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <h1 class="fw-bold mb-1">Notifications & Activity</h1>
-                    <p class="text-muted m-0">Παρακολουθήστε την εξέλιξη των εργασιών και δείτε αναλυτικά τα αποτελέσματα των αναλύσεων.</p>
+                    <p class="text-muted m-0">Track the progress of your tasks and view detailed results of your analyses.</p>
                 </div>
                 <a href="/analyses" class="btn btn-outline-info rounded-pill px-3 py-2 fw-semibold">
-                    <i class="fa-solid fa-layer-group me-1"></i> Όλες οι Αναλύσεις
+                    <i class="fa-solid fa-layer-group me-1"></i> All Analyses
                 </a>
             </div>
 
             <!-- LIVE ACTIVE ANALYSES SECTION (Εμφανίζεται μόνο όταν υπάρχουν ενεργά tasks) -->
             <div id="active-analyses-wrapper" style="display: none;" class="mb-4">
                 <h5 class="fw-bold mb-3 text-info d-flex align-items-center">
-                    <i class="fa-solid fa-spinner fa-spin me-2"></i>Ενεργές Αναλύσεις σε Εξέλιξη
+                    <i class="fa-solid fa-spinner fa-spin me-2"></i>Active Analyses
                 </h5>
                 <div id="active-analyses-container"></div>
                 <hr class="border-secondary opacity-25 my-4">
@@ -117,7 +117,7 @@
 
             <!-- NOTIFICATIONS HISTORY SECTION (Δυναμική λίστα μέσω AJAX) -->
             <h5 class="fw-bold mb-3 d-flex align-items-center">
-                <i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Ιστορικό Ειδοποιήσεων
+                <i class="fa-solid fa-clock-rotate-left text-warning me-2"></i>Notifications History
             </h5>
 
             <div id="notifications-history-container" class="d-flex flex-column gap-3">
@@ -157,7 +157,7 @@
                 {% else %}
                     <div class="alert alert-secondary text-center rounded-3 p-4 mb-0">
                         <i class="fa-regular fa-bell-slash fs-4 d-block mb-2 text-muted"></i>
-                        Δεν υπάρχουν παλαιότερες ειδοποιήσεις.
+                        No previous notifications.
                     </div>
                 {% endif %}
             </div>

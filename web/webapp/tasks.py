@@ -1,7 +1,7 @@
 import os
 import glob
 import subprocess
-from django.core.serializers import json
+import json
 from django.tasks import task
 from django.conf import settings
 from .models import Analyses, User, Notification
@@ -27,9 +27,12 @@ def run_gasket_analysis(package_name, package_version=None, analysis_id=None):
 
         # Εκτέλεση του script
         if package_version:
-            subprocess.run(["./analyze_gasket.sh", package_name, package_version], check=True)
+            cmd = ["./analyze_gasket.sh", package_name, package_version]
         else:
-            subprocess.run(["./analyze_gasket.sh", package_name], check=True)
+            cmd = ["./analyze_gasket.sh", package_name]
+
+        # Τρέχουμε χωρίς check=True για να μην καταρρέει αυτόματα αν το αρχείο υπάρχει
+        subprocess.run(cmd, cwd=settings.BASE_DIR)
 
         # Βήμα 2: Ολοκλήρωση
         analysis.progress = 100
@@ -179,10 +182,17 @@ def run_cross_language_analysis(package_name, package_version=None, analysis_id=
             try:
                 with open(expected_bridges_file, 'r', encoding='utf-8') as f:
                     g_data = json.load(f)
-                    if not g_data.get('bridges') or len(g_data['bridges']) == 0:
+                    bridges_list = g_data.get('bridges', [])
+                    if not bridges_list or len(bridges_list) == 0:
+                        print(f" [INFO] Το {expected_bridges_file} δεν περιέχει bridges.")
                         has_bridges = False
-            except Exception:
-                has_bridges = False
+                    else:
+                        print(f" [INFO] Εντοπίστηκαν {len(bridges_list)} bridges.")
+            except Exception as e:
+                print(f" [WARNING] Σφάλμα ανάγνωσης bridges JSON: {e}")
+                # Μην το μηδενίζεις αν το αρχείο υπάρχει και έχει περιεχόμενο
+                if os.path.getsize(expected_bridges_file) == 0:
+                    has_bridges = False
 
 
 # -------------------------------------------------------------

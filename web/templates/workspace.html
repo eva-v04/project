@@ -19,15 +19,17 @@
                     <i class="fa-solid fa-moon"></i>
                 </button>
                 <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
-                            {{ user.username }} <i class="fa-regular fa-circle-user"></i>
-                        </a>
-                        <i class="fa-solid fa-bell position-relative me-3" style="cursor: pointer;">
-                            <a href="{% url 'notifications' %}" 
-                            id="notification-badge" 
-                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
-                            style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
-                            {{ unread_count }}
-                        </a>
+                    {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+                </a>
+                
+                <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
                         </i>
                     <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
 
@@ -42,7 +44,21 @@
         <h5 class="mb-4">SELECT ANALYSIS TYPE:</h5>
         
         <div class="row g-4 mb-5">
-            <!-- 1. Gasket Analysis -->
+            
+
+            <!-- Jelly Analysis -->
+            <div class="col-md-4">
+                <a href="{% url 'callgraph' %}" class="analysis-card-link">
+                    <div class="analysis-card h-100">
+                        <i class="fa-solid fa-circle-nodes card-icon"></i>
+                        <h6>CALL GRAPH (JELLY)</h6>
+                        <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
+                        <button class="btn btn-outline-secondary btn-sm w-100 mt-auto">SELECT</button>
+                    </div>
+                </a>
+            </div>
+            
+            <!-- Gasket Analysis -->
             <div class="col-md-4">
                 <a href="{% url 'gasket' %}" class="analysis-card-link">
                     <div class="analysis-card h-100">
@@ -54,19 +70,7 @@
                 </a>
             </div>
 
-            <!-- 2. Jelly Analysis -->
-            <div class="col-md-4">
-                <a href="{% url 'callgraph' %}" class="analysis-card-link">
-                    <div class="analysis-card h-100">
-                        <i class="fa-solid fa-circle-nodes card-icon"></i>
-                        <h6>CALL GRAPH (JELLY)</h6>
-                        <p class="small text-secondary">Analyze JS execution flow & reachability.</p>
-                        <button class="btn btn-outline-secondary btn-sm w-100 mt-auto">SELECT</button>
-                    </div>
-                </a>
-            </div>
-
-            <!-- 3. Cross-Language Analysis (Gasket + Jelly) -->
+            <!-- Cross-Language Analysis (Gasket + Jelly) -->
             <div class="col-md-4">
                 <a href="{% url 'cross_language' %}" class="analysis-card-link">
                     <div class="analysis-card h-100">

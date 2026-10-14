@@ -232,7 +232,7 @@ export function convertAPIUsageToJSON(r: AccessPathPatternToNodes, _?: any, f?: 
                     if (p instanceof PropertyAccessPathPattern || p instanceof CallResultAccessPathPattern) {
                         let current: any = p;
                         let steps: string[] = []; //πίνακας που θα μαζεύει όλα τα κομμάτια του path
-                        while (current) { //ΚΑΤΑΛΑΒΑΙΝΩ WHILE
+                        while (current) { 
                             if (current instanceof PropertyAccessPathPattern) {
                                 steps.unshift(current.props.join("."));
                                 current = current.base;
