@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "sqlite3": "^5.1.7-rc.0"
-  }
-}
