@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cross-Language Statistics: {{ package_name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <h2>Project</h2>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="border-color: var(--glass-border);">
+                <i class="fa-solid fa-bars" style="color: var(--text-main); font-size: 1.5rem;"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'workspace' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'callgraph' %}">Jelly Analysis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'gasket' %}">Gasket Bridges</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cross_language' %}">Cross-Language</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/analyses">My History</a></li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <button id="theme-toggle" class="btn btn-link text-info me-3">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <a href="{% url 'myacc' %}" class="me-3 text-decoration-none" style="color: var(--text-main, white);">
+                        {{ user.username }} <i class="fa-regular fa-circle-user"></i>
+
+
+                    </a>
+
+
+                    <a href="{% url 'notifications' %}" class="position-relative me-3 text-decoration-none" style="color: var(--text-main, white); cursor: pointer;">
+                    <i class="fa-solid fa-bell"></i>
+                    <span id="notification-badge"
+                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" 
+                    style="font-size: 0.5rem; {% if unread_count == 0 %}display: none;{% endif %}">
+                    {{ unread_count }}
+                </span>
+            </a>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="main-title text-start mb-0">Analysis Statistics: {{ package_name }}</h2>
+                <p class="mb-0" style="color: #2577db !important; font-size: 0.9rem; opacity: 0.8;">
+                    <i class="fas fa-tag me-1"></i> Version: {{ package_version }} | <i class="fa-solid fa-shield-halved me-1"></i> Cross-Language Reachability
+                </p>
+            </div>
+            
+            <div class="d-flex gap-2 align-items-center">
+    <a href="{% url 'cross_language_results' analysis_id=analysis_id %}" class="btn btn-main btn-sm">
+        <i class="fas fa-arrow-left me-2"></i>Back to Graph
+    </a>
+    <a href="{% url 'download_cross_stats' analysis_id=analysis_id %}" 
+       class="btn btn-download-custom btn-sm">
+        <i class="fa-solid fa-file-export me-2"></i>Export Statistics JSON
+    </a>
+</div>
+        </div>
+
+        <!--  Reachability Table -->
+        <h4 class="level-title mb-3">1. Reachability & Bloat Analysis</h4>
+        <div class="glass-card p-4 mb-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="border-bottom border-secondary">
+                        <tr>
+                            <th style="width: 40%;">Level / Category</th>
+                            <th class="text-center">Ground Truth</th>
+                            <th class="text-center">Reachable</th>
+                            <th class="text-center">Coverage %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>1. Packages (Dependencies)</b></td>
+                            <td class="text-center">{{ stats.packages.ground_truth_total }}</td>
+                            <td class="text-center text-info">{{ stats.packages.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-primary px-3 py-2">{{ stats.packages.coverage_pct }}%</span></td>
+                        </tr>
+                        <tr>
+                            <td><b>2. Files (node_modules)</b></td>
+                            <td class="text-center">{{ stats.files.ground_truth_total }}</td>
+                            <td class="text-center text-info">{{ stats.files.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-primary px-3 py-2">{{ stats.files.coverage_pct }}%</span></td>
+                        </tr>
+                        <tr class="table-info bg-opacity-10">
+                            <td><b>3. Combined Total Functions</b></td>
+                            <td class="text-center fw-bold">{{ stats.functions.combined_total.total }}</td>
+                            <td class="text-center fw-bold text-success">{{ stats.functions.combined_total.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-success px-3 py-2 fs-6">{{ stats.functions.combined_total.coverage_pct }}%</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ps-4">├─ JS Functions (Regex)</td>
+                            <td class="text-center">{{ stats.functions.js_functions.ground_truth_total }}</td>
+                            <td class="text-center">{{ stats.functions.js_functions.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-secondary">{{ stats.functions.js_functions.coverage_pct }}%</span></td>
+                        </tr>
+                        <tr class="table-warning bg-opacity-10">
+                            <td class="ps-4">├─ <b>All Native Code</b></td>
+                            <td class="text-center fw-bold">{{ stats.functions.native_summary.total }}</td>
+                            <td class="text-center fw-bold text-warning">{{ stats.functions.native_summary.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-warning text-dark px-3 py-2">{{ stats.functions.native_summary.coverage_pct }}%</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ps-5">│&nbsp;&nbsp;├─ Gasket Native</td>
+                            <td class="text-center">{{ stats.functions.native_gasket.total }}</td>
+                            <td class="text-center">{{ stats.functions.native_gasket.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-dark">{{ stats.functions.native_gasket.coverage_pct }}%</span></td>
+                        </tr>
+                        <tr>
+                            <td class="ps-5">│&nbsp;&nbsp;└─ Ghidra Native</td>
+                            <td class="text-center">{{ stats.functions.native_ghidra.total }}</td>
+                            <td class="text-center">{{ stats.functions.native_ghidra.reachable }}</td>
+                            <td class="text-center"><span class="badge bg-dark">{{ stats.functions.native_ghidra.coverage_pct }}%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!--  Chart -->
+        {% if chart_cross %}
+            <div class="glass-card p-4 text-center mb-4">
+                <h5 class="text-primary mb-3"><i class="fa-solid fa-chart-column me-2"></i>Reachability Visual Overview</h5>
+                <img src="data:image/png;base64,{{ chart_cross }}" class="img-fluid rounded" alt="Coverage Chart">
+            </div>
+        {% endif %}
+
+        <!-- Call Graph Topology Metrics -->
+        <h4 class="level-title mb-3">2. Call Graph Topology & Resolution</h4>
+        <div class="row g-4 mb-5">
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="text-primary mb-3"><i class="fa-solid fa-bullseye me-2"></i>Call Sites Breakdown (Total: {{ stats.call_graph_metrics.total_call_sites }})</h5>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                            <span>Zero or One Callee</span>
+                            <span class="badge bg-success fs-6">{{ stats.call_graph_metrics.zero_or_one_callee.count }} ({{ stats.call_graph_metrics.zero_or_one_callee.pct }}%)</span>
+                        </li>
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                            <span>Multiple Callees</span>
+                            <span class="badge bg-warning text-dark fs-6">{{ stats.call_graph_metrics.multiple_callees.count }} ({{ stats.call_graph_metrics.multiple_callees.pct }}%)</span>
+                        </li>
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                            <span>Native / External</span>
+                            <span class="badge bg-info text-dark fs-6">{{ stats.call_graph_metrics.native_or_external_callees.count }} ({{ stats.call_graph_metrics.native_or_external_callees.pct }}%)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="glass-card p-4 h-100">
+                    <h5 class="text-primary mb-3"><i class="fa-solid fa-network-wired me-2"></i>Call Graph Metrics</h5>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                            <span>Call Edges (<code>fun2fun</code>)</span>
+                            <b>{{ stats.call_graph_metrics.fun2fun_edges }}</b>
+                        </li>
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                            <span>Call Edges (<code>call2fun</code>)</span>
+                            <b>{{ stats.call_graph_metrics.call2fun_edges }}</b>
+                        </li>
+                        <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                            <span>Functions with Zero Callers</span>
+                            <span class="badge bg-secondary fs-6">{{ stats.call_graph_metrics.zero_caller_functions.count }} ({{ stats.call_graph_metrics.zero_caller_functions.pct }}%)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = themeBtn.querySelector('i');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
