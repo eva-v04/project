@@ -1,47 +1,37 @@
-# =========================
 # Web App (Django)
-# =========================
 web/static/
 web/djangoenv/
 web/db.sqlite3
 web/__pycache__/
 *.py[cod]
 
-# =========================
 # Python Environments
-# =========================
 venv/
 env/
 statistics/venv/
 
-# =========================
 # Ghidra & External Tools
-# =========================
 ghidra_*/
 ghidra-master/
 TempProj.rep/
 jdk-*/
 gradle-*/
 
-# =========================
+
 # Παραγόμενα Αποτελέσματα Αναλύσεων (Root)
-# =========================
 *-withflags.html
 *-withflags.json
 *_matches.json
 sqlite*.json
 *.html
+!web/templates/
+!web/templates/*.html
 
-# =========================
 # Jelly / Node.js
-# =========================
 node_modules/
 npm-debug.log*
 
-# =========================
-# Mac/OS Files (προαιρετικό αλλά καλό)
-# =========================
+
 .DS_Store
-
-
 web/.ghidra_projects/
+/compare/
