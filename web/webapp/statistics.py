@@ -21,37 +21,33 @@ def generate_full_stats(pkg, ver):
     with open(jelly_path, 'r') as f:
         jelly_json = json.load(f)
 
-    # Καλούμε τη νέα σου λογική (από το statistics2.py)
     reachable_fids = find_reachable(jelly_json)
     detailed_stats = calculate_detailed_statistics(jelly_json, reachable_fids)
 
-    # Επιστρέφουμε τα δεδομένα στη μορφή που τα θέλει το views.py
     return {
         'function_stats': {
             'total_functions': detailed_stats['functions']['total'],
             'reachable_functions': detailed_stats['functions']['reachable'],
-            'percent': detailed_stats['functions']['percentage']  # <--- ΠΡΟΣΘΗΚΗ
+            'percent': detailed_stats['functions']['percentage']
         },
         'file_stats': {
             'total_files': detailed_stats['files']['total'],
             'reachable_files': detailed_stats['files']['reachable'],
-            'percent': detailed_stats['files']['percentage']      # <--- ΠΡΟΣΘΗΚΗ
+            'percent': detailed_stats['files']['percentage']
         },
         'package_stats': {
             'total_packages': detailed_stats['packages']['total'],
             'reachable_packages': detailed_stats['packages']['reachable'],
-            'percent': detailed_stats['packages']['percentage']  # <--- ΠΡΟΣΘΗΚΗ
+            'percent': detailed_stats['packages']['percentage'] 
         }
     }
 
 
-
 def get_matplotlib_graph(reachable, total):
 
-    plt.clf() # Καθαρίζει το προηγούμενο γράφημα
+    plt.clf()
     if total == 0: return ""
 
-    # Δεδομένα
     labels = ['Used', 'Unused']
     sizes = [reachable, total - reachable]
     colors = ['#00d2ff', '#1e293b']
@@ -112,9 +108,6 @@ def find_reachable(jelly_json):
         if jelly_json['files'][file_idx] in entry_files:
             roots.append(str(fid))
 
-    #print(f"DEBUG: Entry files found: {jelly_json['entries']}")
-    #print(f"DEBUG: Root functions (start nodes): {roots}")
-
     # DFS
     reachable = set()
     stack = roots
@@ -163,10 +156,6 @@ def calculate_detailed_statistics(jelly_json, reachable_fids):
     func_perc = (reachable_functions_count / total_functions * 100) if total_functions > 0 else 0
     file_perc = (reachable_files_count / total_files * 100) if total_files > 0 else 0
     pkg_perc = (len(reachable_packages) / len(all_packages) * 100) if len(all_packages) > 0 else 0
-
-    #print(f"DEBUG: Total functions: {total_functions}, Reachable functions: {reachable_functions_count}")
-    #print(f"DEBUG: Total files: {total_files}, Reachable files: {reachable_files_count}")
-    #print(f"DEBUG: Total packages: {len(all_packages)}, Reachable packages: {len(reachable_packages)}")
 
     return {
         "functions": {

@@ -44,7 +44,7 @@ export function getAPIUsage(f: FragmentState): [AccessPathPatternToNodes, NodeTo
     const worklist = new Map<AccessPathPattern, Set<AccessPath>>();
 
     function add(t: PatternType, p: AccessPathPattern, ap: AccessPath, n: Node) {
-        //
+
         console.log('PATTERN:', p.toString());
         console.log('--------------------------------------')
         
