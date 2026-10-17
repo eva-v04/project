@@ -22,6 +22,8 @@ class Analyses(models.Model):
     # task_id = models.CharField(max_length=50, blank=True, null=True)  # Προσθήκη πεδίου για το task ID
     progress = models.IntegerField(default=0)  # Προσθήκη πεδίου για την πρόοδο της ανάλυσης (0-100)
     current_step = models.CharField(max_length=255, default="Starting...")  # Περιγραφή σταδίου
+    def __str__(self):
+        return f"{self.package_name} - {self.package_version}"
 
 
 class Notification(models.Model):
