@@ -43,3 +43,4 @@ jelly/merge_results.js
 jelly/generate_final_callgraph.js
 jelly/api_results.json
 jelly/run_jelly.sh
+jelly/analysis_sqlite3_6.0.1
