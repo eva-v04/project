@@ -166,7 +166,6 @@ export function setOptions(opts: OptionValues & Partial<typeof options>) {
     }
     if (options.apiUsage)
 
-        //DEBUG
         options.ignoreDependencies = false;
 
         //options.ignoreDependencies = true;

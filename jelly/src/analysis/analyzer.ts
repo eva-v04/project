@@ -22,7 +22,6 @@ import {ProcessManager} from "../approx/processmanager";
 import {Patching} from "../approx/patching";
 import {PatchingDiagnostics} from "../approx/diagnostics";
 import {patchThis} from "../patching/patchthis";
-//DEBUG
 import { convertAPIUsageToJSON, getAPIUsage } from "../patternmatching/apiusage";
 
 export async function analyzeFiles(files: Array<string>, solver: Solver) {
@@ -190,28 +189,17 @@ export async function analyzeFiles(files: Array<string>, solver: Solver) {
     // collect final call edges
     finalizeCallEdges(solver);
 
-    //DEBUG
-    // import fs from "fs"; 
-
-    // DEBUG
     if (options.apiUsage) {
-        // Παίρνουμε τα δεδομένα από το FragmentState
-        //DEBUG: Προσθέτουμε και το globalState ως όρισμα στη getAPIUsage
         const [res1, _res2] = getAPIUsage(solver.fragmentState); 
     
-        // Μετατρέπουμε τα αποτελέσματα σε JSON μορφή
         const apiJsonData = convertAPIUsageToJSON(res1, undefined, solver.fragmentState);
 
-        // Ορίζουμε το πλήρες μονοπάτι στο Current Working Directory
-        // Το process.cwd() επιστρέφει τον φάκελο από τον οποίο καλώ το jelly
         const apiFilePath = resolve(process.cwd(), "api_results.json");
 
-        // Γράφουμε το αρχείο στο σωστό σημείο
         fs.writeFileSync(apiFilePath, JSON.stringify(apiJsonData, null, 2));
     
         logger.info(`Results exported to ${apiFilePath}`);
     }
-
     
     solver.updateDiagnostics();
 

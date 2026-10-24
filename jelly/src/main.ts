@@ -119,11 +119,8 @@ program
     .option("--vulnerabilities-full", "full report of vulnerabilities")
     .option("--eager-propagation", "perform propagation after each module")
     .option("--no-interops", "disable models of common module interop helper functions")
-    //DEBUG
     .option("--bridges <file>", "path to custom gasket bridges JSON file for matching")
     .option("--ghidra <file>", "path to the demangled Ghidra JSON file for matching")
-
-
     
     .usage("[options] [files]")
     .addHelpText("after",
@@ -141,30 +138,29 @@ async function main() {
     options.tty = true;
     setOptions(program.opts());
 
-    //DEBUG
+    // Custom Gasket bridges
     const customBridges = program.opts().bridges;
     if (customBridges) {
         process.env.BPATH = customBridges;
     }
 
-
     const ghidraPath = program.opts().ghidra;
-    //τρέχει το Python script για demangling αν δοθεί το --ghidra <file>
+
+    // Execute the Python script for demangling if the --ghidra <file> flag is provided
     if (ghidraPath) {
-        //const fs = require("fs");
         const path = require("path");
 
-        // Ορίζουμε πού θέλουμε να αποθηκευτεί το καθαρό αρχείο (π.χ. στον ίδιο φάκελο με κατάληξη _demangled.json)
+        // Define the output path for the demangled file (same directory, appended with _demangled.json)
         const parsedPath = path.parse(ghidraPath);
         const demangledOutputPath = path.join(parsedPath.dir, `${parsedPath.name}_demangled.json`);
 
         logger.info(`[JELLY PIPELINE] Triggering automatic demangling for: ${ghidraPath}`);
 
-        // Καλούμε το Python script χρησιμοποιώντας τη spawnSync που είναι ήδη imported στην κορυφή
-        const pythonScriptPath = path.join(__dirname, "../demangle.py"); // Προσάρμοσε το path αν το έχεις σε άλλο φάκελο
+        // Invoke the external Python demangling script
+        const pythonScriptPath = path.join(__dirname, "../demangle.py");
         
         const pythonProcess = spawnSync("python3", [pythonScriptPath, ghidraPath, demangledOutputPath], {
-            stdio: "inherit" // Τυπώνει τα print της Python απευθείας στο τερματικό του Jelly
+            stdio: "inherit" 
         });
 
         if (pythonProcess.status !== 0) {
@@ -172,12 +168,9 @@ async function main() {
             process.exit(-1);
         }
 
-        // Αφού το python script πέτυχε, αποθηκεύουμε το ΜΟΝΟΠΑΤΙ ΤΟΥ ΚΑΘΑΡΟΥ αρχείου στο process.env
+        // Store the path of the successfully demangled file in environment variables for downstream analysis
         process.env.GHIDRAPATH = demangledOutputPath;
     }
-    // ============================================================
-
-
 
     if (options.logfile)
         logToFile(options.logfile);
@@ -449,8 +442,8 @@ async function main() {
                 tapirPatternMatch(tapirPatterns, patterns, solver, typer, undefined);
 
             if (options.apiUsage) {
-                const [r1, r2] = getAPIUsage(f); //DEBUG: Προσθέτουμε και το globalState ως όρισμα στη getAPIUsage
-                //DEBUG
+                // Extract API usage patterns from the fragment state
+                const [r1, r2] = getAPIUsage(f); 
                 reportAPIUsage(r1, r2); // TODO: remove r2, also in getAPIUsage? (currently used for server, but maybe can be replaced by a function that gets patterns at a node from the fragment state)
             }
 

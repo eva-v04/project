@@ -41,9 +41,6 @@ import {getEnclosingNonArrowFunction, isInTryBlockOrBranch} from "../misc/asthel
 import {isAbsoluteModuleName, isLocalRequire, resolveModule} from "../misc/files";
 import {ArrayMap, ArrayMapMap, ArrayMapSet} from "../misc/arraymap";
 
-//DEBUG
-//import { Location } from "../misc/util";
-
 export type ListenerID = bigint;
 
 
@@ -90,7 +87,6 @@ export class FragmentState {
 
     readonly a: GlobalState;
 
-    //DEBUG
     public nodeToCallers = new Map<Node, Array<{name: string, loc: string}>>();
 
     /**
@@ -215,7 +211,7 @@ export class FragmentState {
      */
     readonly nativeCallLocations: Set<Node> = new Set;
 
-    //DEBUG: προσθέτω map που θα αποθηκεύεται το custom id για κάθε native node
+    // custom map which will store the custom id for each native node
     readonly nativeNodeToId: Map<Node, string> = new Map;
 
     /**
@@ -419,7 +415,6 @@ export class FragmentState {
         calleeVar: ConstraintVar | undefined,
         {native, external, accessor}: {native?: boolean, external?: boolean, accessor?: boolean} = {}
     ) {
-        //DEBUG
         this.saveCaller(n, enclosing);
         if (accessor && !options.callgraphImplicit)
             return;
@@ -431,25 +426,6 @@ export class FragmentState {
             this.callLocations.add(n);
             if (native) {
                 this.nativeCallLocations.add(n);
-                //DEBUG
-                //Αποθηκεύω το custom id για το native call node
-                //const currentModule = enclosing instanceof FunctionInfo ? enclosing.moduleInfo : enclosing;
-                //const locStr = `${currentModule.relativePath}:${n.loc!.start.line}:${n.loc!.start.column}:${n.loc!.end.line}:${n.loc!.end.column}`;
-                
-                //DEBUG
-                //Κλήση νεας συνάρτησης
-                //const nativeFuncInfo = this.a.registerNativeFunctionInfo(
-                  //  currentModule,
-                    //n.loc!,
-                    //n,
-                //    "native",
-                    //locStr
-                //);
-                //this.registerCallEdge(n, enclosing, nativeFuncInfo, {native: true});
-
-
-
-                //this.nativeNodeToId.set(n, locStr);
             } else if (external)
                 this.externalCallLocations.add(n);
         }
@@ -458,17 +434,19 @@ export class FragmentState {
             mapGetSet(this.callToCalleeVars, n).add(calleeVar);
     }
     
-    //registerCall -> javascript συναρτήσεις
-    //registerRealNativeCallEdge ->  native συναρτήσεις 
-    public registerRealNativeCallEdge( //καταγράφει native Κλήσεις + ενημερώνει fragment state 
+    //registerCall -> javascript functions
+    //registerRealNativeCallEdge ->  native functions 
+    /**
+     * Registers a call edge from a caller to a native callee in the call graph.
+     * This is used for calls to native functions that are not analyzed.
+     */
+    public registerRealNativeCallEdge(
         callNode: Node, 
         callerInfo: FunctionInfo | ModuleInfo, 
         nativeCalleeInfo: FunctionInfo 
     ) {
-        // Καταγραφή της ακμής από Function/Module σε Function (για το Call Graph)
         mapGetSet(this.functionToFunction, callerInfo).add(nativeCalleeInfo);
 
-        // Καταγραφή της ακμής από το συγκεκριμένο AST Call Node στη Native Function 
         const callEdges = mapGetSet(this.callToFunction, callNode);
         if (!callEdges.has(nativeCalleeInfo)) {
             callEdges.add(nativeCalleeInfo);
@@ -543,15 +521,8 @@ export class FragmentState {
      * Ignored if options.externalMatches is disabled.
      */
     registerEscapingToExternal(v: ConstraintVar | undefined, n: Node, encl: FunctionInfo | ModuleInfo) {
-        //DEUG
         this.saveCaller(n, encl);
     if (v && options.externalMatches) {
-        //const exitPoint = n.loc ? n.loc.start.line : "unknown";
-        //const callerLine = (encl && encl.loc) ? encl.loc.start.line : "top-level";
-
-        // Αναγνώριση αν είναι Function ή Module
-        //let callerDetails = "";
-        //let callerLocation = "";
         if (encl instanceof FunctionInfo) {
             //const funcName = encl.name || "<anonymous>";
             //const moduleName = encl.moduleInfo.toString();

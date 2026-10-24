@@ -316,7 +316,7 @@ async function main() {
                 return prepareResponse(false, req, {message: "Analysis results not available"});
             if (!options.apiUsage)
                 return prepareResponse(false, req, {message: "API usage not enabled, must be enabled before analyze"});
-            const [r1] = getAPIUsage(solver.fragmentState); //DEBUG: Προσθέτουμε και το globalState ως όρισμα στη getAPIUsage
+            const [r1] = getAPIUsage(solver.fragmentState);
             const body = convertAPIUsageToJSON(r1, undefined, solver.fragmentState);
             const res: ApiUsageResponse = prepareResponse(true, req, {body});
             logger.info("Sending API usage");
