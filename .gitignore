@@ -37,3 +37,9 @@ web/.ghidra_projects/
 /compare/
 /match/
 /statistics/
+
+#jelly
+jelly/merge_results.js
+jelly/generate_final_callgraph.js
+jelly/api_results.json
+jelly/run_jelly.sh
